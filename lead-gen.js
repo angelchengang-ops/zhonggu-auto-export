@@ -1,4 +1,4 @@
-﻿const whatsappNumber = '447473271351';
+const whatsappNumber = '447473271351';
 const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
 
@@ -23,12 +23,12 @@ const buildWhatsappMessage = (context = {}) => {
 };
 
 const mailtoUrl = (lead) => {
-  const subject = encodeURIComponent(`Zhonggu Auto Export Inquiry - ${lead.interestedModel || lead.pageTitle || 'Website Lead'}`);
+  const subject = encodeURIComponent(`Zhonggu Auto Export Inquiry - ${lead.model || lead.pageTitle || 'Website Lead'}`);
   const body = encodeURIComponent([
     `Name: ${lead.name || ''}`,
     `Country: ${lead.country || ''}`,
     `WhatsApp: ${lead.whatsapp || ''}`,
-    `Interested Model: ${lead.interestedModel || ''}`,
+    `Interested Model: ${lead.model || ''}`,
     `Message: ${lead.message || ''}`,
     `Page: ${lead.pageTitle || ''}`,
     `URL: ${lead.pageUrl || ''}`
@@ -42,7 +42,7 @@ const buildLead = (form) => {
     name: normalize(data.get('name')),
     country: normalize(data.get('country')),
     whatsapp: normalize(data.get('whatsapp')),
-    interestedModel: normalize(data.get('interestedModel')),
+    model: normalize(data.get('model')),
     message: normalize(data.get('message')),
     pageTitle: currentTitle(),
     pageUrl: currentUrl(),
@@ -87,7 +87,7 @@ const bindInquiryCtas = () => {
         price: button.dataset.price || '',
         url: button.dataset.url || currentUrl()
       };
-      const modelField = form.elements.namedItem('interestedModel');
+      const modelField = form.elements.namedItem('model');
       const messageField = form.elements.namedItem('message');
       if (modelField) modelField.value = context.title;
       if (messageField) messageField.value = buildWhatsappMessage(context);
@@ -95,60 +95,6 @@ const bindInquiryCtas = () => {
       const firstField = form.querySelector('input, textarea, select');
       firstField?.focus({ preventScroll: true });
     });
-  });
-};
-
-const bindLeadForms = () => {
-  document.querySelectorAll('.lead-form').forEach((form) => {
-    if (form.dataset.leadBound === 'true') return;
-    form.dataset.leadBound = 'true';
-    const panel = form.closest('.inquiry-panel');
-    const successMessage = panel?.querySelector('.inquiry-success');
-    const submitButton = form.querySelector('.inquiry-submit');
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      if (!form.reportValidity()) return;
-
-      const lead = buildLead(form);
-      const whatsappLink = mailtoUrl(lead);
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Submitting...';
-      }
-
-      try {
-        const response = await fetch('/api/leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(lead)
-        });
-        if (!response.ok) throw new Error(`Lead save failed: ${response.status}`);
-        saveLeadFallback(lead);
-        if (successMessage) {
-          successMessage.hidden = false;
-          successMessage.classList.remove('is-error');
-          successMessage.textContent = 'Thank you. Your inquiry has been saved and an email draft has been prepared.';
-        }
-        window.open(whatsappLink, '_blank', 'noopener,noreferrer');
-        form.reset();
-      } catch (error) {
-        console.warn('Lead save fallback engaged.', error);
-        saveLeadFallback(lead);
-        if (successMessage) {
-          successMessage.hidden = false;
-          successMessage.classList.remove('is-error');
-          successMessage.textContent = 'Your inquiry has been saved locally. An email draft has been prepared.';
-        }
-        window.open(whatsappLink, '_blank', 'noopener,noreferrer');
-      } finally {
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Submit Inquiry';
-        }
-      }
-    }, true);
   });
 };
 
@@ -160,7 +106,7 @@ const bindDetailCtas = () => {
       const form = document.querySelector('.lead-form');
       if (!form) return;
       const title = button.dataset.title || currentTitle();
-      const modelField = form.elements.namedItem('interestedModel');
+      const modelField = form.elements.namedItem('model');
       const messageField = form.elements.namedItem('message');
       if (modelField) modelField.value = title;
       if (messageField) messageField.value = `I am interested in ${title}. Please send me the latest FOB price and stock list.`;
@@ -172,7 +118,6 @@ const bindDetailCtas = () => {
 const initLeadGen = () => {
   ensureWhatsappButton();
   bindInquiryCtas();
-  bindLeadForms();
   bindDetailCtas();
 };
 

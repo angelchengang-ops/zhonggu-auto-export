@@ -335,7 +335,7 @@ const applyLanguage = () => {
   document.querySelectorAll(".lead-form [name='name']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.name"); });
   document.querySelectorAll(".lead-form [name='country']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.country"); });
   document.querySelectorAll(".lead-form [name='whatsapp']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.whatsapp"); });
-  document.querySelectorAll(".lead-form [name='interestedModel']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.vehicle"); });
+  document.querySelectorAll(".lead-form [name='model']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.vehicle"); });
   document.querySelectorAll(".lead-form [name='message']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.message"); });
   document.querySelectorAll(".inquiry-success").forEach((node) => { node.textContent = t("form.success"); });
   document.querySelectorAll(".js-inquiry-cta, .inquiry-submit").forEach((node) => { node.textContent = node.classList.contains("inquiry-submit") ? t("form.submit") : t("hero.quote"); });
@@ -388,8 +388,9 @@ const makeVehicleCard = (car, type = "new") => {
   const price = localized(car.price || car.fobPriceDisplay || car.fobNanShaUsd || car.fobRange, "Contact for FOB price");
   const image = cleanPath(localized(car.mainImage || car.image, "images/hero/hero-car.jpg"));
   const href = type === "used" ? vehicleUrl(car.id) : "contact.html";
+  const video = type === "used" ? cleanPath(localized((car.videos || [])[0], "")) : "";
   const message = `I am interested in ${title}. Please send me the latest FOB price and stock list.\nModel: ${title}\nYear: ${year}\nPrice: ${price}\nPage: ${location.origin}/${href}`;
-  const meta = [year && `${t("car.year")}: ${year}`, transmission, mileage].filter(Boolean).join("  闂? ");
+  const meta = [year && `${t("car.year")}: ${year}`, transmission, mileage].filter(Boolean).join(" | ");
   const card = document.createElement("article");
   card.className = "vehicle-card";
   card.innerHTML = `
@@ -403,6 +404,7 @@ const makeVehicleCard = (car, type = "new") => {
       <p class="vehicle-subtitle">${escapeHtml([year, trim].filter(Boolean).join(" | "))}</p>
       <p class="vehicle-meta">${escapeHtml(meta)}</p>
       <p class="vehicle-description">${escapeHtml(getVehicleDescription(car))}</p>
+      ${type === "used" ? `<div class="vehicle-media-actions"><a class="media-action-btn" href="${href}">View Photos</a>${video ? `<a class="media-action-btn media-action-video" href="${video}" target="_blank" rel="noopener">Play Video</a>` : ""}</div>` : ""}
     </div>
     <div class="vehicle-footer"><div class="price"><small>${escapeHtml(t("car.fob_price"))}</small><strong>${escapeHtml(price)}</strong></div><button class="whatsapp-btn vehicle-fob-btn" type="button">${escapeHtml(t("car.ask_fob"))}</button></div>
   `;

@@ -133,14 +133,14 @@
         </div>
         <div class="inquiry-panel">
           <h3>Inquiry Form</h3>
-          <form class="lead-form" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <form class="lead-form" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html">
             <input type="hidden" name="form-name" value="inquiry">
-            <p class="bot-field" hidden><label>Do not fill this out if you are human: <input name="bot-field"></label></p>
+            <p style="display:none;"><label>Dont fill this out if youre human: <input name="bot-field"></label></p>
             <div class="inquiry-fields">
               <label><span>Name</span><input type="text" name="name" autocomplete="name" required></label>
               <label><span>Country</span><input type="text" name="country" autocomplete="country-name" required></label>
               <label><span>WhatsApp</span><input type="tel" name="whatsapp" autocomplete="tel" required></label>
-              <label class="field-wide"><span>Interested Model</span><input type="text" name="interestedModel" required></label>
+              <label class="field-wide"><span>Interested Model</span><input type="text" name="model" required></label>
               <label class="field-wide"><span>Message</span><textarea name="message" rows="4"></textarea></label>
             </div>
             <button class="btn inquiry-submit" type="submit">Submit Inquiry</button>
