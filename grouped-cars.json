@@ -1,0 +1,1224 @@
+[
+  {
+    "id": "geely-coolray",
+    "brand": "Geely",
+    "model": "Geely Coolray",
+    "chineseSeriesName": "缤越",
+    "modelYear": "2026",
+    "image": "images/new-cars/suv-04.png",
+    "priceRange": "RMB 66,800 - 97,800",
+    "fobRange": "USD 7,900 - 11,800",
+    "colors": [
+      "White",
+      "Grey"
+    ],
+    "trims": [
+      {
+        "trimName": "Super Power Edition Manual",
+        "trimNameZh": "手动超能版",
+        "guidePriceRmb": 66800,
+        "guidePriceDisplay": "66,800 RMB",
+        "fobPriceUsd": 7900,
+        "fobPriceDisplay": "7,900 USD",
+        "transmission": "Manual",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "Manual transmission",
+          "Super Power Edition"
+        ],
+        "options": [
+          {
+            "name": "Sunroof",
+            "nameZh": "天窗",
+            "extraPriceRmb": 1500,
+            "extraPriceDisplay": "+ RMB 1,500",
+            "note": "Optional sunroof price from current cars.json"
+          }
+        ],
+        "specialNote": "Optional Sunroof: +1,500 RMB"
+      },
+      {
+        "trimName": "Super Power Edition Automatic without Sunroof",
+        "trimNameZh": "自动超能版（不带天窗）",
+        "guidePriceRmb": 73800,
+        "guidePriceDisplay": "73,800 RMB",
+        "fobPriceUsd": 8700,
+        "fobPriceDisplay": "8,700 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "Automatic transmission",
+          "No sunroof"
+        ],
+        "options": [],
+        "specialNote": ""
+      },
+      {
+        "trimName": "Super Power Edition Automatic with Sunroof",
+        "trimNameZh": "自动超能版（带天窗）",
+        "guidePriceRmb": 75800,
+        "guidePriceDisplay": "75,800 RMB",
+        "fobPriceUsd": 9000,
+        "fobPriceDisplay": "9,000 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "Automatic transmission",
+          "Sunroof"
+        ],
+        "options": [],
+        "specialNote": ""
+      },
+      {
+        "trimName": "Super MAX",
+        "trimNameZh": "超能MAX版",
+        "guidePriceRmb": 78800,
+        "guidePriceDisplay": "78,800 RMB",
+        "fobPriceUsd": 9300,
+        "fobPriceDisplay": "9,300 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "Super MAX trim"
+        ],
+        "options": [],
+        "specialNote": ""
+      },
+      {
+        "trimName": "BATTLE Edition",
+        "trimNameZh": "BATTLE版",
+        "guidePriceRmb": 97800,
+        "guidePriceDisplay": "97,800 RMB",
+        "fobPriceUsd": 11400,
+        "fobPriceDisplay": "11,400 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "BATTLE Edition"
+        ],
+        "options": [
+          {
+            "name": "Electric tailgate version",
+            "nameZh": "电尾门版本",
+            "extraPriceRmb": null,
+            "extraPriceDisplay": "Please confirm",
+            "note": "Existing data only confirms FOB USD 11,600, not an RMB option price"
+          }
+        ],
+        "specialNote": "Electric tailgate version: FOB USD 11,600"
+      },
+      {
+        "trimName": "Full Option with Package and Panoramic Sunroof",
+        "trimNameZh": "缤越L星耀版顶配加包加全景天窗",
+        "guidePriceRmb": 96800,
+        "guidePriceDisplay": "96,800 RMB",
+        "fobPriceUsd": 11800,
+        "fobPriceDisplay": "11,800 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "Full option package",
+          "Panoramic sunroof"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Geely Geely Coolray 2026",
+      "fr": "Geely Geely Coolray 2026",
+      "ar": "Geely Geely Coolray 2026",
+      "ru": "Geely Geely Coolray 2026",
+      "es": "Geely Geely Coolray 2026"
+    },
+    "description": {
+      "en": "Geely Geely Coolray 2026 available for export from China with FOB inquiry support.",
+      "fr": "Geely Geely Coolray 2026 available for export from China with FOB inquiry support.",
+      "ar": "Geely Geely Coolray 2026 available for export from China with FOB inquiry support.",
+      "ru": "Geely Geely Coolray 2026 available for export from China with FOB inquiry support.",
+      "es": "Geely Geely Coolray 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "jetta-vs5",
+    "brand": "Jetta",
+    "model": "Jetta VS5",
+    "chineseSeriesName": "捷达VS5",
+    "modelYear": "2026",
+    "image": "images/new-cars/generic-new-car-bg-06.png",
+    "priceRange": "RMB 121,900",
+    "fobRange": "USD 13,100",
+    "colors": [
+      "Black",
+      "Grey"
+    ],
+    "trims": [
+      {
+        "trimName": "280TSI Automatic High-Gloss Flagship Edition",
+        "trimNameZh": "280TSI 自动旗舰高光版",
+        "guidePriceRmb": 121900,
+        "guidePriceDisplay": "121,900 RMB",
+        "fobPriceUsd": 13100,
+        "fobPriceDisplay": "13,100 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "Black",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "280TSI",
+          "Flagship High-Gloss Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Jetta Jetta VS5 2026",
+      "fr": "Jetta Jetta VS5 2026",
+      "ar": "Jetta Jetta VS5 2026",
+      "ru": "Jetta Jetta VS5 2026",
+      "es": "Jetta Jetta VS5 2026"
+    },
+    "description": {
+      "en": "Jetta Jetta VS5 2026 available for export from China with FOB inquiry support.",
+      "fr": "Jetta Jetta VS5 2026 available for export from China with FOB inquiry support.",
+      "ar": "Jetta Jetta VS5 2026 available for export from China with FOB inquiry support.",
+      "ru": "Jetta Jetta VS5 2026 available for export from China with FOB inquiry support.",
+      "es": "Jetta Jetta VS5 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "geely-boyue",
+    "brand": "Geely",
+    "model": "Geely Boyue",
+    "chineseSeriesName": "博越",
+    "modelYear": "2026",
+    "image": "images/new-cars/generic-new-car-bg-09.png",
+    "priceRange": "RMB 99,900",
+    "fobRange": "USD 12,900",
+    "colors": [
+      "Grey",
+      "Silver"
+    ],
+    "trims": [
+      {
+        "trimName": "Beautiful Edition",
+        "trimNameZh": "全新博越美好版",
+        "guidePriceRmb": 99900,
+        "guidePriceDisplay": "99,900 RMB",
+        "fobPriceUsd": 12900,
+        "fobPriceDisplay": "12,900 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "Grey",
+          "Silver"
+        ],
+        "keyFeatures": [
+          "Beautiful Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Geely Geely Boyue 2026",
+      "fr": "Geely Geely Boyue 2026",
+      "ar": "Geely Geely Boyue 2026",
+      "ru": "Geely Geely Boyue 2026",
+      "es": "Geely Geely Boyue 2026"
+    },
+    "description": {
+      "en": "Geely Geely Boyue 2026 available for export from China with FOB inquiry support.",
+      "fr": "Geely Geely Boyue 2026 available for export from China with FOB inquiry support.",
+      "ar": "Geely Geely Boyue 2026 available for export from China with FOB inquiry support.",
+      "ru": "Geely Geely Boyue 2026 available for export from China with FOB inquiry support.",
+      "es": "Geely Geely Boyue 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "livan-x3-pro",
+    "brand": "Livan",
+    "model": "Livan X3 Pro",
+    "chineseSeriesName": "睿蓝X3 Pro",
+    "modelYear": "2026",
+    "image": "images/new-cars/generic-new-car-bg-02.png",
+    "priceRange": "RMB 59,900 / Contact for details",
+    "fobRange": "USD 7,300 - 8,100",
+    "colors": [
+      "White",
+      "Grey"
+    ],
+    "trims": [
+      {
+        "trimName": "Automatic White",
+        "trimNameZh": "自动挡 白色",
+        "guidePriceRmb": 59900,
+        "guidePriceDisplay": "59,900 RMB",
+        "fobPriceUsd": 7800,
+        "fobPriceDisplay": "7,800 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White"
+        ],
+        "keyFeatures": [
+          "Automatic transmission"
+        ],
+        "options": [],
+        "specialNote": ""
+      },
+      {
+        "trimName": "International Manual with Sunroof",
+        "trimNameZh": "国际版手动天窗",
+        "guidePriceRmb": null,
+        "guidePriceDisplay": "Contact for details",
+        "fobPriceUsd": 7300,
+        "fobPriceDisplay": "7,300 USD",
+        "transmission": "Manual",
+        "fuel": "Petrol",
+        "availableColor": [
+          "Grey"
+        ],
+        "keyFeatures": [
+          "International version",
+          "Manual transmission",
+          "Sunroof"
+        ],
+        "options": [],
+        "specialNote": "Guide Price RMB needs confirmation."
+      },
+      {
+        "trimName": "International Automatic with Sunroof",
+        "trimNameZh": "国际版自动天窗",
+        "guidePriceRmb": null,
+        "guidePriceDisplay": "Contact for details",
+        "fobPriceUsd": 8100,
+        "fobPriceDisplay": "8,100 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "Grey"
+        ],
+        "keyFeatures": [
+          "International version",
+          "Automatic transmission",
+          "Sunroof"
+        ],
+        "options": [],
+        "specialNote": "Guide Price RMB needs confirmation."
+      }
+    ],
+    "title": {
+      "en": "Livan Livan X3 Pro 2026",
+      "fr": "Livan Livan X3 Pro 2026",
+      "ar": "Livan Livan X3 Pro 2026",
+      "ru": "Livan Livan X3 Pro 2026",
+      "es": "Livan Livan X3 Pro 2026"
+    },
+    "description": {
+      "en": "Livan Livan X3 Pro 2026 available for export from China with FOB inquiry support.",
+      "fr": "Livan Livan X3 Pro 2026 available for export from China with FOB inquiry support.",
+      "ar": "Livan Livan X3 Pro 2026 available for export from China with FOB inquiry support.",
+      "ru": "Livan Livan X3 Pro 2026 available for export from China with FOB inquiry support.",
+      "es": "Livan Livan X3 Pro 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "kia-kx1",
+    "brand": "Kia",
+    "model": "Kia KX1",
+    "chineseSeriesName": "奕跑",
+    "modelYear": "2021",
+    "image": "images/new-cars/kia-suv.png",
+    "priceRange": "RMB 83,800",
+    "fobRange": "USD 9,700",
+    "colors": [
+      "White"
+    ],
+    "trims": [
+      {
+        "trimName": "White Sunroof Edition",
+        "trimNameZh": "白色版（带天窗）",
+        "guidePriceRmb": 83800,
+        "guidePriceDisplay": "83,800 RMB",
+        "fobPriceUsd": 9700,
+        "fobPriceDisplay": "9,700 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White"
+        ],
+        "keyFeatures": [
+          "Sunroof"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Kia Kia KX1 2021",
+      "fr": "Kia Kia KX1 2021",
+      "ar": "Kia Kia KX1 2021",
+      "ru": "Kia Kia KX1 2021",
+      "es": "Kia Kia KX1 2021"
+    },
+    "description": {
+      "en": "Kia Kia KX1 2021 available for export from China with FOB inquiry support.",
+      "fr": "Kia Kia KX1 2021 available for export from China with FOB inquiry support.",
+      "ar": "Kia Kia KX1 2021 available for export from China with FOB inquiry support.",
+      "ru": "Kia Kia KX1 2021 available for export from China with FOB inquiry support.",
+      "es": "Kia Kia KX1 2021 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "toyota-corolla-cross",
+    "brand": "Toyota",
+    "model": "Toyota Corolla Cross",
+    "chineseSeriesName": "卡罗拉锐放",
+    "modelYear": "2026",
+    "image": "images/new-cars/toyota-corolla-cross-01.png",
+    "priceRange": "RMB 136,800",
+    "fobRange": "USD 14,400",
+    "colors": [
+      "White",
+      "Black",
+      "Silver"
+    ],
+    "trims": [
+      {
+        "trimName": "2.0L Elite",
+        "trimNameZh": "2.0L 精英版",
+        "guidePriceRmb": 136800,
+        "guidePriceDisplay": "136,800 RMB",
+        "fobPriceUsd": 14400,
+        "fobPriceDisplay": "14,400 USD",
+        "transmission": "CVT",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Black",
+          "Silver"
+        ],
+        "keyFeatures": [
+          "2.0L engine",
+          "Elite trim"
+        ],
+        "options": [
+          {
+            "name": "White exterior color",
+            "nameZh": "白色车漆",
+            "extraPriceRmb": null,
+            "extraPriceDisplay": "Please confirm",
+            "note": "Existing data confirms FOB +300 USD, not RMB option price"
+          }
+        ],
+        "specialNote": "White color: FOB +300 USD"
+      }
+    ],
+    "title": {
+      "en": "Toyota Toyota Corolla Cross 2026",
+      "fr": "Toyota Toyota Corolla Cross 2026",
+      "ar": "Toyota Toyota Corolla Cross 2026",
+      "ru": "Toyota Toyota Corolla Cross 2026",
+      "es": "Toyota Toyota Corolla Cross 2026"
+    },
+    "description": {
+      "en": "Toyota Toyota Corolla Cross 2026 available for export from China with FOB inquiry support.",
+      "fr": "Toyota Toyota Corolla Cross 2026 available for export from China with FOB inquiry support.",
+      "ar": "Toyota Toyota Corolla Cross 2026 available for export from China with FOB inquiry support.",
+      "ru": "Toyota Toyota Corolla Cross 2026 available for export from China with FOB inquiry support.",
+      "es": "Toyota Toyota Corolla Cross 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "jetour-x70l",
+    "brand": "Jetour",
+    "model": "Jetour X70L",
+    "chineseSeriesName": "捷途X70L",
+    "modelYear": "2026",
+    "image": "images/new-cars/generic-new-car-bg-01.png",
+    "priceRange": "RMB 139,900",
+    "fobRange": "USD 18,200",
+    "colors": [
+      "Black"
+    ],
+    "trims": [
+      {
+        "trimName": "1.5TD DCT Luxury Edition 7-Seater",
+        "trimNameZh": "1.5TD 双离合豪华版 7座",
+        "guidePriceRmb": 139900,
+        "guidePriceDisplay": "139,900 RMB",
+        "fobPriceUsd": 18200,
+        "fobPriceDisplay": "18,200 USD",
+        "transmission": "DCT",
+        "fuel": "Petrol",
+        "availableColor": [
+          "Black"
+        ],
+        "keyFeatures": [
+          "1.5TD",
+          "7 seats",
+          "Luxury Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Jetour Jetour X70L 2026",
+      "fr": "Jetour Jetour X70L 2026",
+      "ar": "Jetour Jetour X70L 2026",
+      "ru": "Jetour Jetour X70L 2026",
+      "es": "Jetour Jetour X70L 2026"
+    },
+    "description": {
+      "en": "Jetour Jetour X70L 2026 available for export from China with FOB inquiry support.",
+      "fr": "Jetour Jetour X70L 2026 available for export from China with FOB inquiry support.",
+      "ar": "Jetour Jetour X70L 2026 available for export from China with FOB inquiry support.",
+      "ru": "Jetour Jetour X70L 2026 available for export from China with FOB inquiry support.",
+      "es": "Jetour Jetour X70L 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "gac-trumpchi-gs3",
+    "brand": "GAC Trumpchi",
+    "model": "GAC Trumpchi GS3",
+    "chineseSeriesName": "影速",
+    "modelYear": "2026",
+    "image": "images/new-cars/gac-gs3-01.png",
+    "priceRange": "RMB 89,800 - 99,800",
+    "fobRange": "USD 9,700 - 11,100",
+    "colors": [
+      "White",
+      "Grey"
+    ],
+    "trims": [
+      {
+        "trimName": "270T Jinxiang Edition",
+        "trimNameZh": "270T 劲享版",
+        "guidePriceRmb": 89800,
+        "guidePriceDisplay": "89,800 RMB",
+        "fobPriceUsd": 9700,
+        "fobPriceDisplay": "9,700 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "270T",
+          "Jinxiang Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      },
+      {
+        "trimName": "270T Jinzhi Edition",
+        "trimNameZh": "270T 劲智版",
+        "guidePriceRmb": 99800,
+        "guidePriceDisplay": "99,800 RMB",
+        "fobPriceUsd": 11100,
+        "fobPriceDisplay": "11,100 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "270T",
+          "Jinzhi Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "GAC Trumpchi GAC Trumpchi GS3 2026",
+      "fr": "GAC Trumpchi GAC Trumpchi GS3 2026",
+      "ar": "GAC Trumpchi GAC Trumpchi GS3 2026",
+      "ru": "GAC Trumpchi GAC Trumpchi GS3 2026",
+      "es": "GAC Trumpchi GAC Trumpchi GS3 2026"
+    },
+    "description": {
+      "en": "GAC Trumpchi GAC Trumpchi GS3 2026 available for export from China with FOB inquiry support.",
+      "fr": "GAC Trumpchi GAC Trumpchi GS3 2026 available for export from China with FOB inquiry support.",
+      "ar": "GAC Trumpchi GAC Trumpchi GS3 2026 available for export from China with FOB inquiry support.",
+      "ru": "GAC Trumpchi GAC Trumpchi GS3 2026 available for export from China with FOB inquiry support.",
+      "es": "GAC Trumpchi GAC Trumpchi GS3 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "gac-trumpchi-gs4-max",
+    "brand": "GAC Trumpchi",
+    "model": "GAC Trumpchi GS4 Max",
+    "chineseSeriesName": "传祺GS4 Max",
+    "modelYear": "2024",
+    "image": "images/new-cars/gac-gs4-max-01.png",
+    "priceRange": "RMB 125,800",
+    "fobRange": "USD 13,000",
+    "colors": [
+      "White"
+    ],
+    "trims": [
+      {
+        "trimName": "1.5TGDI Flagship Edition",
+        "trimNameZh": "1.5TGDI 旗舰版",
+        "guidePriceRmb": 125800,
+        "guidePriceDisplay": "125,800 RMB",
+        "fobPriceUsd": 13000,
+        "fobPriceDisplay": "13,000 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White"
+        ],
+        "keyFeatures": [
+          "1.5TGDI",
+          "Flagship Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "GAC Trumpchi GAC Trumpchi GS4 Max 2024",
+      "fr": "GAC Trumpchi GAC Trumpchi GS4 Max 2024",
+      "ar": "GAC Trumpchi GAC Trumpchi GS4 Max 2024",
+      "ru": "GAC Trumpchi GAC Trumpchi GS4 Max 2024",
+      "es": "GAC Trumpchi GAC Trumpchi GS4 Max 2024"
+    },
+    "description": {
+      "en": "GAC Trumpchi GAC Trumpchi GS4 Max 2024 available for export from China with FOB inquiry support.",
+      "fr": "GAC Trumpchi GAC Trumpchi GS4 Max 2024 available for export from China with FOB inquiry support.",
+      "ar": "GAC Trumpchi GAC Trumpchi GS4 Max 2024 available for export from China with FOB inquiry support.",
+      "ru": "GAC Trumpchi GAC Trumpchi GS4 Max 2024 available for export from China with FOB inquiry support.",
+      "es": "GAC Trumpchi GAC Trumpchi GS4 Max 2024 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "gac-trumpchi-tw8-06",
+    "brand": "GAC Trumpchi",
+    "model": "GAC Trumpchi TW8-06",
+    "chineseSeriesName": "国际版TW8-06",
+    "modelYear": "2026",
+    "image": "images/new-cars/gac-gs4-max-01.png",
+    "priceRange": "Contact for details",
+    "fobRange": "USD 11,600",
+    "colors": [
+      "Grey",
+      "Blue",
+      "Silver"
+    ],
+    "trims": [
+      {
+        "trimName": "International Version TW8-06",
+        "trimNameZh": "国际版TW8-06",
+        "guidePriceRmb": null,
+        "guidePriceDisplay": "Contact for details",
+        "fobPriceUsd": 11600,
+        "fobPriceDisplay": "11,600 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "Grey",
+          "Blue",
+          "Silver"
+        ],
+        "keyFeatures": [
+          "International version"
+        ],
+        "options": [],
+        "specialNote": "Guide Price RMB needs confirmation."
+      }
+    ],
+    "title": {
+      "en": "GAC Trumpchi GAC Trumpchi TW8-06 2026",
+      "fr": "GAC Trumpchi GAC Trumpchi TW8-06 2026",
+      "ar": "GAC Trumpchi GAC Trumpchi TW8-06 2026",
+      "ru": "GAC Trumpchi GAC Trumpchi TW8-06 2026",
+      "es": "GAC Trumpchi GAC Trumpchi TW8-06 2026"
+    },
+    "description": {
+      "en": "GAC Trumpchi GAC Trumpchi TW8-06 2026 available for export from China with FOB inquiry support.",
+      "fr": "GAC Trumpchi GAC Trumpchi TW8-06 2026 available for export from China with FOB inquiry support.",
+      "ar": "GAC Trumpchi GAC Trumpchi TW8-06 2026 available for export from China with FOB inquiry support.",
+      "ru": "GAC Trumpchi GAC Trumpchi TW8-06 2026 available for export from China with FOB inquiry support.",
+      "es": "GAC Trumpchi GAC Trumpchi TW8-06 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "mg5",
+    "brand": "MG",
+    "model": "MG5",
+    "chineseSeriesName": "名爵MG5",
+    "modelYear": "2026",
+    "image": "images/new-cars/mg5-01.png",
+    "priceRange": "RMB 67,900 - 85,900",
+    "fobRange": "USD 7,500 - 9,000",
+    "colors": [
+      "White",
+      "Grey"
+    ],
+    "trims": [
+      {
+        "trimName": "67,900 RMB Configuration",
+        "trimNameZh": "67,900元配置",
+        "guidePriceRmb": 67900,
+        "guidePriceDisplay": "67,900 RMB",
+        "fobPriceUsd": 7500,
+        "fobPriceDisplay": "7,500 USD",
+        "transmission": "Contact for details",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "Configuration needs confirmation"
+        ],
+        "options": [],
+        "specialNote": "Configuration needs confirmation."
+      },
+      {
+        "trimName": "85,900 RMB Configuration",
+        "trimNameZh": "85,900元配置",
+        "guidePriceRmb": 85900,
+        "guidePriceDisplay": "85,900 RMB",
+        "fobPriceUsd": 9000,
+        "fobPriceDisplay": "9,000 USD",
+        "transmission": "Contact for details",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Grey"
+        ],
+        "keyFeatures": [
+          "Configuration needs confirmation"
+        ],
+        "options": [],
+        "specialNote": "Configuration needs confirmation."
+      }
+    ],
+    "title": {
+      "en": "MG MG5 2026",
+      "fr": "MG MG5 2026",
+      "ar": "MG MG5 2026",
+      "ru": "MG MG5 2026",
+      "es": "MG MG5 2026"
+    },
+    "description": {
+      "en": "MG MG5 2026 available for export from China with FOB inquiry support.",
+      "fr": "MG MG5 2026 available for export from China with FOB inquiry support.",
+      "ar": "MG MG5 2026 available for export from China with FOB inquiry support.",
+      "ru": "MG MG5 2026 available for export from China with FOB inquiry support.",
+      "es": "MG MG5 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "toyota-corolla-hybrid",
+    "brand": "Toyota",
+    "model": "Toyota Corolla Hybrid",
+    "chineseSeriesName": "卡罗拉双擎",
+    "modelYear": "2026",
+    "image": "images/new-cars/toyota-corolla-hybrid-01.png",
+    "priceRange": "RMB 136,800",
+    "fobRange": "USD 14,800",
+    "colors": [
+      "White"
+    ],
+    "trims": [
+      {
+        "trimName": "1.8L Dual Hybrid Elite Edition",
+        "trimNameZh": "1.8L 双擎精英版",
+        "guidePriceRmb": 136800,
+        "guidePriceDisplay": "136,800 RMB",
+        "fobPriceUsd": 14800,
+        "fobPriceDisplay": "14,800 USD",
+        "transmission": "E-CVT",
+        "fuel": "Hybrid",
+        "availableColor": [
+          "White"
+        ],
+        "keyFeatures": [
+          "1.8L hybrid",
+          "Elite Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Toyota Toyota Corolla Hybrid 2026",
+      "fr": "Toyota Toyota Corolla Hybrid 2026",
+      "ar": "Toyota Toyota Corolla Hybrid 2026",
+      "ru": "Toyota Toyota Corolla Hybrid 2026",
+      "es": "Toyota Toyota Corolla Hybrid 2026"
+    },
+    "description": {
+      "en": "Toyota Toyota Corolla Hybrid 2026 available for export from China with FOB inquiry support.",
+      "fr": "Toyota Toyota Corolla Hybrid 2026 available for export from China with FOB inquiry support.",
+      "ar": "Toyota Toyota Corolla Hybrid 2026 available for export from China with FOB inquiry support.",
+      "ru": "Toyota Toyota Corolla Hybrid 2026 available for export from China with FOB inquiry support.",
+      "es": "Toyota Toyota Corolla Hybrid 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "geely-xingyue-l",
+    "brand": "Geely",
+    "model": "Geely Xingyue L",
+    "chineseSeriesName": "星越L",
+    "modelYear": "2026",
+    "image": "images/new-cars/generic-new-car-bg-05.png",
+    "priceRange": "RMB 179,700",
+    "fobRange": "USD 22,700",
+    "colors": [
+      "White",
+      "Black"
+    ],
+    "trims": [
+      {
+        "trimName": "Dongfang Yao 2.0TD Automatic Wangyue Edition",
+        "trimNameZh": "东方曜 2.0TD 自动望月版",
+        "guidePriceRmb": 179700,
+        "guidePriceDisplay": "179,700 RMB",
+        "fobPriceUsd": 22700,
+        "fobPriceDisplay": "22,700 USD",
+        "transmission": "Automatic",
+        "fuel": "Petrol",
+        "availableColor": [
+          "White",
+          "Black"
+        ],
+        "keyFeatures": [
+          "2.0TD",
+          "Dongfang Yao",
+          "Wangyue Edition"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Geely Geely Xingyue L 2026",
+      "fr": "Geely Geely Xingyue L 2026",
+      "ar": "Geely Geely Xingyue L 2026",
+      "ru": "Geely Geely Xingyue L 2026",
+      "es": "Geely Geely Xingyue L 2026"
+    },
+    "description": {
+      "en": "Geely Geely Xingyue L 2026 available for export from China with FOB inquiry support.",
+      "fr": "Geely Geely Xingyue L 2026 available for export from China with FOB inquiry support.",
+      "ar": "Geely Geely Xingyue L 2026 available for export from China with FOB inquiry support.",
+      "ru": "Geely Geely Xingyue L 2026 available for export from China with FOB inquiry support.",
+      "es": "Geely Geely Xingyue L 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "geely-galaxy-starship-7",
+    "brand": "Geely",
+    "model": "Geely Galaxy Starship 7",
+    "chineseSeriesName": "星舰7",
+    "modelYear": "2026",
+    "image": "images/new-cars/generic-new-car-bg-07.png",
+    "priceRange": "RMB 121,800",
+    "fobRange": "USD 16,400",
+    "colors": [
+      "White"
+    ],
+    "trims": [
+      {
+        "trimName": "135KM Leading Edition + Qianli Haohan H3",
+        "trimNameZh": "领航版 135KM + 千里浩瀚 H3",
+        "guidePriceRmb": 121800,
+        "guidePriceDisplay": "121,800 RMB",
+        "fobPriceUsd": 16400,
+        "fobPriceDisplay": "16,400 USD",
+        "transmission": "Dedicated hybrid transmission",
+        "fuel": "Plug-in hybrid",
+        "availableColor": [
+          "White"
+        ],
+        "keyFeatures": [
+          "135KM range version",
+          "Qianli Haohan H3"
+        ],
+        "options": [],
+        "specialNote": ""
+      }
+    ],
+    "title": {
+      "en": "Geely Geely Galaxy Starship 7 2026",
+      "fr": "Geely Geely Galaxy Starship 7 2026",
+      "ar": "Geely Geely Galaxy Starship 7 2026",
+      "ru": "Geely Geely Galaxy Starship 7 2026",
+      "es": "Geely Geely Galaxy Starship 7 2026"
+    },
+    "description": {
+      "en": "Geely Geely Galaxy Starship 7 2026 available for export from China with FOB inquiry support.",
+      "fr": "Geely Geely Galaxy Starship 7 2026 available for export from China with FOB inquiry support.",
+      "ar": "Geely Geely Galaxy Starship 7 2026 available for export from China with FOB inquiry support.",
+      "ru": "Geely Geely Galaxy Starship 7 2026 available for export from China with FOB inquiry support.",
+      "es": "Geely Geely Galaxy Starship 7 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  },
+  {
+    "id": "bestune-yueyi-08",
+    "brand": "Bestune",
+    "model": "Yueyi 08",
+    "chineseBrand": "一汽奔腾",
+    "chineseSeriesName": "悦意08",
+    "modelYear": "2026",
+    "image": "images/new-cars/bestune-yueyi-08-01.png",
+    "priceRange": "RMB 104,900 - 144,900",
+    "priceRangeZh": "人民币 104,900 - 144,900",
+    "fobRange": "USD 15,837 - 21,763",
+    "fobRangeZh": "USD 15,837 - 21,763",
+    "colors": [
+      "Star Purple",
+      "Forest Green",
+      "Electric White",
+      "Midnight Black",
+      "Titanium Gray",
+      "Sky Blue"
+    ],
+    "trims": [
+      {
+        "trimName": "Yueyi 08 2026 Pure Electric 565 Air",
+        "trimNameZh": "悦意08 2026款 纯电565 Air",
+        "guidePriceRmb": 104900,
+        "guidePriceDisplay": "RMB 104,900",
+        "guidePriceDisplayZh": "人民币 104,900",
+        "fobPriceUsd": 15837,
+        "fobPriceDisplay": "USD 15,837",
+        "fobPriceDisplayZh": "USD 15,837",
+        "fuel": "Electric",
+        "chineseFuel": "纯电",
+        "transmission": "Single-speed",
+        "chineseTransmission": "单速变速箱",
+        "availableColor": "Star Purple / Forest Green / Electric White / Midnight Black / Titanium Gray / Sky Blue",
+        "chineseAvailableColor": "星辰紫 / 森野绿 / 电光白 / 极夜黑 / 钛空灰 / 晴空蓝",
+        "keyFeatures": [
+          "Electric",
+          "Pure Electric 565 Air"
+        ],
+        "keyFeaturesZh": [
+          "纯电",
+          "纯电565 Air"
+        ],
+        "options": [],
+        "specialNote": "Please contact us for the latest stock, configuration, FOB price and delivery schedule.",
+        "specialNoteZh": "请联系我们确认最新库存、配置、FOB价格和交付周期。"
+      },
+      {
+        "trimName": "Yueyi 08 2026 Pure Electric 565 Plus",
+        "trimNameZh": "悦意08 2026款 纯电565 Plus",
+        "guidePriceRmb": 114900,
+        "guidePriceDisplay": "RMB 114,900",
+        "guidePriceDisplayZh": "人民币 114,900",
+        "fobPriceUsd": 17319,
+        "fobPriceDisplay": "USD 17,319",
+        "fobPriceDisplayZh": "USD 17,319",
+        "fuel": "Electric",
+        "chineseFuel": "纯电",
+        "transmission": "Single-speed",
+        "chineseTransmission": "单速变速箱",
+        "availableColor": "Star Purple / Forest Green / Electric White / Midnight Black / Titanium Gray / Sky Blue",
+        "chineseAvailableColor": "星辰紫 / 森野绿 / 电光白 / 极夜黑 / 钛空灰 / 晴空蓝",
+        "keyFeatures": [
+          "Electric",
+          "Pure Electric 565 Plus"
+        ],
+        "keyFeaturesZh": [
+          "纯电",
+          "纯电565 Plus"
+        ],
+        "options": [],
+        "specialNote": "Please contact us for the latest stock, configuration, FOB price and delivery schedule.",
+        "specialNoteZh": "请联系我们确认最新库存、配置、FOB价格和交付周期。"
+      },
+      {
+        "trimName": "Yueyi 08 2026 Pure Electric 565 Pro",
+        "trimNameZh": "悦意08 2026款 纯电565 Pro",
+        "guidePriceRmb": 124900,
+        "guidePriceDisplay": "RMB 124,900",
+        "guidePriceDisplayZh": "人民币 124,900",
+        "fobPriceUsd": 18800,
+        "fobPriceDisplay": "USD 18,800",
+        "fobPriceDisplayZh": "USD 18,800",
+        "fuel": "Electric",
+        "chineseFuel": "纯电",
+        "transmission": "Single-speed",
+        "chineseTransmission": "单速变速箱",
+        "availableColor": "Star Purple / Forest Green / Electric White / Midnight Black / Titanium Gray / Sky Blue",
+        "chineseAvailableColor": "星辰紫 / 森野绿 / 电光白 / 极夜黑 / 钛空灰 / 晴空蓝",
+        "keyFeatures": [
+          "Electric",
+          "Pure Electric 565 Pro"
+        ],
+        "keyFeaturesZh": [
+          "纯电",
+          "纯电565 Pro"
+        ],
+        "options": [],
+        "specialNote": "Please contact us for the latest stock, configuration, FOB price and delivery schedule.",
+        "specialNoteZh": "请联系我们确认最新库存、配置、FOB价格和交付周期。"
+      },
+      {
+        "trimName": "Yueyi 08 2026 Pure Electric 650 Pro",
+        "trimNameZh": "悦意08 2026款 纯电650 Pro",
+        "guidePriceRmb": 134900,
+        "guidePriceDisplay": "RMB 134,900",
+        "guidePriceDisplayZh": "人民币 134,900",
+        "fobPriceUsd": 20281,
+        "fobPriceDisplay": "USD 20,281",
+        "fobPriceDisplayZh": "USD 20,281",
+        "fuel": "Electric",
+        "chineseFuel": "纯电",
+        "transmission": "Single-speed",
+        "chineseTransmission": "单速变速箱",
+        "availableColor": "Star Purple / Forest Green / Electric White / Midnight Black / Titanium Gray / Sky Blue",
+        "chineseAvailableColor": "星辰紫 / 森野绿 / 电光白 / 极夜黑 / 钛空灰 / 晴空蓝",
+        "keyFeatures": [
+          "Electric",
+          "Pure Electric 650 Pro"
+        ],
+        "keyFeaturesZh": [
+          "纯电",
+          "纯电650 Pro"
+        ],
+        "options": [],
+        "specialNote": "Please contact us for the latest stock, configuration, FOB price and delivery schedule.",
+        "specialNoteZh": "请联系我们确认最新库存、配置、FOB价格和交付周期。"
+      },
+      {
+        "trimName": "Yueyi 08 2026 Pure Electric 650 Pro Pilot Edition",
+        "trimNameZh": "悦意08 2026款 纯电650 Pro领航版",
+        "guidePriceRmb": 144900,
+        "guidePriceDisplay": "RMB 144,900",
+        "guidePriceDisplayZh": "人民币 144,900",
+        "fobPriceUsd": 21763,
+        "fobPriceDisplay": "USD 21,763",
+        "fobPriceDisplayZh": "USD 21,763",
+        "fuel": "Electric",
+        "chineseFuel": "纯电",
+        "transmission": "Single-speed",
+        "chineseTransmission": "单速变速箱",
+        "availableColor": "Star Purple / Forest Green / Electric White / Midnight Black / Titanium Gray / Sky Blue",
+        "chineseAvailableColor": "星辰紫 / 森野绿 / 电光白 / 极夜黑 / 钛空灰 / 晴空蓝",
+        "keyFeatures": [
+          "Electric",
+          "Pure Electric 650 Pro Pilot Edition"
+        ],
+        "keyFeaturesZh": [
+          "纯电",
+          "纯电650 Pro领航版"
+        ],
+        "options": [],
+        "specialNote": "Please contact us for the latest stock, configuration, FOB price and delivery schedule.",
+        "specialNoteZh": "请联系我们确认最新库存、配置、FOB价格和交付周期。"
+      },
+      {
+        "trimName": "Yueyi 08 2026 EREV 240 Plus",
+        "trimNameZh": "悦意08 2026款 增程240 Plus",
+        "guidePriceRmb": 114900,
+        "guidePriceDisplay": "RMB 114,900",
+        "guidePriceDisplayZh": "人民币 114,900",
+        "fobPriceUsd": 17319,
+        "fobPriceDisplay": "USD 17,319",
+        "fobPriceDisplayZh": "USD 17,319",
+        "fuel": "Range Extender",
+        "chineseFuel": "增程",
+        "transmission": "Single-speed",
+        "chineseTransmission": "单速变速箱",
+        "availableColor": "Star Purple / Forest Green / Electric White / Midnight Black / Titanium Gray / Sky Blue",
+        "chineseAvailableColor": "星辰紫 / 森野绿 / 电光白 / 极夜黑 / 钛空灰 / 晴空蓝",
+        "keyFeatures": [
+          "Range Extender",
+          "EREV 240 Plus"
+        ],
+        "keyFeaturesZh": [
+          "增程",
+          "增程240 Plus"
+        ],
+        "options": [],
+        "specialNote": "Please contact us for the latest stock, configuration, FOB price and delivery schedule.",
+        "specialNoteZh": "请联系我们确认最新库存、配置、FOB价格和交付周期。"
+      }
+    ],
+    "fuelRange": "Electric / Range Extender",
+    "fuelRangeZh": "纯电 / 增程",
+    "colorsZh": [
+      "星辰紫",
+      "森野绿",
+      "电光白",
+      "极夜黑",
+      "钛空灰",
+      "晴空蓝"
+    ],
+    "colorDisplay": "Star Purple / Forest Green / Electric White / Midnight Black / Titanium Gray / Sky Blue",
+    "colorDisplayZh": "星辰紫 / 森野绿 / 电光白 / 极夜黑 / 钛空灰 / 晴空蓝",
+    "title": {
+      "en": "Bestune Yueyi 08 2026",
+      "fr": "Bestune Yueyi 08 2026",
+      "ar": "Bestune Yueyi 08 2026",
+      "ru": "Bestune Yueyi 08 2026",
+      "es": "Bestune Yueyi 08 2026"
+    },
+    "description": {
+      "en": "Bestune Yueyi 08 2026 available for export from China with FOB inquiry support.",
+      "fr": "Bestune Yueyi 08 2026 available for export from China with FOB inquiry support.",
+      "ar": "Bestune Yueyi 08 2026 available for export from China with FOB inquiry support.",
+      "ru": "Bestune Yueyi 08 2026 available for export from China with FOB inquiry support.",
+      "es": "Bestune Yueyi 08 2026 available for export from China with FOB inquiry support."
+    },
+    "shortDescription": {
+      "en": "Available for export from China with FOB support",
+      "fr": "Disponible a l'export depuis la Chine avec support FOB",
+      "ar": "Available for export from China with FOB support",
+      "ru": "Available for export from China with FOB support",
+      "es": "Available for export from China with FOB support"
+    },
+    "category": "new"
+  }
+]

@@ -1,0 +1,21 @@
+《车型》：丰田卡罗拉 2023款1.2T 精英版
+《指导价》：12.28万
+《上牌时间》: 2024-2
+《出厂时间》：2023-11~2023-12
+《表显里程》 :26400~53700km
+《排量or续航》: 1.2T
+《变速箱》:CVT无级变速
+《车身尺寸》：4635×1780×1455mm，轴距2700mm
+《发动机》：1.2T涡轮增压发动机，最大马力116Ps，最大功率85kW，最大扭矩185N·m
+《颜色》：白色
+
+《Model》: Toyota Corolla 2023 1.2T Elite Edition
+《Guide Price》: 122,800 RMB
+《Registration Date》: 2024-02
+《Production Date》: 2023-11 ~ 2023-12
+《Odometer Reading》: 26,400 ~ 53,700 km
+《Displacement/Range》: 1.2T
+《Transmission》: CVT (Continuously Variable Transmission)
+《Dimensions》: 4635 × 1780 × 1455 mm, Wheelbase 2700 mm
+《Engine》: 1.2L Turbocharged Engine, Max Horsepower 116 Ps, Max Power 85 kW, Max Torque 185 N·m
+《Color》: White

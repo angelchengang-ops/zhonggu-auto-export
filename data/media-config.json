@@ -1,0 +1,73 @@
+{
+  "strengthImages": {
+    "vehiclePreparation": {
+      "title": "Vehicle Preparation",
+      "active": "/images/company/vehicle-preparation.jpg",
+      "items": [
+        "/images/company/vehicle-preparation.jpg",
+        "/images/company/warehouse-overview.jpg",
+        "/images/company/office1.jpg"
+      ]
+    },
+    "preShipmentInspection": {
+      "title": "Pre-shipment Inspection",
+      "active": "/images/company/pre-shipment-inspection.jpg",
+      "items": [
+        "/images/company/pre-shipment-inspection.jpg",
+        "/images/company/delivery1.jpg"
+      ]
+    },
+    "customerDelivery": {
+      "title": "Customer Delivery",
+      "active": "/images/company/customer-delivery-real.jpg",
+      "items": [
+        "/images/company/customer-delivery-real.jpg",
+        "/images/company/customer-delivery.jpg",
+        "/images/company/delivery2.jpg"
+      ]
+    },
+    "exportLoading": {
+      "title": "Export Loading",
+      "active": "/images/company/export-loading-real.jpg",
+      "items": [
+        "/images/company/export-loading-real.jpg",
+        "/images/company/export-loading.jpg",
+        "/images/company/loading1.jpg"
+      ]
+    }
+  },
+  "companyVideos": {
+    "preShipmentVehicleInspection": {
+      "title": "Pre-shipment Vehicle Inspection",
+      "subtitle": "Inspection and preparation footage from the export yard.",
+      "active": "/videos/company/pre-shipment-inspection-video.mp4",
+      "poster": "/images/company/pre-shipment-inspection.jpg",
+      "items": [
+        {
+          "url": "/videos/company/pre-shipment-inspection-video.mp4",
+          "poster": "/images/company/pre-shipment-inspection.jpg"
+        },
+        {
+          "url": "/videos/company/pre-shipment-inspection-video-original.mp4",
+          "poster": "/images/company/pre-shipment-inspection.jpg"
+        }
+      ]
+    },
+    "internationalExportLoading": {
+      "title": "International Export Loading Process",
+      "subtitle": "Loading and delivery footage from the export dock.",
+      "active": "/videos/company/export-loading-video.mp4",
+      "poster": "/images/company/export-loading-poster.jpg",
+      "items": [
+        {
+          "url": "/videos/company/export-loading-video.mp4",
+          "poster": "/images/company/export-loading-poster.jpg"
+        },
+        {
+          "url": "/videos/company/export-loading-video-original.mp4",
+          "poster": "/images/company/export-loading-poster.jpg"
+        }
+      ]
+    }
+  }
+}

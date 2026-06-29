@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Zhonggu Media Manager</title>
+  <style>
+    :root {
+      --blue: #2563eb;
+      --blue-dark: #1d4ed8;
+      --ink: #0f2742;
+      --muted: #64748b;
+      --line: rgba(37, 99, 235, .14);
+      --surface: rgba(255, 255, 255, .88);
+      --shadow: 0 18px 45px rgba(15, 39, 66, .1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: Inter, Manrope, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, .14), transparent 32rem),
+        linear-gradient(180deg, #eff6ff 0%, #ffffff 52%, #f8fbff 100%);
+    }
+    .admin-shell { width: min(1180px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 44px; }
+    .admin-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+    .admin-header h1 { margin: 0 0 8px; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.05; letter-spacing: 0; }
+    .admin-header p { margin: 0; max-width: 620px; color: var(--muted); line-height: 1.6; }
+    .status-pill { display: inline-flex; align-items: center; min-height: 38px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--blue-dark); font-size: .86rem; font-weight: 800; white-space: nowrap; }
+    .login-card, .media-card { border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); backdrop-filter: blur(14px); }
+    .login-card { max-width: 520px; padding: 26px; }
+    .login-card h2 { margin: 0 0 10px; font-size: 1.25rem; }
+    .login-card p { margin: 0 0 18px; color: var(--muted); line-height: 1.55; }
+    .login-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    input, button { font: inherit; }
+    input[type="password"], input[type="file"] { width: 100%; min-height: 48px; border: 1px solid rgba(15, 39, 66, .12); border-radius: 14px; background: #fff; color: var(--ink); }
+    input[type="password"] { padding: 0 14px; }
+    input[type="file"] { padding: 10px; }
+    button { min-height: 46px; border: 0; border-radius: 14px; padding: 0 16px; cursor: pointer; font-weight: 800; }
+    button:disabled { cursor: wait; opacity: .62; }
+    .primary-btn { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: #fff; box-shadow: 0 12px 24px rgba(37, 99, 235, .2); }
+    .ghost-btn { border: 1px solid var(--line); background: #fff; color: var(--blue-dark); }
+    .danger-btn { border: 1px solid rgba(239, 68, 68, .18); background: #fff5f5; color: #b91c1c; }
+    .manager-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .media-card { overflow: hidden; }
+    .media-preview { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: linear-gradient(145deg, #dbeafe, #f8fbff); }
+    .media-preview img, .media-preview video { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .media-preview::after { position: absolute; inset: auto 0 0; height: 42%; background: linear-gradient(transparent, rgba(5, 20, 37, .72)); content: ""; pointer-events: none; }
+    .slot-label { position: absolute; left: 16px; bottom: 14px; z-index: 1; color: #fff; font-size: .92rem; font-weight: 900; }
+    .media-body { padding: 18px; }
+    .media-body h2 { margin: 0 0 14px; font-size: 1.12rem; line-height: 1.25; }
+    .upload-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+    .message { min-height: 22px; margin: 10px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+    .message.is-error { color: #b91c1c; }
+    .message.is-success { color: #166534; }
+    .history { margin-top: 16px; border-top: 1px solid rgba(37, 99, 235, .1); padding-top: 14px; }
+    .history-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; color: var(--muted); font-size: .82rem; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+    .history-list { display: grid; gap: 10px; max-height: 320px; overflow: auto; padding-right: 4px; }
+    .history-item { display: grid; grid-template-columns: 92px 1fr auto; gap: 10px; align-items: center; padding: 8px; border: 1px solid rgba(37, 99, 235, .1); border-radius: 14px; background: rgba(255,255,255,.72); }
+    .thumb { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 10px; background: #dbeafe; }
+    .thumb img, .thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .history-path { min-width: 0; color: var(--muted); font-size: .78rem; line-height: 1.35; overflow-wrap: anywhere; }
+    .active-mark { display: inline-flex; margin-top: 5px; padding: 4px 8px; border-radius: 999px; background: rgba(37,99,235,.1); color: var(--blue-dark); font-size: .72rem; font-weight: 900; }
+    [hidden] { display: none !important; }
+    @media (max-width: 820px) {
+      .admin-shell { width: min(100% - 20px, 560px); padding-top: 18px; }
+      .admin-header { display: block; }
+      .status-pill { margin-top: 14px; }
+      .manager-grid { grid-template-columns: 1fr; }
+      .login-row, .upload-row { grid-template-columns: 1fr; }
+      button { width: 100%; min-height: 50px; }
+      .history-item { grid-template-columns: 86px 1fr; }
+      .history-item button { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <h1>Zhonggu Media Manager</h1>
+        <p>Upload and select the active images and videos used by the Company Strength Display and Company Videos section.</p>
+      </div>
+      <span class="status-pill" id="connectionStatus">Waiting for login</span>
+    </header>
+
+    <section class="login-card" id="loginCard">
+      <h2>Admin Access</h2>
+      <p>Enter the media manager password to upload files and update the active media slots.</p>
+      <form class="login-row" id="loginForm">
+        <input id="passwordInput" type="password" autocomplete="current-password" placeholder="Media manager password" required>
+        <button class="primary-btn" type="submit">Unlock</button>
+      </form>
+      <p class="message" id="loginMessage" aria-live="polite"></p>
+    </section>
+
+    <section class="manager-grid" id="managerGrid" hidden></section>
+  </main>
+
+  <script>
+    const slots = [
+      { slot: "vehiclePreparation", group: "strengthImages", type: "image", label: "Vehicle Preparation Image", accept: "image/*" },
+      { slot: "preShipmentInspection", group: "strengthImages", type: "image", label: "Pre-shipment Inspection Image", accept: "image/*" },
+      { slot: "customerDelivery", group: "strengthImages", type: "image", label: "Customer Delivery Image", accept: "image/*" },
+      { slot: "exportLoading", group: "strengthImages", type: "image", label: "Export Loading Image", accept: "image/*" },
+      { slot: "preShipmentVehicleInspection", group: "companyVideos", type: "video", label: "Pre-shipment Vehicle Inspection Video", accept: "video/mp4,video/webm,video/quicktime" },
+      { slot: "internationalExportLoading", group: "companyVideos", type: "video", label: "International Export Loading Video", accept: "video/mp4,video/webm,video/quicktime" }
+    ];
+
+    const loginCard = document.getElementById("loginCard");
+    const loginForm = document.getElementById("loginForm");
+    const loginMessage = document.getElementById("loginMessage");
+    const passwordInput = document.getElementById("passwordInput");
+    const managerGrid = document.getElementById("managerGrid");
+    const connectionStatus = document.getElementById("connectionStatus");
+    let mediaConfig = null;
+    let mediaPassword = sessionStorage.getItem("zhonggu-media-password") || "";
+    let mediaAdminAuth = sessionStorage.getItem("media_admin_auth") === "1";
+
+    const versioned = (url) => url ? `${url}${url.includes("?") ? "&" : "?"}v=${Date.now()}` : "";
+    const showMessage = (node, text, state = "") => {
+      node.textContent = text;
+      node.className = `message ${state ? `is-${state}` : ""}`;
+    };
+    const normalizeItem = (item) => typeof item === "string" ? { url: item, poster: "" } : { url: item?.url || "", poster: item?.poster || "" };
+
+    const apiFetch = async (url, options = {}) => {
+      const headers = { ...(options.headers || {}) };
+      if (mediaPassword) headers["x-media-password"] = mediaPassword;
+      const response = await fetch(url, { ...options, headers, cache: "no-store" });
+      const json = await response.json().catch(() => ({}));
+      if (!response.ok || json.success === false) throw new Error(json.error || json.message || `Request failed: ${response.status}`);
+      return json;
+    };
+
+    const login = async (password) => {
+      const response = await fetch("/api/media-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({ password })
+      });
+      const json = await response.json().catch(() => ({}));
+      if (!response.ok || json.success === false) throw new Error(json.message || `Request failed: ${response.status}`);
+      return json;
+    };
+
+    const loadConfig = async () => {
+      const result = await apiFetch(`/api/media-config?v=${Date.now()}`);
+      mediaConfig = result.config || result;
+      connectionStatus.textContent = "Connected";
+      renderManager();
+    };
+
+    const previewNode = (slot, entry) => {
+      if (slot.type === "video") {
+        const video = document.createElement("video");
+        video.src = versioned(entry.active);
+        if (entry.poster) video.poster = versioned(entry.poster);
+        video.controls = true;
+        video.preload = "metadata";
+        video.playsInline = true;
+        return video;
+      }
+      const img = document.createElement("img");
+      img.src = versioned(entry.active);
+      img.alt = entry.title || slot.label;
+      return img;
+    };
+
+    const thumbNode = (slot, item) => {
+      const wrap = document.createElement("div");
+      wrap.className = "thumb";
+      if (slot.type === "video") {
+        const video = document.createElement("video");
+        video.src = versioned(item.url);
+        if (item.poster) video.poster = versioned(item.poster);
+        video.preload = "metadata";
+        video.muted = true;
+        video.playsInline = true;
+        wrap.append(video);
+      } else {
+        const img = document.createElement("img");
+        img.src = versioned(item.url);
+        img.alt = slot.label;
+        wrap.append(img);
+      }
+      return wrap;
+    };
+
+    const renderManager = () => {
+      managerGrid.replaceChildren();
+      slots.forEach((slot) => {
+        const entry = mediaConfig?.[slot.group]?.[slot.slot] || { title: slot.label, active: "", items: [] };
+        const card = document.createElement("article");
+        card.className = "media-card";
+        card.dataset.slot = slot.slot;
+
+        const preview = document.createElement("div");
+        preview.className = "media-preview";
+        if (entry.active) preview.append(previewNode(slot, entry));
+        const label = document.createElement("span");
+        label.className = "slot-label";
+        label.textContent = entry.title || slot.label;
+        preview.append(label);
+
+        const body = document.createElement("div");
+        body.className = "media-body";
+        const title = document.createElement("h2");
+        title.textContent = slot.label;
+        const form = document.createElement("form");
+        form.className = "upload-row";
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = slot.accept;
+        input.required = true;
+        const uploadButton = document.createElement("button");
+        uploadButton.className = "primary-btn";
+        uploadButton.type = "submit";
+        uploadButton.textContent = "Upload & Set Active";
+        form.append(input, uploadButton);
+        const message = document.createElement("p");
+        message.className = "message";
+        message.setAttribute("aria-live", "polite");
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const file = input.files?.[0];
+          if (!file) return;
+          const data = new FormData();
+          data.append("slot", slot.slot);
+          data.append("type", slot.type);
+          data.append("file", file);
+          uploadButton.disabled = true;
+          showMessage(message, "Uploading... Large videos can take a few minutes.");
+          try {
+            const result = await apiFetch("/api/upload-media", { method: "POST", body: data });
+            mediaConfig = result.config;
+            showMessage(message, "Upload complete. The selected slot is now active.", "success");
+            renderManager();
+          } catch (error) {
+            showMessage(message, error.message, "error");
+          } finally {
+            uploadButton.disabled = false;
+          }
+        });
+
+        const history = document.createElement("div");
+        history.className = "history";
+        const historyTitle = document.createElement("div");
+        historyTitle.className = "history-title";
+        historyTitle.innerHTML = `<span>History</span><span>${(entry.items || []).length} item(s)</span>`;
+        const list = document.createElement("div");
+        list.className = "history-list";
+        (entry.items || []).map(normalizeItem).filter((item) => item.url).forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "history-item";
+          const info = document.createElement("div");
+          info.className = "history-path";
+          info.textContent = item.url;
+          if (item.url === entry.active) {
+            const active = document.createElement("span");
+            active.className = "active-mark";
+            active.textContent = "Current";
+            info.append(document.createElement("br"), active);
+          }
+          const button = document.createElement("button");
+          button.className = item.url === entry.active ? "ghost-btn" : "primary-btn";
+          button.type = "button";
+          button.textContent = item.url === entry.active ? "Active" : "Set Active";
+          button.disabled = item.url === entry.active;
+          button.addEventListener("click", async () => {
+            button.disabled = true;
+            try {
+              const result = await apiFetch("/api/set-active-media", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ slot: slot.slot, url: item.url, poster: item.poster || "" })
+              });
+              mediaConfig = result.config;
+              renderManager();
+            } catch (error) {
+              showMessage(message, error.message, "error");
+              button.disabled = false;
+            }
+          });
+          row.append(thumbNode(slot, item), info, button);
+          list.append(row);
+        });
+        history.append(historyTitle, list);
+        body.append(title, form, message, history);
+        card.append(preview, body);
+        managerGrid.append(card);
+      });
+    };
+
+    const unlock = async () => {
+      loginMessage.textContent = "";
+      try {
+        await login(mediaPassword);
+        mediaAdminAuth = true;
+        sessionStorage.setItem("zhonggu-media-password", mediaPassword);
+        sessionStorage.setItem("media_admin_auth", "1");
+        await loadConfig();
+        loginCard.hidden = true;
+        managerGrid.hidden = false;
+      } catch (error) {
+        mediaAdminAuth = false;
+        sessionStorage.removeItem("media_admin_auth");
+        connectionStatus.textContent = "Login required";
+        showMessage(loginMessage, error.message, "error");
+      }
+    };
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      mediaPassword = passwordInput.value.trim();
+      unlock();
+    });
+
+    if (mediaAdminAuth && mediaPassword) unlock();
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+Zhonggu Auto Export 素材批处理说明
+==================================
+
+用途
+----
+本流程用于批量处理 media-inbox/unsorted 中的图片和视频，并输出到 media-processed 目录。原始文件不会被覆盖或移动。
+
+输出目录
+--------
+media-processed/images
+  处理后的图片，适合网站使用，默认输出 jpg，宽度控制在 1600px 以内，质量约 80。
+
+media-processed/videos
+  处理后的视频，默认输出 mp4。
+
+media-processed/posters
+  每个视频自动截取的封面图。
+
+media-processed/review-needed
+  需要人工复查的处理结果、失败文件副本或视频首帧分析图。
+
+media-processed/processing_log.csv
+  处理日志，包含原文件名、输出文件、车牌遮挡、背景处理、水印、封面、状态和备注。
+
+安装依赖
+--------
+建议先创建虚拟环境：
+
+  py -m venv .venv
+  .venv\Scripts\activate
+  py -m pip install -r requirements.txt
+
+如果 py 不可用，可以尝试：
+
+  python -m pip install -r requirements.txt
+
+视频处理建议另外安装 ffmpeg，并确保 ffmpeg 在 PATH 中。没有 ffmpeg 时，脚本仍会尝试处理视频画面，但不能可靠保留原视频音轨。
+
+运行方式
+--------
+处理全部图片和视频：
+
+  py process_media.py
+
+只处理图片，跳过视频：
+
+  py process_media.py --skip-video
+
+指定其他输入目录：
+
+  py process_media.py --input media-inbox/unsorted
+
+处理策略
+--------
+图片：
+1. 扫描 jpg、jpeg、png、webp。
+2. 尝试使用 rembg 分割车辆主体，并替换为浅灰背景。
+3. 如果 rembg 不可用或失败，保留原背景，并在日志中记录。
+4. 在车牌常见区域覆盖深色 zhongguauto 遮挡条。
+5. 右下角添加半透明 zhonggu 水印。
+6. 输出压缩 jpg。
+
+视频：
+1. 扫描 mp4、mov、avi、mkv。
+2. 使用 OpenCV 逐帧添加 zhongguauto 遮挡条和 zhonggu 水印。
+3. 视频背景替换默认标记为 partial，因为稳定视频主体分割需要更重的模型和人工确认。
+4. 自动截取第一帧封面到 media-processed/posters。
+5. 如果安装了 ffmpeg，脚本会尝试保留原音轨并转码为 H.264 mp4。
+
+人工复查说明
+------------
+当前脚本没有接入专用车牌检测模型，车牌遮挡采用保守区域策略。因此日志中 status 为 review-needed 的文件需要人工查看：
+
+1. 确认车牌是否完全遮挡。
+2. 确认 zhongguauto 遮挡条是否没有盖住车标、车灯或重要细节。
+3. 确认背景替换是否自然；如果 backgroundReplaced 为 no 或 partial，说明背景没有完全替换。
+4. 确认视频输出是否保留原音轨；如果 notes 提到 ffmpeg not found，需要安装 ffmpeg 后重新处理。
+
+日志字段
+--------
+originalFileName：原始文件名。
+mediaType：image、video 或 unknown。
+outputFileName：输出文件名。
+outputPath：输出路径。
+plateMasked：是否添加车牌遮挡。
+backgroundReplaced：yes、no 或 partial。
+watermarkAdded：是否添加水印。
+posterGenerated：视频封面是否生成。
+status：processed、review-needed、failed 或 skipped。
+notes：处理说明或失败原因。

@@ -1,0 +1,46 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/videos/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/data/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/lang.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/cars.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/grouped-cars.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/manual-image-map.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
+
+/admin/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+
+/sitemap.xml
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/robots.txt
+  Cache-Control: no-cache, no-store, must-revalidate

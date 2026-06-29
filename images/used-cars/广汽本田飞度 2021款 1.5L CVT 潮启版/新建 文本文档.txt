@@ -1,0 +1,19 @@
+《车型》：广汽本田飞度 2021款 1.5L CVT 潮启版
+《指导价》：8.18万
+《出厂时间》：2021.09
+《表显里程》：108969~114549
+《排量or续航》：1.5L
+《变速箱》：CVT无级变速
+《车身尺寸》：4109×1694×1537mm，轴距2530mm
+《发动机》：1.5L自然吸气发动机，最大马力131Ps，最大功率96kW，最大扭矩155N·m
+《颜色》：白色
+
+《Model》：GAC Honda Fit 2021 1.5L CVT Chaoqi Edition
+《Guide Price》：81,800 RMB
+《Production Date》：2021.09
+《Odometer Reading》：108969~114549km
+《Displacement/Range》：1.5L
+《Transmission》：CVT (Continuously Variable Transmission)
+《Dimensions》：4109 × 1694 × 1537 mm, Wheelbase 2530 mm
+《Engine》：1.5L Naturally Aspirated Engine, Max Horsepower 131 Ps, Max Power 96 kW, Max Torque 155 N·m
+《Color》：white

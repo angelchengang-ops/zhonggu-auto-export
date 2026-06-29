@@ -1,0 +1,347 @@
+{
+    "china-used-car-exporter":  {
+                                    "title":  "China Used Car Exporter for Overseas Dealers",
+                                    "description":  "China used car exporter for overseas dealers who need inspected inventory, FOB quotations, export documentation, and shipping coordination.",
+                                    "h1":  "China Used Car Exporter for Overseas Dealers",
+                                    "focus":  "inspected used cars from China",
+                                    "intro":  "Zhonggu Auto Export supports overseas dealers and fleet buyers who need a practical source of inspected used cars from China. We work with real vehicle inventory, clear condition reports, export paperwork, and shipping coordination so buyers can move from inquiry to quotation without long delays or unclear pricing.",
+                                    "models":  [
+                                                   "Toyota Corolla used cars",
+                                                   "Honda Fit used cars",
+                                                   "Volkswagen TACQUA used cars"
+                                               ],
+                                    "featured":  [
+                                                     "vehicle.html?slug=used-toyota-corolla-2022-001",
+                                                     "vehicle.html?slug=used-honda-fit-2021-001",
+                                                     "vehicle.html?slug=used-vw-tacqua-2023-001"
+                                                 ],
+                                    "related":  [
+                                                    "toyota-used-cars-china.html",
+                                                    "honda-used-cars-china.html",
+                                                    "china-new-car-exporter.html"
+                                                ],
+                                    "country":  "Overseas dealers and fleet buyers"
+                                },
+    "china-new-car-exporter":  {
+                                   "title":  "China New Car Exporter and Vehicle Supplier",
+                                   "description":  "China new car exporter and vehicle supplier for international dealers looking for new vehicle sourcing, FOB inquiry support, and export logistics.",
+                                   "h1":  "China New Car Exporter and Vehicle Supplier",
+                                   "focus":  "new cars for export from China",
+                                   "intro":  "Zhonggu Auto Export helps buyers source new cars from China with a practical B2B workflow. We focus on vehicle selection, pricing clarity, export documentation, and delivery coordination so importers can compare options and request an FOB quotation with confidence.",
+                                   "models":  [
+                                                  "BYD new cars",
+                                                  "Geely new cars",
+                                                  "Bestune new cars"
+                                              ],
+                                   "featured":  [
+                                                    "byd-car-exporter-china.html",
+                                                    "geely-car-exporter-china.html",
+                                                    "bestune-car-exporter-china.html"
+                                                ],
+                                   "related":  [
+                                                   "china-used-car-exporter.html",
+                                                   "chinese-vehicle-export-company.html",
+                                                   "buy-cars-from-china.html"
+                                               ],
+                                   "country":  "Global auto dealers and importers"
+                               },
+    "chinese-vehicle-export-company":  {
+                                           "title":  "Chinese Vehicle Export Company for Global Dealers",
+                                           "description":  "Chinese vehicle export company for global dealers needing sourcing, inspection, documentation, and port coordination for China vehicle exports.",
+                                           "h1":  "Chinese Vehicle Export Company for Global Dealers",
+                                           "focus":  "vehicle sourcing, export support, and delivery coordination",
+                                           "intro":  "As a Chinese vehicle export company, Zhonggu Auto Export focuses on the operational details that matter to overseas buyers: trustworthy sourcing, inspection, documentation, shipping support, and practical communication. We keep the process structured so buyers can move quickly from inquiry to a concrete FOB quotation.",
+                                           "models":  [
+                                                          "Used cars",
+                                                          "New cars",
+                                                          "Brand-specific sourcing"
+                                                      ],
+                                           "featured":  [
+                                                            "china-used-car-exporter.html",
+                                                            "china-new-car-exporter.html",
+                                                            "buy-cars-from-china.html"
+                                                        ],
+                                           "related":  [
+                                                           "export-cars-from-china-to-algeria.html",
+                                                           "export-cars-from-china-to-uae.html",
+                                                           "export-cars-from-china-to-africa.html"
+                                                       ],
+                                           "country":  "Global dealers and fleet buyers"
+                                       },
+    "buy-cars-from-china":  {
+                                "title":  "Buy Cars from China for Export",
+                                "description":  "Buy cars from China for export with Zhonggu Auto Export, including vehicle sourcing, inspection support, FOB inquiry, and shipping coordination.",
+                                "h1":  "Buy Cars from China for Export",
+                                "focus":  "buying cars from China for export markets",
+                                "intro":  "If your team needs to buy cars from China, the most reliable approach is to work with a supplier that can explain condition, pricing, paperwork, and shipping without ambiguity. Zhonggu Auto Export helps overseas buyers compare inventory, ask for FOB prices, and choose vehicles that fit their destination market.",
+                                "models":  [
+                                               "Sedans",
+                                               "SUVs",
+                                               "Hatchbacks"
+                                           ],
+                                "featured":  [
+                                                 "china-used-car-exporter.html",
+                                                 "china-new-car-exporter.html",
+                                                 "vehicle.html?slug=used-toyota-corolla-2022-001"
+                                             ],
+                                "related":  [
+                                                "export-cars-from-china-to-algeria.html",
+                                                "export-cars-from-china-to-uae.html",
+                                                "export-cars-from-china-to-africa.html"
+                                            ],
+                                "country":  "Importers searching for China stock"
+                            },
+    "export-cars-from-china-to-algeria":  {
+                                              "title":  "Export Cars from China to Algeria",
+                                              "description":  "Export cars from China to Algeria with FOB quotation support, export documents, inspection coordination, and shipping guidance.",
+                                              "h1":  "Export Cars from China to Algeria",
+                                              "focus":  "Algeria-bound vehicle sourcing and export support",
+                                              "intro":  "For buyers planning to export cars from China to Algeria, the most useful service is a supplier that understands sourcing, documents, and shipping coordination. Zhonggu Auto Export can support inquiry handling, inventory comparison, and practical quotation planning for Algeria-oriented buyers.",
+                                              "models":  [
+                                                             "Toyota Corolla",
+                                                             "Honda Fit",
+                                                             "Volkswagen TACQUA"
+                                                         ],
+                                              "featured":  [
+                                                               "vehicle.html?slug=used-toyota-corolla-2022-001",
+                                                               "vehicle.html?slug=used-honda-fit-2021-001",
+                                                               "china-used-car-exporter.html"
+                                                           ],
+                                              "related":  [
+                                                              "export-cars-from-china-to-uae.html",
+                                                              "export-cars-from-china-to-africa.html",
+                                                              "china-used-car-exporter.html"
+                                                          ],
+                                              "country":  "Algeria importers and dealers"
+                                          },
+    "export-cars-from-china-to-uae":  {
+                                          "title":  "Export Cars from China to UAE",
+                                          "description":  "Export cars from China to UAE with used and new car sourcing, FOB pricing, export documents, and shipping support.",
+                                          "h1":  "Export Cars from China to UAE",
+                                          "focus":  "UAE-focused vehicle export planning",
+                                          "intro":  "Importers who export cars from China to the UAE usually need quick quotation support, clear inventory details, and dependable export coordination. Zhonggu Auto Export helps UAE buyers evaluate stock, request FOB pricing, and coordinate the steps needed to move from inquiry to shipment.",
+                                          "models":  [
+                                                         "Toyota Corolla",
+                                                         "BYD models",
+                                                         "Geely models"
+                                                     ],
+                                          "featured":  [
+                                                           "china-new-car-exporter.html",
+                                                           "china-used-car-exporter.html",
+                                                           "vehicle.html?slug=used-toyota-corolla-2022-001"
+                                                       ],
+                                          "related":  [
+                                                          "export-cars-from-china-to-algeria.html",
+                                                          "export-cars-from-china-to-africa.html",
+                                                          "buy-cars-from-china.html"
+                                                      ],
+                                          "country":  "UAE importers and fleet buyers"
+                                      },
+    "export-cars-from-china-to-africa":  {
+                                             "title":  "Export Cars from China to Africa",
+                                             "description":  "Export cars from China to Africa with practical sourcing, export documents, inspection support, and shipping coordination.",
+                                             "h1":  "Export Cars from China to Africa",
+                                             "focus":  "Africa market sourcing and export support",
+                                             "intro":  "Buyers who want to export cars from China to Africa often need a reliable B2B partner that can source vehicles, confirm condition, and explain shipping steps clearly. Zhonggu Auto Export focuses on practical export support that helps African dealers and fleet buyers compare options and move forward with confidence.",
+                                             "models":  [
+                                                            "Toyota Corolla",
+                                                            "Honda Fit",
+                                                            "BYD and Geely models"
+                                                        ],
+                                             "featured":  [
+                                                              "vehicle.html?slug=used-toyota-corolla-2022-001",
+                                                              "vehicle.html?slug=used-honda-fit-2021-001",
+                                                              "china-used-car-exporter.html"
+                                                          ],
+                                             "related":  [
+                                                             "export-cars-from-china-to-algeria.html",
+                                                             "export-cars-from-china-to-uae.html",
+                                                             "chinese-vehicle-export-company.html"
+                                                         ],
+                                             "country":  "African importers and dealers"
+                                         },
+    "byd-car-exporter-china":  {
+                                   "title":  "BYD Car Exporter from China",
+                                   "description":  "BYD car exporter from China for overseas buyers looking for electric and new energy vehicle sourcing, FOB quotations, and export support.",
+                                   "h1":  "BYD Car Exporter from China",
+                                   "focus":  "BYD new energy vehicle sourcing",
+                                   "intro":  "Zhonggu Auto Export helps overseas buyers evaluate BYD vehicles from China with a focus on practical export support. Buyers can request FOB prices, compare stock, and coordinate the paperwork and shipping details needed for international delivery.",
+                                   "models":  [
+                                                  "BYD Seal",
+                                                  "BYD Atto 3",
+                                                  "BYD Song Plus"
+                                              ],
+                                   "featured":  [
+                                                    "china-new-car-exporter.html",
+                                                    "geely-car-exporter-china.html",
+                                                    "bestune-car-exporter-china.html"
+                                                ],
+                                   "related":  [
+                                                   "china-new-car-exporter.html",
+                                                   "chinese-vehicle-export-company.html",
+                                                   "buy-cars-from-china.html"
+                                               ],
+                                   "country":  "Global EV importers"
+                               },
+    "geely-car-exporter-china":  {
+                                     "title":  "Geely Car Exporter from China",
+                                     "description":  "Geely car exporter from China for overseas buyers looking for new car sourcing, FOB inquiry support, and export logistics.",
+                                     "h1":  "Geely Car Exporter from China",
+                                     "focus":  "Geely vehicle sourcing and export",
+                                     "intro":  "For importers interested in Geely models, Zhonggu Auto Export provides a practical sourcing process that keeps communication clear and paperwork organized. The goal is to make it easy for buyers to ask for FOB prices, review available stock, and choose the right model for their destination market.",
+                                     "models":  [
+                                                    "Geely Coolray",
+                                                    "Geely Monjaro",
+                                                    "Geely Emgrand"
+                                                ],
+                                     "featured":  [
+                                                      "china-new-car-exporter.html",
+                                                      "byd-car-exporter-china.html",
+                                                      "bestune-car-exporter-china.html"
+                                                  ],
+                                     "related":  [
+                                                     "china-new-car-exporter.html",
+                                                     "buy-cars-from-china.html",
+                                                     "chinese-vehicle-export-company.html"
+                                                 ],
+                                     "country":  "Global importers"
+                                 },
+    "bestune-car-exporter-china":  {
+                                       "title":  "Bestune Car Exporter from China",
+                                       "description":  "Bestune car exporter from China with export sourcing, FOB quotes, inspection support, and shipping coordination for overseas buyers.",
+                                       "h1":  "Bestune Car Exporter from China",
+                                       "focus":  "Bestune model export support",
+                                       "intro":  "Zhonggu Auto Export supports overseas buyers who want to source Bestune models from China. We focus on practical B2B communication, clear vehicle information, and export support that helps dealers compare choices and request a quotation without unnecessary friction.",
+                                       "models":  [
+                                                      "Bestune T77",
+                                                      "Bestune T90",
+                                                      "Bestune B70"
+                                                  ],
+                                       "featured":  [
+                                                        "china-new-car-exporter.html",
+                                                        "byd-car-exporter-china.html",
+                                                        "geely-car-exporter-china.html"
+                                                    ],
+                                       "related":  [
+                                                       "china-new-car-exporter.html",
+                                                       "buy-cars-from-china.html",
+                                                       "chinese-vehicle-export-company.html"
+                                                   ],
+                                       "country":  "Global importers"
+                                   },
+    "toyota-used-cars-china":  {
+                                   "title":  "Toyota Used Cars from China for Export",
+                                   "description":  "Toyota used cars from China for export with inspection support, FOB inquiry, export documents, and shipping coordination.",
+                                   "h1":  "Toyota Used Cars from China for Export",
+                                   "focus":  "Toyota used cars from China",
+                                   "intro":  "Toyota remains one of the most requested brands in export markets, and overseas buyers often want inspected stock with transparent details before they commit. Zhonggu Auto Export helps with Toyota used cars from China by combining inventory selection, condition review, and export support into one practical workflow.",
+                                   "models":  [
+                                                  "Toyota Corolla",
+                                                  "Toyota RAV4",
+                                                  "Toyota Veloz"
+                                              ],
+                                   "featured":  [
+                                                    "vehicle.html?slug=used-toyota-corolla-2022-001",
+                                                    "vehicle.html?slug=used-toyota-corolla-2023-001",
+                                                    "vehicle.html?slug=used-toyota-rav4-2024-001"
+                                                ],
+                                   "related":  [
+                                                   "china-used-car-exporter.html",
+                                                   "honda-used-cars-china.html",
+                                                   "buy-cars-from-china.html"
+                                               ],
+                                   "country":  "Toyota-focused overseas buyers"
+                               },
+    "honda-used-cars-china":  {
+                                  "title":  "Honda Used Cars from China for Export",
+                                  "description":  "Honda used cars from China for export with FOB quotation support, vehicle inspection details, export documents, and shipping coordination.",
+                                  "h1":  "Honda Used Cars from China for Export",
+                                  "focus":  "Honda used cars from China",
+                                  "intro":  "Honda used cars are popular with dealers who want dependable models and clear condition information. Zhonggu Auto Export helps buyers source Honda used cars from China, compare available inventory, and move forward with FOB pricing and export planning in a practical, straightforward way.",
+                                  "models":  [
+                                                 "Honda Fit",
+                                                 "Honda CR-V",
+                                                 "Honda Accord"
+                                             ],
+                                  "featured":  [
+                                                   "vehicle.html?slug=used-honda-fit-2021-001",
+                                                   "vehicle.html?slug=used-toyota-corolla-2022-001",
+                                                   "china-used-car-exporter.html"
+                                               ],
+                                  "related":  [
+                                                  "china-used-car-exporter.html",
+                                                  "toyota-used-cars-china.html",
+                                                  "buy-cars-from-china.html"
+                                              ],
+                                  "country":  "Honda-focused overseas buyers"
+                              },
+    "brands":  {
+                   "title":  "Popular Chinese Car Brands",
+                   "description":  "Popular Chinese car brands for overseas dealers and importers seeking reliable sourcing, export documents, and FOB quotations.",
+                   "h1":  "Popular Chinese Car Brands",
+                   "focus":  "brand-based sourcing for export",
+                   "intro":  "The brand network behind Zhonggu Auto Export helps overseas buyers compare Chinese carmakers in a structured way. Whether you need new energy vehicles, compact SUVs, or practical passenger cars, the goal is to keep sourcing, quotation, and shipping coordination clear and efficient.",
+                   "models":  [
+                                  "BYD",
+                                  "Geely",
+                                  "Bestune"
+                              ],
+                   "featured":  [
+                                    "byd-car-exporter-china.html",
+                                    "geely-car-exporter-china.html",
+                                    "bestune-car-exporter-china.html"
+                                ],
+                   "related":  [
+                                   "china-new-car-exporter.html",
+                                   "china-used-car-exporter.html",
+                                   "chinese-vehicle-export-company.html"
+                               ],
+                   "country":  "Global buyers comparing brands"
+               },
+    "new-cars":  {
+                     "title":  "Featured New Cars",
+                     "description":  "Featured new cars from China with FOB inquiry support, export documentation, and shipping coordination for overseas buyers.",
+                     "h1":  "Featured New Cars",
+                     "focus":  "new car sourcing from China",
+                     "intro":  "Zhonggu Auto Export helps overseas buyers source new cars from China with a simple quotation flow. Use this page to compare the kinds of vehicles that can be supplied, then contact us for stock details, FOB pricing, and delivery planning.",
+                     "models":  [
+                                    "BYD",
+                                    "Geely",
+                                    "Bestune"
+                                ],
+                     "featured":  [
+                                      "byd-car-exporter-china.html",
+                                      "geely-car-exporter-china.html",
+                                      "bestune-car-exporter-china.html"
+                                  ],
+                     "related":  [
+                                     "china-new-car-exporter.html",
+                                     "china-used-car-exporter.html",
+                                     "buy-cars-from-china.html"
+                                 ],
+                     "country":  "New car importers"
+                 },
+    "process":  {
+                    "title":  "Our Export Process",
+                    "description":  "Our export process covers sourcing, inspection, documents, shipping, and delivery support for overseas buyers.",
+                    "h1":  "Our Export Process",
+                    "focus":  "sourcing, inspection, documentation, and shipping",
+                    "intro":  "A clear process matters when buyers compare suppliers. Zhonggu Auto Export keeps the export workflow simple: identify the right vehicle, confirm the details, prepare export documents, and coordinate shipping updates so the buyer can stay informed throughout the order.",
+                    "models":  [
+                                   "Choose a vehicle",
+                                   "Confirm and inspect",
+                                   "Prepare documents"
+                               ],
+                    "featured":  [
+                                     "china-used-car-exporter.html",
+                                     "china-new-car-exporter.html",
+                                     "chinese-vehicle-export-company.html"
+                                 ],
+                    "related":  [
+                                    "china-used-car-exporter.html",
+                                    "china-new-car-exporter.html",
+                                    "buy-cars-from-china.html"
+                                ],
+                    "country":  "Overseas dealers and fleet buyers"
+                }
+}

@@ -1,0 +1,19 @@
+《车型》：丰田荣放RAV4 CVT两驱风尚Plus版
+《指导价》：19.98万
+《出厂时间》：2023.03
+《表显里程》 :15328~19734
+《排量or续航》: 2.0L
+《变速箱》:CVT无级变速
+《车身尺寸》：4625×1855×1680mm，轴距2690mm
+《发动机》：2.0L自然吸气发动机，最大马力171Ps，最大功率126kW，最大扭矩206N·m
+《颜色》：白色、黑色
+
+《Model》: Toyota RAV4 CVT Two-Wheel Drive Fashion Plus Edition
+《Guide Price》: 199,800 RMB
+《Production Date》: 2024-04 ~ 2025-06
+《Odometer Reading》: 15,328 ~ 19,734 km
+《Displacement/Range》: 2.0L
+《Transmission》: CVT (Continuously Variable Transmission)
+《Dimensions》: 4625 × 1855 × 1680 mm, Wheelbase 2690 mm
+《Engine》: 2.0L Naturally Aspirated Engine, Max Horsepower 171 Ps, Max Power 126 kW, Max Torque 206 N·m
+《Color》: White, Black
