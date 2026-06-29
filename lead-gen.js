@@ -1,4 +1,5 @@
-const whatsappNumber = '447473271351';
+const leadWhatsappNumber = '447473271351';
+const leadWhatsappDisplayNumber = '+44 7473 271351';
 const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
 
@@ -65,10 +66,11 @@ const ensureWhatsappButton = () => {
   if (document.querySelector('.floating-whatsapp-btn')) return;
   const button = document.createElement('a');
   button.className = 'floating-whatsapp-btn';
-  button.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildWhatsappMessage())}`;
+  button.href = `https://wa.me/${leadWhatsappNumber}?text=${encodeURIComponent(buildWhatsappMessage())}`;
   button.target = '_blank';
   button.rel = 'noopener noreferrer';
-  button.setAttribute('aria-label', 'Chat on WhatsApp');
+  button.title = leadWhatsappDisplayNumber;
+  button.setAttribute('aria-label', `Chat on WhatsApp: ${leadWhatsappDisplayNumber}`);
   button.innerHTML = '<span class="floating-whatsapp-btn__icon" aria-hidden="true">WA</span><span class="floating-whatsapp-btn__text">WhatsApp</span>';
   document.body.appendChild(button);
 };

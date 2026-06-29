@@ -2,6 +2,7 @@ const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 const whatsappNumber = "447473271351";
+const whatsappDisplayNumber = "+44 7473 271351";
 const APP_VERSION = "20260626-data-engine-v1";
 
 const languageOptions = [
@@ -448,6 +449,11 @@ const loadVehicles = async () => {
 };
 
 const bindWhatsappButtons = () => {
+  document.querySelectorAll("a[href*='wa.me/'], .whatsapp-btn").forEach((button) => {
+    const label = `Contact Zhonggu Auto Export on WhatsApp: ${whatsappDisplayNumber}`;
+    button.title = whatsappDisplayNumber;
+    button.setAttribute("aria-label", label);
+  });
   document.addEventListener("click", (event) => {
     const button = event.target.closest(".whatsapp-btn, .vehicle-card button");
     if (!button || button.tagName === "A") return;
