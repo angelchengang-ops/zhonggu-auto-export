@@ -9,11 +9,13 @@ const { execFile } = require("child_process");
 const ROOT = __dirname;
 const PORT = Number(process.env.MEDIA_PORT || process.env.PORT || 3001);
 const HOST = "0.0.0.0";
-const PASSWORD = process.env.ZHONGGU_MEDIA_PASSWORD || "zg2026";
+const PASSWORD = process.env.ZHONGGU_MEDIA_PASSWORD;
 const CONFIG_PATH = path.join(ROOT, "data", "media-config.json");
 const LEADS_PATH = path.join(ROOT, "leads.json");
 const TMP_DIR = path.join(ROOT, "tmp");
 const MAX_UPLOAD_SIZE = 600 * 1024 * 1024;
+
+if (!PASSWORD) throw new Error("ZHONGGU_MEDIA_PASSWORD is required to start the media server");
 
 const SLOT_MAP = {
   vehiclePreparation: { kind: "image", group: "strengthImages", dir: "uploads/company/vehicle-preparation", prefix: "vehicle-preparation" },

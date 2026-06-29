@@ -129,6 +129,18 @@
     };
     const normalizeItem = (item) => typeof item === "string" ? { url: item, poster: "" } : { url: item?.url || "", poster: item?.poster || "" };
 
+    const checkBackend = async () => {
+      const response = await fetch("/api/health", { cache: "no-store" });
+      const json = await response.json().catch(() => ({}));
+      if (!response.ok || json.success === false) throw new Error("Media API unavailable");
+    };
+
+    const disableStaticUpload = () => {
+      connectionStatus.textContent = "Static deployment: upload unavailable";
+      passwordInput.disabled = true;
+      loginForm.querySelector("button").disabled = true;
+      showMessage(loginMessage, "This Netlify deployment cannot save uploaded files. Use the authenticated media server or connect a persistent CMS/storage backend.", "error");
+    };
     const apiFetch = async (url, options = {}) => {
       const headers = { ...(options.headers || {}) };
       if (mediaPassword) headers["x-media-password"] = mediaPassword;
@@ -323,7 +335,17 @@
       unlock();
     });
 
-    if (mediaAdminAuth && mediaPassword) unlock();
+    const initialize = async () => {
+      try {
+        await checkBackend();
+        connectionStatus.textContent = "Media API available";
+        if (mediaAdminAuth && mediaPassword) await unlock();
+      } catch {
+        disableStaticUpload();
+      }
+    };
+
+    initialize();
   </script>
 </body>
 </html>

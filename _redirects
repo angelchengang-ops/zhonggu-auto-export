@@ -1,5 +1,8 @@
 https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 
+/admin /admin/media.html 302
+/admin/ /admin/media.html 302
+
 /china-used-car-exporter /china-used-car-exporter.html 200
 /china-new-car-exporter /china-new-car-exporter.html 200
 /chinese-vehicle-export-company /chinese-vehicle-export-company.html 200
