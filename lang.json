@@ -1,10 +1,30 @@
 {
   "languages": [
-    { "code": "en", "label": "English", "dir": "ltr" },
-    { "code": "ar", "label": "العربية", "dir": "rtl" },
-    { "code": "ru", "label": "Русский", "dir": "ltr" },
-    { "code": "fr", "label": "Français", "dir": "ltr" },
-    { "code": "es", "label": "Español", "dir": "ltr" }
+    {
+      "code": "en",
+      "label": "English",
+      "dir": "ltr"
+    },
+    {
+      "code": "ar",
+      "label": "العربية",
+      "dir": "rtl"
+    },
+    {
+      "code": "ru",
+      "label": "Русский",
+      "dir": "ltr"
+    },
+    {
+      "code": "fr",
+      "label": "Français",
+      "dir": "ltr"
+    },
+    {
+      "code": "es",
+      "label": "Español",
+      "dir": "ltr"
+    }
   ],
   "en": {
     "nav.home": "Home",
@@ -16,7 +36,16 @@
     "nav.contact": "Contact Us",
     "car.fob_price": "FOB Price",
     "car.ask_fob": "Ask for FOB Price",
-    "car.available": "Available for export from China with FOB support"
+    "car.available": "Available for export from China with FOB support",
+    "exportSolutions.eyebrow": "EXPORT SOLUTIONS",
+    "exportSolutions.title": "Explore Popular Car Export Solutions",
+    "exportSolutions.subtitle": "Find Chinese new and used car export solutions by market, business type, and vehicle brand.",
+    "exportSolutions.byMarket": "By Market",
+    "exportSolutions.byBusiness": "By Business Type",
+    "exportSolutions.byBrand": "By Brand",
+    "exportSolutions.priorityMarket": "Priority Market",
+    "exportSolutions.geelyFocus": "Geely Focus",
+    "exportSolutions.otherBrands": "Other Brands"
   },
   "fr": {
     "nav.home": "Accueil",

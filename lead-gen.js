@@ -1,9 +1,40 @@
-const leadWhatsappNumber = '447473271351';
+﻿const leadWhatsappNumber = '447473271351';
 const leadWhatsappDisplayNumber = '+44 7473 271351';
 const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
 
 const normalize = (value) => String(value || '').replace(/\s+/g, ' ').trim();
+const inquiryChannels = {
+  google: { label: 'Google Search', whatsappSource: 'Google' },
+  bing: { label: 'Bing Search', whatsappSource: 'Bing' },
+  ouedkniss: { label: 'Ouedkniss', whatsappSource: 'Ouedkniss' },
+  autodz: { label: 'AutoDZ', whatsappSource: 'AutoDZ' },
+  facebook: { label: 'Facebook', whatsappSource: 'Facebook' },
+  autobip: { label: 'AutoBip', whatsappSource: 'AutoBip' },
+  website: { label: 'Website', whatsappSource: 'Website' }
+};
+
+const getInquirySource = () => {
+  const source = normalize(new URLSearchParams(window.location.search).get('source')).toLowerCase();
+  return inquiryChannels[source] ? source : 'website';
+};
+
+const whatsappSourceLabel = (source = getInquirySource()) => inquiryChannels[source]?.whatsappSource || inquiryChannels.website.whatsappSource;
+
+const buildWhatsappSourceUrl = (message, source = getInquirySource()) => {
+  const text = normalize(message).replace(/[.。]?$/, '.');
+  return `https://wa.me/${leadWhatsappNumber}?text=${encodeURIComponent(`${text} Source: ${whatsappSourceLabel(source)}.`)}`;
+};
+
+const bindSourceWhatsappLinks = () => {
+  document.querySelectorAll('[data-whatsapp-message]').forEach((link) => {
+    const message = link.dataset.whatsappMessage;
+    if (!message) return;
+    link.href = buildWhatsappSourceUrl(message, link.dataset.whatsappSource || getInquirySource());
+  });
+};
+
+window.zhongguBuildWhatsappLink = buildWhatsappSourceUrl;
 const currentUrl = () => `${window.location.origin}${window.location.pathname}${window.location.search}`;
 const currentTitle = () => normalize(document.title.replace(/\s+\|\s+Zhonggu Auto Export$/i, '')) || document.title;
 
@@ -66,7 +97,7 @@ const ensureWhatsappButton = () => {
   if (document.querySelector('.floating-whatsapp-btn')) return;
   const button = document.createElement('a');
   button.className = 'floating-whatsapp-btn';
-  button.href = `https://wa.me/${leadWhatsappNumber}?text=${encodeURIComponent(buildWhatsappMessage())}`;
+  button.href = buildWhatsappSourceUrl(buildWhatsappMessage());
   button.target = '_blank';
   button.rel = 'noopener noreferrer';
   button.title = leadWhatsappDisplayNumber;
@@ -121,6 +152,7 @@ const initLeadGen = () => {
   ensureWhatsappButton();
   bindInquiryCtas();
   bindDetailCtas();
+  bindSourceWhatsappLinks();
 };
 
 if (document.readyState === 'loading') {

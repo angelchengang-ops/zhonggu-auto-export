@@ -1,0 +1,30 @@
+{
+  "google": {
+    "label": "Google Search",
+    "whatsappSource": "Google"
+  },
+  "bing": {
+    "label": "Bing Search",
+    "whatsappSource": "Bing"
+  },
+  "ouedkniss": {
+    "label": "Ouedkniss",
+    "whatsappSource": "Ouedkniss"
+  },
+  "autodz": {
+    "label": "AutoDZ",
+    "whatsappSource": "AutoDZ"
+  },
+  "facebook": {
+    "label": "Facebook",
+    "whatsappSource": "Facebook"
+  },
+  "autobip": {
+    "label": "AutoBip",
+    "whatsappSource": "AutoBip"
+  },
+  "website": {
+    "label": "Website",
+    "whatsappSource": "Website"
+  }
+}

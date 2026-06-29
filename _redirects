@@ -1,4 +1,4 @@
-https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+﻿https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 
 /admin /admin/media.html 302
 /admin/ /admin/media.html 302
@@ -54,3 +54,35 @@ https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 /ru/export-cars-from-china-to-kazakhstan /ru/export-cars-from-china-to-kazakhstan.html 200
 /ru/export-cars-from-china-to-uzbekistan /ru/export-cars-from-china-to-uzbekistan.html 200
 /ru/export-cars-from-china-to-kyrgyzstan /ru/export-cars-from-china-to-kyrgyzstan.html 200
+/export-to-algeria /export-to-algeria/ 301
+/landing/export-cars-to-algeria /landing/export-cars-to-algeria/index.html 200
+/landing/export-cars-to-uae /landing/export-cars-to-uae/index.html 200
+/landing/export-cars-to-africa /landing/export-cars-to-africa/index.html 200
+/landing/export-cars-to-central-asia /landing/export-cars-to-central-asia/index.html 200
+/landing/export-cars-to-southeast-asia /landing/export-cars-to-southeast-asia/index.html 200
+/landing/china-used-car-exporter /landing/china-used-car-exporter/index.html 200
+/landing/china-new-car-exporter /landing/china-new-car-exporter/index.html 200
+/landing/chinese-vehicle-export-company /landing/chinese-vehicle-export-company/index.html 200
+/landing/buy-cars-from-china /landing/buy-cars-from-china/index.html 200
+/landing/geely-car-exporter-china /landing/geely-car-exporter-china/index.html 200
+/landing/byd-car-exporter-china /landing/byd-car-exporter-china/index.html 200
+/landing/bestune-car-exporter-china /landing/bestune-car-exporter-china/index.html 200
+/landing/toyota-used-cars-china /landing/toyota-used-cars-china/index.html 200
+/landing/honda-used-cars-china /landing/honda-used-cars-china/index.html 200
+
+/landing/geely-binyue-export-algeria /landing/geely-binyue-export-algeria/index.html 200
+/landing/geely-coolray-exporter-china /landing/geely-coolray-exporter-china/index.html 200
+/landing/geely-suv-exporter-china /landing/geely-suv-exporter-china/index.html 200
+/landing/mg-car-exporter-china /landing/mg-car-exporter-china/index.html 200
+/landing/mg-used-cars-china /landing/mg-used-cars-china/index.html 200
+/landing/roewe-car-exporter-china /landing/roewe-car-exporter-china/index.html 200
+/landing/saic-car-exporter-china /landing/saic-car-exporter-china/index.html 200
+/landing/china-cars-for-algeria-importers /landing/china-cars-for-algeria-importers/index.html 200
+/landing/left-hand-drive-cars-export-to-algeria /landing/left-hand-drive-cars-export-to-algeria/index.html 200
+/landing/ready-stock-cars-export-to-algeria /landing/ready-stock-cars-export-to-algeria/index.html 200
+/landing/cif-car-price-to-algiers /landing/cif-car-price-to-algiers/index.html 200
+/landing/china-to-algeria-car-shipping /landing/china-to-algeria-car-shipping/index.html 200
+/fr/landing/export-cars-to-algeria /fr/landing/export-cars-to-algeria/index.html 200
+/ar/landing/export-cars-to-algeria /ar/landing/export-cars-to-algeria/index.html 200
+
+/landing/algeria-car-importer-channels /landing/algeria-car-importer-channels/index.html 200

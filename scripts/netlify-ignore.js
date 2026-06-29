@@ -1,4 +1,4 @@
-const { execFileSync } = require("child_process");
+﻿const { execFileSync } = require("child_process");
 
 const relevantPatterns = [
   /^index\.html$/i,
@@ -13,6 +13,7 @@ const relevantPatterns = [
   /^vehicle\.html$/i,
   /^lead-gen\.js$/i,
   /^data\/seo-pages\.json$/i,
+  /^data\/algeria-inquiry-channels\.json$/i,
   /^sitemap\.xml$/i,
   /^robots\.txt$/i,
   /^_redirects$/i,
@@ -25,6 +26,7 @@ const relevantPatterns = [
   /^bestune-car-exporter-china\.html$/i,
   /^toyota-used-cars-china\.html$/i,
   /^honda-used-cars-china\.html$/i,
+  /^landing\//i,
   /^used-.*\.html$/i,
   /^style\.css$/i,
   /^script\.js$/i,
