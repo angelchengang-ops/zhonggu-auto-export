@@ -12,7 +12,7 @@ IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
 VIDEO_EXTS = {".mp4", ".mov", ".avi", ".mkv"}
 
 MANUAL = {
-    "source-vw-t-cross-2024": {
+    "2024年\u00a0大众途铠\u00a02023款改款1.5L自动风尚版": {
         "id": "used-vw-t-cross-2024-001",
         "brand": "Volkswagen",
         "model": "T-Cross",
@@ -22,7 +22,7 @@ MANUAL = {
         "fuel": "Petrol",
         "highlights": ["1.5L naturally aspirated engine", "Automatic transmission", "White exterior", "Compact SUV"],
     },
-    "source-vw-tacqua-2023": {
+    "大众探影\u00a02023款200TSI\u00a0DSG悦智联版": {
         "id": "used-vw-tacqua-2023-001",
         "brand": "Volkswagen",
         "model": "TACQUA",
@@ -32,7 +32,7 @@ MANUAL = {
         "fuel": "Petrol",
         "highlights": ["200TSI turbo engine", "DSG automatic transmission", "White exterior", "Compact SUV"],
     },
-    "source-toyota-corolla-2023": {
+    "丰田卡罗拉\u00a02023款1.2T\u00a0精英版": {
         "id": "used-toyota-corolla-2023-001",
         "brand": "Toyota",
         "model": "Corolla",
@@ -42,7 +42,7 @@ MANUAL = {
         "fuel": "Petrol",
         "highlights": ["1.2T turbo engine", "CVT transmission", "White exterior", "Compact sedan"],
     },
-    "source-toyota-rav4-2024": {
+    "丰田荣放RAV4\u00a0CVT两驱风尚Plus版": {
         "id": "used-toyota-rav4-2024-001",
         "brand": "Toyota",
         "model": "RAV4",
@@ -52,7 +52,7 @@ MANUAL = {
         "fuel": "Petrol",
         "highlights": ["2.0L naturally aspirated engine", "CVT transmission", "Two-wheel drive", "White or black exterior"],
     },
-    "source-honda-fit-2021": {
+    "广汽本田飞度\u00a02021款\u00a01.5L\u00a0CVT\u00a0潮启版": {
         "id": "used-honda-fit-2021-001",
         "brand": "Honda",
         "model": "Fit",
@@ -62,7 +62,7 @@ MANUAL = {
         "fuel": "Petrol",
         "highlights": ["1.5L naturally aspirated engine", "CVT transmission", "White exterior", "Compact hatchback"],
     },
-    "source-toyota-corolla-2022": {
+    "卡罗拉2022款TNGA\u00a01.5L\u00a0\u00a0CVT先锋版\u00a0": {
         "id": "used-toyota-corolla-2022-001",
         "brand": "Toyota",
         "model": "Corolla",
@@ -72,7 +72,7 @@ MANUAL = {
         "fuel": "Petrol",
         "highlights": ["TNGA platform", "1.5L naturally aspirated engine", "CVT transmission", "White exterior"],
     },
-    "source-chery-tiggo8-plus-cdm": {
+    "瑞虎8\u00a0PLUS\u00a0C-DM\u00a01.5T尊贵版选装女王座驾": {
         "id": "used-chery-tiggo8-plus-cdm-001",
         "brand": "Chery",
         "model": "Tiggo 8 PLUS C-DM",
@@ -218,7 +218,7 @@ def import_used_cars():
             needs_confirmation.append("price")
         else:
             needs_confirmation.append("actual sale price")
-        if source_dir.name == "source-toyota-rav4-2024":
+        if source_dir.name == "丰田荣放RAV4\u00a0CVT两驱风尚Plus版":
             needs_confirmation.append("model year")
 
         record = {
