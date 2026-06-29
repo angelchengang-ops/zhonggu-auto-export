@@ -1,37 +1,36 @@
 # Africa Market Localization Plan
 
-## Current approach
+## Live language coverage
 
-The six Africa market landing pages remain English-first. Each page uses a localized market label, country-specific buyer context, vehicle demand, FOB inquiry messaging, shipping information, and country attribution in the inquiry form.
+The market landing pages now use real translated content and reciprocal `hreflang` links:
 
-Only live language URLs should be published in `hreflang`. The current pages declare English and `x-default` self-references. French, Arabic, and Portuguese alternates should be added only when translated pages are complete, indexable, and linked reciprocally.
+| Market | Live languages |
+| --- | --- |
+| Africa regional page | English, French, Arabic |
+| Algeria | English, French, Arabic |
+| Egypt | English, Arabic |
+| Libya | English, Arabic |
+| Nigeria | English |
+| Ghana | English |
 
-## Language roadmap
+English remains the `x-default` version. Every French and Arabic page has its own canonical URL, localized metadata, language navigation, WhatsApp CTA, and Netlify inquiry form with `source_page`, `source_url`, `country`, and `language` attribution.
 
-| Market | Languages | Phase |
-| --- | --- | --- |
-| Algeria | English, French, Arabic | English live; French and Arabic next phase |
-| Egypt | English, Arabic | English live; Arabic next phase |
-| Libya | English, Arabic | English live; Arabic next phase |
-| Nigeria | English | Live |
-| Ghana | English | Live |
-| Angola / Mozambique | English, Portuguese | Future market and content phase |
-
-## URL and hreflang structure
-
-Recommended future patterns:
+## Live URL structure
 
 - English: `/export-cars-from-china-to-algeria.html`
 - French: `/fr/export-cars-from-china-to-algeria.html`
 - Arabic: `/ar/export-cars-from-china-to-algeria.html`
-- Portuguese: `/pt/export-cars-from-china-to-angola.html`
 
-Every translated page should include a canonical pointing to itself, reciprocal `hreflang` links for every available language, and an `x-default` link to the English page. Translations should preserve the Netlify `inquiry` form name and include `source_page`, `source_url`, and `country` fields.
+## Future phase
 
-## Content requirements
+- Angola and Mozambique: English and Portuguese.
+- Add `/pt/` pages only after market-specific Portuguese content is complete.
+- Add every published translation to `sitemap.xml` and maintain reciprocal `hreflang` links.
 
-- Use market-specific search intent and buyer terminology rather than literal translation.
+## Content rules
+
+- Use market-specific buyer terminology rather than literal translation.
 - Keep vehicle availability and import claims factual and confirm destination requirements before shipment.
 - Preserve the official WhatsApp number: `+44 7473 271351` and `https://wa.me/447473271351`.
-- Keep country flags as small market labels only; do not use flags as hero backgrounds or institutional branding.
-- Add translated pages to `sitemap.xml` only when they are published.
+- Keep country flags as small market labels only.
+- Preserve the Netlify `inquiry` form name and `/thank-you.html` success route.

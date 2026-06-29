@@ -214,7 +214,7 @@ const i18n = {
 
 
 class DataEngine {
-  constructor(source = "data/cars.raw.json") {
+  constructor(source = "/data/cars.raw.json") {
     this.source = source;
     this.rawCars = null;
   }
@@ -349,7 +349,7 @@ const setLanguage = (language) => {
   if (!languageOptions.some((item) => item.value === language)) return;
   state.language = language;
   try { localStorage.setItem("zhonggu-language", language); } catch {}
-  applyLanguage();
+  if (!document.body.classList.contains("localized-market-page")) applyLanguage();
   renderVehicleGrids();
 };
 document.querySelectorAll(".language-select").forEach((select) => select.addEventListener("change", () => setLanguage(select.value)));
@@ -469,7 +469,7 @@ const bindWhatsappButtons = () => {
 const updateCompanyMedia = async () => {
   if (!document.body.classList.contains("company-page")) return;
   try {
-    const config = await fetchJson("data/media-config.json");
+    const config = await fetchJson("/data/media-config.json");
     Object.entries(config.strengthImages || {}).forEach(([slot, entry]) => {
       const card = document.querySelector(`[data-media-slot="${slot}"]`);
       const img = card?.querySelector("[data-media-image]");
@@ -557,7 +557,7 @@ const bindInquiryForms = () => {
 };
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
-applyLanguage();
+if (!document.body.classList.contains("localized-market-page")) applyLanguage();
 loadVehicles().catch((error) => console.error("Vehicle data engine failed", error));
 bindWhatsappButtons();
 updateCompanyMedia();

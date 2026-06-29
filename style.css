@@ -1392,3 +1392,11 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 8px 24px rgba(8, 27, 51, .08);
 }
 .market-badge span { font-size: 1.25rem; line-height: 1; }
+.language-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; font-size: .82rem; font-weight: 800; }
+.language-links a { color: var(--blue-dark); text-decoration: none; }
+.language-links a[aria-current="page"] { color: var(--navy); text-decoration: underline; text-underline-offset: 4px; }
+.language-links span { color: var(--muted); }
+[dir="rtl"] .localized-market-page { font-family: "Noto Kufi Arabic", "Manrope", sans-serif; }
+[dir="rtl"] .language-links { justify-content: flex-start; direction: ltr; }
+[dir="rtl"] .localized-market-page .inquiry-fields input,
+[dir="rtl"] .localized-market-page .inquiry-fields textarea { text-align: right; }
