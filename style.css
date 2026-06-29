@@ -1440,3 +1440,5 @@ img { display: block; max-width: 100%; }
 .market-note { margin: 22px 0; padding: 16px 18px; border-left: 4px solid var(--blue); border-radius: 10px; background: #eef6ff; color: var(--navy); }
 [dir="rtl"] .market-note { border-right: 4px solid var(--blue); border-left: 0; }
 @media (max-width: 720px) { .export-market-grid { grid-template-columns: 1fr; } }
+.export-markets-home .export-market-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) { .export-markets-home .export-market-grid { grid-template-columns: 1fr; } }
