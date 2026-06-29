@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --navy: #081b33;
   --navy-soft: #102945;
   --blue: #1268e8;
@@ -992,13 +992,13 @@ img { display: block; max-width: 100%; }
 }
 .floating-whatsapp-btn__text { white-space: nowrap; }
 
-.inquiry-panel, .lead-form { scroll-margin-top: 110px; }
-.lead-form { display: block; }
-.lead-form .inquiry-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.lead-form .inquiry-fields label { display: grid; gap: 6px; color: var(--navy); font-size: .72rem; font-weight: 800; }
-.lead-form .inquiry-fields .field-wide { grid-column: 1 / -1; }
-.lead-form .inquiry-fields input,
-.lead-form .inquiry-fields textarea {
+.inquiry-panel, .inquiry-form { scroll-margin-top: 110px; }
+.inquiry-form { display: block; }
+.inquiry-form .inquiry-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.inquiry-form .inquiry-fields label { display: grid; gap: 6px; color: var(--navy); font-size: .72rem; font-weight: 800; }
+.inquiry-form .inquiry-fields .field-wide { grid-column: 1 / -1; }
+.inquiry-form .inquiry-fields input,
+.inquiry-form .inquiry-fields textarea {
   width: 100%;
   padding: 12px 13px;
   border: 1px solid #d7e0ea;
@@ -1010,12 +1010,12 @@ img { display: block; max-width: 100%; }
   outline: none;
   transition: border-color .2s, box-shadow .2s;
 }
-.lead-form .inquiry-fields textarea { min-height: 105px; resize: vertical; }
-.lead-form .inquiry-fields input:focus,
-.lead-form .inquiry-fields textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(18, 104, 232, .12); }
-.lead-form .inquiry-submit { margin-top: 20px; border: 0; color: var(--white); background: var(--navy); cursor: pointer; }
-.lead-form .inquiry-submit:hover { background: var(--blue-dark); }
-.lead-form .inquiry-submit:disabled { cursor: wait; opacity: .7; transform: none; }
+.inquiry-form .inquiry-fields textarea { min-height: 105px; resize: vertical; }
+.inquiry-form .inquiry-fields input:focus,
+.inquiry-form .inquiry-fields textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(18, 104, 232, .12); }
+.inquiry-form .inquiry-submit { margin-top: 20px; border: 0; color: var(--white); background: var(--navy); cursor: pointer; }
+.inquiry-form .inquiry-submit:hover { background: var(--blue-dark); }
+.inquiry-form .inquiry-submit:disabled { cursor: wait; opacity: .7; transform: none; }
 
 .section-links { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
 .section-links h3 {
@@ -1060,8 +1060,8 @@ img { display: block; max-width: 100%; }
     padding: 0 14px;
   }
   .floating-whatsapp-btn__text { display: none; }
-  .lead-form .inquiry-fields { grid-template-columns: 1fr; }
-  .lead-form .inquiry-fields .field-wide { grid-column: auto; }
+  .inquiry-form .inquiry-fields { grid-template-columns: 1fr; }
+  .inquiry-form .inquiry-fields .field-wide { grid-column: auto; }
 }
 .seo-page {
   background: linear-gradient(180deg, #f6faff 0%, #ffffff 30%, #ffffff 100%);

@@ -332,11 +332,11 @@ const applyLanguage = () => {
     }
   });
   document.querySelectorAll(".inquiry-panel h3").forEach((node) => { node.textContent = t("form.title"); });
-  document.querySelectorAll(".lead-form [name='name']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.name"); });
-  document.querySelectorAll(".lead-form [name='country']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.country"); });
-  document.querySelectorAll(".lead-form [name='whatsapp']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.whatsapp"); });
-  document.querySelectorAll(".lead-form [name='model']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.vehicle"); });
-  document.querySelectorAll(".lead-form [name='message']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.message"); });
+  document.querySelectorAll(".inquiry-form [name='name']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.name"); });
+  document.querySelectorAll(".inquiry-form [name='country']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.country"); });
+  document.querySelectorAll(".inquiry-form [name='whatsapp']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.whatsapp"); });
+  document.querySelectorAll(".inquiry-form [name='model']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.vehicle"); });
+  document.querySelectorAll(".inquiry-form [name='message']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.message"); });
   document.querySelectorAll(".inquiry-success").forEach((node) => { node.textContent = t("form.success"); });
   document.querySelectorAll(".js-inquiry-cta, .inquiry-submit").forEach((node) => { node.textContent = node.classList.contains("inquiry-submit") ? t("form.submit") : t("hero.quote"); });
   document.querySelectorAll("a.whatsapp-btn, .hero-actions a[href*='wa.me']").forEach((node) => { node.textContent = t("contact.whatsapp"); });
@@ -495,6 +495,44 @@ const bindVideoStages = () => {
   });
 };
 
+const encodeFormData = (formData) => new URLSearchParams(formData).toString();
+
+const bindInquiryForms = () => {
+  document.querySelectorAll("form.inquiry-form").forEach((form) => {
+    if (form.dataset.submitBound === "true") return;
+    form.dataset.submitBound = "true";
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const submitButton = form.querySelector('[type="submit"]');
+      const originalLabel = submitButton?.textContent;
+      const formData = new FormData(form);
+      formData.set("form-name", "inquiry");
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+      }
+
+      try {
+        const response = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: encodeFormData(formData)
+        });
+        if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
+        window.location.assign("/thank-you.html");
+      } catch (error) {
+        console.error("Inquiry submission failed", error);
+        window.alert("Submission failed. Please contact us on WhatsApp.");
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalLabel;
+        }
+      }
+    });
+  });
+};
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 applyLanguage();
@@ -502,6 +540,7 @@ loadVehicles().catch((error) => console.error("Vehicle data engine failed", erro
 bindWhatsappButtons();
 updateCompanyMedia();
 bindVideoStages();
+bindInquiryForms();
 if (document.body.classList.contains("company-page")) window.setInterval(updateCompanyMedia, 15000);
 
 

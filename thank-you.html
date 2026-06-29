@@ -28,6 +28,15 @@
     </div>
   </header>
   <main>
+    <form name="inquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="inquiry">
+      <input name="name">
+      <input name="country">
+      <input name="whatsapp">
+      <input name="model">
+      <textarea name="message"></textarea>
+      <input name="bot-field">
+    </form>
     <section class="seo-hero">
       <div class="container">
         <p class="eyebrow">Inquiry Received</p>
@@ -46,6 +55,6 @@
       <p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p>
     </div>
   </footer>
-  <script src="script.js?v=20260626-data-engine-v1"></script>
+  <script src="script.js?v=20260629-inquiry-ajax"></script>
 </body>
 </html>

@@ -78,7 +78,7 @@ const bindInquiryCtas = () => {
     if (button.dataset.prefillBound === 'true') return;
     button.dataset.prefillBound = 'true';
     button.addEventListener('click', () => {
-      const form = document.querySelector('.lead-form');
+      const form = document.querySelector('.inquiry-form');
       if (!form) return;
       const context = {
         title: button.dataset.title || currentTitle(),
@@ -103,7 +103,7 @@ const bindDetailCtas = () => {
     if (button.dataset.ctaBound === 'true') return;
     button.dataset.ctaBound = 'true';
     button.addEventListener('click', () => {
-      const form = document.querySelector('.lead-form');
+      const form = document.querySelector('.inquiry-form');
       if (!form) return;
       const title = button.dataset.title || currentTitle();
       const modelField = form.elements.namedItem('model');
