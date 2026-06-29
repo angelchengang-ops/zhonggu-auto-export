@@ -3,6 +3,9 @@ const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 const whatsappNumber = "447473271351";
 const whatsappDisplayNumber = "+44 7473 271351";
+window.trackEvent = window.trackEvent || ((eventName, parameters = {}) => {
+  if (typeof window.gtag === "function") window.gtag("event", eventName, parameters);
+});
 const APP_VERSION = "20260626-data-engine-v1";
 
 const languageOptions = [
@@ -455,6 +458,8 @@ const bindWhatsappButtons = () => {
     button.setAttribute("aria-label", label);
   });
   document.addEventListener("click", (event) => {
+    const whatsappTarget = event.target.closest("a[href*='wa.me/'], .whatsapp-btn");
+    if (whatsappTarget) window.trackEvent("whatsapp_click", { link_url: whatsappTarget.href || waUrl(whatsappTarget.dataset.message || "Website inquiry") });
     const button = event.target.closest(".whatsapp-btn, .vehicle-card button");
     if (!button || button.tagName === "A") return;
     const message = button.dataset.message || `Hello Zhonggu Auto Export, I would like to request FOB price and stock list for ${button.dataset.car || "a vehicle"}.`;
@@ -503,6 +508,17 @@ const bindVideoStages = () => {
 
 const encodeFormData = (formData) => new URLSearchParams(formData).toString();
 
+
+const bindAfricaMarketTracking = () => {
+  if (!document.body.classList.contains("africa-market-page")) return;
+  const country = document.body.dataset.marketCountry || "Africa";
+  window.trackEvent("africa_market_page_view", { country, page_location: window.location.href });
+  document.querySelectorAll(".africa-inquiry-cta").forEach((button) => {
+    button.addEventListener("click", () => {
+      window.trackEvent("africa_inquiry_click", { country, link_url: button.href });
+    });
+  });
+};
 const bindInquiryForms = () => {
   document.querySelectorAll("form.inquiry-form").forEach((form) => {
     if (form.dataset.submitBound === "true") return;
@@ -547,6 +563,7 @@ bindWhatsappButtons();
 updateCompanyMedia();
 bindVideoStages();
 bindInquiryForms();
+bindAfricaMarketTracking();
 if (document.body.classList.contains("company-page")) window.setInterval(updateCompanyMedia, 15000);
 
 

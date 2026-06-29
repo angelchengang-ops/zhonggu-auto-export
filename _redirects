@@ -1,3 +1,8 @@
+https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+
+/admin /admin/media.html 302
+/admin/ /admin/media.html 302
+
 /china-used-car-exporter /china-used-car-exporter.html 200
 /china-new-car-exporter /china-new-car-exporter.html 200
 /chinese-vehicle-export-company /chinese-vehicle-export-company.html 200
@@ -22,3 +27,8 @@
 /used-vw-tacqua-2023-001 /used-vw-tacqua-2023-001.html 200
 /used-honda-fit-2021-001 /used-honda-fit-2021-001.html 200
 /used-chery-tiggo8-plus-cdm-001 /used-chery-tiggo8-plus-cdm-001.html 200
+
+/export-cars-from-china-to-nigeria /export-cars-from-china-to-nigeria.html 200
+/export-cars-from-china-to-ghana /export-cars-from-china-to-ghana.html 200
+/export-cars-from-china-to-egypt /export-cars-from-china-to-egypt.html 200
+/export-cars-from-china-to-libya /export-cars-from-china-to-libya.html 200

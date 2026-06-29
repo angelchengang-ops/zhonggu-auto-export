@@ -1358,3 +1358,26 @@ img { display: block; max-width: 100%; }
   .vehicle-fob-btn, .vehicle-footer .whatsapp-btn { min-height: 42px; padding: 0 13px; font-size: .75rem; }
   .vehicle-footer .price strong, .price strong { font-size: 1rem; }
 }
+
+.footer-market-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  font-size: .82rem;
+}
+.footer-market-links span { color: rgba(255, 255, 255, .68); font-weight: 800; }
+.footer-market-links a { color: var(--white); text-decoration: none; }
+.footer-market-links a:hover { color: #8cc5ff; }
+.market-link-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.market-link-grid a {
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--navy);
+  font-weight: 800;
+  text-decoration: none;
+}
+.market-link-grid a:hover { border-color: var(--blue); color: var(--blue); }
+.market-cta { background: linear-gradient(135deg, #eef6ff, #f8fbff); }
