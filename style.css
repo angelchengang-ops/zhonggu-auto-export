@@ -1521,8 +1521,4 @@ img { display: block; max-width: 100%; }
   .channel-quote-panel .hero-actions .btn { width: 100%; }
 }
 
-.priority-market-home{padding:64px 0 18px;background:#f7fbff}
-.priority-market-card{display:grid;gap:14px;align-items:start;padding:30px;border:1px solid rgba(18,104,232,.18);border-radius:22px;background:linear-gradient(135deg,#fff 0%,#eef6ff 100%);box-shadow:0 20px 54px rgba(12,38,78,.08)}
-.priority-market-card h2{margin:0;color:var(--navy)}
-.priority-market-card p:not(.eyebrow){max-width:760px;margin:0;color:var(--muted);line-height:1.7}
-@media(max-width:720px){.priority-market-home{padding:42px 0 12px}.priority-market-card{padding:22px}.priority-market-card .btn{width:100%;justify-content:center}}
+.priority-vehicle-links{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.priority-vehicle-links a{display:flex;align-items:center;min-height:84px;padding:18px;border:1px solid #dbe3ec;border-radius:14px;background:#fff;color:#17324d;font-weight:700;text-decoration:none}.priority-vehicle-links a:hover{border-color:#df3127;color:#b82018}@media(max-width:900px){.priority-vehicle-links{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.priority-vehicle-links{grid-template-columns:1fr}.priority-vehicle-links a{min-height:64px}}
