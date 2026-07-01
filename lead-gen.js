@@ -4,6 +4,18 @@ const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
 
 const normalize = (value) => String(value || '').replace(/\s+/g, ' ').trim();
+const escapeRegExp = (value) => String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const normalizeVehicleName = (name, brand = '') => {
+  const cleanedName = String(name || '').replace(/\s+/g, ' ').trim();
+  const cleanedBrand = String(brand || '').replace(/\s+/g, ' ').trim();
+  if (!cleanedName || !cleanedBrand) return cleanedName;
+  const brandPrefix = escapeRegExp(cleanedBrand);
+  return cleanedName
+    .replace(new RegExp(`^${brandPrefix}\\s+(${brandPrefix}\\S*)`, 'i'), '$1')
+    .replace(new RegExp(`^(${brandPrefix})\\s+\\1\\b`, 'i'), '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
 const inquiryChannels = {
   google: { label: 'Google Search', whatsappSource: 'Google' },
   bing: { label: 'Bing Search', whatsappSource: 'Bing' },
@@ -36,7 +48,7 @@ const bindSourceWhatsappLinks = () => {
 
 window.zhongguBuildWhatsappLink = buildWhatsappSourceUrl;
 const currentUrl = () => `${window.location.origin}${window.location.pathname}${window.location.search}`;
-const currentTitle = () => normalize(document.title.replace(/\s+\|\s+Zhonggu Auto Export$/i, '')) || document.title;
+const currentTitle = () => normalize(document.title.replace(/\s+\|\s+Zhonggu Auto Export$/i, '').replace(/\s+\|\s+FOB Price and Stock List$/i, '')) || document.title;
 
 const buildWhatsappMessage = (context = {}) => {
   const title = normalize(context.title || currentTitle());
@@ -160,3 +172,6 @@ if (document.readyState === 'loading') {
 } else {
   initLeadGen();
 }
+
+
+

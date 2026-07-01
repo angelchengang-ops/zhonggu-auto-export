@@ -1,11 +1,13 @@
-{
+﻿{
     "name":  "zhonggu-media-manager",
     "version":  "1.0.0",
     "private":  true,
     "scripts":  {
+                    "build":  "node scripts/generate-vehicle-pages.js && node scripts/inject-webmaster-verification.js",
                     "start":  "node server.js",
                     "media":  "node server.js",
                     "netlify:ignore":  "node scripts/netlify-ignore.js",
                     "media-server":  "node server.js"
                 }
 }
+

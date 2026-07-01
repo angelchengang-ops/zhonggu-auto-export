@@ -1,4 +1,4 @@
-const header = document.querySelector(".site-header");
+﻿const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 const whatsappNumber = "447473271351";
@@ -299,6 +299,32 @@ const cleanPath = (url) => String(url || "").replace(/^\/+/, "");
 const vehicleUrl = (id) => `${id || "vehicle"}.html`;
 const escapeHtml = (value) => String(value || "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
 const waUrl = (message) => `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+const escapeRegExp = (value) => String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const normalizeVehicleName = (name, brand = "") => {
+  const cleanedName = String(name || "").replace(/\s+/g, " ").trim();
+  const cleanedBrand = String(brand || "").replace(/\s+/g, " ").trim();
+  if (!cleanedName || !cleanedBrand) return cleanedName;
+  const brandPrefix = escapeRegExp(cleanedBrand);
+  return cleanedName
+    .replace(new RegExp(`^${brandPrefix}\\s+(${brandPrefix}\\S*)`, "i"), "$1")
+    .replace(new RegExp(`^(${brandPrefix})\\s+\\1\\b`, "i"), "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+const vehicleNameFromParts = (brand, model, year = "") => {
+  const cleanedBrand = String(brand || "").replace(/\s+/g, " ").trim();
+  const cleanedModel = normalizeVehicleName(model, cleanedBrand);
+  const startsWithBrand = cleanedBrand && cleanedModel.toLowerCase().startsWith(cleanedBrand.toLowerCase());
+  return [startsWithBrand ? "" : cleanedBrand, cleanedModel, year].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+};
+const absoluteUrl = (path) => new URL(path || "", window.location.origin).href;
+const buildVehicleWhatsappMessage = ({ title, model, year, price, url } = {}) => [
+  `I am interested in ${title}. Please send me the latest FOB price and stock list.`,
+  title ? `Model: ${title}` : (model ? `Model: ${model}` : ""),
+  year ? `Year: ${year}` : "",
+  price ? `Price: ${price}` : "",
+  url ? `Page: ${url}` : ""
+].filter(Boolean).join("\n");
 const applyLanguage = () => {
   const meta = languageOptions.find((item) => item.value === state.language) || languageOptions[0];
   document.documentElement.lang = state.language;
@@ -378,7 +404,7 @@ document.querySelectorAll("[data-brand-logo-grid]").forEach((grid) => {
 });
 
 const handleImageError = (image) => { image.onerror = null; image.src = "images/hero/hero-car.jpg"; };
-const getVehicleTitle = (car) => localized(car.title) || `${localized(car.brand, "Zhonggu Auto Export")} ${localized(car.model || car.name, "Vehicle")} ${localized(car.year, "")}`.replace(/\s+/g, " ").trim();
+const getVehicleTitle = (car) => normalizeVehicleName(localized(car.title), localized(car.brand)) || vehicleNameFromParts(localized(car.brand, "Zhonggu Auto Export"), localized(car.model || car.name, "Vehicle"), localized(car.year, ""));
 const getVehicleDescription = (car) => localized(car.shortDescription) || localized(car.descriptionShort) || t("car.available");
 
 const makeVehicleCard = (car, type = "new") => {
@@ -386,14 +412,16 @@ const makeVehicleCard = (car, type = "new") => {
   const model = localized(car.model || car.name, "Vehicle");
   const year = localized(car.year || car.modelYear, "");
   const title = getVehicleTitle(car);
+  const displayModel = normalizeVehicleName(model, brand);
   const trim = localized(car.trimEn || car.configuration || car.transmission, "");
   const transmission = localized(car.transmission || car.fuel, type === "used" ? "Automatic" : "New vehicle");
   const mileage = localized(car.mileage, type === "used" ? "" : "New vehicle");
   const price = localized(car.price || car.fobPriceDisplay || car.fobNanShaUsd || car.fobRange, "Contact for FOB price");
+  const messagePrice = localized(car.price || car.fobPriceDisplay || car.fobNanShaUsd || car.fobRange, "");
   const image = cleanPath(localized(car.mainImage || car.image, "images/hero/hero-car.jpg"));
-  const href = type === "used" ? vehicleUrl(car.id) : "contact.html";
+  const href = vehicleUrl(car.id);
   const video = type === "used" ? cleanPath(localized((car.videos || [])[0], "")) : "";
-  const message = `I am interested in ${title}. Please send me the latest FOB price and stock list.\nModel: ${title}\nYear: ${year}\nPrice: ${price}\nPage: ${location.origin}/${href}`;
+  const message = buildVehicleWhatsappMessage({ title, model: displayModel, year, price: messagePrice, url: absoluteUrl(href) });
   const meta = [year && `${t("car.year")}: ${year}`, transmission, mileage].filter(Boolean).join(" | ");
   const card = document.createElement("article");
   card.className = "vehicle-card";
@@ -404,7 +432,7 @@ const makeVehicleCard = (car, type = "new") => {
     </a>
     <div class="vehicle-body">
       <p class="vehicle-brand">${escapeHtml(brand)}</p>
-      <h3>${escapeHtml(model)}</h3>
+      <h3>${escapeHtml(displayModel)}</h3>
       <p class="vehicle-subtitle">${escapeHtml([year, trim].filter(Boolean).join(" | "))}</p>
       <p class="vehicle-meta">${escapeHtml(meta)}</p>
       <p class="vehicle-description">${escapeHtml(getVehicleDescription(car))}</p>
@@ -416,7 +444,7 @@ const makeVehicleCard = (car, type = "new") => {
   img.addEventListener("error", () => handleImageError(img));
   const button = card.querySelector("button");
   button.dataset.car = title;
-  button.dataset.model = model;
+  button.dataset.model = displayModel;
   button.dataset.year = year;
   button.dataset.price = price;
   button.dataset.url = href;
@@ -565,5 +593,10 @@ bindVideoStages();
 bindInquiryForms();
 bindAfricaMarketTracking();
 if (document.body.classList.contains("company-page")) window.setInterval(updateCompanyMedia, 15000);
+
+
+
+
+
 
 

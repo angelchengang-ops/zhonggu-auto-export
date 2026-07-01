@@ -1,5 +1,5 @@
-[build]
-  command = "node scripts/inject-webmaster-verification.js"
+﻿[build]
+  command = "node scripts/generate-vehicle-pages.js && node scripts/inject-webmaster-verification.js"
   publish = "."
   ignore = "node scripts/netlify-ignore.js"
 
