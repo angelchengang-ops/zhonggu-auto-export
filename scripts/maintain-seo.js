@@ -51,8 +51,8 @@ for(const [code,d] of Object.entries(local)) for(const slug of slugs){
 const cars=JSON.parse(read('cars.json'));
 const xml=(urls,frequency='monthly')=>`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${u}</loc><lastmod>2026-07-01</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
 const vehicleUrls=cars.filter(c=>c.id).map(c=>`${SITE}/${c.id}.html`);
-const landingDirs=fs.readdirSync(path.join(ROOT,'landing'),{withFileTypes:true}).filter(x=>x.isDirectory()&&fs.existsSync(path.join(ROOT,'landing',x.name,'index.html'))).map(x=>`${SITE}/landing/${x.name}`);
-const localized=[]; for(const code of ['fr','ar']) for(const slug of slugs) localized.push(`${SITE}/${code}/landing/${slug}`);
+const landingDirs=fs.readdirSync(path.join(ROOT,'landing'),{withFileTypes:true}).filter(x=>x.isDirectory()&&fs.existsSync(path.join(ROOT,'landing',x.name,'index.html'))).map(x=>`${SITE}/landing/${x.name}/`);
+const localized=[]; for(const code of ['fr','ar']) for(const slug of slugs) localized.push(`${SITE}/${code}/landing/${slug}/`);
 const vehicleIds=new Set(cars.map(c=>`${c.id}.html`));
 const pages=fs.readdirSync(ROOT,{withFileTypes:true}).filter(x=>x.isFile()&&x.name.endsWith('.html')&&!vehicleIds.has(x.name)&&x.name!=='index.html').map(x=>`${SITE}/${x.name}`);
 write('sitemap-pages.xml',xml([`${SITE}/`,...pages]));

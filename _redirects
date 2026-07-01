@@ -1,4 +1,4 @@
-﻿https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 
 /admin /admin/media.html 302
 /admin/ /admin/media.html 302
@@ -90,3 +90,14 @@
 /ar/landing/geely-binyue-export-algeria /ar/landing/geely-binyue-export-algeria/index.html 200
 /fr/landing/cif-car-price-to-algiers /fr/landing/cif-car-price-to-algiers/index.html 200
 /ar/landing/cif-car-price-to-algiers /ar/landing/cif-car-price-to-algiers/index.html 200
+
+/landing/used-cars-export-to-burkina-faso /landing/used-cars-export-to-burkina-faso/index.html 200
+/landing/used-cars-export-to-burkina-faso/ /landing/used-cars-export-to-burkina-faso/index.html 200
+/landing/used-cars-export-to-algeria /landing/used-cars-export-to-algeria/index.html 200
+/landing/used-cars-export-to-algeria/ /landing/used-cars-export-to-algeria/index.html 200
+/landing/china-used-cars-export-to-west-africa /landing/china-used-cars-export-to-west-africa/index.html 200
+/landing/china-used-cars-export-to-west-africa/ /landing/china-used-cars-export-to-west-africa/index.html 200
+/landing/used-cars-export-to-myanmar /landing/used-cars-export-to-myanmar/index.html 200
+/landing/used-cars-export-to-myanmar/ /landing/used-cars-export-to-myanmar/index.html 200
+/landing/china-car-exporter-for-central-asia /landing/china-car-exporter-for-central-asia/index.html 200
+/landing/china-car-exporter-for-central-asia/ /landing/china-car-exporter-for-central-asia/index.html 200
