@@ -1,4 +1,4 @@
-﻿const leadWhatsappNumber = '447473271351';
+const leadWhatsappNumber = '447473271351';
 const leadWhatsappDisplayNumber = '+44 7473 271351';
 const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
@@ -109,7 +109,17 @@ const ensureWhatsappButton = () => {
   if (document.querySelector('.floating-whatsapp-btn')) return;
   const button = document.createElement('a');
   button.className = 'floating-whatsapp-btn';
-  button.href = buildWhatsappSourceUrl(buildWhatsappMessage());
+  const vehicleData = document.body.classList.contains('vehicle-detail-page') && window.ZhongguVehicleInquiry ? {
+    id: document.body.dataset.vehicleId,
+    brand: document.body.dataset.vehicleBrand,
+    title: document.body.dataset.vehicleName,
+    year: document.body.dataset.vehicleYear,
+    price: document.body.dataset.vehiclePrice,
+    detailUrl: document.body.dataset.vehicleUrl
+  } : null;
+  button.href = vehicleData
+    ? window.ZhongguVehicleInquiry.buildVehicleWhatsappUrl(vehicleData)
+    : buildWhatsappSourceUrl(buildWhatsappMessage());
   button.target = '_blank';
   button.rel = 'noopener noreferrer';
   button.title = leadWhatsappDisplayNumber;

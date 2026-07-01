@@ -1,8 +1,9 @@
-﻿const header = document.querySelector(".site-header");
+const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 const whatsappNumber = "447473271351";
 const whatsappDisplayNumber = "+44 7473 271351";
+const vehicleInquiry = window.ZhongguVehicleInquiry;
 window.trackEvent = window.trackEvent || ((eventName, parameters = {}) => {
   if (typeof window.gtag === "function") window.gtag("event", eventName, parameters);
 });
@@ -404,7 +405,7 @@ document.querySelectorAll("[data-brand-logo-grid]").forEach((grid) => {
 });
 
 const handleImageError = (image) => { image.onerror = null; image.src = "images/hero/hero-car.jpg"; };
-const getVehicleTitle = (car) => normalizeVehicleName(localized(car.title), localized(car.brand)) || vehicleNameFromParts(localized(car.brand, "Zhonggu Auto Export"), localized(car.model || car.name, "Vehicle"), localized(car.year, ""));
+const getVehicleTitle = (car) => vehicleInquiry.formatVehicleName(car);
 const getVehicleDescription = (car) => localized(car.shortDescription) || localized(car.descriptionShort) || t("car.available");
 
 const makeVehicleCard = (car, type = "new") => {
@@ -419,9 +420,9 @@ const makeVehicleCard = (car, type = "new") => {
   const price = localized(car.price || car.fobPriceDisplay || car.fobNanShaUsd || car.fobRange, "Contact for FOB price");
   const messagePrice = localized(car.price || car.fobPriceDisplay || car.fobNanShaUsd || car.fobRange, "");
   const image = cleanPath(localized(car.mainImage || car.image, "images/hero/hero-car.jpg"));
-  const href = vehicleUrl(car.id);
+  const href = `${vehicleInquiry.vehicleSlug(car)}.html`;
   const video = type === "used" ? cleanPath(localized((car.videos || [])[0], "")) : "";
-  const message = buildVehicleWhatsappMessage({ title, model: displayModel, year, price: messagePrice, url: absoluteUrl(href) });
+  const message = vehicleInquiry.buildVehicleMessage({ ...car, title, detailUrl: absoluteUrl(href) });
   const meta = [year && `${t("car.year")}: ${year}`, transmission, mileage].filter(Boolean).join(" | ");
   const card = document.createElement("article");
   card.className = "vehicle-card";
