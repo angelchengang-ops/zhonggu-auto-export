@@ -65,7 +65,11 @@ const render = (car) => {
   const name = getVehicleName(car);
   const url = `${SITE}/${id}.html`;
   const img = getImage(car);
-  const imgUrl = absoluteUrl(img);
+  const ogImage = `images/og/vehicles/${id}.jpg`;
+  if (!fs.existsSync(path.join(__dirname, '..', ogImage))) {
+    throw new Error(`Missing OG image for ${id}: ${ogImage}`);
+  }
+  const imgUrl = absoluteUrl(ogImage);
   const description = getDescription(car, name);
   const ogTitle = `${name} | FOB Price and Stock List`;
   const wa = vehicleInquiry.buildVehicleWhatsappUrl({ ...car, detailUrl: url });
