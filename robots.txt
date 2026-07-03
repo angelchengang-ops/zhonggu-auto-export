@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.zhongguauto.com/sitemap.xml
+Disallow: /admin/
+Disallow: /api/
+Disallow: /tmp/
+Disallow: /media-processed/
+Disallow: /media-trash/
+
+Sitemap: https://zhongguauto.com/sitemap.xml

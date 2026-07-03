@@ -1,9 +1,9 @@
-(function (root, factory) {
+﻿(function (root, factory) {
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.ZhongguVehicleInquiry = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
-  const SITE_URL = "https://www.zhongguauto.com";
+  const SITE_URL = "https://zhongguauto.com";
   const WHATSAPP_NUMBER = "447473271351";
 
   const text = (value) => {

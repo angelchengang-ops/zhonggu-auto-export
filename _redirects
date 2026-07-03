@@ -1,4 +1,7 @@
-https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
+http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
+http://zhongguauto.com/* https://zhongguauto.com/:splat 301!
+/index.html / 301!
 
 /admin /admin/media.html 302
 /admin/ /admin/media.html 302
@@ -21,9 +24,11 @@ https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 /export-process /export-process.html 200
 /contact /contact.html 200
 /used-vw-t-cross-2024-001 /used-vw-t-cross-2024-001.html 200
+/used-toyota-corolla-2023 /used-toyota-corolla-2023.html 200
 /used-toyota-corolla-2023-001 /used-toyota-corolla-2023-001.html 200
 /used-toyota-rav4-2024-001 /used-toyota-rav4-2024-001.html 200
 /used-toyota-corolla-2022-001 /used-toyota-corolla-2022-001.html 200
+/used-vw-tacqua-2023 /used-vw-tacqua-2023.html 200
 /used-vw-tacqua-2023-001 /used-vw-tacqua-2023-001.html 200
 /used-honda-fit-2021-001 /used-honda-fit-2021-001.html 200
 /used-chery-tiggo8-plus-cdm-001 /used-chery-tiggo8-plus-cdm-001.html 200
@@ -55,6 +60,7 @@ https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 /ru/export-cars-from-china-to-uzbekistan /ru/export-cars-from-china-to-uzbekistan.html 200
 /ru/export-cars-from-china-to-kyrgyzstan /ru/export-cars-from-china-to-kyrgyzstan.html 200
 /export-to-algeria /export-to-algeria/ 301
+
 /landing/export-cars-to-algeria /landing/export-cars-to-algeria/index.html 200
 /landing/export-cars-to-uae /landing/export-cars-to-uae/index.html 200
 /landing/export-cars-to-africa /landing/export-cars-to-africa/index.html 200
@@ -69,7 +75,6 @@ https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 /landing/bestune-car-exporter-china /landing/bestune-car-exporter-china/index.html 200
 /landing/toyota-used-cars-china /landing/toyota-used-cars-china/index.html 200
 /landing/honda-used-cars-china /landing/honda-used-cars-china/index.html 200
-
 /landing/geely-binyue-export-algeria /landing/geely-binyue-export-algeria/index.html 200
 /landing/geely-coolray-exporter-china /landing/geely-coolray-exporter-china/index.html 200
 /landing/geely-suv-exporter-china /landing/geely-suv-exporter-china/index.html 200
@@ -84,20 +89,9 @@ https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 /landing/china-to-algeria-car-shipping /landing/china-to-algeria-car-shipping/index.html 200
 /fr/landing/export-cars-to-algeria /fr/landing/export-cars-to-algeria/index.html 200
 /ar/landing/export-cars-to-algeria /ar/landing/export-cars-to-algeria/index.html 200
-
 /landing/algeria-car-importer-channels /landing/algeria-car-importer-channels/index.html 200
-/fr/landing/geely-binyue-export-algeria /fr/landing/geely-binyue-export-algeria/index.html 200
-/ar/landing/geely-binyue-export-algeria /ar/landing/geely-binyue-export-algeria/index.html 200
-/fr/landing/cif-car-price-to-algiers /fr/landing/cif-car-price-to-algiers/index.html 200
-/ar/landing/cif-car-price-to-algiers /ar/landing/cif-car-price-to-algiers/index.html 200
-
-/landing/used-cars-export-to-burkina-faso /landing/used-cars-export-to-burkina-faso/index.html 200
-/landing/used-cars-export-to-burkina-faso/ /landing/used-cars-export-to-burkina-faso/index.html 200
 /landing/used-cars-export-to-algeria /landing/used-cars-export-to-algeria/index.html 200
-/landing/used-cars-export-to-algeria/ /landing/used-cars-export-to-algeria/index.html 200
+/landing/used-cars-export-to-burkina-faso /landing/used-cars-export-to-burkina-faso/index.html 200
 /landing/china-used-cars-export-to-west-africa /landing/china-used-cars-export-to-west-africa/index.html 200
-/landing/china-used-cars-export-to-west-africa/ /landing/china-used-cars-export-to-west-africa/index.html 200
 /landing/used-cars-export-to-myanmar /landing/used-cars-export-to-myanmar/index.html 200
-/landing/used-cars-export-to-myanmar/ /landing/used-cars-export-to-myanmar/index.html 200
 /landing/china-car-exporter-for-central-asia /landing/china-car-exporter-for-central-asia/index.html 200
-/landing/china-car-exporter-for-central-asia/ /landing/china-car-exporter-for-central-asia/index.html 200

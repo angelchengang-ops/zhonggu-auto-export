@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://www.zhongguauto.com';
+const SITE = 'https://zhongguauto.com';
 const WHATSAPP = '447473271351';
 const cars = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'cars.json'), 'utf8'));
 
@@ -89,9 +89,26 @@ const render = (car) => {
     name,
     description,
     image: [imgUrl],
-    sku: id,
+    sku: `ZG-${id.toUpperCase()}`,
     brand: { '@type': 'Brand', name: pickText(car.brand, 'Zhonggu Auto Export') },
-    offers: { '@type': 'Offer', url, priceCurrency: 'USD', availability: 'https://schema.org/InStock', itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}` }
+    offers: {
+      '@type': 'Offer',
+      url,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}`,
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingDestination: { '@type': 'DefinedRegion', name: 'International destination ports' },
+        description: 'Shipping is available by FOB or CIF quotation depending on destination port.'
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+        applicableCountry: 'International',
+        description: 'International vehicle export orders are subject to contract terms and destination regulations.'
+      }
+    }
   };
   const usdPrice = getUsdPrice(car);
   if (usdPrice) jsonLd.offers.price = usdPrice;
