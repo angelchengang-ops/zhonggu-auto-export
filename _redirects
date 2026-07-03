@@ -1,6 +1,7 @@
-https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
-http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
-http://zhongguauto.com/* https://zhongguauto.com/:splat 301!
+﻿# Host/domain canonical redirects are intentionally not defined here.
+# Set the hosting platform primary domain to https://zhongguauto.com and disable forced www.
+# Keeping www -> apex here can loop if the platform forces apex -> www.
+
 /index.html / 301!
 
 /admin /admin/media.html 302
@@ -95,3 +96,4 @@ http://zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /landing/china-used-cars-export-to-west-africa /landing/china-used-cars-export-to-west-africa/index.html 200
 /landing/used-cars-export-to-myanmar /landing/used-cars-export-to-myanmar/index.html 200
 /landing/china-car-exporter-for-central-asia /landing/china-car-exporter-for-central-asia/index.html 200
+
