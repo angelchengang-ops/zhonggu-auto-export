@@ -2,7 +2,30 @@ const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 const whatsappDisplayNumber = "CRM inquiry form";
-const vehicleInquiry = window.ZhongguVehicleInquiry;
+const fallbackVehicleInquiry = (() => {
+  const text = (value) => {
+    if (value && typeof value === "object" && !Array.isArray(value)) return text(value.en || Object.values(value).find(Boolean));
+    return String(value || "").replace(/\s+/g, " ").trim();
+  };
+  const slugify = (value) => text(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const formatVehicleName = (car = {}) => {
+    const brand = text(car.brand);
+    const name = text(car.title || car.model || car.name || car.id);
+    if (!name) return brand || "Vehicle";
+    if (!brand || name.toLowerCase().startsWith(brand.toLowerCase())) return name;
+    return `${brand} ${name}`;
+  };
+  const vehicleSlug = (car = {}) => text(car.slug || car.id) || slugify(formatVehicleName(car));
+  const vehicleDetailUrl = (car = {}) => `https://zhongguauto.com/${vehicleSlug(car)}.html`;
+  const buildVehicleMessage = (car = {}) => {
+    const title = formatVehicleName(car);
+    const price = text(car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.guidePriceDisplay || car.guidePriceRmb || car.fobRange);
+    const url = text(car.detailUrl || car.url) || vehicleDetailUrl(car);
+    return [`I am interested in ${title}. Please send me the latest FOB price and stock list.`, `Model: ${title}`, price ? `Price: ${price}` : "", url ? `Page: ${url}` : ""].filter(Boolean).join("\n");
+  };
+  return { formatVehicleName, vehicleSlug, vehicleDetailUrl, buildVehicleMessage };
+})();
+const vehicleInquiry = window.ZhongguVehicleInquiry || fallbackVehicleInquiry;
 window.trackEvent = window.trackEvent || ((eventName, parameters = {}) => {
   if (typeof window.gtag === "function") window.gtag("event", eventName, parameters);
 });
@@ -224,16 +247,24 @@ class DataEngine {
     const response = await fetch(`${this.source}?v=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error(`Unable to load ${this.source}`);
     const data = await response.json();
-    this.rawCars = Array.isArray(data) ? data.map((car) => Object.freeze({ ...car })) : [];
+    const cars = Array.isArray(data) ? data
+      : Array.isArray(data?.cars) ? data.cars
+      : Array.isArray(data?.vehicles) ? data.vehicles
+      : Array.isArray(data?.items) ? data.items
+      : [];
+    this.rawCars = cars.map((car) => Object.freeze({ ...(car || {}) }));
+    console.info("cars.json loaded", { source: this.source, total: this.rawCars.length });
     return this.getRawCars();
   }
   getRawCars() {
     return (this.rawCars || []).map((car) => ({ ...car }));
   }
   normalizeType(car) {
-    const value = String(car?.category || car?.type || car?.status || "").toLowerCase();
-    if (value.includes("used")) return "used";
-    if (value.includes("new")) return "new";
+    if (car?.isUsed === true) return "used";
+    if (car?.isUsed === false) return "new";
+    const values = [car?.category, car?.type, car?.condition, car?.vehicleType, car?.status].map((value) => String(value || "").trim().toLowerCase());
+    if (values.some((value) => value === "used" || value === "used car" || value.includes("used"))) return "used";
+    if (values.some((value) => value === "new" || value === "new car" || value.includes("new"))) return "new";
     return "new";
   }
   getNewCars() {
@@ -405,24 +436,34 @@ document.querySelectorAll("[data-brand-logo-grid]").forEach((grid) => {
 });
 
 const handleImageError = (image) => { image.onerror = null; image.src = "images/hero/hero-car.jpg"; };
-const getVehicleTitle = (car) => vehicleInquiry.formatVehicleName(car);
-const getVehicleDescription = (car) => localized(car.shortDescription) || localized(car.descriptionShort) || t("car.available");
+const getVehicleTitle = (car = {}) => {
+  const brand = localized(car.brand, "");
+  const name = localized(car.model) || localized(car.title) || localized(car.name) || String(car.id || "Vehicle");
+  return vehicleNameFromParts(brand, name) || fallbackVehicleInquiry.formatVehicleName(car);
+};
+const getVehicleDescription = (car = {}) => localized(car.shortDescription) || localized(car.description) || localized(car.descriptionShort) || localized(car.configuration) || t("car.available");
+const getVehiclePrice = (car = {}) => localized(car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.guidePriceDisplay || car.guidePriceRmb || car.fobRange, "Contact for FOB price");
+const getVehicleImage = (car = {}) => cleanPath(localized(car.image || car.mainImage || car.thumbnail || (Array.isArray(car.images) ? car.images[0] : ""), "images/hero/hero-car.jpg"));
+const getVehicleSlug = (car = {}) => localized(car.slug || car.id) || vehicleInquiry.vehicleSlug?.(car) || fallbackVehicleInquiry.vehicleSlug(car);
+const getVehicleMessage = (car = {}, title = "Vehicle", href = "") => {
+  try { return vehicleInquiry.buildVehicleMessage({ ...car, title, detailUrl: absoluteUrl(href) }); }
+  catch { return buildVehicleWhatsappMessage({ title, model: title, price: getVehiclePrice(car), url: absoluteUrl(href) }); }
+};
 
 const makeVehicleCard = (car, type = "new") => {
   const brand = localized(car.brand, "Zhonggu Auto Export");
-  const model = localized(car.model || car.name, "Vehicle");
+  const model = localized(car.model) || localized(car.title) || localized(car.name) || String(car.id || "Vehicle");
   const year = localized(car.year || car.modelYear, "");
   const title = getVehicleTitle(car);
-  const displayModel = normalizeVehicleName(model, brand);
+  const displayModel = normalizeVehicleName(model, brand) || title;
   const trim = localized(car.trimEn || car.configuration || car.transmission, "");
   const transmission = localized(car.transmission || car.fuel, type === "used" ? "Automatic" : "New vehicle");
   const mileage = localized(car.mileage, type === "used" ? "" : "New vehicle");
-  const price = localized(car.price || car.fobPriceDisplay || car.fobNanShaUsd || car.fobRange, "Contact for FOB price");
-  const messagePrice = localized(car.price || car.fobPriceDisplay || car.fobNanShaUsd || car.fobRange, "");
-  const image = cleanPath(localized(car.mainImage || car.image, "images/hero/hero-car.jpg"));
-  const href = `${vehicleInquiry.vehicleSlug(car)}.html`;
+  const price = getVehiclePrice(car);
+  const image = getVehicleImage(car);
+  const href = `${getVehicleSlug(car)}.html`;
   const video = type === "used" ? cleanPath(localized((car.videos || [])[0], "")) : "";
-  const message = vehicleInquiry.buildVehicleMessage({ ...car, title, detailUrl: absoluteUrl(href) });
+  const message = getVehicleMessage(car, title, href);
   const meta = [year && `${t("car.year")}: ${year}`, transmission, mileage].filter(Boolean).join(" | ");
   const card = document.createElement("article");
   card.className = "vehicle-card";
@@ -458,26 +499,79 @@ const fetchJson = async (url) => {
   if (!response.ok) throw new Error(`Unable to load ${url}`);
   return response.json();
 };
+const vehicleGridKind = (grid) => {
+  const explicit = String(grid.dataset.vehicleGrid || grid.dataset.carGrid || "").toLowerCase();
+  if (explicit.includes("used")) return "used";
+  if (explicit.includes("new") || explicit.includes("featured")) return "new";
+  if (grid.dataset.usedCarsLimit !== undefined) return "used";
+  if (grid.dataset.newCarsLimit !== undefined) return "new";
+  const text = [grid.id, grid.className, grid.closest("section")?.id, grid.closest("section")?.className, document.body.className].join(" ").toLowerCase();
+  if (text.includes("used")) return "used";
+  return "new";
+};
+const vehicleGrids = (type) => {
+  const selectors = ["#featured-cars", "#featured-new-cars", "#new-cars-grid", "#used-cars-grid", ".vehicle-grid", "[data-vehicle-grid]", "[data-car-grid]"];
+  const grids = [...new Set(selectors.flatMap((selector) => Array.from(document.querySelectorAll(selector))))].filter((grid) => vehicleGridKind(grid) === type);
+  console.info(grids.length ? "render container found" : "render container not found", { type, count: grids.length });
+  return grids;
+};
+const vehicleEmptyState = (message, isError = false) => {
+  const node = document.createElement("p");
+  node.className = isError ? "vehicle-empty-state vehicle-load-error" : "vehicle-empty-state";
+  node.textContent = message;
+  return node;
+};
+const renderCarsIntoGrid = (grid, cars, type) => {
+  try {
+    const cards = cars.map((car) => {
+      try { return makeVehicleCard(car, type); }
+      catch (error) { console.warn("Vehicle card render skipped", { type, id: car?.id, error }); return null; }
+    }).filter(Boolean);
+    if (!cards.length) {
+      const message = type === "used"
+        ? "Current used car stock list is being updated. Please send your requirements and our team will check available stock."
+        : "Current new car stock list is being updated. Please send an inquiry for the latest available vehicles.";
+      grid.replaceChildren(vehicleEmptyState(message));
+      return;
+    }
+    grid.replaceChildren(...cards);
+  } catch (error) {
+    console.error("Vehicle grid render failed", { type, error });
+    grid.replaceChildren(vehicleEmptyState("Unable to load vehicle inventory. Please contact us for the latest stock list.", true));
+  }
+};
+const showVehicleLoadError = () => {
+  [...vehicleGrids("new"), ...vehicleGrids("used")].forEach((grid) => {
+    grid.replaceChildren(vehicleEmptyState("Unable to load vehicle inventory. Please contact us for the latest stock list.", true));
+  });
+};
 const renderVehicleGrids = () => {
   if (!state.carService) return;
-  document.querySelectorAll(".vehicles-section:not(.used-section) .vehicle-grid").forEach((grid) => {
+  const newCars = state.carService.getFeaturedNewCars(Infinity);
+  const usedCars = state.carService.getFeaturedUsedCars(Infinity);
+  vehicleGrids("new").forEach((grid) => {
     const rawLimit = grid.dataset.newCarsLimit || "all";
     const limit = rawLimit === "all" ? Infinity : Number(rawLimit);
-    const cars = state.carService.getFeaturedNewCars(Number.isFinite(limit) ? limit : Infinity);
-    grid.replaceChildren(...cars.map((car) => makeVehicleCard(car, "new")));
+    renderCarsIntoGrid(grid, newCars.slice(0, Number.isFinite(limit) ? limit : Infinity), "new");
   });
-  document.querySelectorAll(".used-cars-grid").forEach((grid) => {
+  vehicleGrids("used").forEach((grid) => {
     const rawLimit = grid.dataset.usedCarsLimit || "all";
     const limit = rawLimit === "all" ? Infinity : Number(rawLimit);
-    const cars = state.carService.getFeaturedUsedCars(Number.isFinite(limit) ? limit : Infinity);
-    grid.replaceChildren(...cars.map((car) => makeVehicleCard(car, "used")));
+    renderCarsIntoGrid(grid, usedCars.slice(0, Number.isFinite(limit) ? limit : Infinity), "used");
   });
 };
 const loadVehicles = async () => {
-  state.carService = await new CarService(new DataEngine()).init();
-  const stats = state.carService.getStats();
-  console.log("CAR STATS:", stats);
-  renderVehicleGrids();
+  try {
+    state.carService = await new CarService(new DataEngine()).init();
+    const stats = state.carService.getStats();
+    console.info("total cars count", stats.total);
+    console.info("new cars count", stats.new);
+    console.info("used cars count", stats.used);
+    renderVehicleGrids();
+  } catch (error) {
+    console.error("Unable to load vehicle inventory", error);
+    showVehicleLoadError();
+  }
 };
 
 const bindWhatsappButtons = () => {
