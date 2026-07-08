@@ -3,6 +3,7 @@ Allow: /
 
 Disallow: /admin/
 Disallow: /api/
+Disallow: /data/
 Disallow: /tmp/
 Disallow: /media-processed/
 Disallow: /media-trash/

@@ -1,6 +1,7 @@
 [build]
-  command = "node scripts/generate-vehicle-pages.js && node scripts/inject-webmaster-verification.js"
+  command = "npm run build"
   publish = "."
+  functions = "netlify/functions"
   ignore = "node scripts/netlify-ignore.js"
 
 [build.environment]
@@ -34,4 +35,6 @@
 [[headers]]
   for = "/data/*"
   [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
+    Cache-Control = "no-store, no-cache, must-revalidate"
+    X-Robots-Tag = "noindex, nofollow"
+    X-Content-Type-Options = "nosniff"

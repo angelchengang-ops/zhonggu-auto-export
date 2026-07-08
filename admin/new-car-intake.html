@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新车智能上架</title>
+  <style>
+    :root { --ink:#172033; --muted:#667085; --line:#e3e8f2; --blue:#153f75; --blue2:#2563eb; --bg:#f5f7fb; --soft:#f8fafc; --ok:#166534; --warn:#9a3412; --bad:#b42318; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:Arial,"Microsoft YaHei",sans-serif; }
+    .shell { width:min(1320px, calc(100% - 32px)); margin:28px auto 44px; }
+    .topbar,.panel-head,.step-head { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
+    .topbar { margin-bottom:18px; }
+    h1 { margin:0 0 8px; font-size:30px; letter-spacing:0; }
+    h2 { margin:0; font-size:18px; }
+    h3 { margin:0 0 10px; font-size:15px; }
+    p { margin:0; color:var(--muted); line-height:1.6; }
+    a { color:var(--blue); }
+    .btn,button { min-height:40px; padding:0 14px; border-radius:7px; border:1px solid #cfd7e6; background:#fff; color:var(--ink); cursor:pointer; text-decoration:none; font:inherit; font-weight:700; display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+    button:disabled { cursor:not-allowed; opacity:.55; }
+    .primary { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .ghost { background:#fff; color:var(--blue); }
+    .danger { color:var(--bad); }
+    .layout { display:grid; grid-template-columns:minmax(0, 1.1fr) minmax(360px, .9fr); gap:16px; align-items:start; }
+    .panel { border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 10px 28px rgba(15,23,42,.05); }
+    .panel-head { padding:16px 18px; border-bottom:1px solid var(--line); align-items:center; }
+    .step { padding:18px; border-bottom:1px solid var(--line); display:grid; gap:14px; }
+    .step:last-child { border-bottom:0; }
+    .step-head strong { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#eaf1fb; color:var(--blue); margin-right:8px; }
+    .form-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
+    label { display:grid; gap:7px; color:#344054; font-size:13px; font-weight:800; }
+    input,select,textarea { width:100%; min-height:42px; border:1px solid #cfd7e6; border-radius:7px; padding:0 11px; color:var(--ink); font:inherit; background:#fff; }
+    textarea { min-height:84px; padding:10px 11px; resize:vertical; }
+    .span-2 { grid-column:1 / -1; }
+    .actions,.market-picks,.filter-row,.chip-list,.inline-row { display:flex; flex-wrap:wrap; gap:8px; }
+    .actions { align-items:center; }
+    .check-chip { display:inline-flex; align-items:center; gap:6px; min-height:34px; padding:0 10px; border:1px solid #cfd7e6; border-radius:999px; background:#fff; color:#344054; font-size:13px; font-weight:800; }
+    .check-chip input { width:auto; min-height:0; }
+    .check-chip.is-selected { border-color:var(--blue2); background:#eff6ff; color:var(--blue); }
+    .notice { padding:12px; border:1px solid #fed7aa; border-radius:8px; background:#fff7ed; color:var(--warn); line-height:1.5; }
+    .confirm-alert { margin:0 0 16px; padding:12px 14px; border:1px solid #fecaca; border-radius:8px; background:#fff1f2; color:var(--bad); font-weight:800; }
+    label.needs-confirm { color:var(--bad); }
+    label.needs-confirm input, label.needs-confirm select { border-color:#fca5a5; background:#fff1f2; }
+    .confirm-tag { display:inline-flex; align-items:center; width:max-content; min-height:20px; padding:0 7px; margin-left:6px; border-radius:999px; background:#fee2e2; color:var(--bad); font-size:12px; font-weight:900; }
+    .result,.draft { padding:16px 18px; display:grid; gap:14px; }
+    .metric-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .metric { border:1px solid var(--line); border-radius:8px; padding:12px; background:#fafcff; min-width:0; }
+    .metric small { display:block; color:var(--muted); margin-bottom:4px; }
+    .metric strong { font-size:16px; color:var(--blue); overflow-wrap:anywhere; }
+    .status { min-height:24px; color:var(--muted); }
+    .status.ok { color:var(--ok); }
+    .status.bad { color:var(--bad); }
+    .status.warn { color:var(--warn); }
+    .list { margin:0; padding-left:18px; color:var(--muted); line-height:1.7; }
+    .source-grid,.draft-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .box,.draft-box { border:1px solid var(--line); border-radius:8px; padding:12px; background:#fafcff; min-width:0; }
+    .box strong,.draft-box strong { display:block; margin-bottom:6px; color:var(--blue); }
+    .keyword-tools { display:grid; gap:12px; }
+    .keyword-group { display:grid; gap:8px; padding:12px; border:1px solid var(--line); border-radius:8px; background:#fafcff; }
+    .keyword-group summary { cursor:pointer; color:var(--blue); font-weight:900; }
+    .keyword-title { color:var(--blue); font-weight:900; }
+    .keyword-add { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+    .market-list { display:grid; gap:10px; margin:0; padding:0; list-style:none; }
+    .market-card { width:100%; display:block; text-align:left; border:1px solid var(--line); border-radius:8px; padding:10px; background:#fff; cursor:pointer; }
+    .market-card strong { color:var(--blue); }
+    .market-card em { display:block; margin-top:4px; color:var(--muted); font-style:normal; line-height:1.45; }
+    .market-card.is-selected { border-color:var(--blue2); box-shadow:0 0 0 3px rgba(37,99,235,.12); background:#eff6ff; }
+    .candidate-section { margin-top:16px; }
+    .candidate-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:14px; padding:16px 18px 18px; }
+    .image-card { border:1px solid var(--line); border-radius:8px; overflow:hidden; background:#fff; display:grid; grid-template-rows:auto 1fr; }
+    .image-card.is-main { border-color:var(--blue2); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+    .image-card.is-ignored { opacity:.64; }
+    .thumb { aspect-ratio:4 / 3; background:#eef2f7; overflow:hidden; }
+    .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .image-body { padding:12px; display:grid; gap:10px; }
+    .small { font-size:12px; color:var(--muted); overflow-wrap:anywhere; }
+    .badge-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .badge { display:inline-flex; min-height:24px; align-items:center; padding:0 8px; border-radius:999px; background:#eef2f7; color:#334155; font-size:12px; font-weight:800; }
+    .badge.warn { background:#fff7ed; color:var(--warn); }
+    .badge.ok { background:#ecfdf3; color:var(--ok); }
+    .card-actions { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .card-actions button { min-height:34px; padding:0 8px; font-size:12px; }
+    .select-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .auth-panel { border:1px solid var(--line); border-radius:8px; padding:10px; background:#fafcff; display:grid; gap:9px; }
+    .auth-panel > strong { color:var(--blue); }
+    .auth-panel .check-chip { justify-content:flex-start; width:100%; min-height:36px; height:auto; border-radius:7px; padding:7px 9px; line-height:1.35; }
+    .auth-panel .select-grid { grid-template-columns:1fr; }
+    .public-image-box { border:1px solid #bbf7d0; border-radius:8px; padding:9px; background:#f0fdf4; display:grid; gap:4px; }
+    .release-checklist { margin-top:8px; display:flex; flex-wrap:wrap; gap:6px; }
+    details summary { cursor:pointer; color:var(--muted); font-size:12px; }
+    pre { margin:0; max-height:260px; overflow:auto; padding:12px; border-radius:8px; background:#111827; color:#e5e7eb; font-size:12px; line-height:1.5; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .hidden { display:none !important; }
+    .modal { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:24px; background:rgba(15,23,42,.72); }
+    .modal-box { width:min(1080px,100%); max-height:94vh; overflow:auto; border-radius:8px; background:#fff; box-shadow:0 24px 70px rgba(0,0,0,.3); }
+    .modal-head { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:14px 16px; border-bottom:1px solid var(--line); }
+    .modal-body { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr); gap:16px; padding:16px; }
+    .modal-body img { width:100%; max-height:72vh; object-fit:contain; background:#eef2f7; border-radius:8px; }
+    @media (max-width:960px) { .topbar { display:block; } .layout,.form-grid,.source-grid,.draft-grid,.modal-body { grid-template-columns:1fr; } .span-2 { grid-column:auto; } .metric-grid { grid-template-columns:1fr; } .card-actions { grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <h1>新车智能上架</h1>
+        <p>输入汽车之家车型链接和 FOB 价格，自动识别车型信息，采集图片到内部待审核目录，并生成内部上架草稿。正式发布保持禁用。</p>
+      </div>
+      <a class="btn" href="/admin/index.html">返回后台</a>
+    </header>
+
+    <p class="confirm-alert hidden" id="confirmAlert">以下字段需要人工确认：-</p>
+
+    <section class="layout">
+      <article class="panel">
+        <form id="intakeForm" novalidate>
+          <section class="step">
+            <div class="step-head"><h2><strong>1</strong>输入车型链接和 FOB 价格</h2></div>
+            <div class="form-grid">
+              <label class="span-2">汽车之家链接<input name="url" type="url" placeholder="https://www.autohome.com.cn/spec/73960/#pvareaid=6861994" required></label>
+              <label>FOB 价格（USD）<input name="fobPrice" placeholder="4200" required></label>
+            </div>
+            <div class="actions">
+              <button class="primary" id="recognizeBtn" type="button">自动识别车型信息</button>
+              <button class="ghost" id="collectBtn" type="button">采集图片</button>
+              <button class="ghost" id="draftBtn" type="button">生成内部上架草稿</button>
+              <button class="ghost" id="publishBtn" type="button" disabled title="确认图片授权、配置、SEO、FOB 价格后再开放发布">发布到官网（禁用）</button>
+            </div>
+            <p class="small release-checklist" id="publishRequirements"></p>
+            <p class="notice">汽车之家原始图片只保存到 <strong>media-source/autohome</strong> 内部待审核目录。未确认公开使用授权前，不得处理成官网正式图片；未确认编辑/替换授权前，不得替换第三方平台标识。</p>
+          </section>
+
+          <section class="step">
+            <div class="step-head"><h2><strong>2</strong>自动识别车型信息</h2><p class="status" id="recognitionStatus">等待识别。</p></div>
+            <div class="source-grid">
+              <div class="box"><strong>识别来源</strong><p id="sourceText">-</p></div>
+              <div class="box"><strong>汽车之家配置 ID</strong><p id="specIdText">-</p></div>
+              <div class="box"><strong>缺失字段</strong><ul class="list" id="missingFields"><li>-</li></ul></div>
+              <div class="box"><strong>提示</strong><ul class="list" id="recognitionNotices"><li>-</li></ul></div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-head"><h2><strong>3</strong>人工确认</h2><p>所有字段都可以人工修改。</p></div>
+            <div class="form-grid">
+              <label>品牌<input name="brand" placeholder="一汽奔腾"></label>
+              <label>车型<input name="model" placeholder="小马"></label>
+              <label>配置<input name="trim" placeholder="闪耀马 / 41900"></label>
+              <label>品牌英文<input name="brandEn" placeholder="Audi"></label>
+              <label>车型英文<input name="modelEn" placeholder="A6L"></label>
+              <label>配置英文<input name="trimEn" placeholder="40 TFSI Luxury Dynamic"></label>
+              <label>英文展示名<input name="displayNameEn" placeholder="Audi A6L 40 TFSI Luxury Dynamic"></label>
+              <label>指导价（RMB）<input name="guidePrice" placeholder="41900"></label>
+              <label>能源类型<select name="energyType" id="energyType"><option value="">未知</option><option>EV</option><option>Gasoline</option><option>Petrol</option><option>Diesel</option><option>Hybrid</option><option>PHEV</option></select></label>
+              <label>车身类型<input name="bodyType" placeholder="mini car / sedan / SUV / pickup"></label>
+              <label>座位数<input name="seats" placeholder="例如 4"></label>
+              <label>车身尺寸（长 × 宽 × 高，mm）<input name="dimensions" placeholder="长 × 宽 × 高，例如 3000 × 1510 × 1630 mm"></label>
+              <div class="span-2 form-grid" id="powerFields"></div>
+            </div>
+          </section>
+
+          <section class="step">
+            <div class="step-head"><h2><strong>4</strong>关键词候选</h2><p>用于车型卖点、内部筛选和后续 SEO 草稿。请勾选适合该车型的关键词。</p></div>
+            <div class="keyword-tools">
+              <div id="keywordList"></div>
+              <div class="keyword-add"><input id="keywordInput" placeholder="手动新增关键词"><button id="addKeywordBtn" type="button">新增关键词</button></div>
+            </div>
+            <div>
+              <h3>目标市场</h3>
+              <p>请选择该车型重点推广市场，可多选。系统推荐仅供参考。</p>
+              <div class="market-picks" id="marketPicks"></div>
+            </div>
+            <div>
+              <h3>系统推荐市场</h3>
+              <ul class="market-list" id="recommendedMarkets"><li><em>-</em></li></ul>
+            </div>
+          </section>
+        </form>
+      </article>
+
+      <aside class="panel">
+        <div class="panel-head"><h2>采集结果</h2></div>
+        <div class="result">
+          <p class="status" id="status">等待操作。</p>
+          <div class="metric-grid">
+            <div class="metric"><small>图片目录</small><strong id="targetDir">-</strong></div>
+            <div class="metric"><small>候选图片数量</small><strong id="imageCount">0</strong></div>
+            <div class="metric"><small>颜色分类数量</small><strong id="colorCount">0</strong></div>
+            <div class="metric"><small>metadata.json</small><strong id="metadataPath">-</strong></div>
+          </div>
+          <div><p>缺失图片类型</p><ul class="list" id="missingTypes"><li>-</li></ul></div>
+          <div class="draft-grid">
+            <div class="draft-box"><strong>核心配置</strong><ul class="list" id="coreSpecsList"><li>-</li></ul></div>
+            <div class="draft-box"><strong>产品卖点</strong><ul class="list" id="productHighlightsList"><li>-</li></ul></div>
+            <div class="draft-box"><strong>出口市场卖点</strong><ul class="list" id="exportSellingPointsList"><li>-</li></ul></div>
+            <div class="draft-box"><strong>已选目标市场</strong><p id="selectedMarketText">-</p></div>
+          </div>
+          <pre id="log" hidden></pre>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel candidate-section hidden" id="candidateSection">
+      <div class="panel-head"><div><h2>图片候选区</h2><p class="small">忽略图片默认隐藏；状态、颜色、类型和授权信息会保存到 metadata.json。只有处理成功后的图片才进入正式图库。</p></div></div>
+      <div class="result"><div class="filter-row"><label class="check-chip"><input id="showIgnored" type="checkbox">显示已忽略图片</label><label>状态筛选<select id="statusFilter"><option value="all">全部候选</option><option value="selected">已保留</option><option value="main">主图</option><option value="thumbnail">疑似缩略图</option><option value="ignored">已忽略</option></select></label><label>类型筛选<select id="typeFilter"></select></label><label>颜色筛选<select id="colorFilter"></select></label></div></div>
+      <div class="candidate-grid" id="candidateGrid"></div>
+    </section>
+
+    <section class="panel candidate-section hidden" id="draftSection">
+      <div class="panel-head"><h2>内部上架草稿</h2><p class="small">这是内部草稿，不发布官网。</p></div>
+      <div class="draft" id="draftOutput"></div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="previewModal" role="dialog" aria-modal="true"><div class="modal-box"><div class="modal-head"><h2>预览大图</h2><button id="closePreview" type="button">关闭</button></div><div class="modal-body"><img id="previewImage" alt="预览图"><div id="previewMeta"></div></div></div></div>
+<script>
+const form=document.getElementById('intakeForm'), statusNode=document.getElementById('status'), recognitionStatus=document.getElementById('recognitionStatus'), logNode=document.getElementById('log'), candidateSection=document.getElementById('candidateSection'), candidateGrid=document.getElementById('candidateGrid'), draftSection=document.getElementById('draftSection'), draftOutput=document.getElementById('draftOutput'), marketPicks=document.getElementById('marketPicks'), recommendedMarketsNode=document.getElementById('recommendedMarkets'), keywordList=document.getElementById('keywordList');
+const marketOptions=['auto','Algeria','West Africa','Central Asia','Southeast Asia','Middle East','South America','Russia/CIS','Used Cars','Other'];
+const imageTypes=['all','front-right-45','right-side-90','rear','front','front-interior','center-console','other'];
+const colors=['all','white','black','gray','silver','red','blue','green','pink','yellow','unknown-color'];
+const marketLabels={recommended:'推荐',test:'可测试',caution:'谨慎'};
+let metadata=null, vehicleState=null, selectedMarkets=['auto'], keywordOptions=[], powerDraft={}, coreSpecs=[], productHighlights=[], exportSellingPoints=[], recommendedMarkets=[];
+let activeVehicleIdentity=null, suppressIdentityWatch=false;
+const esc=v=>String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const field=n=>form.elements[n];
+const val=n=>field(n)?.value?.trim()||'';
+const setVal=(n,v)=>{ if(field(n)) field(n).value=v||''; };
+const unique=items=>{const input=Array.isArray(items)?items:String(items??'').split(/[，,]/);return [...new Set(input.flatMap(i=>Array.isArray(i)?i:[i]).map(s=>String(s).trim()).filter(Boolean))];};
+const setText=(id,v)=>{document.getElementById(id).textContent=v||'-'};
+const normalizeIdentityText=v=>String(v??'').trim().toLowerCase().replace(/\s+/g,' ');
+function normalizeAutohomeUrl(v){const raw=String(v??'').trim(); if(!raw)return ''; try{const u=new URL(raw); u.hash=''; return u.toString().replace(/\/$/,'');}catch{return raw.replace(/#.*$/,'').replace(/\/$/,'');}}
+function parseSpecIdClient(v){const raw=String(v??''); try{const u=new URL(raw); const fromPath=(u.pathname.match(/\/spec\/(\d+)/i)||[])[1]; return fromPath||u.searchParams.get('specid')||u.searchParams.get('specId')||u.searchParams.get('spec')||'';}catch{return (raw.match(/\/spec\/(\d+)/i)||raw.match(/(?:specid|specId|spec)[=\/](\d+)/)||[])[1]||'';}}
+function identityFromVehicle(vehicle={}){const url=normalizeAutohomeUrl(vehicle.sourceUrl||vehicle.url||val('url')); return {url,specId:String(vehicle.specId||parseSpecIdClient(url)||'').trim(),brand:normalizeIdentityText(vehicle.brand),model:normalizeIdentityText(vehicle.model),trim:normalizeIdentityText(vehicle.trim)};}
+function identityFromForm(){const url=normalizeAutohomeUrl(val('url')); return {url,specId:parseSpecIdClient(url),brand:normalizeIdentityText(val('brand')),model:normalizeIdentityText(val('model')),trim:normalizeIdentityText(val('trim'))};}
+function hasDraftState(){return Boolean(vehicleState||metadata||keywordOptions.length||recommendedMarkets.length||coreSpecs.length||productHighlights.length||exportSellingPoints.length||!candidateSection.classList.contains('hidden')||!draftSection.classList.contains('hidden'));}
+function identityChanged(next){if(!activeVehicleIdentity||!hasDraftState())return false; const prev=activeVehicleIdentity; if(prev.url&&next.url&&prev.url!==next.url)return true; if(prev.url&&!next.url)return true; if(prev.specId&&next.specId&&prev.specId!==next.specId)return true; if(prev.brand&&next.brand&&prev.brand!==next.brand)return true; if(prev.model&&next.model&&prev.model!==next.model)return true; return false;}
+function resetVehicleDraftState(options={}){const keepUrl=options.keepUrl!==false?val('url'):''; const keepFob=options.keepFob!==false?val('fobPrice'):''; const keepIdentity=options.keepIdentity===true?{brand:val('brand'),model:val('model'),trim:val('trim'),brandEn:val('brandEn'),modelEn:val('modelEn'),trimEn:val('trimEn'),displayNameEn:val('displayNameEn')}:{}; metadata=null; vehicleState=null; selectedMarkets=['auto']; keywordOptions=[]; powerDraft={}; coreSpecs=[]; productHighlights=[]; exportSellingPoints=[]; recommendedMarkets=[]; activeVehicleIdentity=null; ['brand','model','trim','brandEn','modelEn','trimEn','displayNameEn','guidePrice','energyType','bodyType','seats','dimensions'].forEach(k=>setVal(k,keepIdentity[k]||'')); setVal('url',keepUrl); setVal('fobPrice',keepFob); ['sourceText','specIdText','targetDir','metadataPath'].forEach(id=>setText(id,'-')); setText('imageCount','0'); setText('colorCount','0'); renderList('missingFields',['-']); renderList('recognitionNotices',['-']); renderList('missingTypes',['-']); renderList('coreSpecsList',['-']); renderList('productHighlightsList',['-']); renderList('exportSellingPointsList',['-']); setText('selectedMarketText','自动判断'); recognitionStatus.textContent='等待识别。'; recognitionStatus.className='status'; document.querySelectorAll('label.needs-confirm').forEach(label=>label.classList.remove('needs-confirm')); document.querySelectorAll('.confirm-tag').forEach(tag=>tag.remove()); document.getElementById('confirmAlert').classList.add('hidden'); logNode.hidden=true; logNode.textContent=''; candidateGrid.innerHTML=''; candidateSection.classList.add('hidden'); draftOutput.innerHTML=''; draftSection.classList.add('hidden'); document.getElementById('powerFields').innerHTML=''; renderPowerFields(); setKeywordOptions([],[]); renderMarketPicks(); renderRecommendedMarkets(); document.querySelectorAll('label.needs-confirm').forEach(label=>label.classList.remove('needs-confirm')); document.querySelectorAll('.confirm-tag').forEach(tag=>tag.remove()); document.getElementById('confirmAlert').classList.add('hidden'); statusNode.textContent='检测到车型链接已变化，已清空上一台车型草稿，请重新识别。'; statusNode.className='status warn';}
+function handleIdentityInput(source){if(suppressIdentityWatch)return; const next=identityFromForm(); if(identityChanged(next)) resetVehicleDraftState({keepUrl:true,keepFob:true,keepIdentity:source!=='url'});}
+const listHtml=items=>`<ul class="list">${(items&&items.length?items:['-']).map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`;
+const renderList=(id,items)=>{document.getElementById(id).innerHTML=(items&&items.length?items:['-']).map(i=>`<li>${esc(i)}</li>`).join('')};
+async function saveJson(url,body){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify(body)}); const j=await r.json().catch(()=>({error:`接口返回非 JSON 响应，HTTP ${r.status}`})); if(!r.ok||j.success===false) throw new Error(j.error||`接口请求失败，HTTP ${r.status}`); return j;}
+function initSelects(){document.getElementById('typeFilter').innerHTML=imageTypes.map(v=>`<option value="${v}">${v==='all'?'全部':v}</option>`).join('');document.getElementById('colorFilter').innerHTML=colors.map(v=>`<option value="${v}">${v==='all'?'全部':v}</option>`).join('');}
+function readPowerFields(){document.querySelectorAll('#powerFields input').forEach(input=>powerDraft[input.name]=input.value.trim()); return {...powerDraft};}
+function renderPowerFields(){readPowerFields(); const e=val('energyType'); let fields=[]; if(/^(Gasoline|Petrol|Diesel)$/i.test(e)) fields=[['displacement','排量','1.5L'],['engine','发动机','1.5L Naturally Aspirated Engine'],['transmission','变速箱','CVT / AT / DCT'],['fuelConsumption','油耗（可选）','5.8 L/100km']]; else if(/^EV$/i.test(e)) fields=[['motorPower','电机功率','30kW'],['horsepower','马力','41 hp'],['range','续航','170 km'],['batteryType','电池类型','LFP'],['batteryCapacity','电池容量','13.9 kWh']]; else if(/^(Hybrid|PHEV)$/i.test(e)) fields=[['displacement','发动机排量','1.5L'],['motorPower','电机功率',''],['range','综合续航',''],['batteryCapacity','电池容量',''],['fuelConsumption','油耗','']]; else fields=[['powerText','动力参数','待确认']]; document.getElementById('powerFields').innerHTML=fields.map(([name,label,placeholder])=>`<label>${label}<input name="${name}" placeholder="${placeholder}" value="${esc(powerDraft[name]||'')}"></label>`).join(''); document.querySelectorAll('#powerFields input').forEach(input=>input.addEventListener('input',()=>{powerDraft[input.name]=input.value.trim(); refreshDerived();}));}
+function currentPower(){const p=readPowerFields(); return {type:val('energyType').toLowerCase(), motorPower:p.motorPower||'', horsepower:p.horsepower||'', range:p.range||'', batteryType:p.batteryType||'', batteryCapacity:p.batteryCapacity||'', engine:p.engine||'', transmission:p.transmission||'', displacement:p.displacement||'', fuelConsumption:p.fuelConsumption||'', powerText:p.powerText||''};}
+function selectedKeywords(){return keywordOptions.filter(k=>k.selected).map(k=>k.value)}
+function unselectedKeywords(){return keywordOptions.filter(k=>!k.selected).map(k=>k.value)}
+function setKeywordOptions(selected=[],candidates=[]){const selectedSet=new Set(unique(selected)); const all=unique([...selectedSet,...unique(candidates)]); keywordOptions=all.map(value=>({value,selected:selectedSet.has(value)})); renderKeywords();}
+function renderKeywords(){keywordList.innerHTML=keywordOptions.length?keywordOptions.map((k,i)=>`<label class="check-chip ${k.selected?'is-selected':''}"><input type="checkbox" data-index="${i}" ${k.selected?'checked':''}>${esc(k.value)}</label>`).join(''):'<p class="status warn">等待系统生成关键词候选。</p>'; keywordList.querySelectorAll('input').forEach(input=>input.onchange=()=>{keywordOptions[Number(input.dataset.index)].selected=input.checked; renderKeywords(); refreshDerived(); if(metadata?.metadataPath) saveSelection('关键词已保存。').catch(showError);});}
+function addKeyword(){const input=document.getElementById('keywordInput'); const value=input.value.trim(); if(!value)return; if(!keywordOptions.some(k=>k.value===value)) keywordOptions.push({value,selected:true}); input.value=''; renderKeywords(); refreshDerived(); if(metadata?.metadataPath) saveSelection('关键词已保存。').catch(showError);}
+function renderMarketPicks(){marketPicks.innerHTML=marketOptions.map(m=>`<label class="check-chip ${selectedMarkets.includes(m)?'is-selected':''}"><input type="checkbox" value="${esc(m)}" ${selectedMarkets.includes(m)?'checked':''}>${m==='auto'?'自动判断':m}</label>`).join(''); marketPicks.querySelectorAll('input').forEach(input=>input.onchange=()=>{ if(input.value==='auto'){selectedMarkets=input.checked?['auto']:[];} else {selectedMarkets=selectedMarkets.filter(x=>x!=='auto'); if(input.checked&&!selectedMarkets.includes(input.value)) selectedMarkets.push(input.value); if(!input.checked) selectedMarkets=selectedMarkets.filter(x=>x!==input.value);} renderMarketPicks(); refreshDerived(); if(metadata?.metadataPath) saveSelection('目标市场已保存。').catch(showError); });}
+function renderRecommendedMarkets(){setText('selectedMarketText',(selectedMarkets.includes('auto')?'自动判断':selectedMarkets.join(', '))||'-'); recommendedMarketsNode.innerHTML=recommendedMarkets.length?recommendedMarkets.map(m=>`<li><button type="button" class="market-card ${selectedMarkets.includes(m.market)?'is-selected':''}" data-market="${esc(m.market)}"><strong>${esc(m.market)}：${esc(marketLabels[m.level]||m.level||'')}</strong><em>${esc(m.reason||'')}</em></button></li>`).join(''):'<li><em>-</em></li>'; recommendedMarketsNode.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{const m=btn.dataset.market; selectedMarkets=selectedMarkets.filter(x=>x!=='auto'); selectedMarkets=selectedMarkets.includes(m)?selectedMarkets.filter(x=>x!==m):[...selectedMarkets,m]; renderMarketPicks(); refreshDerived(); if(metadata?.metadataPath) saveSelection('目标市场已保存。').catch(showError);});}
+function buildCoreSpecsClient(){const p=currentPower(), e=val('energyType')||'Unknown', body=val('bodyType')||'Unknown', specs=[`Energy type: ${e}`,`Body type: ${body}`,`Guide price: ${val('guidePrice')||'to be confirmed'} RMB`,`FOB price: ${val('fobPrice')||'to be confirmed'} USD`]; if(/^EV$/i.test(e)){specs.push(`Motor power: ${p.motorPower||'to be confirmed'}`,`Horsepower: ${p.horsepower||'to be confirmed'}`,`Range: ${p.range||'to be confirmed'}`,`Battery type: ${p.batteryType||'to be confirmed'}`,`Battery capacity: ${p.batteryCapacity||'to be confirmed'}`);} else if(/^(Gasoline|Petrol|Diesel)$/i.test(e)){specs.push(`Displacement: ${p.displacement||'to be confirmed'}`,`Engine: ${p.engine||'to be confirmed'}`,`Transmission: ${p.transmission||'to be confirmed'}`); if(p.fuelConsumption) specs.push(`Fuel consumption: ${p.fuelConsumption}`);} else if(/^(Hybrid|PHEV)$/i.test(e)){specs.push(`Engine displacement: ${p.displacement||'to be confirmed'}`,`Motor power: ${p.motorPower||'to be confirmed'}`,`Combined range: ${p.range||'to be confirmed'}`,`Battery capacity: ${p.batteryCapacity||'to be confirmed'}`,`Fuel consumption: ${p.fuelConsumption||'to be confirmed'}`);} else if(p.powerText) specs.push(`Power: ${p.powerText}`); if(val('seats')) specs.push(`Seats: ${val('seats')}`); if(val('dimensions')) specs.push(`Dimensions: ${val('dimensions')}`); if(/mini|city|小马/i.test([val('bodyType'),val('model')].join(' '))) specs.push('Suitable for city mobility and short-distance commuting'); return unique(specs);}
+function buildHighlightsClient(){const e=val('energyType'), text=[val('brandEn'),val('modelEn'),val('trimEn'),val('model'),val('bodyType'),selectedKeywords()].flat().join(' '); if(/^EV$/i.test(e)&&/mini|small|xiaoma|小马|小型/i.test(text)) return ['Low-cost small EV for price-sensitive buyers','Compact body size suitable for urban mobility','Low running cost compared with gasoline vehicles','Easy parking and flexible short-distance commuting','Suitable for dealer test marketing in emerging markets']; if(/^EV$/i.test(e)) return ['China EV model suitable for export quotation','Low running cost compared with gasoline vehicles','FOB/CIF quotation and export document support from China']; if(/premium|executive|sedan|a6l|奥迪|audi/i.test(text)) return ['Premium sedan positioning','Suitable for executive and business use','China-sourced vehicle export support','FOB/CIF quotation support']; return ['China-sourced vehicle export support','FOB/CIF quotation support','Inspection and export document support','Dealer supply support from China'];}function buildExportPointsClient(){const markets=selectedMarkets.includes('auto')?recommendedMarkets.map(m=>m.market):selectedMarkets; const ev=/^EV$/i.test(val('energyType')); const points=[]; markets.forEach(m=>{if(m==='Southeast Asia')points.push(ev?'Southeast Asia: Recommended for urban mobility, short-distance commuting and price-sensitive buyers.':'Southeast Asia: Verify executive sedan demand, homologation and dealer channel fit before promotion.'); else if(m==='Middle East')points.push(ev?'Middle East: Can be tested for city delivery and short-distance mobility segments.':'Middle East: Premium sedan positioning can be tested with business and fleet buyers.'); else if(m==='South America')points.push(ev?'South America: Price-sensitive urban buyers may respond, but local EV demand should be verified.':'South America: Confirm tariff, emission rules and executive sedan demand before promotion.'); else if(m==='Algeria')points.push('Algeria: Confirm import rules, displacement preference and local dealer demand before promotion.'); else if(m==='West Africa')points.push('West Africa: Confirm fuel quality, parts support and dealer pricing before promotion.'); else if(m==='Central Asia')points.push('Central Asia: Check cold-weather suitability, fuel quality and parts support before promotion.'); else if(m)points.push(`${m}: Market fit should be confirmed by sales before public promotion.`); const rec=recommendedMarkets.find(r=>r.market===m); if(rec?.reason) points.push(`${m}: ${rec.reason}`);}); return unique(points);}function refreshDerived(){coreSpecs=buildCoreSpecsClient(); productHighlights=buildHighlightsClient(); exportSellingPoints=buildExportPointsClient(); renderLocalizedList('coreSpecsList',coreSpecs); renderLocalizedList('productHighlightsList',productHighlights); renderLocalizedList('exportSellingPointsList',exportSellingPoints); renderRecommendedMarkets(); renderPublishRequirements();}
+function sourceLabel(v){if(v==='scraped')return '抓取'; if(v==='manual')return '手动'; if(v==='inferred')return '推断'; return v||'-';}
+function renderRecognition(vehicle){setText('sourceText',`${sourceLabel(vehicle.source)}${vehicle.sourceDetail?` / ${vehicle.sourceDetail}`:''}`); setText('specIdText',vehicle.specId||'-'); renderLocalizedList('missingFields',vehicle.missingFields||[]); renderLocalizedList('recognitionNotices',vehicle.notices||[]); recognitionStatus.textContent='车型信息已识别，可继续人工确认。'; recognitionStatus.className='status ok';}
+function applyVehicle(vehicle={}){suppressIdentityWatch=true; try{vehicleState=vehicle; ['brand','model','trim','brandEn','modelEn','trimEn','displayNameEn','guidePrice','fobPrice','energyType','bodyType','seats'].forEach(k=>{if(!isUnknownValue(vehicle[k])) setVal(k,vehicle[k]);}); if(!val('displayNameEn')) setVal('displayNameEn',[val('brandEn'),val('modelEn'),val('trimEn')].filter(Boolean).join(' ')); setVal('dimensions', normalizeDimensionsInput(vehicle.dimensions||'')); const p=vehicle.power||{}; powerDraft={...p,displacement:vehicle.displacement||p.displacement||'',transmission:vehicle.transmission||p.transmission||'',fuelConsumption:vehicle.fuelConsumption||p.fuelConsumption||'',range:vehicle.range||p.range||'',batteryType:vehicle.batteryType||p.batteryType||'',batteryCapacity:vehicle.batteryCapacity||p.batteryCapacity||'',engine:vehicle.engine||p.engine||'',motorPower:vehicle.motorPower||p.motorPower||'',horsepower:vehicle.horsepower||p.horsepower||'',powerText:vehicle.powerText||p.powerText||''}; Object.keys(powerDraft).forEach(k=>{if(isUnknownValue(powerDraft[k])) powerDraft[k]='';}); renderPowerFields(); setKeywordOptions(vehicle.keywords||[],vehicle.keywordCandidates||[]); recommendedMarkets=vehicle.recommendedMarkets||[]; coreSpecs=vehicle.coreSpecs||[]; productHighlights=vehicle.productHighlights||[]; exportSellingPoints=vehicle.exportSellingPoints||[]; refreshDerived(); renderRecognition(vehicle); renderMarketPicks(); renderRecommendedMarkets(); activeVehicleIdentity=identityFromVehicle(vehicle);} finally{suppressIdentityWatch=false;}}function buildPayload(){if(typeof normalizePowerInputs==='function') normalizePowerInputs(true); const p=currentPower(); const dimensions=normalizeDimensionsInput(val('dimensions')); if(dimensions&&validDimensions(dimensions)) setVal('dimensions',dimensions); const payloadCoreSpecs=buildCoreSpecsClient(); return {url:val('url'),sourceUrl:val('url'),specId:parseSpecIdClient(val('url')),brand:val('brand'),model:val('model'),trim:val('trim'),brandEn:val('brandEn'),modelEn:val('modelEn'),trimEn:val('trimEn'),displayNameEn:val('displayNameEn'),trimEnNeedsConfirmation:Boolean(vehicleState?.trimEnNeedsConfirmation&&!val('trimEn')),guidePrice:val('guidePrice'),fobPrice:val('fobPrice'),energyType:val('energyType'),bodyType:val('bodyType'),seats:val('seats'),dimensions:dimensions||val('dimensions'),power:p,motorPower:p.motorPower,horsepower:p.horsepower,range:p.range,batteryType:p.batteryType,batteryCapacity:p.batteryCapacity,displacement:p.displacement,engine:p.engine,transmission:p.transmission,fuelConsumption:p.fuelConsumption,powerText:p.powerText,keywords:selectedKeywords(),keywordCandidates:unselectedKeywords(),selectedMarkets:selectedMarkets.filter(x=>x!=='auto'),targetMarket:selectedMarkets.includes('auto')?'auto':(selectedMarkets[0]||'auto'),recommendedMarkets,coreSpecs:payloadCoreSpecs,productHighlights,exportSellingPoints};}
+function showError(err){statusNode.textContent=err.message||String(err); statusNode.className='status bad';}
+async function loadExistingDraft(metadataPath){const res=await saveJson('/api/admin/new-car-intake/load-draft',{metadataPath}); metadata=res.metadata; applyVehicle(metadata); selectedMarkets=metadata.selectedMarkets?.length?[...metadata.selectedMarkets]:(metadata.targetMarket==='auto'?['auto']:selectedMarkets); recommendedMarkets=metadata.recommendedMarkets||recommendedMarkets; setKeywordOptions(metadata.keywords||[],metadata.keywordCandidates||[]); renderMarketPicks(); renderSummary('已加载已有内部草稿。'); if(res.draft) renderDraft(res.draft,res.draftPath); statusNode.textContent='已加载该车型已有内部草稿。'; statusNode.className='status ok'; return true;}
+async function maybeLoadExistingDraft(res){if(!res?.existingDraftPath||!res?.metadataPath)return false; const ok=window.confirm('检测到该车型已有内部草稿，是否加载？'); if(!ok){statusNode.textContent='已从空白状态识别该车型，未加载已有内部草稿。'; statusNode.className='status warn'; return false;} return await loadExistingDraft(res.metadataPath);}
+async function recognizeVehicle(){handleIdentityInput('url'); if(!val('url')){statusNode.textContent='请先输入汽车之家链接。'; statusNode.className='status bad'; return null;} recognitionStatus.textContent='正在识别车型信息。'; recognitionStatus.className='status'; statusNode.textContent='正在识别车型信息。'; statusNode.className='status'; const res=await saveJson('/api/admin/new-car-intake/recognize',buildPayload()); applyVehicle(res.vehicle); const loaded=await maybeLoadExistingDraft(res); if(!loaded){statusNode.textContent=res.warning||'识别完成，已生成关键词、核心配置、产品卖点和推荐市场。'; statusNode.className=res.warning?'status warn':'status ok';} return res.vehicle;}
+async function ensureVehicleReady(){if(val('brand')&&val('model')&&val('guidePrice'))return true; await recognizeVehicle(); return Boolean(val('brand')&&val('model')&&val('guidePrice'));}
+function renderMissing(items){document.getElementById('missingTypes').innerHTML=(items&&items.length?items:['-']).map(i=>`<li>${esc(i)}</li>`).join('')}
+function renderSummary(stdout=''){const imgs=metadata?.images||[]; renderMissing(metadata?.missingImageTypes||[]); setText('targetDir',metadata?.storagePolicy?.directory); setText('imageCount',imgs.length); setText('colorCount',(metadata?.colors||[]).length); setText('metadataPath',metadata?.metadataPath); logNode.hidden=false; logNode.textContent=stdout||'No collector output.'; candidateSection.classList.toggle('hidden',!metadata); renderCandidates(); renderPublishRequirements();}
+function imageUrl(file){return `/${metadata.storagePolicy.directory}/${file}`.replace(/\/+/g,'/')}
+function formatSize(n){return n?`${(n/1024).toFixed(n>1024*1024?1:0)} ${n>1024*1024?'MB':'KB'}`:'未知'}
+function imageState(img){return img.isMainImage?'主图':img.ignored?'已忽略':img.selected?'保留':'待审核'}
+function dimText(img){return img.width&&img.height?`${img.width}×${img.height}`:'尺寸未知'}
+function passFilters(img){const showIgnored=document.getElementById('showIgnored').checked; if(img.ignored&&!showIgnored)return false; const sf=document.getElementById('statusFilter').value, tf=document.getElementById('typeFilter').value, cf=document.getElementById('colorFilter').value; if(sf==='selected'&&!img.selected)return false; if(sf==='main'&&!img.isMainImage)return false; if(sf==='thumbnail'&&img.maybeThumbnail!==true)return false; if(sf==='ignored'&&!img.ignored)return false; if(tf!=='all'&&img.type!==tf)return false; if(cf!=='all'&&img.color!==cf)return false; return true;}
+const thirdPartyLogoOptions=[['unknown','未确认'],['none','无第三方标识'],['autohome','含汽车之家 logo'],['watermark','含第三方水印'],['platform_logo','其他平台标识'],['other','其他']];
+const logoProcessOptions=[['none','不替换标识，仅生成正式图'],['plate','替换车牌区域为 Zhonggu logo'],['watermark-right','替换右下角水印为 Zhonggu logo'],['watermark-left','替换左下角水印为 Zhonggu logo']];
+function logoTypeValue(img){if(img.thirdPartyLogoDetected===false)return 'none'; if(img.thirdPartyLogoDetected===true)return img.thirdPartyLogoType||'other'; return 'unknown';}
+function setLogoType(img,value){if(value==='none'){img.thirdPartyLogoDetected=false; img.thirdPartyLogoType=''; return;} if(value==='unknown'){img.thirdPartyLogoDetected='unknown'; img.thirdPartyLogoType=''; return;} img.thirdPartyLogoDetected=true; img.thirdPartyLogoType=value||'other';}
+function publicImageUrl(file){return `/${file}`.replace(/\\/g,'/').replace(/\/+/g,'/')}
+function processButtonState(img){if(!img.licenseConfirmed)return {disabled:true,hint:'请先确认该图片已获得公开使用授权。'}; const logo=logoTypeValue(img), mode=img.logoProcessMode||'none'; if(logo==='unknown')return {disabled:true,hint:'请先确认该图片是否含第三方平台标识。'}; if(mode!=='none'&&!img.licenseEditAllowed)return {disabled:true,hint:'替换第三方平台标识前必须确认编辑/裁切/替换授权。'}; if(logo!=='none'&&!img.licenseEditAllowed)return {disabled:true,hint:'该图片含第三方平台标识。请确认是否拥有编辑/替换标识授权。'}; return {disabled:false,hint:logo==='none'?'无第三方标识，可生成正式图库图片。':'已确认编辑/替换标识授权，可处理图片。'};}
+function processActionText(img){if(img.processingAction==='replace_logo_with_zhonggu')return '已替换第三方标识为 Zhonggu logo'; if(img.processingAction==='process_for_public_without_logo_replacement')return '已确认授权，未替换第三方标识，生成正式图'; return '无第三方标识，直接生成';}
+function renderPublicStatus(img){if(!img.publicReady||!img.publicFile)return '<p class="small status warn">状态：内部待审核素材，不能发布官网。</p>'; return `<div class="public-image-box"><strong>状态：已生成正式图</strong><p class="small">正式图片：${esc(img.publicFile)}</p><p class="small">处理方式：${esc(processActionText(img))}</p></div>`;}
+function renderPublishRequirements(){const node=document.getElementById('publishRequirements'); if(!node)return; const imgs=metadata?.images||[]; const main=imgs.find(img=>img.isMainImage); const logoReady=!main||main.thirdPartyLogoDetected!==true||main.licenseEditAllowed===true; const items=[['主图已选择',Boolean(main)],['主图已确认公开使用授权',Boolean(main?.licenseConfirmed)],['如含第三方标识，已确认允许编辑替换',logoReady],['正式图库图片已生成',imgs.some(img=>img.publicReady===true&&img.publicFile)],['关键配置字段已确认',typeof fieldsToConfirm==='function'?fieldsToConfirm().length===0:true],['SEO 草稿已确认',Boolean(metadata?.draftPath)],['目标市场已选择',selectedMarkets.some(m=>m&&m!=='auto')]]; node.innerHTML='发布前需完成：'+items.map(([label,ok])=>`<span class="badge ${ok?'ok':'warn'}">${ok?'已完成':'待完成'} ${esc(label)}</span>`).join('');}
+function renderCandidates(){
+  if(!metadata){candidateGrid.innerHTML=''; renderPublishRequirements(); return;}
+  const imgs=metadata.images||[];
+  const visible=imgs.map((img,i)=>({img,i})).filter(x=>passFilters(x.img));
+  candidateGrid.innerHTML=visible.length?visible.map(({img,i})=>{const state=processButtonState(img); const logoValue=logoTypeValue(img); const processMode=img.logoProcessMode||'none'; return `<article class="image-card ${img.isMainImage?'is-main':''} ${img.ignored?'is-ignored':''}" data-index="${i}"><div class="thumb"><img src="${esc(imageUrl(img.file))}" loading="lazy"></div><div class="image-body"><strong>${esc(img.file)}</strong><div class="badge-row"><span class="badge ${img.isMainImage?'ok':''}">${imageState(img)}</span><span class="badge">${dimText(img)}</span>${img.maybeThumbnail===true?'<span class="badge warn">可能缩略图</span>':''}${img.publicReady?'<span class="badge ok">正式图已生成</span>':''}</div><div class="select-grid"><label>图片类型<select data-field="type">${imageTypes.filter(x=>x!=='all').map(t=>`<option ${img.type===t?'selected':''}>${t}</option>`).join('')}</select></label><label>颜色<select data-field="color">${colors.filter(x=>x!=='all').map(c=>`<option ${img.color===c?'selected':''}>${c}</option>`).join('')}</select></label></div><div class="auth-panel"><strong>授权确认</strong><label class="check-chip ${img.licenseConfirmed?'is-selected':''}"><input type="checkbox" data-field="licenseConfirmed" ${img.licenseConfirmed?'checked':''}>我确认该图片已获得公开使用授权</label><label class="check-chip ${img.licenseEditAllowed?'is-selected':''}"><input type="checkbox" data-field="licenseEditAllowed" ${img.licenseEditAllowed?'checked':''}>我确认该图片允许编辑、裁切、替换第三方平台标识</label><label>授权备注<input data-field="licenseNote" placeholder="例如：厂家公开素材 / 4S 店自有图片 / 已获销售授权 / 自有拍摄" value="${esc(img.licenseNote||'')}"></label><div class="select-grid"><label>第三方标识<select data-field="thirdPartyLogoType">${thirdPartyLogoOptions.map(([value,label])=>`<option value="${value}" ${logoValue===value?'selected':''}>${label}</option>`).join('')}</select></label><label>处理方式<select data-field="logoProcessMode">${logoProcessOptions.map(([value,label])=>`<option value="${value}" ${processMode===value?'selected':''}>${label}</option>`).join('')}</select></label></div><p class="small ${state.disabled?'status warn':'status ok'}">${esc(state.hint)}</p></div>${renderPublicStatus(img)}<div class="card-actions"><button type="button" data-action="preview">预览大图</button><button type="button" data-action="keep">保留</button>${img.ignored?'<button type="button" data-action="restore">恢复</button>':'<button type="button" data-action="ignore">忽略</button>'}<button type="button" data-action="main">设为主图</button><button type="button" data-action="process" ${state.disabled?'disabled':''} title="${esc(state.hint)}">处理图片</button></div><details><summary>来源 URL</summary><p class="small">${esc(img.originalUrl)}</p></details></div></article>`;}).join(''):'<p class="status warn">没有符合筛选条件的图片。</p>';
+  candidateGrid.querySelectorAll('.image-card').forEach(card=>{
+    const i=Number(card.dataset.index);
+    card.querySelectorAll('select').forEach(s=>s.onchange=async()=>{const img=metadata.images[i]; if(s.dataset.field==='thirdPartyLogoType')setLogoType(img,s.value); else img[s.dataset.field]=s.value; await saveSelection('图片授权/处理信息已保存。');});
+    card.querySelectorAll('input[type="checkbox"][data-field]').forEach(input=>input.onchange=async()=>{const img=metadata.images[i]; img[input.dataset.field]=input.checked; await saveSelection('图片授权信息已保存。');});
+    const note=card.querySelector('input[data-field="licenseNote"]'); if(note)note.onblur=async()=>{metadata.images[i].licenseNote=note.value.trim(); await saveSelection('授权备注已保存。');};
+    card.querySelectorAll('button').forEach(b=>b.onclick=async()=>{try{const img=metadata.images[i], a=b.dataset.action; if(a==='preview')return openPreview(img); if(a==='process')return await processCandidateImage(i); if(a==='keep'){img.selected=true; img.ignored=false; img.status='kept';} if(a==='ignore'){img.selected=false; img.ignored=true; img.isMainImage=false; img.status='ignored';} if(a==='restore'){img.ignored=false; img.status='pending_review';} if(a==='main'){metadata.images.forEach(x=>x.isMainImage=false); img.selected=true; img.ignored=false; img.isMainImage=true; img.status='main';} await saveSelection('图片选择已保存。');}catch(err){showError(err);}});
+  });
+  renderPublishRequirements();
+}
+async function processCandidateImage(index){const img=metadata.images[index]; const state=processButtonState(img); if(state.disabled){statusNode.textContent=state.hint; statusNode.className='status warn'; return;} const imageFile=img.file, logoMode=img.logoProcessMode||'none'; if(img.thirdPartyLogoDetected===true){const ok=window.confirm(logoMode==='none'?'检测到该图片可能含第三方平台标识。你已确认拥有编辑/替换标识授权。当前处理方式不会替换标识，是否继续生成正式图？':'检测到该图片可能含第三方平台标识。你已确认拥有编辑/替换标识授权。是否继续将第三方标识替换为 Zhonggu logo？'); if(!ok)return;} await saveSelection('授权和图片选择已保存，正在处理图片。'); statusNode.textContent='正在处理图片并生成正式图库图片。'; statusNode.className='status'; const res=await saveJson('/api/admin/new-car-intake/process-image',{metadataPath:metadata.metadataPath,imageFile,action:'process_for_public',logoProcessMode:logoMode}); metadata=res.metadata; renderSummary(logNode.textContent); statusNode.textContent=`处理成功，正式图片：${res.publicFile}`; statusNode.className='status ok';}async function saveSelection(msg){if(!metadata?.metadataPath)return; refreshDerived(); const payload={...buildPayload(),metadataPath:metadata.metadataPath,images:metadata.images}; const res=await saveJson('/api/admin/new-car-intake/image-selection',payload); metadata=res.metadata; selectedMarkets=metadata.selectedMarkets?.length?[...metadata.selectedMarkets]:(metadata.targetMarket==='auto'?['auto']:selectedMarkets); recommendedMarkets=metadata.recommendedMarkets||recommendedMarkets; setKeywordOptions(metadata.keywords||selectedKeywords(),metadata.keywordCandidates||unselectedKeywords()); renderMarketPicks(); renderSummary(logNode.textContent); statusNode.textContent=msg; statusNode.className='status ok';}
+async function collectImages(){try{const ready=await ensureVehicleReady(); if(!ready)throw new Error('识别结果不完整，请至少确认品牌、车型和指导价。'); collectBtn.disabled=true; statusNode.textContent='正在采集图片到 media-source/autohome，请勿关闭页面。'; statusNode.className='status'; refreshDerived(); const r=await fetch('/api/admin/collect-autohome-images',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify(buildPayload())}); const j=await r.json().catch(()=>({error:`接口返回非 JSON 响应，HTTP ${r.status}`})); if(j.metadata){metadata=j.metadata; selectedMarkets=metadata.selectedMarkets?.length?[...metadata.selectedMarkets]:(metadata.targetMarket==='auto'?['auto']:selectedMarkets); recommendedMarkets=metadata.recommendedMarkets||recommendedMarkets; renderMarketPicks(); renderSummary(j.stdout); await saveSelection('采集结果和车型字段已保存。');} if(!r.ok||j.success===false)throw new Error(j.error||`接口请求失败，HTTP ${r.status}`); const count=metadata.images?.length||0; statusNode.textContent=count<=1?`仅采集到 ${count} 张候选图片，可能是页面限制或图片接口未完全解析。可以继续生成内部草稿，但建议人工补充图片。`:'采集完成，候选图片已进入内部待审核目录。'; statusNode.className=count<=1?'status warn':'status ok';}catch(err){showError(err);}finally{collectBtn.disabled=false;}}
+function openPreview(img){document.getElementById('previewImage').src=imageUrl(img.file); const warn=[]; if(img.maybeThumbnail===true)warn.push('该图片可能是缩略图。'); if(img.width&&img.height&&(img.width<800||img.height<600))warn.push('图片尺寸较小，不建议作为主图。'); document.getElementById('previewMeta').innerHTML=`<div class="draft-box"><strong>${esc(img.file)}</strong><p>类型：${esc(img.type)}</p><p>颜色：${esc(img.color)}</p><p>尺寸：${dimText(img)}</p><p>文件大小：${formatSize(img.fileSize)}</p><p>疑似缩略图：${esc(String(img.maybeThumbnail))}</p><p>状态：${imageState(img)}</p>${warn.map(w=>`<p class="status warn">${esc(w)}</p>`).join('')}<details open><summary>原始 URL</summary><p class="small">${esc(img.originalUrl)}</p></details></div>`; document.getElementById('previewModal').classList.remove('hidden');}
+function closePreview(){document.getElementById('previewModal').classList.add('hidden');document.getElementById('previewImage').src='';}
+function renderDraft(d,path){draftSection.classList.remove('hidden'); draftOutput.innerHTML=`<p class="notice">内部上架草稿已生成。图片为待审核素材，确认授权前不会发布到官网正式图库。</p><div class="metric-grid"><div class="metric"><small>草稿状态</small><strong>${esc(d.status)}</strong></div><div class="metric"><small>draft.json</small><strong>${esc(path)}</strong></div><div class="metric"><small>主图</small><strong>${esc(d.mainImage||'-')}</strong></div><div class="metric"><small>目标市场</small><strong>${esc((d.selectedMarkets||[]).join(', ')||'-')}</strong></div></div><div class="draft-grid"><div class="draft-box"><strong>核心配置</strong>${listHtml(d.coreSpecs)}</div><div class="draft-box"><strong>产品卖点</strong>${listHtml(d.productHighlights)}</div><div class="draft-box"><strong>出口卖点</strong>${listHtml(d.exportSellingPoints)}</div><div class="draft-box"><strong>FAQ</strong>${listHtml(d.faq)}</div></div><div class="draft-box"><strong>SEO title</strong><p>${esc(d.seo?.title)}</p></div><div class="draft-box"><strong>SEO description</strong><p>${esc(d.seo?.description)}</p></div><div class="draft-box"><strong>SEO slug</strong><p>${esc(d.seo?.slug)}</p></div>${listHtml(d.warnings)}`;}
+async function generateDraft(){try{statusNode.textContent='正在生成内部上架草稿。'; statusNode.className='status'; refreshDerived(); if(metadata?.metadataPath) await saveSelection('车型和图片选择已保存，正在生成草稿。'); const payload={...buildPayload(),metadataPath:metadata?.metadataPath||'',images:metadata?.images||[]}; const res=await saveJson('/api/admin/new-car-intake/draft',payload); metadata=res.metadata; selectedMarkets=metadata.selectedMarkets?.length?[...metadata.selectedMarkets]:selectedMarkets; recommendedMarkets=metadata.recommendedMarkets||recommendedMarkets; renderSummary(logNode.textContent); renderDraft(res.draft,res.draftPath); statusNode.textContent='内部上架草稿已生成，发布到官网仍保持禁用。'; statusNode.className='status ok';}catch(err){showError(err);}}
+// Display and validation overrides for the intake confirmation workflow.
+const confirmAlert=document.getElementById('confirmAlert');
+const fieldLabels={brand:'品牌',model:'车型',trim:'配置',brandEn:'品牌英文',modelEn:'车型英文',trimEn:'配置英文',displayNameEn:'英文展示名',guidePrice:'指导价',fobPrice:'FOB 价格',energyType:'能源类型',bodyType:'车身类型',motorPower:'电机功率',horsepower:'马力',range:'续航',batteryType:'电池类型',batteryCapacity:'电池容量',displacement:'排量',engine:'发动机',transmission:'变速箱',fuelConsumption:'油耗',seats:'座位数',dimensions:'车身尺寸',powerText:'动力参数'};
+const sourceDetailLabels={local_metadata:'本地元数据',autohome_page:'页面解析',rules:'规则推断'};
+const marketNames=new Set(['Algeria','West Africa','Central Asia','Southeast Asia','Middle East','South America','Russia/CIS','Used Cars','Other']);
+const keywordLabelMap=new Map([['EV','small city EV'],['mini car','small city EV'],['small city car','city mobility'],['low-cost vehicle','low-cost vehicle'],['city mobility','city mobility'],['short-distance commuting','short-distance commuting'],['easy parking','easy parking'],['low running cost','low running cost'],['dealer supply','dealer supply'],['FOB price','FOB quotation'],['FOB 报价','FOB quotation'],['CIF shipping support','CIF shipping support'],['出口文件','export documents'],['export documents','export documents'],['inspection report','inspection support'],['验车报告','inspection support'],['ready stock','ready stock'],['低价','low-cost vehicle'],['小型EV','small city EV'],['微型车','small city EV'],['城市代步','city mobility'],['短途通勤','short-distance commuting'],['低用车成本','low running cost'],['停车方便','easy parking'],['价格敏感市场','price-sensitive market'],['经销商测试车型','dealer supply'],['东南亚潜力车型','Southeast Asia potential'],['适合经销商测试','dealer supply']]);
+const keywordGroups=[{title:'车型属性',items:['premium sedan','executive sedan','gasoline vehicle','diesel vehicle','sedan','SUV','small city EV','city mobility','low-cost vehicle','low running cost']},{title:'出口卖点',items:['China export vehicle','FOB quotation','CIF shipping support','export documents','inspection support','dealer supply','ready stock']},{title:'可选市场关键词',optional:true,items:['Southeast Asia potential','Middle East test market','South America test market','Algeria test market','West Africa test market']}];
+function isUnknownValue(v){const raw=String(v??'').trim(); return !raw||raw==='-'||/^(to be confirmed|unknown|null|undefined)$/i.test(raw);}
+function normalizeKeywordValue(v){const raw=String(v??'').trim(); if(!raw||marketNames.has(raw))return ''; return keywordLabelMap.get(raw)||raw;}
+function normalizeKeywordList(items){return unique(items).map(normalizeKeywordValue).filter(Boolean)}
+function normalizeDimensionsInput(v){const raw=String(v??'').trim(); if(isUnknownValue(raw))return ''; const nums=raw.match(/\d{3,5}/g)||[]; return nums.length>=3?`${nums[0]} × ${nums[1]} × ${nums[2]} mm`:raw;}
+function validDimensions(v){return /^\d{3,5}\s*×\s*\d{3,5}\s*×\s*\d{3,5}\s*mm$/i.test(String(v||'').trim());}
+function sourceLabel(v){if(v==='scraped')return '抓取'; if(v==='manual')return '手动输入'; if(v==='inferred')return '规则推断'; return v||'-';}
+function sourceDetailLabel(v){return sourceDetailLabels[v]||'';}
+function fieldLabel(v){return fieldLabels[v]||v;}
+function displayText(v){return String(v??'').replace(/to be confirmed/gi,'需确认').replace(/Unknown/g,'需确认').replace(/Motor power:/g,'电机功率：').replace(/Horsepower:/g,'马力：').replace(/Range:/g,'续航：').replace(/Battery type:/g,'电池类型：').replace(/Battery capacity:/g,'电池容量：').replace(/Energy type:/g,'能源类型：').replace(/Body type:/g,'车身类型：').replace(/Guide price:/g,'指导价：').replace(/FOB price:/g,'FOB 价格：').replace(/Displacement:/g,'排量：').replace(/Engine:/g,'发动机：').replace(/Transmission:/g,'变速箱：').replace(/Fuel consumption:/g,'油耗：').replace(/Seats:/g,'座位数：').replace(/Dimensions:/g,'车身尺寸：').replace(/Suitable for city mobility and short-distance commuting/g,'适合城市代步和短途通勤').replace(/Internal draft only\. Images are pending rights review and must not enter the public gallery until approved_for_public\./g,'内部草稿。图片仍为待审核素材，公开发布前必须确认授权。').replace(/No reviewed internal images selected yet\. Keep public publishing disabled until image rights are confirmed\./g,'尚未选择已审核内部图片，确认图片授权前请保持官网发布禁用。');}
+function renderLocalizedList(id,items){document.getElementById(id).innerHTML=(items&&items.length?items:['-']).map(i=>`<li>${esc(displayText(i))}</li>`).join('')}
+function localizedListHtml(items){return `<ul class="list">${(items&&items.length?items:['-']).map(i=>`<li>${esc(displayText(i))}</li>`).join('')}</ul>`}
+function setKeywordOptions(selected=[],candidates=[]){const selectedSet=new Set(normalizeKeywordList(selected)); const all=unique([...selectedSet,...normalizeKeywordList(candidates)]).filter(Boolean); keywordOptions=all.map(value=>({value,selected:selectedSet.has(value)})); renderKeywords();}
+function selectedKeywords(){return keywordOptions.filter(k=>k.selected).map(k=>k.value).filter(v=>!marketNames.has(v))}
+function unselectedKeywords(){return keywordOptions.filter(k=>!k.selected).map(k=>k.value).filter(v=>!marketNames.has(v))}
+function renderKeywordChip(value){const i=keywordOptions.findIndex(k=>k.value===value); if(i<0)return ''; const k=keywordOptions[i]; return `<label class="check-chip ${k.selected?'is-selected':''}"><input type="checkbox" data-index="${i}" ${k.selected?'checked':''}>${esc(k.value)}</label>`;}
+function bindKeywordChecks(){keywordList.querySelectorAll('input[type="checkbox"]').forEach(input=>input.onchange=()=>{keywordOptions[Number(input.dataset.index)].selected=input.checked; renderKeywords(); refreshDerived(); if(metadata?.metadataPath) saveSelection('关键词已保存。').catch(showError);});}
+function renderKeywords(){if(!keywordOptions.length){keywordList.innerHTML='<p class="status warn">等待系统生成关键词候选。</p>';return;} const used=new Set(keywordGroups.flatMap(g=>g.items)); const blocks=keywordGroups.map(g=>{const chips=g.items.map(renderKeywordChip).filter(Boolean).join(''); const html=`<div class="keyword-group"><div class="keyword-title">${g.title}</div><div class="chip-list">${chips||'<p class="small">暂无候选词</p>'}</div></div>`; return g.optional?`<details class="keyword-group"><summary>${g.title}</summary><div class="chip-list">${chips||'<p class="small">暂无候选词</p>'}</div></details>`:html;}).join(''); const other=keywordOptions.filter(k=>!used.has(k.value)).map(k=>renderKeywordChip(k.value)).filter(Boolean).join(''); keywordList.innerHTML=blocks+(other?`<div class="keyword-group"><div class="keyword-title">其他关键词</div><div class="chip-list">${other}</div></div>`:''); bindKeywordChecks();}
+function addKeyword(){const input=document.getElementById('keywordInput'); const value=normalizeKeywordValue(input.value); if(!value)return; if(!keywordOptions.some(k=>k.value===value)) keywordOptions.push({value,selected:true}); input.value=''; renderKeywords(); refreshDerived(); if(metadata?.metadataPath) saveSelection('关键词已保存。').catch(showError);}
+function renderPowerFields(){readPowerFields(); const e=val('energyType'); let fields=[]; if(/^(Gasoline|Petrol|Diesel)$/i.test(e)) fields=[['displacement','排量','1.5L'],['engine','发动机','1.5L Naturally Aspirated Engine'],['transmission','变速箱','CVT / AT / DCT'],['fuelConsumption','油耗','5.8 L/100km']]; else if(/^EV$/i.test(e)) fields=[['motorPower','电机功率','30kW'],['horsepower','马力','41 hp'],['range','续航','170 km'],['batteryType','电池类型','LFP'],['batteryCapacity','电池容量','13.9 kWh']]; else if(/^(Hybrid|PHEV)$/i.test(e)) fields=[['displacement','发动机排量','1.5L'],['motorPower','电机功率',''],['range','综合续航',''],['batteryCapacity','电池容量',''],['fuelConsumption','油耗','']]; else fields=[['powerText','动力参数','请补充动力参数']]; document.getElementById('powerFields').innerHTML=fields.map(([name,label,placeholder])=>`<label data-field="${name}">${label}<input name="${name}" placeholder="${placeholder}" value="${esc(isUnknownValue(powerDraft[name])?'':powerDraft[name]||'')}"></label>`).join(''); document.querySelectorAll('#powerFields input').forEach(input=>input.addEventListener('input',()=>{powerDraft[input.name]=input.value.trim(); refreshDerived();})); updateConfirmationState();}
+function fieldsToConfirm(){readPowerFields(); const e=val('energyType'); const names=['brand','model','trim','guidePrice','fobPrice','energyType','bodyType','seats','dimensions']; if((vehicleState?.trimEnNeedsConfirmation&&!val('trimEn'))||((val('trim')||val('brandEn')||val('modelEn'))&&!val('trimEn'))) names.push('trimEn'); if(/^EV$/i.test(e)) names.push('motorPower','horsepower','range','batteryType','batteryCapacity'); else if(/^(Gasoline|Petrol|Diesel)$/i.test(e)) names.push('displacement','engine','transmission','fuelConsumption'); else if(/^(Hybrid|PHEV)$/i.test(e)) names.push('displacement','motorPower','range','batteryCapacity','fuelConsumption'); else names.push('powerText'); return names.filter(name=>{const value=name in powerDraft?powerDraft[name]:val(name); if(name==='dimensions')return isUnknownValue(value)||!validDimensions(normalizeDimensionsInput(value)); if(name==='trimEn')return isUnknownValue(value); return isUnknownValue(value);});}
+function updateConfirmationState(){const missing=fieldsToConfirm(); document.querySelectorAll('label.needs-confirm').forEach(label=>{label.classList.remove('needs-confirm'); label.querySelector('.confirm-tag')?.remove();}); missing.forEach(name=>{const el=field(name)||document.querySelector(`#powerFields [name="${name}"]`); const label=el?.closest('label'); if(label){label.classList.add('needs-confirm'); if(!label.querySelector('.confirm-tag')) label.insertAdjacentHTML('afterbegin','<span class="confirm-tag">需确认</span>');}}); if(missing.length){confirmAlert.classList.remove('hidden'); confirmAlert.textContent=`以下字段需要人工确认：${missing.map(fieldLabel).join('、')}`;} else {confirmAlert.classList.add('hidden'); confirmAlert.textContent='';} return missing;}
+function formatDimensionsField(){const el=field('dimensions'); const formatted=normalizeDimensionsInput(el.value); if(formatted&&validDimensions(formatted)) el.value=formatted; refreshDerived();}
+function buildCoreSpecsClient(){const p=currentPower(), e=val('energyType')||'需确认', body=val('bodyType')||'需确认', dims=normalizeDimensionsInput(val('dimensions')); const specs=[`能源类型：${e}`,`车身类型：${body}`,`指导价：${val('guidePrice')||'需确认'} RMB`,`FOB 价格：${val('fobPrice')||'需确认'} USD`]; if(/^EV$/i.test(e)){specs.push(`电机功率：${p.motorPower||'需确认'}`,`马力：${p.horsepower||'需确认'}`,`续航：${p.range||'需确认'}`,`电池类型：${p.batteryType||'需确认'}`,`电池容量：${p.batteryCapacity||'需确认'}`);} else if(/^(Gasoline|Petrol|Diesel)$/i.test(e)){specs.push(`排量：${p.displacement||'需确认'}`,`发动机：${p.engine||'需确认'}`,`变速箱：${p.transmission||'需确认'}`,`油耗：${p.fuelConsumption||'需确认'}`);} else if(/^(Hybrid|PHEV)$/i.test(e)){specs.push(`发动机排量：${p.displacement||'需确认'}`,`电机功率：${p.motorPower||'需确认'}`,`综合续航：${p.range||'需确认'}`,`电池容量：${p.batteryCapacity||'需确认'}`,`油耗：${p.fuelConsumption||'需确认'}`);} else specs.push(`动力参数：${p.powerText||'需确认'}`); specs.push(`座位数：${val('seats')||'需确认'}`,`车身尺寸：${dims||'需确认'}`); if(/mini|city|小马/i.test([val('bodyType'),val('model')].join(' '))) specs.push('适合城市代步和短途通勤'); return unique(specs);}
+function refreshDerived(){coreSpecs=buildCoreSpecsClient(); productHighlights=buildHighlightsClient(); exportSellingPoints=buildExportPointsClient(); renderLocalizedList('coreSpecsList',coreSpecs); renderLocalizedList('productHighlightsList',productHighlights); renderLocalizedList('exportSellingPointsList',exportSellingPoints); renderRecommendedMarkets(); updateConfirmationState(); renderPublishRequirements();}
+function renderRecognition(vehicle){const detail=sourceDetailLabel(vehicle.sourceDetail); setText('sourceText',`${sourceLabel(vehicle.source)}${detail?` / ${detail}`:''}`); setText('specIdText',vehicle.specId||'-'); const missing=(vehicle.missingFields||[]).map(fieldLabel); renderLocalizedList('missingFields',missing.length?missing:['暂无缺失字段。']); renderLocalizedList('recognitionNotices',(vehicle.notices&&vehicle.notices.length)?vehicle.notices:['暂无特殊提示。']); recognitionStatus.textContent='车型信息已识别，可继续人工确认。'; recognitionStatus.className='status ok';}
+function applyVehicle(vehicle={}){suppressIdentityWatch=true; try{vehicleState=vehicle; ['brand','model','trim','brandEn','modelEn','trimEn','displayNameEn','guidePrice','fobPrice','energyType','bodyType','seats'].forEach(k=>{if(!isUnknownValue(vehicle[k])) setVal(k,vehicle[k]);}); if(!val('displayNameEn')) setVal('displayNameEn',[val('brandEn'),val('modelEn'),val('trimEn')].filter(Boolean).join(' ')); setVal('dimensions', normalizeDimensionsInput(vehicle.dimensions||'')); const p=vehicle.power||{}; powerDraft={...p,displacement:vehicle.displacement||p.displacement||'',transmission:vehicle.transmission||p.transmission||'',fuelConsumption:vehicle.fuelConsumption||p.fuelConsumption||'',range:vehicle.range||p.range||'',batteryType:vehicle.batteryType||p.batteryType||'',batteryCapacity:vehicle.batteryCapacity||p.batteryCapacity||'',engine:vehicle.engine||p.engine||'',motorPower:vehicle.motorPower||p.motorPower||'',horsepower:vehicle.horsepower||p.horsepower||'',powerText:vehicle.powerText||p.powerText||''}; Object.keys(powerDraft).forEach(k=>{if(isUnknownValue(powerDraft[k])) powerDraft[k]='';}); renderPowerFields(); setKeywordOptions(vehicle.keywords||[],vehicle.keywordCandidates||[]); recommendedMarkets=vehicle.recommendedMarkets||[]; coreSpecs=vehicle.coreSpecs||[]; productHighlights=vehicle.productHighlights||[]; exportSellingPoints=vehicle.exportSellingPoints||[]; refreshDerived(); renderRecognition(vehicle); renderMarketPicks(); renderRecommendedMarkets(); activeVehicleIdentity=identityFromVehicle(vehicle);} finally{suppressIdentityWatch=false;}}function buildPayload(){if(typeof normalizePowerInputs==='function') normalizePowerInputs(true); const p=currentPower(); const dimensions=normalizeDimensionsInput(val('dimensions')); if(dimensions&&validDimensions(dimensions)) setVal('dimensions',dimensions); const payloadCoreSpecs=buildCoreSpecsClient(); return {url:val('url'),sourceUrl:val('url'),specId:parseSpecIdClient(val('url')),brand:val('brand'),model:val('model'),trim:val('trim'),brandEn:val('brandEn'),modelEn:val('modelEn'),trimEn:val('trimEn'),displayNameEn:val('displayNameEn'),trimEnNeedsConfirmation:Boolean(vehicleState?.trimEnNeedsConfirmation&&!val('trimEn')),guidePrice:val('guidePrice'),fobPrice:val('fobPrice'),energyType:val('energyType'),bodyType:val('bodyType'),seats:val('seats'),dimensions:dimensions||val('dimensions'),power:p,motorPower:p.motorPower,horsepower:p.horsepower,range:p.range,batteryType:p.batteryType,batteryCapacity:p.batteryCapacity,displacement:p.displacement,engine:p.engine,transmission:p.transmission,fuelConsumption:p.fuelConsumption,powerText:p.powerText,keywords:selectedKeywords(),keywordCandidates:unselectedKeywords(),selectedMarkets:selectedMarkets.filter(x=>x!=='auto'),targetMarket:selectedMarkets.includes('auto')?'auto':(selectedMarkets[0]||'auto'),recommendedMarkets,coreSpecs:payloadCoreSpecs,productHighlights,exportSellingPoints};}
+async function saveSelection(msg){if(!metadata?.metadataPath)return; refreshDerived(); const payload={...buildPayload(),metadataPath:metadata.metadataPath,images:metadata.images}; const res=await saveJson('/api/admin/new-car-intake/image-selection',payload); metadata=res.metadata; selectedMarkets=metadata.selectedMarkets?.length?[...metadata.selectedMarkets]:(metadata.targetMarket==='auto'?['auto']:selectedMarkets); recommendedMarkets=metadata.recommendedMarkets||recommendedMarkets; setKeywordOptions(metadata.keywords||selectedKeywords(),metadata.keywordCandidates||unselectedKeywords()); renderMarketPicks(); renderSummary(logNode.textContent); statusNode.textContent=msg; statusNode.className='status ok';}
+function renderDraft(d,path){draftSection.classList.remove('hidden'); draftOutput.innerHTML=`<p class="notice">内部上架草稿已生成。图片为待审核素材，确认授权前不会发布到官网正式图库。</p><div class="metric-grid"><div class="metric"><small>草稿状态</small><strong>${esc(d.status)}</strong></div><div class="metric"><small>draft.json</small><strong>${esc(path)}</strong></div><div class="metric"><small>主图</small><strong>${esc(d.mainImage||'-')}</strong></div><div class="metric"><small>目标市场</small><strong>${esc((d.selectedMarkets||[]).join(', ')||'-')}</strong></div></div><div class="draft-grid"><div class="draft-box"><strong>核心配置</strong>${localizedListHtml(d.coreSpecs)}</div><div class="draft-box"><strong>产品卖点</strong>${localizedListHtml(d.productHighlights)}</div><div class="draft-box"><strong>出口卖点</strong>${localizedListHtml(d.exportSellingPoints)}</div><div class="draft-box"><strong>FAQ</strong>${localizedListHtml(d.faq)}</div></div><div class="draft-box"><strong>SEO title</strong><p>${esc(d.seo?.title)}</p></div><div class="draft-box"><strong>SEO description</strong><p>${esc(d.seo?.description)}</p></div><div class="draft-box"><strong>SEO slug</strong><p>${esc(d.seo?.slug)}</p></div>${localizedListHtml(d.warnings)}`;}
+async function generateDraft(){try{const missing=updateConfirmationState(); statusNode.textContent=missing.length?'仍有配置字段需要人工确认，发布前请补全。正在生成内部草稿。':'正在生成内部上架草稿。'; statusNode.className=missing.length?'status warn':'status'; refreshDerived(); if(metadata?.metadataPath) await saveSelection('车型和图片选择已保存，正在生成草稿。'); const payload={...buildPayload(),metadataPath:metadata?.metadataPath||'',images:metadata?.images||[]}; const res=await saveJson('/api/admin/new-car-intake/draft',payload); metadata=res.metadata; selectedMarkets=metadata.selectedMarkets?.length?[...metadata.selectedMarkets]:selectedMarkets; recommendedMarkets=metadata.recommendedMarkets||recommendedMarkets; renderSummary(logNode.textContent); renderDraft(res.draft,res.draftPath); statusNode.textContent=missing.length?'内部上架草稿已生成，但仍有配置字段需要人工确认，发布前请补全。':'内部上架草稿已生成，发布到官网仍保持禁用。'; statusNode.className=missing.length?'status warn':'status ok';}catch(err){showError(err);}}
+let marketKeywordsExpanded=true;
+const collectorLaunchFailureMessage="\u91c7\u96c6\u6a21\u5757\u52a0\u8f7d\u5931\u8d25\uff1a\u8bf7\u68c0\u67e5 collectAutohomeImages \u662f\u5426\u5df2\u6b63\u786e\u5bfc\u51fa\u3002";
+function rememberMarketKeywordState(){const details=keywordList.querySelector('[data-keyword-group="market-keywords"]'); if(details) marketKeywordsExpanded=details.open;}
+function bindKeywordChecks(){keywordList.querySelectorAll('input[type="checkbox"]').forEach(input=>{input.addEventListener('click',event=>event.stopPropagation()); input.onchange=event=>{event.stopPropagation(); rememberMarketKeywordState(); const index=Number(input.dataset.index); if(keywordOptions[index]) keywordOptions[index].selected=input.checked; renderKeywords(); refreshDerived(); if(metadata?.metadataPath) saveSelection('\u5173\u952e\u8bcd\u5df2\u4fdd\u5b58\u3002').catch(showError);};}); keywordList.querySelectorAll('[data-keyword-group="market-keywords"] label.check-chip').forEach(label=>label.addEventListener('click',event=>event.stopPropagation()));}
+function renderKeywords(){if(!keywordOptions.length){keywordList.innerHTML='<p class="status warn">\u7b49\u5f85\u7cfb\u7edf\u751f\u6210\u5173\u952e\u8bcd\u5019\u9009\u3002</p>';return;} const used=new Set(keywordGroups.flatMap(g=>g.items)); const blocks=keywordGroups.map(g=>{const chips=g.items.map(renderKeywordChip).filter(Boolean).join(''); if(g.optional)return `<details class="keyword-group" data-keyword-group="market-keywords" ${marketKeywordsExpanded?'open':''}><summary>${esc(g.title)}</summary><div class="chip-list">${chips||'<p class="small">\u6682\u65e0\u5019\u9009\u8bcd</p>'}</div></details>`; return `<div class="keyword-group"><div class="keyword-title">${esc(g.title)}</div><div class="chip-list">${chips||'<p class="small">\u6682\u65e0\u5019\u9009\u8bcd</p>'}</div></div>`;}).join(''); const other=keywordOptions.filter(k=>!used.has(k.value)).map(k=>renderKeywordChip(k.value)).filter(Boolean).join(''); keywordList.innerHTML=blocks+(other?`<div class="keyword-group"><div class="keyword-title">\u5176\u4ed6\u5173\u952e\u8bcd</div><div class="chip-list">${other}</div></div>`:''); const details=keywordList.querySelector('[data-keyword-group="market-keywords"]'); if(details){details.open=marketKeywordsExpanded; details.addEventListener('toggle',()=>{marketKeywordsExpanded=details.open;}); details.querySelectorAll('input,label.check-chip').forEach(el=>el.addEventListener('click',event=>event.stopPropagation()));} bindKeywordChecks();}
+function friendlyCollectorError(err){
+  const raw=String(err?.message||err?.error||err||'').trim();
+  const reason=String(err?.reason||'');
+  const details=String(err?.details||'').trim();
+  if(/NO_IMAGES_FOUND/.test(reason||raw))return '图片采集失败：未找到可下载图片。';
+  if(/AUTOHOME_FETCH_FAILED/.test(reason||raw))return '图片采集失败：汽车之家页面可能限制抓取。';
+  if(/spawn EPERM|EPERM|COLLECTOR_START_FAILED|COLLECTOR_MODULE_LOAD_FAILED|\u56fe\u7247\u91c7\u96c6\u811a\u672c\u542f\u52a8\u5931\u8d25/i.test(reason||raw))return '\u91c7\u96c6\u6a21\u5757\u52a0\u8f7d\u5931\u8d25\uff1a'+(details||'\u8bf7\u68c0\u67e5 collectAutohomeImages \u662f\u5426\u5df2\u6b63\u786e\u5bfc\u51fa\u3002');
+  if(/COLLECTOR_EXCEPTION/i.test(reason||raw)&&details)return '图片采集失败：'+details;
+  return raw||details||'未知错误';
+}
+function showError(err){statusNode.textContent=friendlyCollectorError(err); statusNode.className='status bad';}
+function collectorResultSummary(j,status){
+  const yes=v=>v?'是':'否';
+  const count=j.downloadedCount??j.downloadedImages??j.metadata?.images?.length??0;
+  const lines=[
+    'API 成功：'+yes(j.apiSuccess??(status>=200&&status<500)),
+    '采集函数执行成功：'+yes(j.scriptSuccess??j.success),
+    '下载图片数量：'+count
+  ];
+  if(j.outputDir)lines.push('素材目录：'+j.outputDir);
+  if(j.metadataPath)lines.push('metadata.json：'+j.metadataPath);
+  if(j.step)lines.push('失败步骤：'+j.step);
+  if(j.reason)lines.push('状态原因：'+j.reason);
+  if(j.warning)lines.push('提醒：'+j.warning);
+  if(j.error)lines.push('错误原因：'+friendlyCollectorError(j));
+  if(j.details)lines.push('错误详情：'+j.details);
+  if(j.suggestion)lines.push('建议操作：'+j.suggestion);
+  if(count<=0){
+    lines.push('打开素材目录：'+(j.outputDir||'请先完成采集以生成目录'));
+    lines.push('手动补充图片说明：请将授权图片或自有图片放入该目录，再回到本页面刷新候选图片。');
+  }
+  if(j.errorLogPath&&j.success===false)lines.push('错误日志：'+j.errorLogPath);
+  return lines.join('\n');
+}
+async function collectImages(){
+  try{
+    const ready=await ensureVehicleReady();
+    if(!ready)throw new Error('识别结果不完整，请至少确认品牌、车型和指导价。');
+    collectBtn.disabled=true;
+    statusNode.textContent='正在采集图片到 media-source/autohome，请勿关闭页面。';
+    statusNode.className='status';
+    refreshDerived();
+    const r=await fetch('/api/admin/collect-autohome-images',{method:'POST',headers:{'Content-Type':'application/json'},cache:'no-store',body:JSON.stringify(buildPayload())});
+    const j=await r.json().catch(()=>({success:false,error:`接口返回非 JSON 响应，HTTP ${r.status}`,apiSuccess:false,scriptSuccess:false,downloadedImages:0,step:'unknown'}));
+    const summary=collectorResultSummary(j,r.status);
+    if(j.metadata){
+      metadata=j.metadata;
+      selectedMarkets=metadata.selectedMarkets?.length?[...metadata.selectedMarkets]:(metadata.targetMarket==='auto'?['auto']:selectedMarkets);
+      recommendedMarkets=metadata.recommendedMarkets||recommendedMarkets;
+      renderMarketPicks();
+      renderSummary([summary,j.stdout].filter(Boolean).join('\n\n'));
+      if(metadata.metadataPath) await saveSelection('采集结果和车型字段已保存。');
+    } else {
+      logNode.hidden=false;
+      logNode.textContent=summary;
+    }
+    if(!r.ok||j.success===false){
+      statusNode.textContent=friendlyCollectorError(j);
+      statusNode.className='status bad';
+      if(!j.metadata){logNode.hidden=false; logNode.textContent=summary;}
+      return;
+    }
+    const count=j.downloadedCount??j.downloadedImages??metadata?.images?.length??0;
+    if(count<=0){
+      statusNode.textContent='已创建待审核素材目录，但未采集到图片。可能是汽车之家限制抓取，请手动上传或补充图片。';
+      statusNode.className='status warn';
+      renderSummary([summary,j.stdout].filter(Boolean).join('\n\n'));
+      return;
+    }
+    statusNode.textContent='采集完成，候选图片已进入内部待审核目录。';
+    statusNode.className='status ok';
+  }catch(err){showError(err);}finally{collectBtn.disabled=false;}
+}
+function normalizeUnitInput(value,unit,options){const raw=String(value??'').trim(); if(isUnknownValue(raw))return ''; const cleaned=raw.replace(/\s+/g,' '); const compact=options&&options.compact===true; const joiner=compact?'':' '; const numberOnly=cleaned.match(/^(\d+(?:\.\d+)?)$/); if(numberOnly)return numberOnly[1]+joiner+unit; const patterns=(options&&options.patterns)||[]; if(patterns.length){const exact=cleaned.match(new RegExp('^(\\d+(?:\\.\\d+)?)\\s*(?:'+patterns.join('|')+')$','i')); if(exact)return exact[1]+joiner+unit;} return cleaned.replace(/(\d+(?:\.\d+)?)\s*kw\b/ig,'$1 kW').replace(/(\d+(?:\.\d+)?)\s*hp\b/ig,'$1 hp').replace(/(\d+(?:\.\d+)?)\s*kwh\b/ig,'$1 kWh').replace(/(\d+(?:\.\d+)?)\s*l\/100\s*km\b/ig,'$1 L/100km').replace(/^(\d+(?:\.\d+)?)\s*l$/i,'$1L').replace(/(\d+(?:\.\d+)?)\s*km\b/ig,'$1 km');}
+function normalizePowerValue(name,value){if(name==='motorPower')return normalizeUnitInput(value,'kW',{patterns:['kw']}); if(name==='horsepower')return normalizeUnitInput(value,'hp',{patterns:['hp','ps']}); if(name==='range')return normalizeUnitInput(value,'km',{patterns:['km','kilometers?','kms?']}); if(name==='batteryCapacity')return normalizeUnitInput(value,'kWh',{patterns:['kwh']}); if(name==='displacement')return normalizeUnitInput(value,'L',{compact:true,patterns:['l']}); if(name==='fuelConsumption')return normalizeUnitInput(value,'L/100km',{patterns:['l\\/100\\s*km','l\\/100km']}); return String(value??'').trim();}
+function normalizePowerInputs(write){document.querySelectorAll('#powerFields input').forEach(input=>{powerDraft[input.name]=input.value.trim();}); ['motorPower','horsepower','range','batteryCapacity','displacement','fuelConsumption'].forEach(name=>{powerDraft[name]=normalizePowerValue(name,powerDraft[name]); const input=document.querySelector('#powerFields [name="'+name+'"]'); if(write&&input)input.value=powerDraft[name];}); return {...powerDraft};}
+function renderPowerFields(){readPowerFields(); const e=val('energyType'); let fields=[]; if(/^(Gasoline|Petrol|Diesel)$/i.test(e)) fields=[['displacement','\u6392\u91cf\uff08L\uff09','1.5L'],['engine','\u53d1\u52a8\u673a','1.5L Naturally Aspirated Engine'],['transmission','\u53d8\u901f\u7bb1','CVT / AT / DCT'],['fuelConsumption','\u6cb9\u8017\uff08L/100km\uff09','5.8 L/100km']]; else if(/^EV$/i.test(e)) fields=[['motorPower','\u7535\u673a\u529f\u7387\uff08kW\uff09','30 kW'],['horsepower','\u9a6c\u529b\uff08hp\uff09','41 hp'],['range','\u7eed\u822a\uff08km\uff09','222 km'],['batteryType','\u7535\u6c60\u7c7b\u578b','LFP'],['batteryCapacity','\u7535\u6c60\u5bb9\u91cf\uff08kWh\uff09','13.9 kWh']]; else if(/^(Hybrid|PHEV)$/i.test(e)) fields=[['displacement','\u53d1\u52a8\u673a\u6392\u91cf\uff08L\uff09','1.5L'],['motorPower','\u7535\u673a\u529f\u7387\uff08kW\uff09','30 kW'],['range','\u7efc\u5408\u7eed\u822a\uff08km\uff09','222 km'],['batteryCapacity','\u7535\u6c60\u5bb9\u91cf\uff08kWh\uff09','13.9 kWh'],['fuelConsumption','\u6cb9\u8017\uff08L/100km\uff09','5.8 L/100km']]; else fields=[['powerText','\u52a8\u529b\u53c2\u6570','\u8bf7\u8865\u5145\u52a8\u529b\u53c2\u6570']]; document.getElementById('powerFields').innerHTML=fields.map(([name,label,placeholder])=>'<label data-field="'+name+'">'+label+'<input name="'+name+'" placeholder="'+placeholder+'" value="'+esc(isUnknownValue(powerDraft[name])?'':normalizePowerValue(name,powerDraft[name]||''))+'"></label>').join(''); document.querySelectorAll('#powerFields input').forEach(input=>{input.addEventListener('input',()=>{powerDraft[input.name]=input.value.trim(); refreshDerived();}); input.addEventListener('blur',()=>{input.value=normalizePowerValue(input.name,input.value); powerDraft[input.name]=input.value.trim(); refreshDerived();});}); updateConfirmationState();}
+function currentPower(){const p=normalizePowerInputs(false); return {type:val('energyType').toLowerCase(), motorPower:p.motorPower||'', horsepower:p.horsepower||'', range:p.range||'', batteryType:p.batteryType||'', batteryCapacity:p.batteryCapacity||'', engine:p.engine||'', transmission:p.transmission||'', displacement:p.displacement||'', fuelConsumption:p.fuelConsumption||'', powerText:p.powerText||''};}
+function formatDimensionsField(){const el=field('dimensions'); const formatted=normalizeDimensionsInput(el.value); if(formatted&&validDimensions(formatted)) el.value=formatted; refreshDerived();}
+function buildPayload(){if(typeof normalizePowerInputs==='function') normalizePowerInputs(true); const p=currentPower(); const dimensions=normalizeDimensionsInput(val('dimensions')); if(dimensions&&validDimensions(dimensions)) setVal('dimensions',dimensions); const payloadCoreSpecs=buildCoreSpecsClient(); return {url:val('url'),sourceUrl:val('url'),specId:parseSpecIdClient(val('url')),brand:val('brand'),model:val('model'),trim:val('trim'),brandEn:val('brandEn'),modelEn:val('modelEn'),trimEn:val('trimEn'),displayNameEn:val('displayNameEn'),trimEnNeedsConfirmation:Boolean(vehicleState?.trimEnNeedsConfirmation&&!val('trimEn')),guidePrice:val('guidePrice'),fobPrice:val('fobPrice'),energyType:val('energyType'),bodyType:val('bodyType'),seats:val('seats'),dimensions:dimensions||val('dimensions'),power:p,motorPower:p.motorPower,horsepower:p.horsepower,range:p.range,batteryType:p.batteryType,batteryCapacity:p.batteryCapacity,displacement:p.displacement,engine:p.engine,transmission:p.transmission,fuelConsumption:p.fuelConsumption,powerText:p.powerText,keywords:selectedKeywords(),keywordCandidates:unselectedKeywords(),selectedMarkets:selectedMarkets.filter(x=>x!=='auto'),targetMarket:selectedMarkets.includes('auto')?'auto':(selectedMarkets[0]||'auto'),recommendedMarkets,coreSpecs:payloadCoreSpecs,productHighlights,exportSellingPoints};}
+function friendlyCollectorError(err){
+  const raw=String(err?.message||err?.error||err||'').trim();
+  const reason=String(err?.reason||'');
+  const details=String(err?.details||'').trim();
+  if(/NO_IMAGES_FOUND/.test(reason||raw))return '图片采集失败：未找到可下载图片。';
+  if(/AUTOHOME_FETCH_FAILED/.test(reason||raw))return '图片采集失败：汽车之家页面可能限制抓取。';
+  if(/spawn EPERM|EPERM|COLLECTOR_START_FAILED|COLLECTOR_MODULE_LOAD_FAILED|\u56fe\u7247\u91c7\u96c6\u811a\u672c\u542f\u52a8\u5931\u8d25/i.test(reason||raw))return '\u91c7\u96c6\u6a21\u5757\u52a0\u8f7d\u5931\u8d25\uff1a'+(details||'\u8bf7\u68c0\u67e5 collectAutohomeImages \u662f\u5426\u5df2\u6b63\u786e\u5bfc\u51fa\u3002');
+  if(/COLLECTOR_EXCEPTION/i.test(reason||raw)&&details)return '图片采集失败：'+details;
+  return raw||details||'未知错误';
+}
+function collectorResultSummary(j,status){
+  const yes=v=>v?'是':'否';
+  const count=j.downloadedCount??j.downloadedImages??j.metadata?.images?.length??0;
+  const lines=[
+    'API 成功：'+yes(j.apiSuccess??(status>=200&&status<500)),
+    '采集函数执行成功：'+yes(j.scriptSuccess??j.success),
+    '下载图片数量：'+count
+  ];
+  if(j.outputDir)lines.push('素材目录：'+j.outputDir);
+  if(j.metadataPath)lines.push('metadata.json：'+j.metadataPath);
+  if(j.step)lines.push('失败步骤：'+j.step);
+  if(j.reason)lines.push('状态原因：'+j.reason);
+  if(j.warning)lines.push('提醒：'+j.warning);
+  if(j.error)lines.push('错误原因：'+friendlyCollectorError(j));
+  if(j.details)lines.push('错误详情：'+j.details);
+  if(j.suggestion)lines.push('建议操作：'+j.suggestion);
+  if(count<=0){
+    lines.push('打开素材目录：'+(j.outputDir||'请先完成采集以生成目录'));
+    lines.push('手动补充图片说明：请将授权图片或自有图片放入该目录，再回到本页面刷新候选图片。');
+  }
+  if(j.errorLogPath&&j.success===false)lines.push('错误日志：'+j.errorLogPath);
+  return lines.join('\n');
+}
+const recognizeBtn=document.getElementById('recognizeBtn'), collectBtn=document.getElementById('collectBtn'), draftBtn=document.getElementById('draftBtn');
+recognizeBtn.onclick=()=>recognizeVehicle().catch(showError);
+collectBtn.onclick=collectImages;
+draftBtn.onclick=generateDraft;
+document.getElementById('addKeywordBtn').onclick=addKeyword;
+document.getElementById('keywordInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addKeyword();}});
+document.getElementById('energyType').addEventListener('change',()=>{renderPowerFields();refreshDerived();});
+field('url').addEventListener('input',()=>handleIdentityInput('url')); ['brand','model','trim'].forEach(name=>field(name).addEventListener('input',()=>{handleIdentityInput(name);refreshDerived();})); ['brandEn','modelEn','trimEn','displayNameEn','guidePrice','fobPrice','bodyType','seats','dimensions'].forEach(name=>field(name).addEventListener('input',refreshDerived));
+field('dimensions').addEventListener('blur',formatDimensionsField);
+['showIgnored','statusFilter','typeFilter','colorFilter'].forEach(id=>document.getElementById(id).addEventListener('change',renderCandidates));
+document.getElementById('closePreview').onclick=closePreview;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePreview();});
+document.getElementById('previewModal').addEventListener('click',e=>{if(e.target.id==='previewModal')closePreview();});
+initSelects(); renderPublishRequirements();
+renderPowerFields();
+setKeywordOptions([],[]);
+renderMarketPicks();
+refreshDerived();
+</script>
+</body>
+</html>
+

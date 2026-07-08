@@ -1,11 +1,40 @@
-﻿# Host/domain canonical redirects are intentionally not defined here.
-# Set the hosting platform primary domain to https://zhongguauto.com and disable forced www.
-# Keeping www -> apex here can loop if the platform forces apex -> www.
+# Canonical domain redirects
+http://zhongguauto.com/* https://zhongguauto.com/:splat 301!
+http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
+https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
+
+# Public lead collection on Netlify Functions
+/api/public/inquiries /.netlify/functions/inquiries 200
+/api/public/whatsapp-lead /.netlify/functions/inquiries 200
+/api/public/whatsapp-lead/ /.netlify/functions/inquiries 200
+/api/inquiries /.netlify/functions/inquiries 200
+/api/whatsapp-clicks /.netlify/functions/inquiries 200
+
+# Block static access to internal notes and local helper files
+/*.md /404.html 404!
+/README*.txt /404.html 404!
+/*_GUIDE.txt /404.html 404!
+/image_sources.txt /404.html 404!
+/official_image_sources.txt /404.html 404!
+/start-media-server.bat /404.html 404!
+/server.js /404.html 404!
+/scripts/* /404.html 404!
+/netlify/functions/* /404.html 404!
+/package*.json /404.html 404!
+/netlify.toml /404.html 404!
+/.env* /404.html 404!
+
+# Block static access to private runtime data
+/data/* /404.html 404!
+/tmp/* /404.html 404!
+/media-inbox/* /404.html 404!
+/media-processed/* /404.html 404!
+/public/admin/* /404.html 404!
 
 /index.html / 301!
 
-/admin /admin/media.html 302
-/admin/ /admin/media.html 302
+/admin /admin/index.html 302
+/admin/ /admin/index.html 302
 
 /china-used-car-exporter /china-used-car-exporter.html 200
 /china-new-car-exporter /china-new-car-exporter.html 200

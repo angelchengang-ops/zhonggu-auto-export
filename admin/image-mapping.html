@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新车图片映射后台 | Zhonggu Auto Export</title>
+  <link rel="stylesheet" href="/style.css?v=20260703-manual-image-map">
+  <style>
+    body { margin:0; background:#f5f7fb; color:#172033; font-family: Manrope, Arial, "Microsoft YaHei", sans-serif; }
+    .admin-shell { width:min(1540px, calc(100% - 28px)); margin:22px auto 54px; }
+    .admin-header { display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:16px; }
+    .admin-header h1 { margin:0 0 8px; font-size:30px; line-height:1.2; }
+    .admin-header p, .panel-head p { margin:0; color:#5b6475; }
+    .admin-links, .row-actions, .asset-actions, .pager { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .notice, .toolbar, .panel { background:#fff; border:1px solid #e3e8f2; border-radius:8px; }
+    .notice { padding:14px 16px; margin-bottom:14px; }
+    .notice h2 { font-size:16px; margin:0 0 8px; }
+    .notice ol { margin:0; padding-left:20px; color:#344054; display:grid; gap:4px; }
+    .stats { display:flex; gap:10px; flex-wrap:wrap; margin:12px 0; }
+    .stat { background:#fff; border:1px solid #e3e8f2; border-radius:8px; padding:10px 12px; min-width:110px; }
+    .stat strong { display:block; font-size:20px; }
+    .stat span, .asset small, .api-paths { color:#667085; font-size:12px; }
+    .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding:12px; margin:12px 0; }
+    input, select, .path-input, .note-input { border:1px solid #cfd7e6; border-radius:7px; padding:8px 9px; background:#fff; min-height:38px; font:inherit; }
+    .toolbar input { min-width:260px; flex:1; }
+    .layout { display:grid; grid-template-columns:minmax(0, 1fr) 470px; gap:16px; align-items:start; }
+    .panel { overflow:hidden; }
+    .panel-head { padding:14px 16px; border-bottom:1px solid #e3e8f2; }
+    .panel-head h2 { margin:0 0 4px; font-size:18px; }
+    .table-wrap { overflow:auto; max-height:74vh; }
+    table { width:100%; border-collapse:collapse; font-size:13px; min-width:1360px; }
+    th, td { border-bottom:1px solid #edf1f7; padding:9px; vertical-align:middle; text-align:left; }
+    th { position:sticky; top:0; background:#f9fbff; z-index:1; color:#3c4658; white-space:nowrap; }
+    tr.selected { background:#eef6ff; outline:2px solid #8bb7e8; outline-offset:-2px; }
+    .thumb { width:96px; height:62px; object-fit:cover; border-radius:6px; border:1px solid #dfe5ef; background:#eef2f8; display:block; cursor:pointer; }
+    .image-error { width:96px; height:62px; border-radius:6px; border:1px solid #dfe5ef; background:#f7f8fb; color:#8a3443; display:flex; align-items:center; justify-content:center; font-size:12px; text-align:center; padding:4px; }
+    .path-input { width:300px; font-family:Consolas, monospace; font-size:12px; }
+    .note-input { width:130px; }
+    .slug, .path-text, .asset code { font-family:Consolas, monospace; font-size:12px; color:#455169; overflow:hidden; text-overflow:ellipsis; }
+    .slug, .path-text { max-width:190px; white-space:nowrap; }
+    .pill { display:inline-flex; align-items:center; border-radius:999px; padding:3px 8px; font-size:12px; background:#edf2f7; color:#344054; white-space:nowrap; }
+    .pill.manual { background:#e6f7ec; color:#166534; }
+    .pill.fallback { background:#fff4df; color:#92400e; }
+    .pill.source { background:#eaf0ff; color:#1d4ed8; }
+    .btn, .btn-small, .btn-light-small { border-radius:7px; min-height:34px; padding:7px 10px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px; font:inherit; white-space:nowrap; }
+    .btn, .btn-small { border:0; background:#153f75; color:#fff; }
+    .btn-light-small { border:1px solid #cfd7e6; background:#fff; color:#172033; }
+    .btn-danger { border-color:#fecaca; color:#b42318; background:#fff; }`n    .btn-warn { border-color:#fed7aa; color:#9a3412; background:#fff7ed; }`n    .btn-spacer { margin-left:8px; }`n    .usage-pill { display:inline-flex; width:max-content; border-radius:999px; padding:3px 8px; font-size:12px; font-weight:700; background:#ecfdf3; color:#166534; margin-top:6px; }`n    .usage-pill.used { background:#fff4df; color:#92400e; }`n    .usage-pill.trash { background:#f2f4f7; color:#475467; }
+    .status { margin:8px 0 12px; color:#166534; min-height:20px; white-space:pre-line; }
+    .status.error { color:#b42318; }
+    .api-paths { margin:0 0 12px; }
+    .image-toolbar { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:12px; border-bottom:1px solid #e3e8f2; }
+    .image-toolbar input { grid-column:1 / -1; }
+    .image-list { max-height:68vh; overflow:auto; padding:12px; display:grid; grid-template-columns:1fr; gap:12px; }
+    .asset { border:1px solid #edf1f7; border-radius:8px; background:#fff; padding:10px; }
+    .asset.selected { border-color:#153f75; box-shadow:0 0 0 2px rgba(21,63,117,.12); }
+    .asset img { width:100%; height:132px; object-fit:contain; border-radius:7px; background:#f2f4f7; border:1px solid #dfe5ef; cursor:pointer; display:block; margin-bottom:8px; }
+    .asset code { display:block; word-break:break-all; white-space:normal; max-height:none; line-height:1.45; }
+    .asset small { display:block; margin:5px 0 8px; line-height:1.45; }
+    .pager { justify-content:space-between; padding:10px 12px; border-top:1px solid #e3e8f2; }
+    .modal { position:fixed; inset:0; background:rgba(15,23,42,.66); display:none; align-items:center; justify-content:center; z-index:50; padding:20px; }
+    .modal.open { display:flex; }
+    .modal-inner { background:#fff; border-radius:8px; width:min(1060px, 96vw); max-height:92vh; padding:14px; box-shadow:0 20px 60px rgba(15,23,42,.25); }
+    .modal-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:10px; }
+    .modal-head code { word-break:break-all; color:#475467; display:block; margin-top:4px; }
+    .modal img { width:100%; max-height:76vh; object-fit:contain; background:#f2f4f7; border-radius:6px; }
+    @media (max-width: 1180px) { .layout { grid-template-columns:1fr; } .image-list { grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); max-height:none; } .admin-header { flex-direction:column; } }
+  </style>
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header"><div><h1>新车图片映射后台</h1><p>本页面只管理新车主图映射。二手车多图片和视频请到二手车媒体管理页面维护。</p></div><nav class="admin-links"><a class="btn-light-small" href="/admin/">后台首页</a><a class="btn-light-small" href="/admin/used-car-media.html">二手车媒体管理</a><a class="btn-light-small" href="/admin/inquiries.html">询盘管理</a><a class="btn-light-small" href="/">返回网站</a></nav></header>
+    <section class="notice"><h2>当前规则</h2><ol><li>本页只显示新车，不显示二手车。</li><li>正式新车图片目录为 images/new-cars。</li><li>media-processed/images 只作为临时处理图片。</li><li>解除映射只清空绑定关系，不删除车型或图片文件。</li><li>首页 Priority Algeria Vehicles、车型详情页和相关落地页的车辆主图统一由本页面维护。修改后请点击“重新生成首页和车型页面”。</li></ol></section>
+    <div class="stats" id="stats"></div>
+    <section class="toolbar"><input id="search" type="search" placeholder="搜索品牌 / 车型 / 配置 / slug"><select id="statusFilter"><option value="all">全部新车</option><option value="unbound">未绑定图片</option><option value="bound">已绑定图片</option><option value="fallback">使用默认图</option><option value="priority">首页重点车型</option></select><select id="sourceFilter"><option value="all">全部来源</option><option value="manual">人工确认</option><option value="primary">原始主图</option><option value="fallback">默认图</option></select><button class="btn-light-small" id="reload" type="button">重新加载</button><button class="btn" id="saveAll" type="button">保存全部</button><button class="btn-light-small" id="regenerate" type="button">重新生成首页和车型页面</button></section>
+    <p class="status" id="status"></p><p class="api-paths">接口地址：<code>/api/admin/image-mapping</code> | <code>/api/admin/available-images</code></p>
+    <div class="layout">
+      <section class="panel"><div class="panel-head"><h2>车型列表</h2><p>必须先点击“选择此车型”，再从右侧图片库选择图片。清除映射只影响当前车型。</p></div><div class="table-wrap"><table><thead><tr><th>图片预览</th><th>品牌</th><th>车型</th><th>配置</th><th>Slug</th><th>当前图片</th><th>图片来源</th><th>是否默认图</th><th>人工图片路径</th><th>已确认</th><th>备注</th><th>操作</th></tr></thead><tbody id="vehicleRows"></tbody></table></div></section>
+      <aside class="panel"><div class="panel-head"><h2>可用图片库</h2><p>按分类、目录、文件名筛选；每页显示 30 张。</p></div><div class="image-toolbar"><input id="imageSearch" type="search" placeholder="搜索图片文件名 / 路径"><select id="imageCategory"><option value="all">全部正式新车图片</option><option value="new_car">新车图片 images/new-cars</option><option value="temp_image">临时处理图片 media-processed/images</option><option value="company">公司图片 images/company</option><option value="hero">首页图片 images/hero</option><option value="unorganized">未整理图片 images 根目录</option><option value="fallback">默认图</option><option value="trash">废弃区</option></select><select id="dirFilter"><option value="all">全部目录</option></select></div><div class="image-list" id="imageList"></div><div class="pager"><button class="btn-light-small" id="prevPage" type="button">上一页</button><span id="pageInfo"></span><button class="btn-light-small" id="nextPage" type="button">下一页</button></div></aside>
+    </div>
+  </main>
+  <div class="modal" id="previewModal"><div class="modal-inner"><div class="modal-head"><div><strong id="previewName">图片预览</strong><code id="previewPath"></code><small id="previewMeta"></small></div><div class="asset-actions"><button class="btn-light-small" id="previewCopy" type="button">复制路径</button><button class="btn" id="previewChoose" type="button">选择此图</button><button class="btn-light-small" id="closePreview" type="button">关闭</button></div></div><img id="previewImage" alt="图片预览"></div></div>
+  <script>
+    const state = { vehicles: [], images: [], activeRow: null, imagePage: 1, pageSize: 30, previewItem: null };
+    const fallback = 'images/hero/hero-car.jpg';
+    const priorityVehicleSlugs = new Set(['geely-coolray-manual-super-power-edition','geely-coolray-battle-edition','geely-coolray-automatic-super-power-edition-with-sunroof','bestune-yueyi-08-2026-erev-240-plus','mg5-67900-rmb']);
+    const $ = (id) => document.getElementById(id);
+    const esc = (value) => String(value ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+    const imgSrc = (path) => path ? '/' + String(path).replace(/^\/+/, '') : '/' + fallback;
+    const isFallbackVehicle = (vehicle) => vehicle.using_fallback === true || vehicle.is_fallback === true;
+    const setStatus = (text, isError = false) => { const node = $('status'); node.textContent = text || ''; node.classList.toggle('error', isError); };
+    const sourceLabel = (source) => ({ manual:'人工确认', primary_image:'车型主图', image:'原始图片字段', 'images[0]':'原始主图', 'gallery[0]':'原始主图', coverImage:'原始主图', fallback:'默认图' }[source] || source || '-');
+    const categoryLabel = (cat) => ({ new_car:'新车图片 images/new-cars', temp_image:'临时处理图片 media-processed/images', company:'公司图片 images/company', hero:'首页图片 images/hero', unorganized:'未整理图片 images 根目录', fallback:'默认图', trash:'废弃区', other:'其他' }[cat] || '其他');
+    const yesNo = (value) => value ? '是' : '否';
+    const shortPath = (value, max = 34) => { const text = String(value || '-'); return text.length > max ? text.slice(0, max - 1) + '…' : text; };
+    const rowBySlug = (slug) => Array.from(document.querySelectorAll('#vehicleRows tr[data-slug]')).find((row) => row.dataset.slug === slug);
+    const fetchJson = async (apiPath, options = {}, friendlyMessage = '接口请求失败。') => {
+      const res = await fetch(apiPath, options);
+      const contentType = res.headers.get('content-type') || '';
+      const text = await res.text();
+      if (!contentType.includes('application/json')) throw new Error(friendlyMessage + '\n接口地址：' + apiPath);
+      let data;
+      try { data = JSON.parse(text); } catch { throw new Error(friendlyMessage + '\n接口地址：' + apiPath); }
+      if (!res.ok || data.success === false) throw new Error((data.error || friendlyMessage) + '\n接口地址：' + apiPath);
+      return data;
+    };
+    const filteredVehicles = () => {
+      const q = $('search').value.trim().toLowerCase();
+      const status = $('statusFilter').value;
+      const source = $('sourceFilter').value;
+      return state.vehicles.filter((v) => {
+        const hay = [v.brand, v.model, v.trim, v.slug].join(' ').toLowerCase();
+        if (q && !hay.includes(q)) return false;
+        if (status === 'fallback' && !isFallbackVehicle(v)) return false;
+        if (status === 'priority' && !priorityVehicleSlugs.has(v.slug)) return false;
+        if (status === 'unbound' && v.manual_image) return false;
+        if (status === 'bound' && !v.manual_image) return false;
+        if (source === 'manual' && v.image_source !== 'manual') return false;
+        if (source === 'primary' && !['primary_image', 'image', 'images[0]', 'gallery[0]', 'coverImage'].includes(v.image_source)) return false;
+        if (source === 'fallback' && !isFallbackVehicle(v)) return false;
+        return true;
+      });
+    };
+    const filteredImages = () => {
+      const q = $('imageSearch').value.trim().toLowerCase();
+      const cat = $('imageCategory').value;
+      const dir = $('dirFilter').value;
+      return state.images.filter((item) => {
+        const hay = [item.path, item.filename].join(' ').toLowerCase();
+        if (q && !hay.includes(q)) return false;
+        if (cat !== 'all' && item.category !== cat) return false;
+        if (dir !== 'all' && item.source_dir !== dir) return false;
+        return true;
+      });
+    };
+    const renderStats = () => {
+      const fallbackCount = state.vehicles.filter(isFallbackVehicle).length;
+      const manualCount = state.vehicles.filter((v) => v.image_source === 'manual' && v.confirmed).length;
+      $('stats').innerHTML = [['新车总数', state.vehicles.length], ['使用默认图', fallbackCount], ['已人工确认', manualCount], ['可用图片', state.images.length]].map(([label, value]) => `<article class="stat"><strong>${esc(value)}</strong><span>${esc(label)}</span></article>`).join('');
+    };
+    const imageMarkup = (path, alt) => `<img class="thumb" data-action="preview-current" src="${esc(imgSrc(path))}" alt="${esc(alt)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;image-error&quot;>图片无法加载</div>'">`;
+    const renderVehicles = () => {
+      const rows = filteredVehicles();
+      $('vehicleRows').innerHTML = rows.map((v) => `<tr data-slug="${esc(v.slug)}" class="${state.activeRow === v.slug ? 'selected' : ''}"><td>${imageMarkup(v.current_image, `${v.brand || ''} ${v.model || ''}`)}</td><td>${esc(v.brand || '-')}</td><td>${esc(v.model || '-')}</td><td>${esc(v.trim || '-')}</td><td><div class="slug" title="${esc(v.slug)}">${esc(v.slug)}</div>${priorityVehicleSlugs.has(v.slug) ? '<span class="pill source">首页重点</span>' : ''}</td><td><div class="path-text" title="${esc(v.current_image || '')}">${esc(shortPath(v.current_image))}</div></td><td><span class="pill ${v.image_source === 'manual' ? 'manual' : isFallbackVehicle(v) ? 'fallback' : 'source'}">${esc(sourceLabel(v.image_source))}</span></td><td>${yesNo(isFallbackVehicle(v))}</td><td><input class="path-input" data-field="image" value="${esc(v.manual_image || '')}" placeholder="images/new-cars/example.jpg"></td><td><label><input type="checkbox" data-field="confirmed" ${v.confirmed ? 'checked' : ''}> ${yesNo(v.confirmed)}</label></td><td><input class="note-input" data-field="note" value="${esc(v.note || '')}" placeholder="备注"></td><td><div class="row-actions"><button class="btn-light-small" data-action="select-row" type="button">选择此车型</button><button class="btn-light-small" data-action="preview-current" type="button">预览当前图</button><button class="btn-small" data-action="save" type="button">保存映射</button><button class="btn-light-small btn-danger" data-action="clear" type="button">解除映射</button></div></td></tr>`).join('') || '<tr><td colspan="12">没有符合条件的车型。</td></tr>';
+    };
+    const renderDirOptions = () => {
+      const labels = { 'images/new-cars':'新车图片 images/new-cars', 'media-processed/images':'临时处理图片 media-processed/images', 'images/company':'公司图片 images/company', 'images/hero':'首页图片 images/hero', 'images':'未整理图片 images 根目录', 'media-trash/images':'废弃图片 media-trash/images' };
+      const previous = $('dirFilter').value;
+      const dirs = ['images/new-cars','media-processed/images','images/company','images/hero','images','media-trash/images'].filter((dir) => state.images.some((item) => item.source_dir === dir));
+      $('dirFilter').innerHTML = '<option value="all">全部正式新车图片</option>' + dirs.map((dir) => `<option value="${esc(dir)}">${esc(labels[dir] || dir)}</option>`).join('');
+      $('dirFilter').value = dirs.includes(previous) ? previous : (dirs.includes('images/new-cars') ? 'images/new-cars' : 'all');
+    };
+    const usageLabel = (item) => item.in_trash ? '<span class="usage-pill trash">废弃区</span>' : item.is_used ? '<span class="usage-pill used">已使用</span>' : '<span class="usage-pill">未使用</span>';
+    const renderImages = () => {
+      const items = filteredImages();
+      const totalPages = Math.max(1, Math.ceil(items.length / state.pageSize));
+      state.imagePage = Math.min(Math.max(1, state.imagePage), totalPages);
+      const pageItems = items.slice((state.imagePage - 1) * state.pageSize, state.imagePage * state.pageSize);
+      $('imageList').innerHTML = pageItems.map((item) => {
+        const trashActions = `<button class="btn-light-small" data-action="preview-asset" type="button">预览大图</button><button class="btn-small" data-action="restore-image" type="button">恢复到新车图库</button><button class="btn-light-small btn-danger btn-spacer" data-action="delete-image" type="button">永久删除</button>`;
+        const normalActions = `<button class="btn-light-small" data-action="preview-asset" type="button">预览大图</button><button class="btn-small" data-action="choose-image" type="button">选择此图</button><button class="btn-light-small" data-action="copy-path" type="button">复制路径</button><button class="btn-light-small btn-warn btn-spacer" data-action="trash-image" type="button">移入废弃区</button>`;
+        return `<article class="asset" data-path="${esc(item.path)}"><img data-action="preview-asset" src="${esc(imgSrc(item.path))}" alt="${esc(item.filename)}" loading="lazy" onerror="this.outerHTML='<div class=&quot;image-error&quot;>图片无法加载</div>'"><code title="${esc(item.path)}">${esc(item.path)}</code><small>文件名：${esc(item.filename)}<br>来源目录：${esc(item.source_dir || '-')}<br>分类：${esc(categoryLabel(item.category))}<br>${item.width && item.height ? `${item.width}x${item.height}` : '尺寸未知'}</small>${usageLabel(item)}<div class="asset-actions">${item.in_trash ? trashActions : normalActions}</div></article>`;
+      }).join('') || '<p style="padding:12px;color:#b42318;">没有符合条件的图片。</p>';
+      $('pageInfo').textContent = `第 ${state.imagePage} / ${totalPages} 页，共 ${items.length} 张`;
+      $('prevPage').disabled = state.imagePage <= 1;
+      $('nextPage').disabled = state.imagePage >= totalPages;
+    };
+    const load = async (showMessage = true) => {
+      if (showMessage) setStatus('正在加载车型和图片库...');
+      try {
+        const [mapping, available] = await Promise.all([
+          fetchJson('/api/admin/image-mapping', { cache:'no-store' }, '数据加载失败，请检查本地服务是否启动，或接口是否正常。'),
+          fetchJson('/api/admin/available-images', { cache:'no-store' }, '图片库加载失败，请检查图片目录是否存在。')
+        ]);
+        state.vehicles = mapping.vehicles || [];
+        state.images = available.images || [];
+        renderDirOptions(); renderStats(); renderVehicles(); renderImages();
+        if (showMessage) setStatus('加载完成。当前仅显示新车，默认图库目录为 images/new-cars。');
+      } catch (error) { setStatus(error.message || '数据加载失败。', true); }
+    };
+    const setActiveRow = (row) => { if (!row) return; state.activeRow = row.dataset.slug; document.querySelectorAll('#vehicleRows tr').forEach((item) => item.classList.toggle('selected', item === row)); setStatus('已选择车型：' + state.activeRow); };
+    const getRowPayload = (row) => ({ slug: row?.dataset.slug || '', image: row?.querySelector('[data-field="image"]')?.value.trim() || '', confirmed: row?.querySelector('[data-field="confirmed"]')?.checked || false, note: row?.querySelector('[data-field="note"]')?.value.trim() || '' });
+    const savePayload = (payload) => fetchJson('/api/admin/image-mapping', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload) }, '保存失败，请检查图片路径是否存在。');
+    const saveRow = async (row) => { const payload = getRowPayload(row); if (!payload.slug) return setStatus('缺少车型 slug，禁止保存。', true); await savePayload(payload); setStatus('已保存图片映射。'); await load(false); state.activeRow = payload.slug; renderVehicles(); };
+    const saveAll = async () => { const rows = Array.from(document.querySelectorAll('#vehicleRows tr[data-slug]')); let count = 0; for (const row of rows) { const payload = getRowPayload(row); if (!payload.image) continue; await savePayload(payload); count += 1; } setStatus(`已保存 ${count} 条图片映射。`); await load(false); };
+    const clearRow = async (row) => { const slug = row?.dataset.slug || ''; if (!slug) return setStatus('缺少车型 slug，禁止清除。', true); if (!confirm('确认解除该车型的图片映射吗？这不会删除车型，也不会删除图片，只会清空当前绑定关系。')) return; await fetchJson('/api/admin/image-mapping/' + encodeURIComponent(slug), { method:'DELETE' }, '清除失败，请检查接口是否正常。'); setStatus('已解除图片映射。车型仍然存在，图片文件未删除。'); await load(false); state.activeRow = slug; renderVehicles(); };
+    const choosePathForActiveRow = (path) => { if (!state.activeRow) return setStatus('请先在左侧选择一个车型。', true); const active = rowBySlug(state.activeRow); if (!active) return setStatus('请先在左侧选择一个车型。', true); active.querySelector('[data-field="image"]').value = path; active.querySelector('[data-field="confirmed"]').checked = true; setStatus('已选择图片，请点击“保存映射”。'); };
+    const openPreview = (itemOrPath) => { const item = typeof itemOrPath === 'string' ? state.images.find((img) => img.path === itemOrPath) || { path: itemOrPath, filename: itemOrPath.split('/').pop(), source_dir: '', category: '' } : itemOrPath; state.previewItem = item; $('previewName').textContent = item.filename || '图片预览'; $('previewPath').textContent = item.path || fallback; $('previewMeta').textContent = `来源目录：${item.source_dir || '-'}  分类：${categoryLabel(item.category)}`; $('previewImage').src = imgSrc(item.path || fallback); $('previewModal').classList.add('open'); };
+    const copyText = async (text) => { try { await navigator.clipboard.writeText(text); setStatus('图片路径已复制。'); } catch { setStatus('复制失败，请手动选中路径复制。', true); } };
+    const moveToTrash = async (path, button) => { if (!confirm('确认将该图片移入废弃区吗？移入后不会在正式图库中显示，但可以恢复。')) return; const oldText = button?.textContent || ''; if (button) { button.disabled = true; button.textContent = '处理中...'; } try { const result = await fetchJson('/api/admin/image-library/move-to-trash', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ path }) }, '移入废弃区失败。'); setStatus(result.renamed ? '图片已移入废弃区。废弃区已有同名图片，系统已自动重命名保存。' : '图片已移入废弃区。'); await load(false); } finally { if (button) { button.disabled = false; button.textContent = oldText; } } };
+    const restoreImage = async (path) => { await fetchJson('/api/admin/image-library/restore', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ path }) }, '恢复图片失败。'); setStatus('图片已恢复到 images/new-cars。'); await load(false); };
+    const deleteImage = async (path) => { if (!confirm('确认永久删除这张图片吗？删除后不可恢复。')) return; if (!confirm('请再次确认永久删除：' + path)) return; await fetchJson('/api/admin/image-library/delete?path=' + encodeURIComponent(path), { method:'DELETE' }, '永久删除失败。'); setStatus('废弃图片已永久删除。'); await load(false); };
+    document.addEventListener('click', async (event) => {
+      const select = event.target.closest('[data-action="select-row"]'); if (select) return setActiveRow(select.closest('tr'));
+      const row = event.target.closest('#vehicleRows tr[data-slug]'); if (row && !event.target.closest('input,button')) setActiveRow(row);
+      const asset = event.target.closest('.asset');
+      const action = event.target.closest('[data-action]')?.dataset.action;
+      if (!action) return;
+      try {
+        if (action === 'choose-image') return choosePathForActiveRow(asset.dataset.path);
+        if (action === 'copy-path') return copyText(asset.dataset.path);
+        if (action === 'preview-asset') return openPreview(state.images.find((img) => img.path === asset.dataset.path) || asset.dataset.path);
+        if (action === 'trash-image') return await moveToTrash(asset.dataset.path, event.target.closest('button'));
+        if (action === 'restore-image') return await restoreImage(asset.dataset.path);
+        if (action === 'delete-image') return await deleteImage(asset.dataset.path);
+        if (action === 'preview-current') { const r = event.target.closest('tr'); return openPreview(r.querySelector('[data-field="image"]').value.trim() || state.vehicles.find((v) => v.slug === r.dataset.slug)?.current_image || fallback); }
+        if (action === 'save') return await saveRow(event.target.closest('tr'));
+        if (action === 'clear') return await clearRow(event.target.closest('tr'));
+      } catch (error) { setStatus(error.message || '操作失败。', true); }
+    });
+    ['search','statusFilter','sourceFilter'].forEach((id) => $(id).addEventListener(id === 'search' ? 'input' : 'change', renderVehicles));
+    ['imageSearch','imageCategory','dirFilter'].forEach((id) => $(id).addEventListener(id === 'imageSearch' ? 'input' : 'change', () => { state.imagePage = 1; renderImages(); }));
+    $('prevPage').addEventListener('click', () => { state.imagePage -= 1; renderImages(); }); $('nextPage').addEventListener('click', () => { state.imagePage += 1; renderImages(); });
+    $('reload').addEventListener('click', () => load()); $('saveAll').addEventListener('click', () => saveAll().catch((error) => setStatus(error.message || '保存失败。', true))); $('regenerate').addEventListener('click', async () => { const btn = $('regenerate'); const old = btn.textContent; btn.disabled = true; btn.textContent = '正在重新生成...'; setStatus('正在重新生成首页和车型页面，请稍候...'); try { const data = await fetchJson('/api/admin/regenerate-vehicle-pages', { method:'POST' }, '重新生成失败。'); setStatus('重新生成完成。' + (data.stdout ? '\n' + data.stdout : '') + (data.stderr ? '\n警告：' + data.stderr : '')); } catch (error) { setStatus(error.message || '重新生成失败。', true); } finally { btn.disabled = false; btn.textContent = old; } });
+    $('closePreview').addEventListener('click', () => $('previewModal').classList.remove('open')); $('previewModal').addEventListener('click', (event) => { if (event.target.id === 'previewModal') $('previewModal').classList.remove('open'); }); $('previewChoose').addEventListener('click', () => { if (state.previewItem?.path) choosePathForActiveRow(state.previewItem.path); $('previewModal').classList.remove('open'); }); $('previewCopy').addEventListener('click', () => state.previewItem?.path && copyText(state.previewItem.path));
+    load();
+  </script>
+<script>
+  (async () => {
+    const res = await fetch('/api/admin/me', { cache:'no-store' });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.success === false) { window.location.href = '/admin/login.html'; return; }
+    const badge = document.createElement('div');
+    badge.style.cssText = 'position:fixed;right:14px;top:14px;z-index:9999;display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid #cfd7e6;border-radius:8px;background:#fff;box-shadow:0 10px 24px rgba(15,23,42,.12);font:13px Arial,\"Microsoft YaHei\",sans-serif';
+    badge.innerHTML = `<strong>${data.user.name} / ${data.user.role}</strong><button type="button" style="border:1px solid #cfd7e6;border-radius:7px;background:#fff;cursor:pointer">退出</button>`;
+    badge.querySelector('button').addEventListener('click', async () => { await fetch('/api/admin/logout', { method:'POST' }).catch(() => {}); window.location.href = '/admin/login.html'; });
+    document.body.appendChild(badge);
+  })();
+</script>
+</body>
+</html>
+
+
+
+
+

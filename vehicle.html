@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20260626-seo-netlify">
-</head>
+<link rel="stylesheet" href="/assets/css/whatsapp-lead-modal.css"></head>
 <body class="vehicle-detail-page seo-page">
   <header class="site-header scrolled">
     <div class="container nav-wrap">
@@ -55,7 +55,7 @@
         <aside class="detail-summary">
           <div class="hero-actions">
             <a class="btn btn-primary js-inquiry-cta" href="#contact" id="detail-cta" data-title="Vehicle Detail">Get FOB Price</a>
-            <a class="btn btn-light" id="detail-whatsapp" href="https://wa.me/447473271351?text=Hello%20Zhonggu%20Auto%20Export" target="_blank" rel="noopener">Chat on WhatsApp</a>
+            <a class="btn btn-light" id="detail-whatsapp" href="#contact-whatsapp" data-whatsapp-button="true" data-whatsapp-message="Hello%20Zhonggu%20Auto%20Export">Chat on WhatsApp</a>
           </div>
           <div class="detail-specs" id="detail-specs"></div>
         </aside>
@@ -90,7 +90,7 @@
           <p class="eyebrow">Get FOB Price</p>
           <h2>Ask for the latest quotation</h2>
           <p>Tell us the destination market and vehicle preference, then we will prepare the latest stock and FOB price information.</p>
-          <a class="btn btn-light whatsapp-btn" id="detail-contact-whatsapp" href="https://wa.me/447473271351?text=Hello%20Zhonggu%20Auto%20Export" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          <a class="btn btn-light whatsapp-btn" id="detail-contact-whatsapp" href="#contact-whatsapp" data-whatsapp-button="true" data-whatsapp-message="Hello%20Zhonggu%20Auto%20Export">Chat on WhatsApp</a>
         </div>
         <div class="inquiry-panel">
           <h3>Inquiry Form</h3>
@@ -150,8 +150,12 @@
         document.getElementById('detail-cta').dataset.title = `${car.brand || ''} ${car.model || ''} ${car.year || ''}`.trim();
         document.getElementById('detail-cta').setAttribute('data-title', `${car.brand || ''} ${car.model || ''} ${car.year || ''}`.trim());
         const whatsappText = `I am interested in ${car.brand || ''} ${car.model || ''} ${car.year || ''}. Please send me the latest FOB price and stock list.`;
-        document.getElementById('detail-whatsapp').href = `https://wa.me/447473271351?text=${encodeURIComponent(whatsappText)}`;
-        document.getElementById('detail-contact-whatsapp').href = `https://wa.me/447473271351?text=${encodeURIComponent(whatsappText)}`;
+        ['detail-whatsapp', 'detail-contact-whatsapp'].forEach((id) => {
+          const link = document.getElementById(id);
+          link.href = '#contact-whatsapp';
+          link.dataset.whatsappButton = 'true';
+          link.dataset.whatsappMessage = encodeURIComponent(whatsappText);
+        });
         document.getElementById('detail-specs').innerHTML = [
           ['Year', car.year || 'Contact for details'],
           ['Trim', car.trimEn || car.trim || 'Contact for details'],
@@ -169,6 +173,6 @@
       }
     })().catch(console.error);
   </script>
-</body>
+<script src="/assets/js/whatsapp-lead-modal.js"></script></body>
 </html>
 

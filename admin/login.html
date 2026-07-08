@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台登录</title>
+  <style>
+    body { margin:0; min-height:100vh; display:grid; place-items:center; background:#f5f7fb; color:#172033; font-family:Arial,"Microsoft YaHei",sans-serif; }
+    .card { width:min(420px, calc(100% - 32px)); padding:26px; border:1px solid #e3e8f2; border-radius:8px; background:#fff; box-shadow:0 18px 48px rgba(15,23,42,.08); }
+    h1 { margin:0 0 8px; font-size:26px; }
+    p { margin:0 0 20px; color:#667085; line-height:1.6; }
+    label { display:grid; gap:7px; margin:12px 0; color:#344054; font-size:13px; font-weight:700; }
+    input { min-height:42px; border:1px solid #cfd7e6; border-radius:7px; padding:0 12px; font:inherit; }
+    .actions { display:flex; gap:10px; align-items:center; margin-top:18px; }
+    button, a { min-height:38px; padding:0 14px; border-radius:7px; border:1px solid #153f75; background:#153f75; color:#fff; font:inherit; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; }
+    a { border-color:#cfd7e6; background:#fff; color:#172033; }
+    button:disabled { cursor:wait; opacity:.7; }
+    .status { min-height:20px; margin-top:12px; color:#b42318; font-size:13px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>后台登录</h1>
+    <p>请输入后台账号。开发版密码为明文配置，正式公开部署前需要改成哈希。</p>
+    <form id="loginForm" action="/api/admin/login" method="post" novalidate>
+      <label>用户名<input name="username" autocomplete="username" required></label>
+      <label>密码<input name="password" type="password" autocomplete="current-password" required></label>
+      <div class="actions">
+        <button type="submit" id="submitBtn">登录</button>
+        <a href="/">返回网站</a>
+      </div>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById("loginForm");
+    const status = document.getElementById("status");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      status.textContent = "";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "登录中...";
+      try {
+        const payload = {
+          username: String(form.elements.username.value || "").trim(),
+          password: String(form.elements.password.value || "")
+        };
+        const res = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.success === false) throw new Error("用户名或密码错误");
+        window.location.href = "/admin/";
+      } catch (error) {
+        status.textContent = "用户名或密码错误";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "登录";
+      }
+    });
+  </script>
+</body>
+</html>

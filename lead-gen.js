@@ -1,5 +1,4 @@
-const leadWhatsappNumber = '447473271351';
-const leadWhatsappDisplayNumber = '+44 7473 271351';
+const leadWhatsappDisplayNumber = 'CRM inquiry form';
 const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
 
@@ -34,8 +33,8 @@ const getInquirySource = () => {
 const whatsappSourceLabel = (source = getInquirySource()) => inquiryChannels[source]?.whatsappSource || inquiryChannels.website.whatsappSource;
 
 const buildWhatsappSourceUrl = (message, source = getInquirySource()) => {
-  const text = normalize(message).replace(/[.。]?$/, '.');
-  return `https://wa.me/${leadWhatsappNumber}?text=${encodeURIComponent(`${text} Source: ${whatsappSourceLabel(source)}.`)}`;
+  const text = normalize(message).replace(/[.。?？]*$/, '.');
+  return '#contact-whatsapp';
 };
 
 const bindSourceWhatsappLinks = () => {
@@ -43,6 +42,8 @@ const bindSourceWhatsappLinks = () => {
     const message = link.dataset.whatsappMessage;
     if (!message) return;
     link.href = buildWhatsappSourceUrl(message, link.dataset.whatsappSource || getInquirySource());
+    link.dataset.whatsappButton = 'true';
+    link.dataset.whatsappButton = 'true';
   });
 };
 

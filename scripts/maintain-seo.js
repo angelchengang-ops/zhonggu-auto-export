@@ -2,8 +2,39 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://zhongguauto.com';
+const LEGACY_WWW_HOST = ['www', 'zhongguauto', 'com'].join('.');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
-const write = (p, s) => { const f=path.join(ROOT,p); fs.mkdirSync(path.dirname(f),{recursive:true}); fs.writeFileSync(f,s,'utf8'); };
+const write = (p, s) => {
+  const f = path.join(ROOT, p);
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  const existing = fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '';
+  if (existing === s) return;
+  try {
+    fs.writeFileSync(f, s, 'utf8');
+  } catch (error) {
+    if (error.code === 'EPERM' && existing && !existing.includes(LEGACY_WWW_HOST)) {
+      console.warn(`Skipped write for permission-limited file without www domain: ${p}`);
+      return;
+    }
+    throw error;
+  }
+};
+function normalizeCanonicalDomain(dir = ROOT) {
+  const skipDirs = new Set(['.git', 'tmp', 'media-inbox', 'media-processed', 'node_modules', '__pycache__']);
+  const targetExts = new Set(['.html', '.xml', '.js', '.json']);
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      if (!skipDirs.has(entry.name)) normalizeCanonicalDomain(path.join(dir, entry.name));
+      continue;
+    }
+    const file = path.join(dir, entry.name);
+    if (!targetExts.has(path.extname(entry.name).toLowerCase())) continue;
+    const before = fs.readFileSync(file, 'utf8');
+    const after = before.replace(/https:\/\/zhongguauto\.com/g, SITE);
+    if (after !== before) fs.writeFileSync(file, after, 'utf8');
+  }
+}
+
 
 function replaceMessage(file, message) {
   let s=read(file);
@@ -44,7 +75,7 @@ const local={
 };
 for(const [code,d] of Object.entries(local)) for(const slug of slugs){
  const url=`${SITE}/${code}/landing/${slug}`;
- const html=`<!DOCTYPE html><html lang="${d.lang}" dir="${d.dir}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${d.title[slug]} | Zhonggu Auto Export</title><meta name="description" content="${d.desc[slug]}"><link rel="canonical" href="${url}"><link rel="alternate" hreflang="en" href="${SITE}/landing/${slug}"><link rel="alternate" hreflang="fr" href="${SITE}/fr/landing/${slug}"><link rel="alternate" hreflang="ar" href="${SITE}/ar/landing/${slug}"><link rel="alternate" hreflang="x-default" href="${SITE}/landing/${slug}"><meta property="og:type" content="website"><meta property="og:title" content="${d.title[slug]}"><meta property="og:description" content="${d.desc[slug]}"><meta property="og:url" content="${url}"><meta property="og:image" content="${SITE}/images/new-cars/geely-coolray-01.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${SITE}/images/new-cars/geely-coolray-01.jpg"><link rel="stylesheet" href="/style.css?v=20260701-seo"></head><body class="seo-page landing-solution-page"><header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="/index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a></div></header><main><section class="seo-hero"><div class="container"><p class="eyebrow">Zhonggu Auto Export</p><h1>${d.title[slug]}</h1><p>${d.body[slug]}</p><div class="hero-actions"><a class="btn btn-primary" href="https://wa.me/447473271351">${d.cta}</a></div></div></section><section class="seo-section"><div class="container"><h2>${code==='fr'?'Stock, prix et expédition':'المخزون والسعر والشحن'}</h2><p>${d.desc[slug]} ${code==='fr'?'Le stock change rapidement; chaque devis est confirmé selon la disponibilité actuelle.':'يتغير المخزون بسرعة، لذلك نؤكد الوحدات المتاحة قبل عرض السعر.'}</p></div></section></main><footer class="site-footer"><div class="container footer-wrap"><p>Zhonggu Auto Export</p></div></footer></body></html>`;
+ const html=`<!DOCTYPE html><html lang="${d.lang}" dir="${d.dir}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${d.title[slug]} | Zhonggu Auto Export</title><meta name="description" content="${d.desc[slug]}"><link rel="canonical" href="${url}"><link rel="alternate" hreflang="en" href="${SITE}/landing/${slug}"><link rel="alternate" hreflang="fr" href="${SITE}/fr/landing/${slug}"><link rel="alternate" hreflang="ar" href="${SITE}/ar/landing/${slug}"><link rel="alternate" hreflang="x-default" href="${SITE}/landing/${slug}"><meta property="og:type" content="website"><meta property="og:title" content="${d.title[slug]}"><meta property="og:description" content="${d.desc[slug]}"><meta property="og:url" content="${url}"><meta property="og:image" content="${SITE}/images/new-cars/geely-coolray-01.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${SITE}/images/new-cars/geely-coolray-01.jpg"><link rel="stylesheet" href="/style.css?v=20260701-seo"></head><body class="seo-page landing-solution-page"><header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="/index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a></div></header><main><section class="seo-hero"><div class="container"><p class="eyebrow">Zhonggu Auto Export</p><h1>${d.title[slug]}</h1><p>${d.body[slug]}</p><div class="hero-actions"><a class="btn btn-primary" href="#contact-whatsapp" data-whatsapp-button="true" data-source="seo_generated" data-source-entry="maintain_seo" data-vehicle="${slug}">${d.cta}</a></div></div></section><section class="seo-section"><div class="container"><h2>${code==='fr'?'Stock, prix et expédition':'المخزون والسعر والشحن'}</h2><p>${d.desc[slug]} ${code==='fr'?'Le stock change rapidement; chaque devis est confirmé selon la disponibilité actuelle.':'يتغير المخزون بسرعة، لذلك نؤكد الوحدات المتاحة قبل عرض السعر.'}</p></div></section></main><footer class="site-footer"><div class="container footer-wrap"><p>Zhonggu Auto Export</p></div></footer></body></html>`;
  write(`${code}/landing/${slug}/index.html`,html);
 }
 
@@ -59,3 +90,4 @@ write('sitemap-pages.xml',xml([`${SITE}/`,...pages]));
 write('sitemap-landing.xml',xml([...landingDirs,...localized]));
 write('sitemap-vehicles.xml',xml(vehicleUrls,'weekly'));
 write('sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${SITE}/sitemap-pages.xml</loc><lastmod>2026-07-01</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-landing.xml</loc><lastmod>2026-07-01</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-vehicles.xml</loc><lastmod>2026-07-01</lastmod></sitemap>\n</sitemapindex>\n`);
+normalizeCanonicalDomain();

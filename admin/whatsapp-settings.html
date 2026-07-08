@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp 设置 | Zhonggu Auto Export 后台</title>
+  <style>
+    :root{--ink:#172033;--muted:#667085;--line:#e3e8f2;--blue:#153f75;--bg:#f5f7fb;--ok:#166534;--bad:#b42318;--warn:#9a3412}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Microsoft YaHei",sans-serif}.shell{width:min(1180px,calc(100% - 32px));margin:28px auto 46px}.topbar,.actions,.row-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.topbar{justify-content:space-between;align-items:flex-start;margin-bottom:16px}h1{margin:0 0 8px;font-size:28px}h2{margin:0;font-size:18px}p{margin:0;color:var(--muted);line-height:1.55}.btn,button{min-height:38px;padding:0 13px;border:1px solid #cfd7e6;border-radius:7px;background:#fff;color:var(--ink);font:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.primary{background:var(--blue);border-color:var(--blue);color:#fff}.panel{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 28px rgba(15,23,42,.05);margin-top:14px}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}.panel-body{padding:18px;display:grid;gap:14px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.sales-grid{display:grid;gap:12px}.sales-card{border:1px solid var(--line);border-radius:8px;padding:14px;background:#fafcff;display:grid;gap:12px}.sales-title{display:flex;justify-content:space-between;gap:10px;align-items:center}.field{display:grid;gap:7px;color:#344054;font-size:13px;font-weight:800}input,select,textarea{width:100%;min-height:40px;border:1px solid #cfd7e6;border-radius:7px;padding:0 10px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:96px;padding:9px 10px;resize:vertical;line-height:1.5}.sales-note{min-height:122px}.check{display:inline-flex;align-items:center;gap:7px;font-weight:800;color:#344054}.check input{width:auto;min-height:0}.status{min-height:24px;color:var(--muted);overflow-wrap:anywhere}.status.ok{color:var(--ok)}.status.bad{color:var(--bad)}.status.warn{color:var(--warn)}.pill{display:inline-flex;align-items:center;min-height:26px;padding:0 9px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:900}.muted{color:var(--muted);font-size:12px;overflow-wrap:anywhere}.test-box{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fafcff;display:grid;gap:8px}.message-preview{white-space:pre-wrap;color:#344054}.span-2{grid-column:1/-1}.empty{border:1px dashed #cfd7e6;border-radius:8px;padding:14px;color:var(--muted);background:#fff}@media(max-width:780px){.grid{grid-template-columns:1fr}.span-2{grid-column:auto}.topbar{display:block}.actions{margin-top:12px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <h1>WhatsApp 设置</h1>
+        <p>前台 WhatsApp 按钮将统一读取此配置。号码修改后无需重新发布页面，刷新前台即可生效。</p>
+      </div>
+      <div class="actions"><span class="pill" id="currentUser">正在验证登录...</span><a class="btn" href="/admin/index.html">后台首页</a><button class="btn" id="logoutBtn" type="button">退出登录</button></div>
+    </header>
+    <p class="status" id="status">正在加载配置...</p>
+
+    <section class="panel">
+      <div class="panel-head"><h2>默认 WhatsApp</h2><span class="pill" id="defaultWaNumber">-</span></div>
+      <div class="panel-body grid">
+        <label class="field">显示名称<input id="defaultDisplayName" placeholder="Zhonggu Auto Export"></label>
+        <label class="field">WhatsApp 号码<input id="defaultRawNumber" placeholder="+44 7473 271351"></label>
+        <label class="check"><input id="defaultActive" type="checkbox"> 启用默认号码</label>
+        <label class="field">当前模式<select id="activeMode"><option value="default">default - 全站统一号码</option><option value="by_vehicle_type" disabled>by_vehicle_type - 预留</option><option value="by_market" disabled>by_market - 预留</option><option value="by_sales" disabled>by_sales - 预留</option></select></label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>业务员号码</h2><button class="btn" id="addSalesBtn" type="button">新增业务员号码</button></div>
+      <div class="panel-body"><div class="sales-grid" id="salesList"></div></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>消息模板</h2></div>
+      <div class="panel-body grid">
+        <label class="check"><input id="templateEnabled" type="checkbox"> 启用消息模板</label>
+        <label class="field">模板选择<select id="templateSelect"></select></label>
+        <label class="field span-2">英文客户消息<textarea id="customerTextEn"></textarea></label>
+        <label class="field span-2">中文销售备注<textarea class="sales-note" id="salesNoteZh"></textarea></label>
+        <p class="muted span-2">可用变量：{vehicle} {source} {page} {market} {type} {salesName}</p>
+        <label class="check"><input id="includeSource" type="checkbox"> 包含来源</label>
+        <label class="check"><input id="includePage" type="checkbox"> 包含页面</label>
+        <label class="check"><input id="includeVehicle" type="checkbox"> 包含车型</label>
+        <label class="check"><input id="includeMarket" type="checkbox"> 包含市场</label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>保存与测试</h2></div>
+      <div class="panel-body">
+        <div class="actions"><button class="primary" id="saveBtn" type="button">保存 WhatsApp 设置</button><button class="btn" id="testBtn" type="button">生成测试 WhatsApp 链接</button></div>
+        <div class="test-box" id="testBox" hidden><strong>测试链接</strong><a id="testLink" href="#" target="_blank" rel="noopener"></a><p class="muted">使用号码：<span id="testNumber">-</span></p><p class="message-preview" id="testMessage"></p></div>
+      </div>
+    </section>
+  </main>
+<script>
+const $=id=>document.getElementById(id);
+const DEFAULT_TEMPLATES=[
+{id:'vehicle_inquiry',name:'车型询价',customerTextEn:'Hello, I am interested in {vehicle}. Could you please send me the FOB price, available stock, photos and shipping options?',salesNoteZh:'【官网车型询盘】客户对 {vehicle} 感兴趣。来源：{source}，页面：{page}，市场：{market}。请优先确认车型、数量、目的港和 FOB/CIF 需求。'},
+{id:'used_car_inquiry',name:'二手车询价',customerTextEn:'Hello, I am interested in this used car from Zhonggu Auto Export. Please send me the vehicle condition, mileage, photos, FOB price and shipping cost.',salesNoteZh:'【二手车询盘】客户咨询二手车。来源：{source}，页面：{page}，市场：{market}。请优先确认车况、里程、价格、库存、目的港和付款方式。'},
+{id:'bulk_purchase',name:'批量采购',customerTextEn:'Hello, I am looking for bulk vehicle supply from China. Please send me available models, MOQ, FOB prices and export documents support.',salesNoteZh:'【批量采购线索】客户可能有批量采购需求。来源：{source}，页面：{page}，市场：{market}。请优先确认采购数量、预算、目标车型、港口和付款方式。'},
+{id:'price_check',name:'价格咨询',customerTextEn:'Hello, I would like to check the latest export price for {vehicle}. Please send me the FOB price and CIF quotation if available.',salesNoteZh:'【价格咨询】客户想确认 {vehicle} 最新出口价格。来源：{source}，页面：{page}，市场：{market}。请优先确认 FOB/CIF、目的港和报价有效期。'},
+{id:'general_inquiry',name:'通用咨询',customerTextEn:'Hello, I am interested in vehicles from Zhonggu Auto Export. Please contact me with more details.',salesNoteZh:'【官网通用咨询】客户来自官网 WhatsApp。来源：{source}，页面：{page}，市场：{market}。请尽快询问客户需求车型、数量、预算和目的港。'}
+];
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let settings=null;
+const status=(text,type='')=>{ $('status').textContent=text; $('status').className='status '+type; };
+async function api(url,options={}){const res=await fetch(url,{cache:'no-store',headers:{'Content-Type':'application/json'},...options});const data=await res.json().catch(()=>({}));if(!res.ok||data.success===false){const error=new Error(data.error||data.message||`HTTP ${res.status}`);error.status=res.status;throw error;}return data;}
+function splitList(value){return String(value||'').split(',').map(v=>v.trim()).filter(Boolean);}
+function joinList(value){return Array.isArray(value)?value.join(', '):'';}
+function clone(value){return JSON.parse(JSON.stringify(value));}
+function normalizeTemplateConfig(input={}){const oldDefault=String(input.defaultText||'').trim();const byId=new Map(DEFAULT_TEMPLATES.map(t=>[t.id,clone(t)]));if(oldDefault&&byId.has('general_inquiry'))byId.get('general_inquiry').customerTextEn=oldDefault;(Array.isArray(input.templates)?input.templates:[]).forEach((item,index)=>{const fallback=byId.get(item.id)||DEFAULT_TEMPLATES[index]||DEFAULT_TEMPLATES[4];const clean={id:String(item.id||fallback.id).trim()||fallback.id,name:String(item.name||fallback.name).trim()||fallback.name,customerTextEn:String(item.customerTextEn||item.defaultText||fallback.customerTextEn).trim(),salesNoteZh:String(item.salesNoteZh||item.salesNote||fallback.salesNoteZh).trim()};byId.set(clean.id,clean);});const templates=DEFAULT_TEMPLATES.map(t=>byId.get(t.id)||clone(t));byId.forEach((item,id)=>{if(!templates.some(t=>t.id===id))templates.push(item);});let active=input.activeTemplateId||input.templateId||(oldDefault?'general_inquiry':'vehicle_inquiry');if(!templates.some(t=>t.id===active))active='general_inquiry';return{enabled:input.enabled!==false,activeTemplateId:active,templates,includeSource:input.includeSource!==false,includePage:input.includePage!==false,includeVehicle:input.includeVehicle!==false,includeMarket:input.includeMarket!==false};}
+function normalizeSettings(raw={}){return{activeMode:raw.activeMode||'default',defaultWhatsapp:{id:'default',name:'Default WhatsApp',displayName:raw.defaultWhatsapp?.displayName||'Zhonggu Auto Export',rawNumber:raw.defaultWhatsapp?.rawNumber||'+44 7473 271351',waNumber:raw.defaultWhatsapp?.waNumber||'447473271351',active:raw.defaultWhatsapp?.active!==false},salesNumbers:Array.isArray(raw.salesNumbers)?raw.salesNumbers:[],messageTemplate:normalizeTemplateConfig(raw.messageTemplate||{}),updatedAt:raw.updatedAt||'',updatedBy:raw.updatedBy||''};}
+function currentTemplateConfig(){settings.messageTemplate=normalizeTemplateConfig(settings.messageTemplate||{});return settings.messageTemplate;}
+function activeTemplate(id=currentTemplateConfig().activeTemplateId){const t=currentTemplateConfig().templates.find(item=>item.id===id);return t||currentTemplateConfig().templates.find(item=>item.id==='general_inquiry')||currentTemplateConfig().templates[0];}
+function syncTemplateFields(templateId=currentTemplateConfig().activeTemplateId){const template=activeTemplate(templateId);if(!template)return;template.customerTextEn=$('customerTextEn').value.trim();template.salesNoteZh=$('salesNoteZh').value.trim();}
+function syncSalesCard(card){const item=settings.salesNumbers[Number(card.dataset.index)];if(!item)return;card.querySelectorAll('[data-field]').forEach(input=>{const field=input.dataset.field;if(input.type==='checkbox')item[field]=input.checked;else if(field==='markets'||field==='vehicleTypes')item[field]=splitList(input.value);else item[field]=input.value.trim();});}
+function syncAllSalesCards(){document.querySelectorAll('.sales-card').forEach(syncSalesCard);}
+function renderTemplateSelect(){const cfg=currentTemplateConfig();$('templateSelect').innerHTML=cfg.templates.map(t=>`<option value="${esc(t.id)}">${esc(t.name)}</option>`).join('');$('templateSelect').value=cfg.activeTemplateId;}
+function renderTemplateFields(){const cfg=currentTemplateConfig();renderTemplateSelect();const template=activeTemplate();$('templateEnabled').checked=cfg.enabled!==false;$('customerTextEn').value=template?.customerTextEn||'';$('salesNoteZh').value=template?.salesNoteZh||'';$('includeSource').checked=cfg.includeSource!==false;$('includePage').checked=cfg.includePage!==false;$('includeVehicle').checked=cfg.includeVehicle!==false;$('includeMarket').checked=cfg.includeMarket!==false;}
+function renderSales(){const list=$('salesList');const rows=settings.salesNumbers||[];if(!rows.length){list.innerHTML='<div class="empty">暂无业务员号码。点击“新增业务员号码”添加一行。</div>';return;}list.innerHTML=rows.map((item,index)=>`<article class="sales-card" data-index="${index}"><div class="sales-title"><strong>${esc(item.name||item.displayName||'新业务员')}</strong><span class="pill">${esc(item.waNumber||'未设置号码')}</span></div><div class="grid"><label class="field">ID<input data-field="id" value="${esc(item.id||'')}"></label><label class="field">姓名<input data-field="name" value="${esc(item.name||'')}"></label><label class="field">显示名称<input data-field="displayName" value="${esc(item.displayName||'')}"></label><label class="field">职位<input data-field="role" value="${esc(item.role||'Sales')}"></label><label class="field">WhatsApp 号码<input data-field="rawNumber" value="${esc(item.rawNumber||'')}"></label><label class="check"><input data-field="active" type="checkbox" ${item.active!==false?'checked':''}> 启用</label><label class="field">市场（逗号分隔）<input data-field="markets" value="${esc(joinList(item.markets))}"></label><label class="field">车型类型（逗号分隔）<input data-field="vehicleTypes" value="${esc(joinList(item.vehicleTypes))}"></label></div><div class="row-actions"><button class="btn" type="button" data-action="remove">删除</button></div></article>`).join('');list.querySelectorAll('.sales-card').forEach(card=>{card.addEventListener('input',()=>syncSalesCard(card));card.addEventListener('change',()=>syncSalesCard(card));card.querySelector('[data-action="remove"]').addEventListener('click',()=>{settings.salesNumbers.splice(Number(card.dataset.index),1);renderSales();status('已删除当前业务员号码，保存后生效。','warn');});});}
+function render(){settings=normalizeSettings(settings||{});const d=settings.defaultWhatsapp||{};$('activeMode').value=settings.activeMode||'default';$('defaultDisplayName').value=d.displayName||'';$('defaultRawNumber').value=d.rawNumber||'';$('defaultActive').checked=d.active!==false;$('defaultWaNumber').textContent=d.waNumber||'-';renderSales();renderTemplateFields();}
+function collect(){syncAllSalesCards();syncTemplateFields();const cfg=currentTemplateConfig();cfg.enabled=$('templateEnabled').checked;cfg.activeTemplateId=$('templateSelect').value;cfg.includeSource=$('includeSource').checked;cfg.includePage=$('includePage').checked;cfg.includeVehicle=$('includeVehicle').checked;cfg.includeMarket=$('includeMarket').checked;return{activeMode:$('activeMode').value,defaultWhatsapp:{displayName:$('defaultDisplayName').value.trim(),rawNumber:$('defaultRawNumber').value.trim(),active:$('defaultActive').checked},salesNumbers:settings.salesNumbers||[],messageTemplate:cfg};}
+async function requireLogin(){const data=await api('/api/admin/me');$('currentUser').textContent=`${data.user.name} / ${data.user.role}`;return data.user;}
+async function load(){try{await requireLogin();}catch(error){if(error.status===401){location.href='/admin/login.html';return;}status(`后台登录状态检查失败：${error.message}`,'bad');return;}try{const data=await api('/api/admin/whatsapp-settings');settings=normalizeSettings(data.settings);render();status('配置已加载。','ok');}catch(error){status(`WhatsApp 配置读取失败：${error.message}`,'bad');}}
+async function save(){try{if(!settings)settings=normalizeSettings();status('正在保存...');const data=await api('/api/admin/whatsapp-settings',{method:'POST',body:JSON.stringify(collect())});settings=normalizeSettings(data.settings);render();status('WhatsApp 设置已保存。','ok');}catch(error){status(`WhatsApp 设置保存失败：${error.message}`,'bad');}}
+async function test(){try{if(!settings)settings=normalizeSettings();syncTemplateFields();const templateId=encodeURIComponent(currentTemplateConfig().activeTemplateId||'vehicle_inquiry');const data=await api(`/api/public/whatsapp-link?templateId=${templateId}&source=admin_test&vehicle=Audi%20A6L&page=/admin/whatsapp-settings.html&market=Africa`);$('testBox').hidden=false;$('testLink').href=data.url;$('testLink').textContent=data.url;$('testNumber').textContent=data.waNumber||'-';$('testMessage').textContent=data.message||'';status('测试链接已生成。','ok');}catch(error){status(`测试链接生成失败：${error.message}`,'bad');}}
+function addSales(){if(!settings)settings=normalizeSettings();syncAllSalesCards();settings.salesNumbers.push({id:'sales_'+Date.now(),name:'',displayName:'',role:'Sales',rawNumber:'',waNumber:'',active:true,markets:[],vehicleTypes:[]});renderSales();status('已新增一行业务员号码，填写后点击保存。','ok');}
+$('saveBtn').addEventListener('click',save);$('testBtn').addEventListener('click',test);$('addSalesBtn').addEventListener('click',addSales);$('templateSelect').addEventListener('change',()=>{syncTemplateFields(currentTemplateConfig().activeTemplateId);currentTemplateConfig().activeTemplateId=$('templateSelect').value;renderTemplateFields();});$('customerTextEn').addEventListener('input',()=>syncTemplateFields());$('salesNoteZh').addEventListener('input',()=>syncTemplateFields());['templateEnabled','includeSource','includePage','includeVehicle','includeMarket'].forEach(id=>$(id).addEventListener('change',()=>{const cfg=currentTemplateConfig();cfg.enabled=$('templateEnabled').checked;cfg.includeSource=$('includeSource').checked;cfg.includePage=$('includePage').checked;cfg.includeVehicle=$('includeVehicle').checked;cfg.includeMarket=$('includeMarket').checked;}));$('logoutBtn').addEventListener('click',async()=>{await fetch('/api/admin/logout',{method:'POST'}).catch(()=>{});location.href='/admin/login.html';});
+load();
+</script>
+</body>
+</html>

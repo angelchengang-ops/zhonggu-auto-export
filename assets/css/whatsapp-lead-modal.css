@@ -1,0 +1,43 @@
+.zg-wa-modal-lock { overflow: hidden; }
+.zg-wa-overlay { position: fixed; inset: 0; z-index: 99990; display: none; align-items: center; justify-content: center; padding: 18px; background: rgba(15, 23, 42, .52); }
+.zg-wa-overlay.is-open { display: flex; }
+.zg-wa-dialog { width: min(520px, 100%); max-height: min(92vh, 720px); overflow: auto; border-radius: 10px; background: #fff; color: #172033; box-shadow: 0 26px 70px rgba(15, 23, 42, .28); font-family: Arial, sans-serif; }
+.zg-wa-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 18px 12px; border-bottom: 1px solid #e3e8f2; }
+.zg-wa-title { margin: 0 0 6px; font-size: 22px; line-height: 1.2; color: #153f75; }
+.zg-wa-subtitle { margin: 0; color: #667085; font-size: 14px; line-height: 1.45; }
+.zg-wa-close { width: 36px; height: 36px; border: 1px solid #cfd7e6; border-radius: 8px; background: #fff; color: #172033; font-size: 22px; line-height: 1; cursor: pointer; }
+.zg-wa-form { padding: 16px 18px 18px; display: grid; gap: 12px; }
+.zg-wa-form[hidden] { display: none !important; }
+.zg-wa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.zg-wa-field { display: grid; gap: 6px; font-size: 13px; font-weight: 800; color: #344054; }
+.zg-wa-field input, .zg-wa-field select, .zg-wa-field textarea { width: 100%; min-height: 40px; border: 1px solid #cfd7e6; border-radius: 8px; padding: 8px 10px; font: inherit; color: #172033; background: #fff; box-sizing: border-box; }
+.zg-wa-field textarea { min-height: 104px; resize: vertical; line-height: 1.45; }
+.zg-wa-phone-row { display: grid; grid-template-columns: minmax(90px, 110px) minmax(0, 1fr); gap: 8px; }
+.zg-wa-phone-row input { min-width: 0; }
+.zg-wa-code-shortcuts { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding: 2px 0 4px; scrollbar-width: thin; }
+.zg-wa-code-shortcuts > span { flex: 0 0 auto; color: #667085; font-size: 12px; font-weight: 800; }
+.zg-wa-code-shortcut { flex: 0 0 auto; min-height: 28px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid #cfd7e6; border-radius: 999px; background: #fff; color: #153f75; padding: 0 9px; font: inherit; font-size: 12px; font-weight: 900; cursor: pointer; white-space: nowrap; }
+.zg-wa-code-shortcut:hover { border-color: #153f75; background: #eef6ff; }
+.zg-wa-code-shortcut small { color: #667085; font-size: 11px; font-weight: 700; }
+.zg-wa-more { border: 1px solid #e3e8f2; border-radius: 8px; padding: 0; background: #fafcff; }
+.zg-wa-more summary { min-height: 40px; display: flex; align-items: center; padding: 0 12px; cursor: pointer; color: #153f75; font-weight: 900; list-style: none; }
+.zg-wa-more summary::-webkit-details-marker { display: none; }
+.zg-wa-more-grid { padding: 0 12px 12px; }
+.zg-wa-field input[name="leadWhatsappLocal"], .zg-wa-field input[name="leadCountryCode"] { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, .08); }
+.zg-wa-span { grid-column: 1 / -1; }
+.zg-wa-actions { display: flex; justify-content: flex-end; gap: 10px; align-items: center; flex-wrap: wrap; }
+.zg-wa-submit { min-height: 42px; padding: 0 16px; border: 0; border-radius: 8px; background: #167a48; color: #fff; font: inherit; font-weight: 900; cursor: pointer; }
+.zg-wa-submit:disabled { opacity: .65; cursor: wait; }
+.zg-wa-secondary { min-height: 40px; padding: 0 13px; border: 1px solid #cfd7e6; border-radius: 8px; background: #fff; color: #172033; font: inherit; font-weight: 800; cursor: pointer; }
+.zg-wa-status { margin: 0; min-height: 20px; color: #667085; font-size: 13px; line-height: 1.45; }
+.zg-wa-status.is-error { color: #b42318; }
+.zg-wa-success { display: none; padding: 24px 22px 22px; text-align: center; }
+.zg-wa-success.is-open { display: grid; gap: 12px; justify-items: center; }
+.zg-wa-success-icon { width: 48px; height: 48px; border-radius: 999px; display: grid; place-items: center; background: #dcfce7; color: #166534; font-size: 28px; font-weight: 900; }
+.zg-wa-success-icon::before { content: "\2713"; }
+.zg-wa-success h3 { margin: 0; color: #166534; font-size: 20px; line-height: 1.25; }
+.zg-wa-success p { margin: 0; color: #344054; line-height: 1.5; }
+.zg-wa-success-small { color: #667085 !important; font-size: 13px; }
+.zg-wa-success .zg-wa-actions { justify-content: center; }
+.zg-wa-hp { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
+@media (max-width: 640px) { .zg-wa-overlay { align-items: flex-end; padding: 10px; } .zg-wa-dialog { max-height: 94vh; border-radius: 10px 10px 0 0; } .zg-wa-grid, .zg-wa-phone-row { grid-template-columns: 1fr; } .zg-wa-span { grid-column: auto; } .zg-wa-actions { justify-content: stretch; } .zg-wa-submit, .zg-wa-secondary { width: 100%; } }

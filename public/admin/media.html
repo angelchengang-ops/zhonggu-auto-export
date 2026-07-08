@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Zhonggu Media Manager</title>
+  <title>中谷媒体管理</title>
   <style>
     :root {
       --blue: #2563eb;
@@ -83,18 +83,18 @@
   <main class="admin-shell">
     <header class="admin-header">
       <div>
-        <h1>Zhonggu Media Manager</h1>
-        <p>Upload and select the active images and videos used by the Company Strength Display and Company Videos section.</p>
+        <h1>中谷媒体管理</h1>
+        <p>上传并选择公司实力展示和公司视频模块使用的图片、视频。</p>
       </div>
       <span class="status-pill" id="connectionStatus">Waiting for login</span>
     </header>
 
     <section class="login-card" id="loginCard">
-      <h2>Admin Access</h2>
+      <h2>后台访问验证</h2>
       <p>Enter the media manager password to upload files and update the active media slots.</p>
       <form class="login-row" id="loginForm">
         <input id="passwordInput" type="password" autocomplete="current-password" placeholder="Media manager password" required>
-        <button class="primary-btn" type="submit">Unlock</button>
+        <button class="primary-btn" type="submit">解锁</button>
       </form>
       <p class="message" id="loginMessage" aria-live="polite"></p>
     </section>
@@ -222,7 +222,7 @@
         const uploadButton = document.createElement("button");
         uploadButton.className = "primary-btn";
         uploadButton.type = "submit";
-        uploadButton.textContent = "Upload & Set Active";
+        uploadButton.textContent = "上传并设为启用";
         form.append(input, uploadButton);
         const message = document.createElement("p");
         message.className = "message";
@@ -237,11 +237,11 @@
           data.append("type", slot.type);
           data.append("file", file);
           uploadButton.disabled = true;
-          showMessage(message, "Uploading... Large videos can take a few minutes.");
+          showMessage(message, "正在上传，大视频可能需要几分钟。");
           try {
             const result = await apiFetch("/api/upload-media", { method: "POST", body: data });
             mediaConfig = result.config;
-            showMessage(message, "Upload complete. The selected slot is now active.", "success");
+            showMessage(message, "上传完成，所选位置已启用。", "success");
             renderManager();
           } catch (error) {
             showMessage(message, error.message, "error");
@@ -254,7 +254,7 @@
         history.className = "history";
         const historyTitle = document.createElement("div");
         historyTitle.className = "history-title";
-        historyTitle.innerHTML = `<span>History</span><span>${(entry.items || []).length} item(s)</span>`;
+        historyTitle.innerHTML = `<span>历史记录</span><span>${(entry.items || []).length} 个文件</span>`;
         const list = document.createElement("div");
         list.className = "history-list";
         (entry.items || []).map(normalizeItem).filter((item) => item.url).forEach((item) => {
@@ -272,7 +272,7 @@
           const button = document.createElement("button");
           button.className = item.url === entry.active ? "ghost-btn" : "primary-btn";
           button.type = "button";
-          button.textContent = item.url === entry.active ? "Active" : "Set Active";
+          button.textContent = item.url === entry.active ? "当前启用" : "设为启用";
           button.disabled = item.url === entry.active;
           button.addEventListener("click", async () => {
             button.disabled = true;
@@ -312,7 +312,7 @@
       } catch (error) {
         mediaAdminAuth = false;
         sessionStorage.removeItem("media_admin_auth");
-        connectionStatus.textContent = "Login required";
+        connectionStatus.textContent = "需要登录";
         showMessage(loginMessage, error.message, "error");
       }
     };

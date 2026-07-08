@@ -4,10 +4,10 @@ Yandex Webmaster is suitable for monitoring Russian-language SEO visibility in C
 
 ## Setup
 
-1. Add the website: `https://www.zhongguauto.com`.
+1. Add the website: `https://zhongguauto.com`.
 2. Verify website ownership with the existing Yandex verification file.
-3. Submit the sitemap: `https://www.zhongguauto.com/sitemap.xml`.
-4. Check robots rules: `https://www.zhongguauto.com/robots.txt`.
+3. Submit the sitemap: `https://zhongguauto.com/sitemap.xml`.
+4. Check robots rules: `https://zhongguauto.com/robots.txt`.
 
 ## Monitoring
 

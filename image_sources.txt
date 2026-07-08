@@ -1,4 +1,3 @@
 # Format: vehicle_id|brand|model|year|image_number|image_url|authorization_note
-# Replace example.com URLs with manually verified, legally authorized direct image URLs before running.
-car1|Geely|Monjaro|2024|01|https://example.com/geely-monjaro-front.jpg|Official media kit or authorized source
-car2|MG|HS|2024|01|https://example.com/mg-hs-front.jpg|Official media kit or authorized source
+# Fill this file only with manually verified, legally authorized direct image URLs before running.
+# geely-monjaro-2024|Geely|Monjaro|2024|01|REPLACE_WITH_AUTHORIZED_DIRECT_IMAGE_URL|Official media kit or authorized source

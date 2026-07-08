@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二手车媒体管理</title>
+  <style>
+    body { margin:0; background:#f5f7fb; color:#172033; font-family:Arial,"Microsoft YaHei",sans-serif; }
+    .shell { width:min(1500px, calc(100% - 28px)); margin:22px auto 54px; }
+    header { display:flex; justify-content:space-between; gap:14px; align-items:flex-start; margin-bottom:16px; }
+    h1 { margin:0 0 8px; font-size:30px; } p { margin:0; color:#667085; line-height:1.55; }
+    a, button { font:inherit; } .links { display:flex; gap:8px; flex-wrap:wrap; }
+    .btn { border:0; background:#153f75; color:#fff; } .btn-light { border:1px solid #cfd7e6; background:#fff; color:#172033; } .danger { border-color:#fecaca; color:#b42318; }
+    .btn,.btn-light { min-height:34px; border-radius:7px; padding:7px 10px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+    .layout { display:grid; grid-template-columns:430px minmax(0,1fr) 360px; gap:14px; align-items:start; }
+    .panel { background:#fff; border:1px solid #e3e8f2; border-radius:8px; overflow:hidden; }
+    .panel-head { padding:14px 16px; border-bottom:1px solid #e3e8f2; } .panel-head h2 { margin:0 0 4px; font-size:18px; }
+    .list { max-height:76vh; overflow:auto; padding:10px; display:grid; gap:10px; }
+    .car { display:grid; grid-template-columns:92px 1fr; gap:10px; border:1px solid #edf1f7; border-radius:8px; padding:10px; background:#fff; cursor:pointer; text-align:left; }
+    .car.selected { border-color:#153f75; box-shadow:0 0 0 2px rgba(21,63,117,.12); }
+    .thumb { width:92px; height:66px; object-fit:cover; border:1px solid #dfe5ef; border-radius:6px; background:#eef2f8; }
+    .car h3,.media-card h3 { margin:0 0 6px; font-size:15px; } small, code { color:#667085; } code { font-family:Consolas,monospace; word-break:break-all; }
+    .meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; } .pill { border-radius:999px; padding:3px 8px; background:#edf2f7; font-size:12px; }
+    .media-grid { padding:12px; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; }
+    .media-card { border:1px solid #edf1f7; border-radius:8px; padding:10px; background:#fff; }
+    .media-card img,.media-card video { width:100%; height:128px; object-fit:contain; background:#f2f4f7; border:1px solid #dfe5ef; border-radius:6px; }
+    .actions { display:flex; gap:7px; flex-wrap:wrap; margin-top:8px; }
+    .manual-add { display:grid; grid-template-columns:1fr auto; gap:8px; padding:12px; border-bottom:1px solid #e3e8f2; background:#f8fafc; }
+    .manual-add label { display:grid; gap:5px; color:#344054; font-size:12px; font-weight:700; }
+    .manual-add input { min-height:34px; border:1px solid #cfd7e6; border-radius:7px; padding:6px 8px; font:inherit; }
+    .manual-add .manual-actions { display:flex; align-items:end; gap:7px; flex-wrap:wrap; }
+    .library { max-height:76vh; overflow:auto; padding:10px; display:grid; gap:10px; }
+    .status { min-height:22px; margin:10px 0; color:#166534; white-space:pre-line; } .status.error { color:#b42318; }
+    @media (max-width:1200px) { .layout { grid-template-columns:1fr; } .list,.library { max-height:none; } header { flex-direction:column; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header><div><h1>二手车媒体管理</h1><p>本页面用于维护二手车一车一档的多图片、多视频。列表页显示封面图，详情页显示全部图片和视频。</p></div><nav class="links"><a class="btn-light" href="/admin/">后台首页</a><a class="btn-light" href="/admin/image-mapping.html">新车图片映射</a><a class="btn-light" href="/">网站首页</a><button class="btn" id="regeneratePages" type="button">重新生成页面</button></nav></header>
+    <p class="status" id="status"></p>
+    <div class="layout">
+      <section class="panel"><div class="panel-head"><h2>二手车列表</h2><p>选择一台车维护媒体绑定。</p></div><div class="list" id="carList"></div></section>
+      <section class="panel"><div class="panel-head"><h2 id="mediaTitle">车辆媒体</h2><p id="mediaSummary">请选择左侧二手车。</p></div><div id="currentMedia"></div></section>
+      <aside class="panel"><div class="panel-head"><h2>可用二手车媒体库</h2><p>从已有路径选择绑定，不物理删除文件。</p></div><div class="library" id="library"></div></aside>
+    </div>
+  </main>
+  <script>
+    const state = { cars: [], selected: '', media: { images: [], videos: [], coverImage: '' }, library: { images: [], videos: [] } };
+    const $ = (id) => document.getElementById(id);
+    const esc = (v) => String(v ?? '').replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+    const src = (p) => '/' + String(p || 'images/hero/hero-car.jpg').replace(/^\/+/, '');
+    const setStatus = (text, err=false) => { $('status').textContent = text || ''; $('status').classList.toggle('error', err); };
+    const api = async (url, options) => { const r = await fetch(url, options); const j = await r.json().catch(() => ({})); if (!r.ok || j.success === false) throw new Error(j.error || '接口请求失败'); return j; };
+    const renderCars = () => { $('carList').innerHTML = state.cars.map(car => `<button class="car ${state.selected===car.slug?'selected':''}" data-slug="${esc(car.slug)}" type="button"><img class="thumb" src="${esc(src(car.coverImage))}" alt=""><span><h3>${esc(car.title || car.model || car.slug)}</h3><small>${esc([car.year, car.price].filter(Boolean).join(' | '))}</small><br><code>${esc(car.slug)}</code><span class="meta"><span class="pill">图片 ${car.images_count || 0}</span><span class="pill">视频 ${car.videos_count || 0}</span></span></span></button>`).join('') || '<p>暂无二手车。</p>'; };
+    const renderCurrentMedia = () => {
+      const car = state.cars.find(x => x.slug === state.selected);
+      $('mediaTitle').textContent = car ? (car.title || car.slug) : '车辆媒体';
+      $('mediaSummary').textContent = car ? `当前封面图：${state.media.coverImage || '未设置'}` : '请选择左侧二手车。';
+      const imageCards = state.media.images.map(p => `<article class="media-card"><img src="${esc(src(p))}" alt=""><h3>${p === state.media.coverImage ? '当前封面图' : '图片'}</h3><code>${esc(p)}</code><div class="actions"><button class="btn" data-action="cover" data-path="${esc(p)}">设为封面图</button><button class="btn-light" data-action="preview-image" data-path="${esc(p)}">预览大图</button><button class="btn-light danger" data-action="remove-image" data-path="${esc(p)}">移除绑定</button></div></article>`).join('');
+      const videoCards = state.media.videos.map(p => `<article class="media-card"><video src="${esc(src(p))}" controls preload="metadata"></video><h3>视频</h3><code>${esc(p)}</code><div class="actions"><button class="btn-light danger" data-action="remove-video" data-path="${esc(p)}">移除绑定</button></div></article>`).join('');
+      $('currentMedia').innerHTML = `<div class="manual-add"><label>添加图片路径<input id="manualImagePath" type="text" placeholder="images/used-cars/example/01.jpg"></label><label>添加视频路径<input id="manualVideoPath" type="text" placeholder="videos/used-cars/example/video-01.mp4"></label><div class="manual-actions"><button class="btn" data-action="add-image-manual" type="button">添加图片</button><button class="btn-light" data-action="add-video-manual" type="button">添加视频</button></div></div><div class="media-grid">${imageCards || '<p>当前车辆暂无图片绑定。</p>'}${videoCards || ''}</div>`;
+    };
+    const renderLibrary = () => { const imgs = state.library.images.map(item => `<article class="media-card"><img src="${esc(src(item.path))}" alt=""><code>${esc(item.path)}</code><div class="actions"><button class="btn" data-action="add-image" data-path="${esc(item.path)}">添加图片</button></div></article>`).join(''); const vids = state.library.videos.map(item => `<article class="media-card"><video src="${esc(src(item.path))}" controls preload="metadata"></video><code>${esc(item.path)}</code><div class="actions"><button class="btn" data-action="add-video" data-path="${esc(item.path)}">添加视频</button></div></article>`).join(''); $('library').innerHTML = imgs + vids; };
+    const loadCars = async () => { const data = await api('/api/admin/used-cars'); state.cars = data.vehicles || []; renderCars(); };
+    const loadMedia = async (slug) => { const data = await api('/api/admin/used-cars/' + encodeURIComponent(slug) + '/media'); state.media = data.media || { images: [], videos: [], coverImage: '' }; renderCurrentMedia(); };
+    const refreshSelected = async () => { await loadCars(); if (state.selected) await loadMedia(state.selected); renderCars(); };
+    document.addEventListener('click', async (event) => { const carBtn = event.target.closest('.car[data-slug]'); if (carBtn) { state.selected = carBtn.dataset.slug; setStatus('已选择二手车：' + state.selected); renderCars(); await loadMedia(state.selected); return; } const actionBtn = event.target.closest('[data-action]'); if (!actionBtn) return; if (!state.selected) return setStatus('请先选择一台二手车。', true); const p = actionBtn.dataset.path; try { const action = actionBtn.dataset.action; if (action === 'preview-image') return window.open(src(p), '_blank', 'noopener'); if (action === 'add-image') await api('/api/admin/used-cars/' + encodeURIComponent(state.selected) + '/images', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ path:p }) }); if (action === 'add-video') await api('/api/admin/used-cars/' + encodeURIComponent(state.selected) + '/videos', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ path:p }) }); if (action === 'add-image-manual') { const manualPath = $('manualImagePath')?.value.trim(); if (!manualPath) return setStatus('请输入图片路径。', true); await api('/api/admin/used-cars/' + encodeURIComponent(state.selected) + '/media', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ image:manualPath }) }); } if (action === 'add-video-manual') { const manualPath = $('manualVideoPath')?.value.trim(); if (!manualPath) return setStatus('请输入视频路径。', true); await api('/api/admin/used-cars/' + encodeURIComponent(state.selected) + '/media', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ video:manualPath, type:'video' }) }); } if (action === 'cover') await api('/api/admin/used-cars/' + encodeURIComponent(state.selected) + '/cover', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ path:p }) }); if (action === 'remove-image' && confirm('确认从当前二手车移除该图片绑定吗？不会删除图片文件。')) await api('/api/admin/used-cars/' + encodeURIComponent(state.selected) + '/images?path=' + encodeURIComponent(p), { method:'DELETE' }); if (action === 'remove-video' && confirm('确认从当前二手车移除该视频绑定吗？不会删除视频文件。')) await api('/api/admin/used-cars/' + encodeURIComponent(state.selected) + '/videos?path=' + encodeURIComponent(p), { method:'DELETE' }); setStatus('操作完成。'); await refreshSelected(); } catch (e) { setStatus(e.message, true); } });
+    $('regeneratePages').addEventListener('click', async () => { const btn = $('regeneratePages'); const old = btn.textContent; btn.disabled = true; btn.textContent = '正在生成...'; setStatus('正在重新生成车型页面，请稍候...'); try { const data = await api('/api/admin/regenerate-vehicle-pages', { method:'POST' }); setStatus('页面已重新生成。' + (data.stdout ? '\n' + data.stdout : '')); } catch (e) { setStatus(e.message || '重新生成失败。', true); } finally { btn.disabled = false; btn.textContent = old; } });
+    (async () => { setStatus('正在加载二手车媒体数据...'); await loadCars(); state.library = await api('/api/admin/used-car-media-library'); renderLibrary(); if (state.cars[0]) { state.selected = state.cars[0].slug; await loadMedia(state.selected); renderCars(); } setStatus('加载完成。'); })().catch(e => setStatus(e.message, true));
+  </script>
+<script>
+  (async () => {
+    const res = await fetch('/api/admin/me', { cache:'no-store' });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.success === false) { window.location.href = '/admin/login.html'; return; }
+    const badge = document.createElement('div');
+    badge.style.cssText = 'position:fixed;right:14px;top:14px;z-index:9999;display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid #cfd7e6;border-radius:8px;background:#fff;box-shadow:0 10px 24px rgba(15,23,42,.12);font:13px Arial,\"Microsoft YaHei\",sans-serif';
+    badge.innerHTML = `<strong>${data.user.name} / ${data.user.role}</strong><button type="button" style="border:1px solid #cfd7e6;border-radius:7px;background:#fff;cursor:pointer">退出</button>`;
+    badge.querySelector('button').addEventListener('click', async () => { await fetch('/api/admin/logout', { method:'POST' }).catch(() => {}); window.location.href = '/admin/login.html'; });
+    document.body.appendChild(badge);
+  })();
+</script>
+</body>
+</html>

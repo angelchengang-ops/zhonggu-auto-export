@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20260626-seo-netlify">
-</head>
+<link rel="stylesheet" href="/assets/css/whatsapp-lead-modal.css"></head>
 <body class="seo-page">
   <header class="site-header scrolled">
     <div class="container nav-wrap">
@@ -52,7 +52,7 @@
         <p id="seo-intro-2"></p>
         <div class="hero-actions">
           <a class="btn btn-primary js-inquiry-cta" id="seo-inquiry-cta" href="#contact" data-title="SEO Page">Get FOB Price</a>
-          <a class="btn btn-light" id="seo-whatsapp" href="https://wa.me/447473271351?text=Hello%20Zhonggu%20Auto%20Export%2C%20I%20would%20like%20a%20FOB%20quotation." target="_blank" rel="noopener">Chat on WhatsApp</a>
+          <a class="btn btn-light" id="seo-whatsapp" href="#contact-whatsapp" target="_blank" rel="noopener" data-whatsapp-button="true" data-source="website" data-source-entry="static_html" data-source-button="WhatsApp" data-vehicle="Zhonggu Auto Export" data-whatsapp-message="Hello%20Zhonggu%20Auto%20Export%2C%20I%20would%20like%20a%20FOB%20quotation.">Chat on WhatsApp</a>
         </div>
       </div>
     </section>
@@ -129,7 +129,7 @@
           <p class="eyebrow">Start Your Order</p>
           <h2 id="contact-title">Send your inquiry</h2>
           <p id="contact-copy"></p>
-          <a class="btn btn-light whatsapp-btn" id="contact-whatsapp-link" href="https://wa.me/447473271351?text=Hello%20Zhonggu%20Auto%20Export" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          <a class="btn btn-light whatsapp-btn" id="contact-whatsapp-link" href="#contact-whatsapp" target="_blank" rel="noopener" data-whatsapp-button="true" data-source="website" data-source-entry="static_html" data-source-button="WhatsApp" data-vehicle="Zhonggu Auto Export" data-whatsapp-message="Hello%20Zhonggu%20Auto%20Export">Chat on WhatsApp</a>
         </div>
         <div class="inquiry-panel">
           <h3>Inquiry Form</h3>
@@ -196,7 +196,14 @@
       document.getElementById('seo-intro-2').textContent = `The page is written for ${page.country || 'overseas buyers'} and emphasizes real vehicle sourcing, condition review, export documents, and shipping coordination. Use the WhatsApp button or the inquiry form to request the latest FOB price and stock list.`;
       document.getElementById('seo-inquiry-cta').dataset.title = page.title;
       document.getElementById('seo-inquiry-cta').setAttribute('data-title', page.title);
-      document.getElementById('seo-whatsapp').href = `https://wa.me/447473271351?text=${encodeURIComponent(`I am interested in ${page.title}. Please send me the latest FOB price and stock list.`)}`;
+      const seoWhatsapp = document.getElementById('seo-whatsapp');
+      seoWhatsapp.href = '#contact-whatsapp';
+      seoWhatsapp.dataset.whatsappButton = 'true';
+      seoWhatsapp.dataset.source = 'website';
+      seoWhatsapp.dataset.sourceEntry = 'static_html';
+      seoWhatsapp.dataset.sourceButton = 'WhatsApp';
+      seoWhatsapp.dataset.vehicle = page.title;
+      seoWhatsapp.dataset.whatsappMessage = encodeURIComponent(`I am interested in ${page.title}. Please send me the latest FOB price and stock list.`);
       document.getElementById('contact-title').textContent = `Send your inquiry for ${page.title}`;
       document.getElementById('contact-copy').textContent = `Tell us your target market, model preference, and destination port. Zhonggu Auto Export will prepare a practical quotation plan for ${page.focus || 'your vehicle sourcing request'}.`;
       document.getElementById('featured-title').textContent = page.title;
@@ -249,6 +256,6 @@
       document.getElementById('seo-intro').textContent = 'The SEO page configuration could not be loaded.';
     });
   </script>
-</body>
+<script src="/assets/js/whatsapp-lead-modal.js"></script></body>
 </html>
 

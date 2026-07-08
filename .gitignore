@@ -5,3 +5,5 @@ media-processed/
 *.tmp
 .DS_Store
 
+netlify/functions/*.log
+*.pid

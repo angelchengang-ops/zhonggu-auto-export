@@ -1,8 +1,7 @@
 const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
-const whatsappNumber = "447473271351";
-const whatsappDisplayNumber = "+44 7473 271351";
+const whatsappDisplayNumber = "CRM inquiry form";
 const vehicleInquiry = window.ZhongguVehicleInquiry;
 window.trackEvent = window.trackEvent || ((eventName, parameters = {}) => {
   if (typeof window.gtag === "function") window.gtag("event", eventName, parameters);
@@ -81,6 +80,7 @@ const en = {
   "company.heroTitle": "Reliable Vehicle Export Partner from China",
   "company.heroSubtitle": "Professional sourcing, inspection, documentation and delivery support for new cars, used vehicles and new energy vehicles.",
   "company.viewVehicles": "View Vehicles",
+  "company.legalNameZh": "中谷国际贸易（青岛）有限公司",
   "company.legalNameEn": "Zhonggu International Trade (Qingdao) Co., Ltd.",
   "company.brandName": "Zhonggu Auto Export",
   "company.heroPanelText": "New cars, used vehicles and new energy vehicles for global buyers.",
@@ -215,7 +215,7 @@ const i18n = {
 
 
 class DataEngine {
-  constructor(source = "/data/cars.raw.json") {
+  constructor(source = "/cars.json") {
     this.source = source;
     this.rawCars = null;
   }
@@ -299,7 +299,7 @@ const versioned = (url) => url ? `${url}${url.includes("?") ? "&" : "?"}v=${Date
 const cleanPath = (url) => String(url || "").replace(/^\/+/, "");
 const vehicleUrl = (id) => `${id || "vehicle"}.html`;
 const escapeHtml = (value) => String(value || "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
-const waUrl = (message) => `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+const waUrl = (_message) => "#contact-whatsapp";
 const escapeRegExp = (value) => String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const normalizeVehicleName = (name, brand = "") => {
   const cleanedName = String(name || "").replace(/\s+/g, " ").trim();
@@ -481,24 +481,36 @@ const loadVehicles = async () => {
 };
 
 const bindWhatsappButtons = () => {
-  document.querySelectorAll("a[href*='wa.me/'], .whatsapp-btn").forEach((button) => {
-    const label = `Contact Zhonggu Auto Export on WhatsApp: ${whatsappDisplayNumber}`;
+  document.querySelectorAll("a[href='#contact-whatsapp'], [data-whatsapp-button='true'], .whatsapp-btn").forEach((button) => {
+    const label = `Contact Zhonggu Auto Export through ${whatsappDisplayNumber}`;
     button.title = whatsappDisplayNumber;
     button.setAttribute("aria-label", label);
   });
   document.addEventListener("click", (event) => {
-    const whatsappTarget = event.target.closest("a[href*='wa.me/'], .whatsapp-btn");
+    const whatsappTarget = event.target.closest("a[href='#contact-whatsapp'], [data-whatsapp-button='true'], .whatsapp-btn");
     if (whatsappTarget) window.trackEvent("whatsapp_click", { link_url: whatsappTarget.href || waUrl(whatsappTarget.dataset.message || "Website inquiry") });
     const button = event.target.closest(".whatsapp-btn, .vehicle-card button");
     if (!button || button.tagName === "A") return;
     const message = button.dataset.message || `Hello Zhonggu Auto Export, I would like to request FOB price and stock list for ${button.dataset.car || "a vehicle"}.`;
-    window.open(waUrl(message), "_blank", "noopener");
+    button.dataset.whatsappButton = "true";
+    button.dataset.whatsappMessage = encodeURIComponent(message);
+    if (window.ZhongguWhatsappLeadModal?.open) {
+      window.ZhongguWhatsappLeadModal.open({
+        vehicle: button.dataset.car || button.dataset.model || "Vehicle inquiry",
+        sourceButton: button.textContent || "WhatsApp button",
+        sourcePage: window.location.pathname || "/",
+        sourceUrl: window.location.href
+      });
+    } else {
+      window.location.href = waUrl(message);
+    }
   });
 };
 const updateCompanyMedia = async () => {
   if (!document.body.classList.contains("company-page")) return;
   try {
-    const config = await fetchJson("/data/media-config.json");
+    const config = window.ZHONGGU_PUBLIC_MEDIA_CONFIG;
+    if (!config) return;
     Object.entries(config.strengthImages || {}).forEach(([slot, entry]) => {
       const card = document.querySelector(`[data-media-slot="${slot}"]`);
       const img = card?.querySelector("[data-media-image]");
@@ -536,7 +548,139 @@ const bindVideoStages = () => {
 };
 
 const encodeFormData = (formData) => new URLSearchParams(formData).toString();
+const INQUIRY_API = "/api/public/inquiries";
+const formDataValue = (formData, ...names) => names.map((name) => String(formData.get(name) || "").trim()).find(Boolean) || "";
+const buildInquiryPayload = (form, formData) => {
+  const sourceUrl = formDataValue(formData, "source_url", "pageUrl") || window.location.href;
+  const sourcePage = formDataValue(formData, "source_page", "sourcePage") || document.querySelector("h1")?.textContent || document.title || window.location.pathname;
+  const vehicle = formDataValue(formData, "vehicle", "car_type", "interestedModel", "model", "car") || sourcePage;
+  const port = formDataValue(formData, "destinationPort", "port", "destination_port", "destination");
+  const budget = formDataValue(formData, "budget", "budgetPerUnit", "budget_per_unit", "totalBudget", "total_budget");
+  return {
+    name: formDataValue(formData, "name", "fullName", "contact_name"),
+    country: formDataValue(formData, "country", "market_country"),
+    port,
+    destinationPort: port,
+    vehicle,
+    interestedModel: vehicle,
+    budget,
+    whatsapp: formDataValue(formData, "whatsapp", "phone", "mobile", "tel"),
+    email: formDataValue(formData, "email", "mail", "customerEmail"),
+    message: formDataValue(formData, "message", "requirements", "comments"),
+    source: formDataValue(formData, "source", "sourceType", "source_type") || "website_form",
+    sourceDetail: "Website Inquiry Form",
+    sourceChannel: "inquiry_form",
+    sourceEntry: form.dataset.sourceEntry || formDataValue(formData, "source_entry") || "inquiry_form",
+    sourcePage,
+    sourceUrl,
+    assignedTo: formDataValue(formData, "assignedTo", "assigned_to"),
+    status: "new",
+    createdAt: new Date().toISOString(),
+    language: formDataValue(formData, "language") || document.documentElement.lang || "en",
+    market: formDataValue(formData, "market", "market_region", "market_country"),
+    referrer: document.referrer || ""
+  };
+};
+const submitInquiryToCrm = async (payload) => {
+  const response = await fetch(INQUIRY_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const text = await response.text();
+  let result = {};
+  try { result = text ? JSON.parse(text) : {}; } catch { result = {}; }
+  if (!response.ok || result.success === false) throw new Error(result.error || "CRM save failed with status " + response.status);
+  return result;
+};
 
+
+const ensureHiddenField = (form, name, value = "") => {
+  let input = form.querySelector(`[name="${name}"]`);
+  if (!input) {
+    input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    form.appendChild(input);
+  }
+  if (value && !input.value) input.value = value;
+  return input;
+};
+
+const createOptionalInquiryField = (name, labelText, options = {}) => {
+  const label = document.createElement("label");
+  if (options.wide) label.className = "field-wide";
+  const span = document.createElement("span");
+  span.textContent = labelText;
+  const input = document.createElement("input");
+  input.type = options.type || "text";
+  input.name = name;
+  if (options.autocomplete) input.autocomplete = options.autocomplete;
+  if (options.placeholder) input.placeholder = options.placeholder;
+  if (options.inputMode) input.inputMode = options.inputMode;
+  label.append(span, input);
+  return label;
+};
+
+const insertInquiryField = (fields, node) => {
+  const messageLabel = fields.querySelector('[name="message"]')?.closest("label");
+  fields.insertBefore(node, messageLabel || null);
+};
+
+const syncVehicleAliasFields = (form) => {
+  const vehicleInput = form.querySelector('[name="vehicle"], [name="car_type"], [name="interestedModel"], [name="model"], [name="car"]');
+  const carTypeInput = ensureHiddenField(form, "car_type");
+  const sync = () => {
+    if (vehicleInput?.value) carTypeInput.value = vehicleInput.value;
+  };
+  vehicleInput?.addEventListener("input", sync);
+  vehicleInput?.addEventListener("change", sync);
+  sync();
+};
+
+const ensureInquiryFormFields = () => {
+  document.querySelectorAll("form.inquiry-form").forEach((form) => {
+    const fields = form.querySelector(".inquiry-fields") || form;
+    const emailInput = form.querySelector('[name="email"]');
+    if (emailInput) {
+      emailInput.required = false;
+      emailInput.removeAttribute("required");
+    } else {
+      insertInquiryField(fields, createOptionalInquiryField("email", "Email (optional)", { type: "email", autocomplete: "email" }));
+    }
+    if (!form.querySelector('[name="destinationPort"], [name="port"]')) {
+      insertInquiryField(fields, createOptionalInquiryField("destinationPort", "Destination Port (optional)", { autocomplete: "off" }));
+    }
+    const budgetInput = form.querySelector('[name="budget"]');
+    if (budgetInput) {
+      budgetInput.required = false;
+      budgetInput.removeAttribute("required");
+    } else {
+      insertInquiryField(fields, createOptionalInquiryField("budget", "Budget (optional)", { placeholder: "USD or RMB", inputMode: "decimal" }));
+    }
+    ensureHiddenField(form, "source", "website_form");
+    ensureHiddenField(form, "createdAt");
+    syncVehicleAliasFields(form);
+  });
+};
+
+const applyInquiryFieldMappings = (formData) => {
+  const vehicle = formDataValue(formData, "vehicle", "car_type", "interestedModel", "model", "car");
+  if (vehicle) {
+    formData.set("vehicle", vehicle);
+    formData.set("car_type", vehicle);
+    formData.set("interestedModel", vehicle);
+  }
+  const destinationPort = formDataValue(formData, "destinationPort", "port", "destination_port", "destination");
+  if (destinationPort) {
+    formData.set("destinationPort", destinationPort);
+    formData.set("port", destinationPort);
+  }
+  formData.set("email", formDataValue(formData, "email", "mail", "customerEmail"));
+  formData.set("budget", formDataValue(formData, "budget", "budgetPerUnit", "budget_per_unit", "totalBudget", "total_budget"));
+  formData.set("source", formDataValue(formData, "source", "sourceType", "source_type") || "website_form");
+  formData.set("createdAt", formDataValue(formData, "createdAt", "created_at") || new Date().toISOString());
+};
 
 const bindAfricaMarketTracking = () => {
   if (!document.body.classList.contains("africa-market-page")) return;
@@ -559,6 +703,7 @@ const bindInquiryForms = () => {
       const originalLabel = submitButton?.textContent;
       const formData = new FormData(form);
       formData.set("form-name", "inquiry");
+      applyInquiryFieldMappings(formData);
 
       if (submitButton) {
         submitButton.disabled = true;
@@ -566,6 +711,12 @@ const bindInquiryForms = () => {
       }
 
       try {
+        const crmPayload = buildInquiryPayload(form, formData);
+        try {
+          await submitInquiryToCrm(crmPayload);
+        } catch (crmError) {
+          console.warn("CRM lead save failed; continuing with Netlify form fallback", crmError);
+        }
         const response = await fetch("/", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -591,6 +742,7 @@ loadVehicles().catch((error) => console.error("Vehicle data engine failed", erro
 bindWhatsappButtons();
 updateCompanyMedia();
 bindVideoStages();
+ensureInquiryFormFields();
 bindInquiryForms();
 bindAfricaMarketTracking();
 if (document.body.classList.contains("company-page")) window.setInterval(updateCompanyMedia, 15000);

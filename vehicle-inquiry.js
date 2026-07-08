@@ -4,7 +4,7 @@
   if (root) root.ZhongguVehicleInquiry = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   const SITE_URL = "https://zhongguauto.com";
-  const WHATSAPP_NUMBER = "447473271351";
+  const WHATSAPP_NUMBER = "";
 
   const text = (value) => {
     if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -43,8 +43,9 @@
     ].filter(Boolean).join("\n");
   };
 
-  const buildVehicleWhatsappUrl = (car = {}) =>
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildVehicleMessage(car))}`;
+  const buildVehicleWhatsappUrl = () => "#contact-whatsapp";
 
   return { SITE_URL, WHATSAPP_NUMBER, formatVehicleName, vehicleSlug, vehicleDetailUrl, buildVehicleMessage, buildVehicleWhatsappUrl };
 });
+
+
