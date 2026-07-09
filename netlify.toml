@@ -4,6 +4,10 @@
   functions = "netlify/functions"
   ignore = "node scripts/netlify-ignore.js"
 
+
+[functions]
+  node_bundler = "esbuild"
+
 [build.environment]
   NODE_VERSION = "20"
 

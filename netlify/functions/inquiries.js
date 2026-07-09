@@ -38,6 +38,12 @@ const assertLead = (lead, isClickEvent) => {
 };
 
 const requestPath = (event = {}) => `${event.path || ""} ${event.rawUrl || ""}`;
+const responseSourceFor = (event, isClickEvent) => {
+  const path = requestPath(event).toLowerCase();
+  if (isClickEvent) return "whatsapp_click";
+  if (path.includes("/api/public/whatsapp-lead")) return "whatsapp";
+  return "website";
+};
 const isWhatsappClickRequest = (event, body = {}) => {
   const eventType = firstValue(body.eventType, body.event_type).toLowerCase();
   const path = requestPath(event).toLowerCase();
@@ -132,7 +138,8 @@ exports.handler = async (event) => {
         success: false,
         stored: false,
         id: lead.id,
-        source: lead.source,
+        source: responseSourceFor(event, isClickEvent),
+        storedSource: lead.source,
         sourceType: lead.sourceType,
         error: error.message,
         results
@@ -146,7 +153,8 @@ exports.handler = async (event) => {
       success: true,
       stored: true,
       id: lead.id,
-      source: lead.source,
+      source: responseSourceFor(event, isClickEvent),
+      storedSource: lead.source,
       sourceType: lead.sourceType,
       storage: results.storage || "netlify-blobs",
       lead,
@@ -159,7 +167,8 @@ exports.handler = async (event) => {
       ok: false,
       success: false,
       stored: false,
-      source: lead?.source || (isClickEvent ? "whatsapp_click" : "website"),
+      source: responseSourceFor(event, isClickEvent),
+      storedSource: lead?.source || "",
       sourceType: lead?.sourceType || (isClickEvent ? "whatsapp_click" : "website"),
       error: error.message || "Lead submission failed"
     });
