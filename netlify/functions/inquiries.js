@@ -1,4 +1,4 @@
-const { createLead, firstValue, normalizeLead } = require("./crm-store");
+const { blobDebug, createLead, firstValue, normalizeLead } = require("./crm-store");
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -142,6 +142,7 @@ exports.handler = async (event) => {
         storedSource: lead.source,
         sourceType: lead.sourceType,
         error: error.message,
+        debug: blobDebug(),
         results
       });
     }
@@ -170,7 +171,8 @@ exports.handler = async (event) => {
       source: responseSourceFor(event, isClickEvent),
       storedSource: lead?.source || "",
       sourceType: lead?.sourceType || (isClickEvent ? "whatsapp_click" : "website"),
-      error: error.message || "Lead submission failed"
+      error: error.message || "Lead submission failed",
+      debug: blobDebug()
     });
   }
 };

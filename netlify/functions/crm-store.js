@@ -21,6 +21,11 @@ const getHeader = (headers = {}, name) => {
 
 const isNetlifyRuntime = () => Boolean(process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY_DEV);
 const compactError = (error) => String(error?.message || error || "Unknown error").split(/\r?\n/)[0].replace(/\s+imported from .+$/, "").replace(/\s+from \/var\/task\/.+$/, "");
+const blobDebug = () => ({
+  hasSiteID: Boolean(process.env.NETLIFY_SITE_ID),
+  hasToken: Boolean(process.env.NETLIFY_AUTH_TOKEN),
+  storeName: STORE_NAME
+});
 
 let blobModulePromise = null;
 let blobStorePromise = null;
@@ -47,10 +52,23 @@ const getBlobStore = async () => {
     try {
       const getStore = blobs.getStore || blobs.default?.getStore;
       if (typeof getStore !== "function") throw new Error("getStore export was not found");
+      if (process.env.NETLIFY_SITE_ID && process.env.NETLIFY_AUTH_TOKEN) {
+        return getStore({
+          name: STORE_NAME,
+          siteID: process.env.NETLIFY_SITE_ID,
+          token: process.env.NETLIFY_AUTH_TOKEN
+        });
+      }
       return getStore(STORE_NAME);
     } catch (error) {
       blobStorePromise = null;
-      if (isNetlifyRuntime()) throw new Error(`Blobs getStore failed: ${compactError(error)}`);
+      if (isNetlifyRuntime()) {
+        const debug = blobDebug();
+        const detail = debug.hasSiteID && debug.hasToken
+          ? compactError(error)
+          : "Missing NETLIFY_SITE_ID or NETLIFY_AUTH_TOKEN.";
+        throw new Error(`Blobs getStore failed: ${detail}`);
+      }
       return null;
     }
   })();
@@ -431,6 +449,7 @@ const writeWhatsappSettings = async (settings, user = {}) => {
 
 module.exports = {
   assignedName,
+  blobDebug,
   buildStats,
   createLead,
   filterLeads,
