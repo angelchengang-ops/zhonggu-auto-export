@@ -7,3 +7,5 @@ media-processed/
 
 netlify/functions/*.log
 *.pid
+node_modules/
+.npm-cache/
