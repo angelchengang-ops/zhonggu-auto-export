@@ -21,7 +21,9 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /api/admin/employees/*  /.netlify/functions/admin-users  200
 /api/admin/whatsapp-clicks  /.netlify/functions/admin-whatsapp-clicks  200
 /api/admin/whatsapp-settings  /.netlify/functions/admin-whatsapp-settings  200
+
 /api/public/inquiries /.netlify/functions/inquiries 200
+/api/public/whatsapp-link /.netlify/functions/whatsapp-link 200
 /api/public/whatsapp-lead /.netlify/functions/inquiries 200
 /api/public/whatsapp-lead/ /.netlify/functions/inquiries 200
 /api/inquiries /.netlify/functions/inquiries 200

@@ -57,21 +57,11 @@ const verifySessionToken = (token = "") => {
   return safeEqual(sign(payload, secret), parts[2]);
 };
 
-const userFromSessionHeader = (headers = {}) => {
-  try {
-    const raw = getHeader(headers, "x-zhonggu-admin-user");
-    if (!raw) return null;
-    const user = JSON.parse(raw);
-    return user?.username === "admin" && user?.role === "admin" ? ADMIN_USER : null;
-  } catch {
-    return null;
-  }
-};
 
 const getAdminUser = (event = {}) => {
   const cookies = parseCookies(getHeader(event.headers, "cookie"));
   if (verifySessionToken(cookies[COOKIE_NAME])) return ADMIN_USER;
-  return userFromSessionHeader(event.headers) || null;
+  return null;
 };
 
 const requireAdmin = (event = {}) => {

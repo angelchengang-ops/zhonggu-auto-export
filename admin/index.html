@@ -70,10 +70,26 @@
       return null;
     }
     async function requireLogin() {
-      const user = storedAdminUser();
-      if (!user) { window.location.href = "/admin/login.html"; return null; }
-      document.getElementById("currentUser").textContent = `${user.name || user.username} / ${user.role}`;
-      return user;
+      const cached = storedAdminUser();
+      if (!cached) { window.location.href = "/admin/login.html"; return null; }
+      try {
+        const res = await fetch("/api/admin/me", { cache:"no-store" });
+        if (res.status === 401) {
+          sessionStorage.removeItem("zhonggu_admin_user");
+          window.location.href = "/admin/login.html";
+          return null;
+        }
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.success === false || data.ok === false || !data.user) throw new Error(data.error || data.message || "Login expired");
+        const user = data.user || cached;
+        sessionStorage.setItem("zhonggu_admin_user", JSON.stringify(user));
+        document.getElementById("currentUser").textContent = `${user.name || user.username} / ${user.role}`;
+        return user;
+      } catch {
+        sessionStorage.removeItem("zhonggu_admin_user");
+        window.location.href = "/admin/login.html";
+        return null;
+      }
     }
     function renderHome(user) {
       const admin = user.role === "admin";
@@ -83,8 +99,7 @@
       document.getElementById("featureGrid").innerHTML = (admin ? adminCards : salesCards).map(card).join("");
     }
     function adminSessionHeaders() {
-      const user = storedAdminUser();
-      return user ? { "X-Zhonggu-Admin-User": JSON.stringify({ username:user.username, role:user.role }) } : {};
+      return {};
     }
     async function loadStats(user) {
       let s = { today:0, new:0, whatsappToday:0, total:0, todayDue:0, dueToday:0, contacted:0, won:0 };
@@ -102,8 +117,9 @@
         : [item("我的未处理线索", s.new), item("今日待联系", s.todayDue ?? s.dueToday), item("已联系客户", s.contacted), item("成交客户", s.won)].join("");
       document.getElementById("stats").innerHTML = html;
     }
-    document.getElementById("logoutBtn").addEventListener("click", () => {
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
       sessionStorage.removeItem("zhonggu_admin_user");
+      await fetch("/api/admin/logout", { method:"POST" }).catch(() => {});
       window.location.href = "/admin/login.html";
     });
     (async () => {
