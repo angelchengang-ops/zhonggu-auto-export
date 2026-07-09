@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SITE = 'https://zhongguauto.com';
+const STYLE_VERSION = '20260709-used-gallery-video';
 const rootDir = path.join(__dirname, '..');
 const cars = JSON.parse(fs.readFileSync(path.join(rootDir, 'cars.json'), 'utf8'));
 const manualImageMapPath = path.join(rootDir, 'manual-image-map.json');
@@ -11,12 +12,12 @@ const blockedPlaceholderFiles = new Set((manualImageMap.placeholderFilesDoNotUse
 const escapeHtml = (value = '') => String(value).replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
 const escapeAttr = escapeHtml;
 const cleanPath = (value = '') => String(value || '').replace(/^\/+/, '');
-const absoluteUrl = (value = '') => `${SITE}/${cleanPath(value)}`;
+const isRemoteAsset = (value = '') => /^https?:\/\//i.test(String(value || ''));
+const absoluteUrl = (value = '') => isRemoteAsset(value) ? String(value) : `${SITE}/${cleanPath(value)}`;
 const toArray = (value) => Array.isArray(value) ? value : (value ? [value] : []);
 const unique = (items = []) => [...new Set(items.filter(Boolean))];
 const slugify = (value = '') => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-const isRemoteImage = (value = '') => /^https?:///i.test(String(value || ''));
-const assetExists = (value = '') => isRemoteImage(value) || fs.existsSync(path.join(rootDir, cleanPath(value)));
+const assetExists = (value = '') => isRemoteAsset(value) || fs.existsSync(path.join(rootDir, cleanPath(value)));
 const isBlockedPlaceholder = (value = '') => blockedPlaceholderFiles.has(path.basename(cleanPath(value)).toLowerCase());
 const isUsableImage = (value = '') => Boolean(cleanPath(value)) && !isBlockedPlaceholder(value) && assetExists(value);
 const pickText = (value, fallback = '') => {
@@ -50,47 +51,105 @@ const getUsdPrice = (car) => {
   const match = String(source).replace(/,/g, '').match(/\d+(?:\.\d+)?/);
   return match ? match[0] : '';
 };
+
 const imageFromManualMap = (car) => {
   const byId = manualImageMap.carIds?.[car.id];
   if (isUsableImage(byId)) return cleanPath(byId);
   const candidates = unique([
     slugify(car.id),
-    slugify(pickText(car.brand) + ' ' + pickText(car.model || car.name)),
+    slugify(`${pickText(car.brand)} ${pickText(car.model || car.name)}`),
     slugify(pickText(car.model || car.name)),
     slugify(getVehicleName(car))
   ]);
   for (const [group, image] of Object.entries(manualImageMap.modelGroups || {})) {
     const key = slugify(group);
-    if (candidates.some((candidate) => candidate === key || candidate.startsWith(key + '-') || candidate.includes(key))) {
+    if (candidates.some((candidate) => candidate === key || candidate.startsWith(`${key}-`) || candidate.includes(key))) {
       if (isUsableImage(image)) return cleanPath(image);
     }
   }
   return '';
 };
 const getImage = (car) => {
-  const mappedImage = imageFromManualMap(car);
+  const mappedImage = isUsed(car) ? '' : imageFromManualMap(car);
   if (mappedImage) return mappedImage;
-  const dataImage = [car.mainImage, car.image, ...toArray(car.images), ...toArray(car.gallery), ...toArray(car.mediaImages), ...toArray(car.photoUrls)].find(isUsableImage);
+  const dataImage = [car.mainImage, car.image, ...toArray(car.images), ...toArray(car.gallery), ...toArray(car.photos), ...toArray(car.mediaImages), ...toArray(car.photoUrls)].find(isUsableImage);
   if (dataImage) return cleanPath(dataImage);
   return 'images/new-cars/generic-new-car-bg-01.png';
 };
 const getImages = (car) => {
   const mainImage = getImage(car);
-  const candidates = [mainImage, car.mainImage, car.image, ...toArray(car.images), ...toArray(car.gallery), ...toArray(car.mediaImages), ...toArray(car.photoUrls)];
+  const candidates = [mainImage, car.mainImage, car.image, ...toArray(car.images), ...toArray(car.gallery), ...toArray(car.photos), ...toArray(car.mediaImages), ...toArray(car.photoUrls)];
   const images = unique(candidates.map(cleanPath).filter(isUsableImage));
   return images.length ? images : [mainImage];
 };
-const renderMedia = (images, name) => {
+
+const videoSourceFrom = (value) => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return pickText(value.src || value.url || value.path || value.videoUrl || value.video_url || value.localVideo || value.local_video || value.mp4 || value.file, '');
+  }
+  return pickText(value, '');
+};
+const videoTitleFrom = (value, index) => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) return pickText(value.title || value.name || value.label, `Vehicle video ${index + 1}`);
+  return `Vehicle video ${index + 1}`;
+};
+const videoTypeFor = (source) => {
+  if (/\.webm(?:$|[?#])/i.test(source)) return 'video/webm';
+  if (/\.mov(?:$|[?#])/i.test(source)) return 'video/quicktime';
+  return 'video/mp4';
+};
+const isYoutubeVideo = (source) => /(?:youtube\.com|youtu\.be)/i.test(source);
+const isUsableVideoSource = (source = '') => Boolean(cleanPath(source)) && (isRemoteAsset(source) || assetExists(source));
+const getVideos = (car) => {
+  const candidates = [
+    ...toArray(car.videos),
+    car.video,
+    car.videoUrl,
+    car.video_url,
+    ...toArray(car.mediaVideos),
+    car.youtubeUrl,
+    car.youtube_url,
+    car.localVideo,
+    car.local_video,
+    car.mp4
+  ];
+  const seen = new Set();
+  return candidates.map((item, index) => {
+    const source = videoSourceFrom(item);
+    if (!isUsableVideoSource(source)) return null;
+    const src = isRemoteAsset(source) ? source : cleanPath(source);
+    if (seen.has(src)) return null;
+    seen.add(src);
+    return { src, title: videoTitleFrom(item, index), type: videoTypeFor(src), youtube: isYoutubeVideo(src) };
+  }).filter(Boolean);
+};
+
+const renderMedia = (images, name, car) => {
   const items = images.length ? images : ['images/new-cars/generic-new-car-bg-01.png'];
   const main = items[0];
-  const alt = name + ' export from China';
-  const thumbs = items.length > 1 ? '<div class="vehicle-gallery-thumbs" aria-label="Vehicle photo gallery">' + items.map((image, index) => {
-    const label = name + ' photo ' + (index + 1);
-    return '<button class="vehicle-gallery-thumb" type="button" data-gallery-src="' + escapeAttr(image) + '" data-gallery-alt="' + escapeAttr(label) + '" aria-label="Show photo ' + (index + 1) + '" aria-current="' + (index === 0 ? 'true' : 'false') + '"><img src="' + escapeAttr(image) + '" alt="' + escapeAttr(label) + '" loading="lazy"></button>';
-  }).join('') + '</div>' : '';
-  return '<div class="detail-media' + (items.length > 1 ? ' vehicle-gallery' : '') + '" data-vehicle-gallery><img class="vehicle-gallery-main" data-gallery-main src="' + escapeAttr(main) + '" alt="' + escapeAttr(alt) + '" loading="eager">' + thumbs + '</div>';
+  const alt = `${name} export from China`;
+  if (!isUsed(car)) {
+    return `<div class="detail-media"><img src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>`;
+  }
+  const thumbs = items.length > 1 ? `<div class="vehicle-thumbnails" aria-label="Vehicle photo gallery">${items.map((image, index) => {
+    const label = `${name} photo ${index + 1}`;
+    return `<button class="vehicle-thumbnail" type="button" data-gallery-src="${escapeAttr(image)}" data-gallery-alt="${escapeAttr(label)}" aria-label="Show photo ${index + 1}" aria-current="${index === 0 ? 'true' : 'false'}"><img src="${escapeAttr(image)}" alt="${escapeAttr(label)}" loading="lazy"></button>`;
+  }).join('')}</div>` : '';
+  return `<div class="detail-media used-car-gallery${items.length > 1 ? ' has-thumbnails' : ''}" data-vehicle-gallery><div class="vehicle-main-image"><img class="vehicle-gallery-main" data-gallery-main src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>${thumbs}</div>`;
 };
-const renderGalleryScript = (images) => images.length > 1 ? "<script>(function(){document.querySelectorAll('[data-vehicle-gallery]').forEach(function(gallery){var main=gallery.querySelector('[data-gallery-main]');gallery.addEventListener('click',function(event){var button=event.target.closest('[data-gallery-src]');if(!button||!main)return;main.src=button.dataset.gallerySrc;main.alt=button.dataset.galleryAlt||main.alt;gallery.querySelectorAll('[data-gallery-src]').forEach(function(item){item.setAttribute('aria-current',item===button?'true':'false');});});});})();</script>" : '';
+const renderGalleryScript = (car, images) => isUsed(car) && images.length > 1 ? `<script>(function(){document.querySelectorAll('[data-vehicle-gallery]').forEach(function(gallery){var main=gallery.querySelector('[data-gallery-main]');gallery.addEventListener('click',function(event){var button=event.target.closest('[data-gallery-src]');if(!button||!main)return;main.src=button.dataset.gallerySrc;main.alt=button.dataset.galleryAlt||main.alt;gallery.querySelectorAll('[data-gallery-src]').forEach(function(item){item.setAttribute('aria-current',item===button?'true':'false');});});});})();</script>` : '';
+const renderVideoSection = (videos) => {
+  if (!videos.length) return '';
+  const cards = videos.map((video, index) => {
+    const title = video.title || `Vehicle video ${index + 1}`;
+    if (video.youtube) {
+      return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><a class="btn btn-light" href="${escapeAttr(video.src)}" target="_blank" rel="noopener">Open video</a></article>`;
+    }
+    return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><video controls preload="metadata" playsinline><source src="${escapeAttr(video.src)}" type="${escapeAttr(video.type)}">Your browser does not support this video.</video></article>`;
+  }).join('');
+  return `<section class="vehicle-video-section" aria-label="Vehicle videos"><h2>Vehicle Video</h2><div class="vehicle-video-list">${cards}</div></section>`;
+};
+
 const getDescription = (car, name) => {
   const baseModel = normalizeVehicleName(pickText(car.model || car.name), pickText(car.brand)) || name;
   if (isUsed(car)) {
@@ -120,6 +179,7 @@ const render = (car) => {
   const name = getVehicleName(car);
   const url = `${SITE}/${id}.html`;
   const galleryImages = getImages(car);
+  const videos = getVideos(car);
   const img = galleryImages[0];
   const imgUrl = absoluteUrl(img);
   const description = getDescription(car, name);
@@ -128,8 +188,9 @@ const render = (car) => {
   const wa = "#contact-whatsapp";
   const encodedMessage = encodeURIComponent(message);
   const specItems = specs(car).map(([label, value]) => `<li>${escapeHtml(label)}: ${escapeHtml(value)}</li>`).join('');
-  const mediaMarkup = renderMedia(galleryImages, name);
-  const galleryBehavior = renderGalleryScript(galleryImages);
+  const mediaMarkup = renderMedia(galleryImages, name, car);
+  const videoMarkup = isUsed(car) ? renderVideoSection(videos) : '';
+  const galleryBehavior = renderGalleryScript(car, galleryImages);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -181,10 +242,10 @@ const render = (car) => {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20260626-seo-netlify">
+  <link rel="stylesheet" href="style.css?v=${STYLE_VERSION}">
 </head><body class="vehicle-detail-page seo-page">
 <header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="index.html" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="new-cars.html">New Cars</a><a href="used-cars.html">Used Cars</a><a href="brands.html">Brands</a><a href="company.html">Company</a><a href="export-process.html">Export Process</a><a class="nav-cta" href="contact.html">Contact Us</a></nav><select class="language-select" aria-label="Select language"><option value="en">English</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option><option value="fr">Fran&#231;ais</option><option value="es">Espa&#241;ol</option></select></div></header>
-<main><section class="detail-hero"><div class="container detail-grid"><article class="detail-card"><p class="eyebrow">${escapeHtml(isUsed(car) ? 'Used Car Export from China' : 'New Car Export from China')}</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(description)}</p>${mediaMarkup}</article><aside class="detail-summary"><div class="hero-actions"><a class="btn btn-primary js-inquiry-cta" href="#contact" data-title="${escapeAttr(name)}">Get FOB Price</a><a class="btn btn-light" href="${wa}" data-whatsapp-button="true" data-whatsapp-message="${encodedMessage}">Contact on WhatsApp</a></div><ul class="seo-list">${specItems || '<li>FOB inquiry: contact for latest price</li>'}</ul></aside></div></section>
+<main><section class="detail-hero"><div class="container detail-grid"><article class="detail-card"><p class="eyebrow">${escapeHtml(isUsed(car) ? 'Used Car Export from China' : 'New Car Export from China')}</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(description)}</p>${mediaMarkup}${videoMarkup}</article><aside class="detail-summary"><div class="hero-actions"><a class="btn btn-primary js-inquiry-cta" href="#contact" data-title="${escapeAttr(name)}">Get FOB Price</a><a class="btn btn-light" href="${wa}" data-whatsapp-button="true" data-whatsapp-message="${encodedMessage}">Contact on WhatsApp</a></div><ul class="seo-list">${specItems || '<li>FOB inquiry: contact for latest price</li>'}</ul></aside></div></section>
 <section class="seo-section"><div class="container"><h2>Export-ready Vehicle Information</h2><p>${escapeHtml(name)} is available for export inquiry from China. Zhonggu Auto Export can help overseas buyers confirm latest stock, FOB price, vehicle photos, export documents and shipping coordination.</p></div></section>
 <section class="seo-section"><div class="container"><h2>Inspection, Documents and Shipping</h2><p>Send your destination country, quantity and preferred timing. We will reply with stock availability, quotation details and practical export next steps.</p></div></section>
 <section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-intro"><p class="eyebrow">Get FOB Price</p><h2>Request Stock Availability</h2><p>Ask for the latest FOB price, condition details and export schedule for this vehicle.</p><a class="btn btn-light whatsapp-btn" href="${wa}" data-whatsapp-button="true" data-whatsapp-message="${encodedMessage}">Contact on WhatsApp</a></div><div class="inquiry-panel"><h3>Send Inquiry</h3><form class="inquiry-form" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html"><input type="hidden" name="form-name" value="inquiry"><input type="hidden" name="bot-field" value="" aria-hidden="true" tabindex="-1"><div class="inquiry-fields"><label><span>Name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Country</span><input type="text" name="country" autocomplete="country-name" required></label><label><span>WhatsApp</span><input type="tel" name="whatsapp" autocomplete="tel" required></label><label class="field-wide"><span>Interested Model</span><input type="text" name="model" value="${escapeAttr(name)}" required></label><label class="field-wide"><span>Message</span><textarea name="message" rows="4">${escapeHtml(`Please send the latest FOB price, stock status, available colors and shipping options for ${name}.`)}</textarea></label></div><button class="btn inquiry-submit" type="submit">Submit Inquiry</button></form><p class="inquiry-success" role="status" aria-live="polite" hidden>Thank you, your inquiry has been received. Our sales team will contact you soon.</p></div></div></section></main>${galleryBehavior}
@@ -200,6 +261,3 @@ for (const car of cars) {
   count += 1;
 }
 console.log(`Generated ${count} vehicle detail pages.`);
-
-
-
