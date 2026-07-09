@@ -331,6 +331,7 @@ const cleanPath = (url) => String(url || "").replace(/^\/+/, "");
 const vehicleUrl = (id) => `${id || "vehicle"}.html`;
 const escapeHtml = (value) => String(value || "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
 const waUrl = (_message) => "#contact-whatsapp";
+const WHATSAPP_CLICK_API = "/api/whatsapp-clicks";
 const escapeRegExp = (value) => String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const normalizeVehicleName = (name, brand = "") => {
   const cleanedName = String(name || "").replace(/\s+/g, " ").trim();
@@ -574,6 +575,45 @@ const loadVehicles = async () => {
   }
 };
 
+const trackWhatsappClickToCrm = (target) => {
+  if (!target) return;
+  const payload = {
+    eventType: "whatsapp_click",
+    source: "whatsapp_click",
+    sourceType: "whatsapp_click",
+    pageUrl: window.location.href,
+    page: window.location.pathname + window.location.search,
+    sourcePage: window.location.pathname || "/",
+    sourceUrl: window.location.href,
+    sourceButton: String(target.textContent || target.getAttribute("aria-label") || "WhatsApp button").trim(),
+    buttonText: String(target.textContent || target.getAttribute("aria-label") || "WhatsApp button").trim(),
+    vehicle: target.dataset.vehicle || target.dataset.model || target.dataset.car || document.body.dataset.vehicleName || document.querySelector("h1")?.textContent || "Vehicles from Zhonggu Auto Export",
+    market: target.dataset.market || document.body.dataset.marketCountry || document.body.dataset.marketRegion || "",
+    createdAt: new Date().toISOString(),
+    userAgent: navigator.userAgent || ""
+  };
+  const summary = { api: WHATSAPP_CLICK_API, vehicle: payload.vehicle, page: payload.pageUrl };
+  try {
+    const body = JSON.stringify(payload);
+    if (navigator.sendBeacon) {
+      const queued = navigator.sendBeacon(WHATSAPP_CLICK_API, new Blob([body], { type: "application/json" }));
+      if (queued) {
+        console.info("Zhonggu WhatsApp click tracked", { ...summary, queued: true });
+        return;
+      }
+      console.warn("Zhonggu WhatsApp tracking failed", { ...summary, error: "sendBeacon not queued" });
+    }
+    fetch(WHATSAPP_CLICK_API, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true })
+      .then((response) => {
+        const info = { ...summary, status: response.status, ok: response.ok };
+        if (response.ok) console.info("Zhonggu WhatsApp click tracked", info);
+        else console.warn("Zhonggu WhatsApp tracking failed", info);
+      })
+      .catch((error) => console.warn("Zhonggu WhatsApp tracking failed", { ...summary, error: error.message }));
+  } catch (error) {
+    console.warn("Zhonggu WhatsApp tracking failed", { ...summary, error: error.message });
+  }
+};
 const bindWhatsappButtons = () => {
   document.querySelectorAll("a[href='#contact-whatsapp'], [data-whatsapp-button='true'], .whatsapp-btn").forEach((button) => {
     const label = `Contact Zhonggu Auto Export through ${whatsappDisplayNumber}`;
@@ -582,7 +622,10 @@ const bindWhatsappButtons = () => {
   });
   document.addEventListener("click", (event) => {
     const whatsappTarget = event.target.closest("a[href='#contact-whatsapp'], [data-whatsapp-button='true'], .whatsapp-btn");
-    if (whatsappTarget) window.trackEvent("whatsapp_click", { link_url: whatsappTarget.href || waUrl(whatsappTarget.dataset.message || "Website inquiry") });
+    if (whatsappTarget) {
+      window.trackEvent("whatsapp_click", { link_url: whatsappTarget.href || waUrl(whatsappTarget.dataset.message || "Website inquiry") });
+      trackWhatsappClickToCrm(whatsappTarget);
+    }
     const button = event.target.closest(".whatsapp-btn, .vehicle-card button");
     if (!button || button.tagName === "A") return;
     const message = button.dataset.message || `Hello Zhonggu Auto Export, I would like to request FOB price and stock list for ${button.dataset.car || "a vehicle"}.`;
@@ -676,6 +719,14 @@ const buildInquiryPayload = (form, formData) => {
   };
 };
 const submitInquiryToCrm = async (payload) => {
+  const summary = {
+    api: INQUIRY_API,
+    source: payload.source || "website_form",
+    vehicle: payload.vehicle || payload.interestedModel || "",
+    page: payload.sourceUrl || window.location.href
+  };
+  console.info("Zhonggu CRM submit start", summary);
+  console.info("submitting inquiry", summary);
   const response = await fetch(INQUIRY_API, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -684,10 +735,16 @@ const submitInquiryToCrm = async (payload) => {
   const text = await response.text();
   let result = {};
   try { result = text ? JSON.parse(text) : {}; } catch { result = {}; }
-  if (!response.ok || result.success === false) throw new Error(result.error || "CRM save failed with status " + response.status);
+  const apiStatus = { status: response.status, ok: response.ok, stored: result.stored, id: result.id, source: result.source, storage: result.storage };
+  console.info("Zhonggu CRM API response", apiStatus);
+  console.info("inquiry api status", apiStatus);
+  if (!response.ok || result.success === false || result.ok === false || result.stored !== true) {
+    console.warn("inquiry save failed", { ...apiStatus, error: result.error || result.message || "CRM save failed" });
+    throw new Error(result.error || result.message || "CRM save failed with status " + response.status);
+  }
+  console.info("inquiry saved ok", apiStatus);
   return result;
 };
-
 
 const ensureHiddenField = (form, name, value = "") => {
   let input = form.querySelector(`[name="${name}"]`);
@@ -809,7 +866,7 @@ const bindInquiryForms = () => {
         try {
           await submitInquiryToCrm(crmPayload);
         } catch (crmError) {
-          console.warn("CRM lead save failed; continuing with Netlify form fallback", crmError);
+          console.warn("Zhonggu inquiry save failed; continuing with Netlify form fallback", { error: crmError.message });
         }
         const response = await fetch("/", {
           method: "POST",

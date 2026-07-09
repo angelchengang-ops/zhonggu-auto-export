@@ -19,11 +19,14 @@ const getHeader = (headers = {}, name) => {
   return key ? headers[key] : "";
 };
 
+const isNetlifyRuntime = () => Boolean(process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY_DEV);
+
 const getBlobStore = () => {
   try {
     const { getStore } = require("@netlify/blobs");
     return getStore(STORE_NAME);
-  } catch {
+  } catch (error) {
+    if (isNetlifyRuntime()) throw new Error(`Netlify Blobs module unavailable: ${String(error.message || "").split(/\r?\n/)[0]}`);
     return null;
   }
 };
@@ -32,24 +35,30 @@ const readJson = async (key, fallback) => {
   const store = getBlobStore();
   if (!store) return clone(key === LEADS_KEY ? memory.leads : (memory.settings || fallback));
   try {
-    const value = await store.get(key, { type: "json" });
+    const value = await store.get(key, { type: "json", consistency: "strong" });
     return value ?? clone(fallback);
-  } catch {
-    return clone(key === LEADS_KEY ? memory.leads : (memory.settings || fallback));
+  } catch (error) {
+    throw new Error(`Netlify Blobs read failed for ${STORE_NAME}/${key}: ${error.message}`);
   }
 };
 
 const writeJson = async (key, value) => {
-  if (key === LEADS_KEY) memory.leads = clone(value);
-  if (key === SETTINGS_KEY) memory.settings = clone(value);
   const store = getBlobStore();
-  if (!store) return { ok: true, storage: "memory" };
-  if (typeof store.setJSON === "function") {
-    await store.setJSON(key, value);
-  } else {
-    await store.set(key, JSON.stringify(value), { contentType: "application/json; charset=utf-8" });
+  if (!store) {
+    if (key === LEADS_KEY) memory.leads = clone(value);
+    if (key === SETTINGS_KEY) memory.settings = clone(value);
+    return { ok: true, storage: "memory" };
   }
-  return { ok: true, storage: "netlify-blobs" };
+  try {
+    const result = typeof store.setJSON === "function"
+      ? await store.setJSON(key, value)
+      : await store.set(key, JSON.stringify(value), { contentType: "application/json; charset=utf-8" });
+    if (key === LEADS_KEY) memory.leads = clone(value);
+    if (key === SETTINGS_KEY) memory.settings = clone(value);
+    return { ok: true, storage: "netlify-blobs", result };
+  } catch (error) {
+    throw new Error(`Netlify Blobs write failed for ${STORE_NAME}/${key}: ${error.message}`);
+  }
 };
 
 const sourceTypeOf = (item = {}) => {

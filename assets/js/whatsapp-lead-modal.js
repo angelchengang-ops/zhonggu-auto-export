@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   const API_LEAD = "/api/public/whatsapp-lead";
   const CLICK_API = "/api/whatsapp-clicks";
   const SELECTOR = 'a[href*="wa.me"], a[href*="api.whatsapp.com"], [data-whatsapp-button="true"], [data-action="whatsapp"], .whatsapp-button, .whatsapp-btn';
@@ -181,17 +181,33 @@
       model: context.vehicle || context.vehicleFromPage || FALLBACK_VEHICLE,
       vehicle: context.vehicle || context.vehicleFromPage || FALLBACK_VEHICLE,
       market: context.market || context.marketFromPage || "",
-      source: context.sourceButton || "whatsapp_form",
+      source: "whatsapp_click",
+      sourceType: "whatsapp_click",
+      createdAt: new Date().toISOString(),
+      userAgent: navigator.userAgent || "",
       ...extra
     };
+    const summary = { api: CLICK_API, eventType, vehicle: payload.vehicle, page: payload.pageUrl };
     try {
       const body = JSON.stringify(payload);
       if (navigator.sendBeacon) {
-        navigator.sendBeacon(CLICK_API, new Blob([body], { type: "application/json" }));
-        return;
+        const queued = navigator.sendBeacon(CLICK_API, new Blob([body], { type: "application/json" }));
+        if (queued) {
+          console.info("Zhonggu WhatsApp click tracked", { ...summary, queued: true });
+          return;
+        }
+        console.warn("Zhonggu WhatsApp tracking failed", { ...summary, error: "sendBeacon not queued" });
       }
-      fetch(CLICK_API, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {});
-    } catch {}
+      fetch(CLICK_API, { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true })
+        .then((response) => {
+          const info = { ...summary, status: response.status, ok: response.ok };
+          if (response.ok) console.info("Zhonggu WhatsApp click tracked", info);
+          else console.warn("Zhonggu WhatsApp tracking failed", info);
+        })
+        .catch((error) => console.warn("Zhonggu WhatsApp tracking failed", { ...summary, error: error.message }));
+    } catch (error) {
+      console.warn("Zhonggu WhatsApp tracking failed", { ...summary, error: error.message });
+    }
   };
   const hasSpecificVehicle = (value) => !isGenericVehicleName(value);
   const crmVehicleValue = (value) => isGenericVehicleName(value) ? FALLBACK_VEHICLE : normalize(value);
@@ -402,11 +418,13 @@
       createdFrom: "website_whatsapp_button"
     };
     try {
+      console.info("Zhonggu WhatsApp lead submit start", { api: API_LEAD, vehicle: payload.vehicle, page: payload.sourceUrl });
       const response = await fetch(API_LEAD, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const responseText = await response.text();
       let result = {};
       try { result = responseText ? JSON.parse(responseText) : {}; } catch { result = {}; }
-      if (!response.ok || result.success === false) {
+      console.info("Zhonggu CRM API response", { status: response.status, ok: response.ok, stored: result.stored, id: result.id, source: result.source });
+      if (!response.ok || result.success === false || result.ok === false || result.stored !== true) {
         let message = "Submission failed. Please check your information and try again.";
         if (response.status === 405) message = "Submission failed: API method is not allowed. Please check backend route POST /api/public/whatsapp-lead.";
         else if (response.status === 404) message = "Submission failed: lead submit API not found.";
@@ -418,7 +436,7 @@
       }
       const successTitle = ui.success.querySelector("h3");
       const successText = ui.success.querySelectorAll("p");
-      if (result.id) console.log(result.duplicate ? "[WhatsApp lead duplicate]" : "[WhatsApp lead submitted]", result.id);
+      if (result.id) console.info("Zhonggu WhatsApp lead saved ok", { id: result.id, source: result.source, stored: result.stored });
       if (result.duplicate) {
         if (successTitle) successTitle.textContent = "Thank you. Your inquiry has already been received.";
         if (successText[0]) successText[0].textContent = "Our sales manager will contact you on WhatsApp shortly.";

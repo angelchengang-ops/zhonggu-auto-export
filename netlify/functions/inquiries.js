@@ -12,11 +12,19 @@ const json = (statusCode, body) => ({
   body: JSON.stringify(body)
 });
 
+const getHeader = (headers = {}, name) => {
+  const target = String(name).toLowerCase();
+  const key = Object.keys(headers || {}).find((item) => item.toLowerCase() === target);
+  return key ? headers[key] : "";
+};
+
 const parseBody = (event) => {
-  const raw = event.body || "";
-  const contentType = event.headers?.["content-type"] || event.headers?.["Content-Type"] || "";
+  let raw = event.body || "";
+  if (event.isBase64Encoded && raw) raw = Buffer.from(raw, "base64").toString("utf8");
+  const contentType = getHeader(event.headers, "content-type");
   if (!raw) return {};
-  if (contentType.includes("application/json") || raw.trim().startsWith("{") || raw.trim().startsWith("[")) return JSON.parse(raw);
+  const text = String(raw).trim();
+  if (contentType.includes("application/json") || text.startsWith("{") || text.startsWith("[")) return JSON.parse(text);
   const params = new URLSearchParams(raw);
   return Object.fromEntries(params.entries());
 };
@@ -29,8 +37,28 @@ const assertLead = (lead, isClickEvent) => {
   if (!lead.vehicle) throw Object.assign(new Error("Vehicle is required"), { statusCode: 400 });
 };
 
+const requestPath = (event = {}) => `${event.path || ""} ${event.rawUrl || ""}`;
+const isWhatsappClickRequest = (event, body = {}) => {
+  const eventType = firstValue(body.eventType, body.event_type).toLowerCase();
+  const path = requestPath(event).toLowerCase();
+  return path.includes("whatsapp-clicks") || eventType.includes("click") || eventType === "whatsapp_form_open";
+};
+
+const clickFallbackBody = (event = {}) => ({
+  eventType: "whatsapp_click",
+  source: "whatsapp_click",
+  sourceType: "whatsapp_click",
+  sourceDetail: "WhatsApp Click",
+  sourceButton: "WhatsApp button",
+  pageUrl: getHeader(event.headers, "referer") || "",
+  sourceUrl: getHeader(event.headers, "referer") || "",
+  sourcePage: getHeader(event.headers, "referer") || "",
+  vehicle: "Vehicles from Zhonggu Auto Export",
+  createdAt: new Date().toISOString()
+});
+
 const submitToNetlifyForm = async (lead, event) => {
-  const siteUrl = (process.env.URL || process.env.DEPLOY_PRIME_URL || event.headers?.origin || "https://zhongguauto.com").replace(/\/$/, "");
+  const siteUrl = (process.env.URL || process.env.DEPLOY_PRIME_URL || getHeader(event.headers, "origin") || "https://zhongguauto.com").replace(/\/$/, "");
   const params = new URLSearchParams();
   params.set("form-name", process.env.NETLIFY_FORM_NAME || "inquiry");
   params.set("name", lead.name);
@@ -69,31 +97,71 @@ const forwardWebhook = async (lead) => {
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return json(204, {});
-  if (event.httpMethod !== "POST") return json(405, { ok: false, success: false, error: "POST required" });
+  if (event.httpMethod !== "POST") return json(405, { ok: false, success: false, stored: false, error: "POST required" });
+
+  let body = {};
+  let lead = null;
+  let isClickEvent = false;
+  const results = { blobs: false, webhook: false, netlifyFormFallback: false };
+
   try {
-    const body = parseBody(event);
-    const eventType = firstValue(body.eventType, body.event_type);
-    const isClickEvent = String(event.path || "").includes("whatsapp-clicks") || eventType.includes("click") || eventType === "whatsapp_form_open";
-    const lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website" });
+    body = parseBody(event);
+    isClickEvent = isWhatsappClickRequest(event, body);
+    if (isClickEvent && !Object.keys(body).length) body = clickFallbackBody(event);
+    lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website" });
     assertLead(lead, isClickEvent);
 
-    const results = { blobs: false, webhook: false, netlifyForm: false };
+    console.info("[inquiries] received", { path: event.path, source: lead.source, sourceType: lead.sourceType, eventType: lead.eventType || "" });
+
+    let saved;
     try {
-      const saved = await createLead(lead, event, { kind: isClickEvent ? "whatsapp_click" : "website" });
+      saved = await createLead(lead, event, { kind: isClickEvent ? "whatsapp_click" : "website" });
       results.blobs = true;
       results.storage = saved.storage;
       Object.assign(lead, saved.lead);
+      console.info("[inquiries] stored in blobs", { id: lead.id, source: lead.source, sourceType: lead.sourceType, storage: saved.storage });
     } catch (error) {
       results.blobsError = error.message;
-    }
-    try { results.webhook = await forwardWebhook(lead); } catch (error) { results.webhookError = error.message; }
-    if (!isClickEvent) {
-      try { results.netlifyForm = await submitToNetlifyForm(lead, event); } catch (error) { results.netlifyFormError = error.message; }
+      console.error("[inquiries] blobs write failed", { source: lead.source, sourceType: lead.sourceType, error: error.message });
+      if (!isClickEvent) {
+        try { results.netlifyFormFallback = await submitToNetlifyForm(lead, event); }
+        catch (fallbackError) { results.netlifyFormError = fallbackError.message; }
+      }
+      return json(500, {
+        ok: false,
+        success: false,
+        stored: false,
+        id: lead.id,
+        source: lead.source,
+        sourceType: lead.sourceType,
+        error: error.message,
+        results
+      });
     }
 
-    const stored = Boolean(results.blobs || results.webhook || results.netlifyForm);
-    return json(stored ? 200 : 202, { ok: true, success: true, id: lead.id, lead, inquiry: lead, stored, results, storage: results.blobs ? "netlify-blobs" : stored ? "fallback" : "not_persisted" });
+    try { results.webhook = await forwardWebhook(lead); } catch (error) { results.webhookError = error.message; }
+
+    return json(200, {
+      ok: true,
+      success: true,
+      stored: true,
+      id: lead.id,
+      source: lead.source,
+      sourceType: lead.sourceType,
+      storage: results.storage || "netlify-blobs",
+      lead,
+      inquiry: lead,
+      results
+    });
   } catch (error) {
-    return json(error.statusCode || 500, { ok: false, success: false, error: error.message || "Lead submission failed" });
+    console.error("[inquiries] request failed", { path: event.path, error: error.message });
+    return json(error.statusCode || 500, {
+      ok: false,
+      success: false,
+      stored: false,
+      source: lead?.source || (isClickEvent ? "whatsapp_click" : "website"),
+      sourceType: lead?.sourceType || (isClickEvent ? "whatsapp_click" : "website"),
+      error: error.message || "Lead submission failed"
+    });
   }
 };
