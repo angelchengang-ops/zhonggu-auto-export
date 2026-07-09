@@ -1190,6 +1190,40 @@ img { display: block; max-width: 100%; }
   aspect-ratio: 16 / 10;
   object-fit: cover;
 }
+.vehicle-detail-page .detail-media.vehicle-gallery {
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+}
+.vehicle-detail-page .detail-media.vehicle-gallery > img {
+  display: block;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #dce7f3, #eef4fa);
+}
+.vehicle-detail-page .vehicle-gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.vehicle-detail-page .vehicle-gallery-thumb {
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+.vehicle-detail-page .vehicle-gallery-thumb[aria-current="true"] {
+  border-color: var(--blue);
+}
+.vehicle-detail-page .vehicle-gallery-thumbs img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
 .vehicle-detail-page .detail-specs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
