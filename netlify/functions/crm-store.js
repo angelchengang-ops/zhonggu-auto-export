@@ -22,18 +22,35 @@ const getHeader = (headers = {}, name) => {
 const isNetlifyRuntime = () => Boolean(process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY_DEV);
 const compactError = (error) => String(error?.message || error || "Unknown error").split(/\r?\n/)[0].replace(/\s+imported from .+$/, "").replace(/\s+from \/var\/task\/.+$/, "");
 
-const nativeImport = new Function("specifier", "return import(specifier)");
+let blobModulePromise = null;
 let blobStorePromise = null;
+const loadBlobs = async () => {
+  if (!blobModulePromise) {
+    blobModulePromise = import("@netlify/blobs").catch((error) => {
+      blobModulePromise = null;
+      throw new Error(`Blobs import failed: ${compactError(error)}`);
+    });
+  }
+  return blobModulePromise;
+};
+
 const getBlobStore = async () => {
   if (blobStorePromise) return blobStorePromise;
   blobStorePromise = (async () => {
+    let blobs;
     try {
-      const blobs = await nativeImport("@netlify/blobs");
+      blobs = await loadBlobs();
+    } catch (error) {
+      if (isNetlifyRuntime()) throw error;
+      return null;
+    }
+    try {
       const getStore = blobs.getStore || blobs.default?.getStore;
       if (typeof getStore !== "function") throw new Error("getStore export was not found");
       return getStore(STORE_NAME);
     } catch (error) {
-      if (isNetlifyRuntime()) throw new Error(`Netlify Blobs module unavailable: ${compactError(error)}`);
+      blobStorePromise = null;
+      if (isNetlifyRuntime()) throw new Error(`Blobs getStore failed: ${compactError(error)}`);
       return null;
     }
   })();
@@ -47,7 +64,7 @@ const readJson = async (key, fallback) => {
     const value = await store.get(key, { type: "json", consistency: "strong" });
     return value ?? clone(fallback);
   } catch (error) {
-    throw new Error(`Netlify Blobs read failed for ${STORE_NAME}/${key}: ${compactError(error)}`);
+    throw new Error(`Blobs read failed for ${STORE_NAME}/${key}: ${compactError(error)}`);
   }
 };
 
@@ -66,7 +83,7 @@ const writeJson = async (key, value) => {
     if (key === SETTINGS_KEY) memory.settings = clone(value);
     return { ok: true, storage: "netlify-blobs", result };
   } catch (error) {
-    throw new Error(`Netlify Blobs write failed for ${STORE_NAME}/${key}: ${compactError(error)}`);
+    throw new Error(`Blobs write failed for ${STORE_NAME}/${key}: ${compactError(error)}`);
   }
 };
 
