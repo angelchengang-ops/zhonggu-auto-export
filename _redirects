@@ -7,9 +7,10 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /api/admin/login  /.netlify/functions/admin-login  200
 /api/admin/me  /.netlify/functions/admin-me  200
 /api/admin/logout  /.netlify/functions/admin-logout  200
+/api/admin/session  /.netlify/functions/admin-session  200
 /api/admin/stats  /.netlify/functions/admin-stats  200
 /api/admin/inquiry-stats  /.netlify/functions/admin-stats  200
-/api/admin/inquiries/export.csv  /.netlify/functions/admin-inquiries  200
+/api/admin/inquiries/export.csv  /.netlify/functions/admin-export-inquiries  200
 /api/admin/inquiries  /.netlify/functions/admin-inquiries  200
 /api/admin/inquiries/*  /.netlify/functions/admin-inquiries  200
 /api/admin/sales-users  /.netlify/functions/admin-users  200

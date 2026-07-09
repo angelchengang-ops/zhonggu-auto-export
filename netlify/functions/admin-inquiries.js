@@ -1,35 +1,89 @@
+const { assignedName, createLead, filterLeads, readLeads, toCsv, updateLead } = require("./crm-store");
 const { json, requireAdmin } = require("./admin-session");
 
-const lightMessage = "当前线上后台为轻量版，暂无可加载数据。";
-const writeMessage = "当前线上后台为轻量版，暂不支持写入、分配、备注或导出真实 CRM 数据。";
+const parseBody = (event) => {
+  const raw = event.body || "";
+  if (!raw) return {};
+  const contentType = event.headers?.["content-type"] || event.headers?.["Content-Type"] || "";
+  if (contentType.includes("application/json") || raw.trim().startsWith("{") || raw.trim().startsWith("[")) return JSON.parse(raw);
+  return Object.fromEntries(new URLSearchParams(raw).entries());
+};
 
-const csv = () => ({
+const csvResponse = (body) => ({
   statusCode: 200,
   headers: {
     "Content-Type": "text/csv; charset=utf-8",
     "Cache-Control": "no-store",
     "Content-Disposition": "attachment; filename=\"inquiries.csv\""
   },
-  body: "\ufeffcreatedAt,name,country,whatsapp,vehicle,status\n"
+  body
 });
+
+const partsAfterInquiries = (path = "") => {
+  const marker = "/api/admin/inquiries";
+  const rest = String(path || "").split("?")[0].slice(marker.length).replace(/^\//, "");
+  return rest ? rest.split("/").map(decodeURIComponent) : [];
+};
+
+const whatsappUrl = (lead) => {
+  const number = String(lead.whatsapp || lead.rawWhatsapp || "").replace(/\D/g, "");
+  if (!number) return "";
+  const text = encodeURIComponent(`Hello ${lead.name || ""}, this is Zhonggu Auto Export. We received your inquiry about ${lead.vehicle || lead.interestedModel || "vehicles"}.`);
+  return `https://wa.me/${number}?text=${text}`;
+};
 
 exports.handler = async (event) => {
   const user = requireAdmin(event);
   if (user.statusCode) return user;
 
-  const path = String(event.path || "");
-  if (event.httpMethod === "GET" && path.endsWith("/export.csv")) return csv();
+  const url = new URL(event.rawUrl || `https://zhongguauto.com${event.path || "/api/admin/inquiries"}`);
+  const path = url.pathname;
+  const parts = partsAfterInquiries(path);
 
   if (event.httpMethod === "GET") {
-    const isMember = /\/api\/admin\/inquiries\/[^/]+/.test(path) && !path.endsWith("/export.csv");
-    if (isMember) {
-      return json(200, { ok: true, success: true, inquiry: null, item: null, message: "暂无询盘数据。" });
+    const { items, formsImport } = await readLeads({ syncForms: true });
+    const filtered = filterLeads(items, url.searchParams);
+    if (path.endsWith("/export.csv")) return csvResponse(toCsv(filtered));
+    if (parts.length && parts[0] !== "export.csv") {
+      const inquiry = items.find((item) => item.id === parts[0]) || null;
+      return inquiry
+        ? json(200, { ok: true, success: true, inquiry, item: inquiry })
+        : json(404, { ok: false, success: false, message: "Inquiry not found" });
     }
-    return json(200, { ok: true, success: true, inquiries: [], items: [], total: 0, message: lightMessage });
+    return json(200, { ok: true, success: true, inquiries: filtered, items: filtered, total: filtered.length, formsImport });
   }
 
-  if (["POST", "PATCH", "DELETE"].includes(event.httpMethod)) {
-    return json(501, { ok: false, success: false, message: writeMessage, error: writeMessage });
+  if (event.httpMethod === "POST" && parts.length === 0) {
+    const body = parseBody(event);
+    const saved = await createLead({ ...body, source: "manual", sourceType: "manual", assignedTo: body.assignedTo || "" }, event, { kind: "manual" });
+    return json(200, { ok: true, success: true, inquiry: saved.lead, item: saved.lead });
+  }
+
+  if (event.httpMethod === "PATCH" && parts.length === 0) {
+    const body = parseBody(event);
+    const id = body.id || body.leadId || body.lead_id;
+    if (!id) return json(400, { ok: false, success: false, message: "id is required" });
+    const updated = await updateLead(id, body, user);
+    if (!updated) return json(404, { ok: false, success: false, message: "Inquiry not found" });
+    return json(200, { ok: true, success: true, inquiry: updated, item: updated, assignedName: assignedName(updated.assignedTo) });
+  }
+
+  if ((event.httpMethod === "PATCH" || event.httpMethod === "POST") && parts.length >= 1) {
+    const id = parts[0];
+    const action = parts[1] || "";
+    const body = parseBody(event);
+    if (action === "contact-whatsapp") {
+      const updated = await updateLead(id, { status: "contacted", note: "Opened WhatsApp contact from CRM." }, user);
+      if (!updated) return json(404, { ok: false, success: false, message: "Inquiry not found" });
+      return json(200, { ok: true, success: true, inquiry: updated, item: updated, url: whatsappUrl(updated) });
+    }
+    const patch = action === "assign" ? { assignedTo: body.assignedTo ?? body.userId ?? body.salesId ?? "" }
+      : action === "status" ? { status: body.status }
+      : action === "note" ? { note: body.note }
+      : body;
+    const updated = await updateLead(id, patch, user);
+    if (!updated) return json(404, { ok: false, success: false, message: "Inquiry not found" });
+    return json(200, { ok: true, success: true, inquiry: updated, item: updated, assignedName: assignedName(updated.assignedTo) });
   }
 
   return json(405, { ok: false, success: false, message: "Method not allowed" });

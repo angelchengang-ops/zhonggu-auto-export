@@ -4,7 +4,7 @@ const parseBody = (event) => {
   const raw = event.body || "";
   const contentType = event.headers?.["content-type"] || event.headers?.["Content-Type"] || "";
   if (!raw) return {};
-  if (contentType.includes("application/json")) return JSON.parse(raw);
+  if (contentType.includes("application/json") || raw.trim().startsWith("{") || raw.trim().startsWith("[")) return JSON.parse(raw);
   const params = new URLSearchParams(raw);
   return Object.fromEntries(params.entries());
 };
@@ -28,8 +28,8 @@ exports.handler = async (event) => {
       return json(200, { ok: true, success: true, user: ADMIN_USER }, { "Set-Cookie": createSessionCookie() });
     }
 
-    return json(401, { ok: false, success: false, message: "用户名或密码错误" });
+    return json(401, { ok: false, success: false, message: "\u7528\u6237\u540d\u6216\u5bc6\u7801\u9519\u8bef" });
   } catch {
-    return json(401, { ok: false, success: false, message: "用户名或密码错误" });
+    return json(401, { ok: false, success: false, message: "\u7528\u6237\u540d\u6216\u5bc6\u7801\u9519\u8bef" });
   }
 };

@@ -2,7 +2,7 @@ const crypto = require("crypto");
 
 const COOKIE_NAME = "zg_admin_session";
 const MAX_AGE_SECONDS = 60 * 60 * 12;
-const ADMIN_USER = Object.freeze({ username: "admin", role: "admin", name: "陈刚" });
+const ADMIN_USER = Object.freeze({ username: "admin", role: "admin", name: "\u9648\u521a" });
 
 const json = (statusCode, body, headers = {}) => ({
   statusCode,
@@ -79,6 +79,12 @@ const requireAdmin = (event = {}) => {
   return user || json(401, { ok: false, success: false, message: "Unauthorized" });
 };
 
+const handler = async (event) => {
+  const user = getAdminUser(event);
+  if (!user) return json(401, { ok: false, success: false, message: "Unauthorized" });
+  return json(200, { ok: true, success: true, user });
+};
+
 module.exports = {
   ADMIN_USER,
   clearSessionCookie,
@@ -86,5 +92,6 @@ module.exports = {
   getAdminUser,
   json,
   requireAdmin,
-  safeEqual
+  safeEqual,
+  handler
 };
