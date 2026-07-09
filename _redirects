@@ -4,6 +4,7 @@ http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 
 # Public lead collection on Netlify Functions
+/api/admin/login  /.netlify/functions/admin-login  200
 /api/public/inquiries /.netlify/functions/inquiries 200
 /api/public/whatsapp-lead /.netlify/functions/inquiries 200
 /api/public/whatsapp-lead/ /.netlify/functions/inquiries 200

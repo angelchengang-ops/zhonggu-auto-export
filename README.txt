@@ -85,7 +85,7 @@ Open the Network address on a phone connected to the same Wi-Fi, then open:
 Set the upload password through an environment variable when needed:
   ZHONGGU_MEDIA_PASSWORD=your-password
 
-If no environment variable is set, the local default is used by server.js. Default local media password: zg2026. The password is checked by /api/media-login and upload APIs and is not printed in the admin page UI.
+Set ZHONGGU_MEDIA_PASSWORD before using the local media server. The password is checked by /api/media-login and upload APIs and is not printed in the admin page UI.
 
 Uploaded files are saved without overwriting old files:
   uploads/company/vehicle-preparation/

@@ -62,12 +62,18 @@
       { title:"今日待跟进", description:"查看今天需要联系或二次跟进的客户。", href:"/admin/inquiries.html?due=today" },
       { title:"跟进记录", description:"查看我自己的客户沟通和状态记录。", href:"/admin/inquiries.html?view=records" }
     ];
+    function storedAdminUser() {
+      try {
+        const user = JSON.parse(sessionStorage.getItem("zhonggu_admin_user") || "null");
+        if (user && user.username === "admin" && user.role === "admin") return user;
+      } catch {}
+      return null;
+    }
     async function requireLogin() {
-      const res = await fetch("/api/admin/me", { cache:"no-store" });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || data.success === false) { window.location.href = "/admin/login.html"; return null; }
-      document.getElementById("currentUser").textContent = `${data.user.name} / ${data.user.role}`;
-      return data.user;
+      const user = storedAdminUser();
+      if (!user) { window.location.href = "/admin/login.html"; return null; }
+      document.getElementById("currentUser").textContent = `${user.name || user.username} / ${user.role}`;
+      return user;
     }
     function renderHome(user) {
       const admin = user.role === "admin";
@@ -86,8 +92,8 @@
         : [item("我的未处理线索", s.new), item("今日待联系", s.todayDue ?? s.dueToday), item("已联系客户", s.contacted), item("成交客户", s.won)].join("");
       document.getElementById("stats").innerHTML = html;
     }
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      await fetch("/api/admin/logout", { method:"POST" }).catch(() => {});
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      sessionStorage.removeItem("zhonggu_admin_user");
       window.location.href = "/admin/login.html";
     });
     (async () => {

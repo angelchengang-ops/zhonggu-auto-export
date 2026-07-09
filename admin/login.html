@@ -21,7 +21,7 @@
 <body>
   <main class="card">
     <h1>后台登录</h1>
-    <p>请输入后台账号。开发版密码为明文配置，正式公开部署前需要改成哈希。</p>
+    <p>请输入后台账号。</p>
     <form id="loginForm" action="/api/admin/login" method="post" novalidate>
       <label>用户名<input name="username" autocomplete="username" required></label>
       <label>密码<input name="password" type="password" autocomplete="current-password" required></label>
@@ -43,6 +43,7 @@
       status.textContent = "";
       submitBtn.disabled = true;
       submitBtn.textContent = "登录中...";
+      sessionStorage.removeItem("zhonggu_admin_user");
       try {
         const payload = {
           username: String(form.elements.username.value || "").trim(),
@@ -54,10 +55,18 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json().catch(() => ({}));
-        if (!res.ok || data.success === false) throw new Error("用户名或密码错误");
-        window.location.href = "/admin/";
+        if (!res.ok || data.ok !== true || !data.user) {
+          if (data.message === "ZHONGGU_ADMIN_PASSWORD is not configured") {
+            throw new Error("后台密码未配置，请检查 Netlify 环境变量。");
+          }
+          throw new Error("用户名或密码错误");
+        }
+        sessionStorage.setItem("zhonggu_admin_user", JSON.stringify(data.user));
+        window.location.href = "/admin/index.html";
       } catch (error) {
-        status.textContent = "用户名或密码错误";
+        status.textContent = error.message === "后台密码未配置，请检查 Netlify 环境变量。"
+          ? error.message
+          : "用户名或密码错误";
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "登录";
