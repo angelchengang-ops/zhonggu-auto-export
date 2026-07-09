@@ -82,11 +82,21 @@
       document.getElementById("pageSubtitle").textContent = admin ? "轻量 CRM 第一版，用于查看询盘、分配负责人和跟进客户。" : "查看分配给我的客户，联系客户并填写跟进记录。";
       document.getElementById("featureGrid").innerHTML = (admin ? adminCards : salesCards).map(card).join("");
     }
+    function adminSessionHeaders() {
+      const user = storedAdminUser();
+      return user ? { "X-Zhonggu-Admin-User": JSON.stringify({ username:user.username, role:user.role }) } : {};
+    }
     async function loadStats(user) {
-      const res = await fetch("/api/admin/inquiry-stats", { cache:"no-store" });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || data.success === false) throw new Error(data.error || "统计加载失败");
-      const s = data.stats || {};
+      let s = { today:0, new:0, whatsappToday:0, total:0, todayDue:0, dueToday:0, contacted:0, won:0 };
+      try {
+        const res = await fetch("/api/admin/stats", { cache:"no-store", headers: adminSessionHeaders() });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.success === false || data.ok === false) throw new Error(data.error || data.message || "当前线上后台为轻量版，暂无可加载数据。");
+        s = { ...s, ...(data.stats || {}) };
+        status.textContent = "";
+      } catch (error) {
+        status.textContent = "当前线上后台为轻量版，暂无可加载数据。";
+      }
       const html = user.role === "admin"
         ? [item("今日询盘", s.today), item("未处理询盘", s.new), item("今日 WhatsApp 点击", s.whatsappToday), item("当前总询盘", s.total)].join("")
         : [item("我的未处理线索", s.new), item("今日待联系", s.todayDue ?? s.dueToday), item("已联系客户", s.contacted), item("成交客户", s.won)].join("");

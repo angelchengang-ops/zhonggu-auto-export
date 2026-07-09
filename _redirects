@@ -5,6 +5,21 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 
 # Public lead collection on Netlify Functions
 /api/admin/login  /.netlify/functions/admin-login  200
+/api/admin/me  /.netlify/functions/admin-me  200
+/api/admin/logout  /.netlify/functions/admin-logout  200
+/api/admin/stats  /.netlify/functions/admin-stats  200
+/api/admin/inquiry-stats  /.netlify/functions/admin-stats  200
+/api/admin/inquiries/export.csv  /.netlify/functions/admin-inquiries  200
+/api/admin/inquiries  /.netlify/functions/admin-inquiries  200
+/api/admin/inquiries/*  /.netlify/functions/admin-inquiries  200
+/api/admin/sales-users  /.netlify/functions/admin-users  200
+/api/admin/sales-users/*  /.netlify/functions/admin-users  200
+/api/admin/users  /.netlify/functions/admin-users  200
+/api/admin/users/*  /.netlify/functions/admin-users  200
+/api/admin/employees  /.netlify/functions/admin-users  200
+/api/admin/employees/*  /.netlify/functions/admin-users  200
+/api/admin/whatsapp-clicks  /.netlify/functions/admin-whatsapp-clicks  200
+/api/admin/whatsapp-settings  /.netlify/functions/admin-whatsapp-settings  200
 /api/public/inquiries /.netlify/functions/inquiries 200
 /api/public/whatsapp-lead /.netlify/functions/inquiries 200
 /api/public/whatsapp-lead/ /.netlify/functions/inquiries 200
