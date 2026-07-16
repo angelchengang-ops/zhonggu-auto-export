@@ -1,4 +1,4 @@
-const header = document.querySelector(".site-header");
+﻿const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 const whatsappDisplayNumber = "CRM inquiry form";
@@ -51,7 +51,7 @@ const en = {
   "hero.title": "Reliable New & Used Cars Exporter from China",
   "hero.subtitle": "Quality vehicles, competitive prices, and dependable export support for dealers and buyers worldwide.",
   "hero.explore": "Explore Vehicles",
-  "hero.quote": "Get FOB Price",
+  "hero.quote": "Request FOB Quote",
   "hero.statsBrands": "Leading Brands",
   "hero.statsSupport": "Export Support",
   "hero.statsSupportValue": "100%",
@@ -90,7 +90,7 @@ const en = {
   "form.whatsapp": "WhatsApp",
   "form.vehicle": "Interested Model",
   "form.message": "Message",
-  "form.submit": "Submit Inquiry",
+  "form.submit": "Request FOB Quote",
   "form.success": "Thank you, your inquiry has been received. Our sales team will contact you soon by WhatsApp or email.",
   "footer.tagline": "Reliable vehicles from China, delivered worldwide.",
   "footer.rights": "Zhonggu Auto Export. All rights reserved.",
@@ -98,7 +98,7 @@ const en = {
   "car.new": "New Car",
   "car.available": "Available for export from China with FOB support",
   "car.fob_price": "FOB Price",
-  "car.ask_fob": "Ask for FOB Price",
+  "car.ask_fob": "Request FOB Quote",
   "company.heroEyebrow": "About Zhonggu Auto Export",
   "company.heroTitle": "Reliable Vehicle Export Partner from China",
   "company.heroSubtitle": "Professional sourcing, inspection, documentation and delivery support for new cars, used vehicles and new energy vehicles.",
@@ -439,33 +439,74 @@ document.querySelectorAll("[data-brand-logo-grid]").forEach((grid) => {
 const handleImageError = (image) => { image.onerror = null; image.src = "images/hero/hero-car.jpg"; };
 const getVehicleTitle = (car = {}) => {
   const brand = localized(car.brand, "");
-  const name = localized(car.model) || localized(car.title) || localized(car.name) || String(car.id || "Vehicle");
-  return vehicleNameFromParts(brand, name) || fallbackVehicleInquiry.formatVehicleName(car);
+  const name = localized(car.cardTitle || car.title || car.model) || localized(car.name) || String(car.id || "Vehicle");
+  return normalizeVehicleName(name, brand) || vehicleNameFromParts(brand, name) || fallbackVehicleInquiry.formatVehicleName(car);
 };
-const getVehicleDescription = (car = {}) => localized(car.shortDescription) || localized(car.description) || localized(car.descriptionShort) || localized(car.configuration) || t("car.available");
-const getVehiclePrice = (car = {}) => localized(car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.guidePriceDisplay || car.guidePriceRmb || car.fobRange, "Contact for FOB price");
+const getVehicleDescription = (car = {}, type = "new") => type === "used" ? "" : (localized(car.shortDescription) || localized(car.description) || localized(car.descriptionShort) || localized(car.configuration) || t("car.available"));
+const getVehiclePrice = (car = {}) => localized(car.salePriceDisplay || car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.guidePriceDisplay || car.guidePriceRmb || car.fobRange, "Contact for price");
 const getVehicleImage = (car = {}) => cleanPath(localized(car.image || car.mainImage || car.thumbnail || (Array.isArray(car.images) ? car.images[0] : ""), "images/hero/hero-car.jpg"));
 const getVehicleSlug = (car = {}) => localized(car.slug || car.id) || vehicleInquiry.vehicleSlug?.(car) || fallbackVehicleInquiry.vehicleSlug(car);
+const getVehicleLocation = (car = {}) => localized(car.locationDisplay || car.location, "");
+const getInventoryBadge = (car = {}) => localized(car.inventoryBadge || car.supplyMode || (car.isBatchInventory ? "Batch Inventory" : ""), "");
 const getVehicleMessage = (car = {}, title = "Vehicle", href = "") => {
   try { return vehicleInquiry.buildVehicleMessage({ ...car, title, detailUrl: absoluteUrl(href) }); }
   catch { return buildVehicleWhatsappMessage({ title, model: title, price: getVehiclePrice(car), url: absoluteUrl(href) }); }
 };
+const setHiddenFieldValue = (form, name, value = "") => {
+  if (!form) return null;
+  let input = form.querySelector(`[name="${name}"]`);
+  if (!input) {
+    input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    form.appendChild(input);
+  }
+  input.value = value || "";
+  return input;
+};
+const prefillInventoryInquiry = (form, data = {}) => {
+  if (!form) return;
+  const title = data.title || data.model || "Vehicle inquiry";
+  const modelField = form.elements.namedItem("model");
+  const messageField = form.elements.namedItem("message");
+  if (modelField) modelField.value = title;
+  if (messageField) messageField.value = `Please send current availability, FOB quotation, colors and export timing for ${title}.`;
+  setHiddenFieldValue(form, "vehicle_id", data.vehicleId || "");
+  setHiddenFieldValue(form, "vehicle_name", title);
+  setHiddenFieldValue(form, "model_year", data.year || "");
+  setHiddenFieldValue(form, "page_url", data.url ? absoluteUrl(data.url) : window.location.href);
+  setHiddenFieldValue(form, "source_url", data.url ? absoluteUrl(data.url) : window.location.href);
+  setHiddenFieldValue(form, "lead_source", data.leadSource || "used_car_list");
+  setHiddenFieldValue(form, "source", data.leadSource || "used_car_list");
+  setHiddenFieldValue(form, "sale_price", data.price || "");
+  setHiddenFieldValue(form, "inventory_type", data.inventoryType || "");
+  form.scrollIntoView({ behavior: "smooth", block: "start" });
+  form.querySelector("input, textarea, select")?.focus({ preventScroll: true });
+};
 
 const makeVehicleCard = (car, type = "new") => {
   const brand = localized(car.brand, "Zhonggu Auto Export");
-  const model = localized(car.model) || localized(car.title) || localized(car.name) || String(car.id || "Vehicle");
+  const model = localized(car.cardTitle || car.model) || localized(car.title) || localized(car.name) || String(car.id || "Vehicle");
   const year = localized(car.year || car.modelYear, "");
   const title = getVehicleTitle(car);
   const displayModel = normalizeVehicleName(model, brand) || title;
-  const trim = localized(car.trimEn || car.configuration || car.transmission, "");
-  const transmission = localized(car.transmission || car.fuel, type === "used" ? "Automatic" : "New vehicle");
+  const trim = localized(car.cardSubtitle || car.trimEn || car.configuration || car.transmission, "");
+  const transmission = localized(car.transmission || car.fuel, type === "used" ? "" : "New vehicle");
   const mileage = localized(car.mileage, type === "used" ? "" : "New vehicle");
   const price = getVehiclePrice(car);
   const image = getVehicleImage(car);
   const href = `${getVehicleSlug(car)}.html`;
   const video = type === "used" ? cleanPath(localized((car.videos || [])[0], "")) : "";
+  const location = type === "used" ? getVehicleLocation(car) : "";
+  const inventoryBadge = type === "used" ? getInventoryBadge(car) : "";
   const message = getVehicleMessage(car, title, href);
-  const meta = [year && `${t("car.year")}: ${year}`, transmission, mileage].filter(Boolean).join(" | ");
+  const meta = type === "used"
+    ? [year && `${t("car.year")}: ${year}`, mileage, location].filter(Boolean).join(" | ")
+    : [year && `${t("car.year")}: ${year}`, transmission].filter(Boolean).join(" | ");
+  const usedTags = type === "used" ? [inventoryBadge].filter(Boolean) : [];
+  const usedTagMarkup = usedTags.length ? `<div class="vehicle-tags">${usedTags.map((item) => `<span class="vehicle-tag">${escapeHtml(item)}</span>`).join("")}</div>` : "";
+  const description = getVehicleDescription(car, type);
+  const quoteAttrs = `data-title="${escapeHtml(title)}" data-model="${escapeHtml(displayModel)}" data-year="${escapeHtml(year)}" data-price="${escapeHtml(price)}" data-url="${escapeHtml(href)}" data-vehicle-id="${escapeHtml(car.id || "")}" data-lead-source="${type === "used" ? "used_car_list" : "vehicle_card"}" data-inventory-type="${escapeHtml(car.isBatchInventory ? "batch_inventory" : "")}"`;
   const card = document.createElement("article");
   card.className = "vehicle-card";
   card.innerHTML = `
@@ -475,26 +516,34 @@ const makeVehicleCard = (car, type = "new") => {
     </a>
     <div class="vehicle-body">
       <p class="vehicle-brand">${escapeHtml(brand)}</p>
-      <h3>${escapeHtml(displayModel)}</h3>
-      <p class="vehicle-subtitle">${escapeHtml([year, trim].filter(Boolean).join(" | "))}</p>
+      <h3><a href="${href}">${escapeHtml(displayModel)}</a></h3>
+      <p class="vehicle-subtitle">${escapeHtml(trim)}</p>
       <p class="vehicle-meta">${escapeHtml(meta)}</p>
-      <p class="vehicle-description">${escapeHtml(getVehicleDescription(car))}</p>
-      ${type === "used" ? `<div class="vehicle-media-actions"><a class="media-action-btn" href="${href}">View Photos</a>${video ? `<a class="media-action-btn media-action-video" href="${video}" target="_blank" rel="noopener">Play Video</a>` : ""}</div>` : ""}
+      ${usedTagMarkup}
+      ${description ? `<p class="vehicle-description">${escapeHtml(description)}</p>` : ""}
+      ${type === "used" ? `<div class="vehicle-media-actions"><a class="media-action-btn" href="${href}">View Details</a>${video ? `<a class="media-action-btn media-action-video" href="${video}" target="_blank" rel="noopener">Play Video</a>` : ""}</div>` : ""}
     </div>
-    <div class="vehicle-footer"><div class="price"><small>${escapeHtml(t("car.fob_price"))}</small><strong>${escapeHtml(price)}</strong></div><button class="whatsapp-btn vehicle-fob-btn" type="button">${escapeHtml(t("car.ask_fob"))}</button></div>
+    <div class="vehicle-footer"><div class="price"><small>${escapeHtml(type === "used" ? "Sale Price" : t("car.fob_price"))}</small><strong>${escapeHtml(price)}</strong></div><a class="vehicle-fob-btn js-inquiry-cta" href="#contact" ${quoteAttrs}>Request FOB Quote</a></div>
   `;
   const img = card.querySelector("img");
   img.addEventListener("error", () => handleImageError(img));
-  const button = card.querySelector("button");
-  button.dataset.car = title;
-  button.dataset.model = displayModel;
-  button.dataset.year = year;
-  button.dataset.price = price;
-  button.dataset.url = href;
-  button.dataset.message = message;
+  const quote = card.querySelector(".vehicle-fob-btn");
+  quote.dataset.message = message;
+  quote.addEventListener("click", (event) => {
+    event.preventDefault();
+    prefillInventoryInquiry(document.querySelector(".inquiry-form"), {
+      title,
+      model: displayModel,
+      year,
+      price,
+      url: href,
+      vehicleId: car.id || "",
+      leadSource: type === "used" ? "used_car_list" : "vehicle_card",
+      inventoryType: car.isBatchInventory ? "batch_inventory" : ""
+    });
+  });
   return card;
 };
-
 const fetchJson = async (url) => {
   const response = await fetch(`${url}?v=${Date.now()}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`Unable to load ${url}`);
@@ -687,12 +736,43 @@ const bindVideoStages = () => {
 const encodeFormData = (formData) => new URLSearchParams(formData).toString();
 const INQUIRY_API = "/api/public/inquiries";
 const formDataValue = (formData, ...names) => names.map((name) => String(formData.get(name) || "").trim()).find(Boolean) || "";
+const callingCodeChoices = [
+  ["+213", "Algeria (+213)"],
+  ["+7", "Russia / Kazakhstan (+7)"],
+  ["+966", "Saudi Arabia (+966)"],
+  ["+971", "United Arab Emirates (+971)"],
+  ["+226", "Burkina Faso (+226)"],
+  ["+86", "China (+86)"],
+  ["+20", "Egypt (+20)"],
+  ["+234", "Nigeria (+234)"],
+  ["+254", "Kenya (+254)"],
+  ["+255", "Tanzania (+255)"],
+  ["+233", "Ghana (+233)"],
+  ["+998", "Uzbekistan (+998)"]
+];
+const normalizeCallingCode = (value = "") => {
+  const cleaned = String(value || "").replace(/[^\d+]/g, "");
+  if (!cleaned) return "";
+  return cleaned.startsWith("+") ? cleaned : "+" + cleaned;
+};
+const normalizePhoneNumber = (value = "") => String(value || "").replace(/[^\d]/g, "");
+const buildInternationalWhatsapp = (formData) => {
+  const direct = formDataValue(formData, "whatsapp", "phone", "mobile", "tel");
+  const callingCode = normalizeCallingCode(formDataValue(formData, "calling_code", "country_code", "dial_code"));
+  const phoneNumber = normalizePhoneNumber(formDataValue(formData, "phone_number", "national_phone", "whatsapp_number"));
+  if (callingCode && phoneNumber) return callingCode + phoneNumber;
+  if (direct && /^\+/.test(direct)) return "+" + normalizePhoneNumber(direct);
+  return normalizePhoneNumber(direct);
+};
 const buildInquiryPayload = (form, formData) => {
   const sourceUrl = formDataValue(formData, "source_url", "pageUrl") || window.location.href;
   const sourcePage = formDataValue(formData, "source_page", "sourcePage") || document.querySelector("h1")?.textContent || document.title || window.location.pathname;
   const vehicle = formDataValue(formData, "vehicle", "car_type", "interestedModel", "model", "car") || sourcePage;
   const port = formDataValue(formData, "destinationPort", "port", "destination_port", "destination");
   const budget = formDataValue(formData, "budget", "budgetPerUnit", "budget_per_unit", "totalBudget", "total_budget");
+  const callingCode = normalizeCallingCode(formDataValue(formData, "calling_code", "country_code", "dial_code"));
+  const phoneNumber = normalizePhoneNumber(formDataValue(formData, "phone_number", "national_phone", "whatsapp_number"));
+  const whatsapp = buildInternationalWhatsapp(formData);
   return {
     name: formDataValue(formData, "name", "fullName", "contact_name"),
     country: formDataValue(formData, "country", "market_country"),
@@ -701,10 +781,19 @@ const buildInquiryPayload = (form, formData) => {
     vehicle,
     interestedModel: vehicle,
     budget,
-    whatsapp: formDataValue(formData, "whatsapp", "phone", "mobile", "tel"),
+    whatsapp,
+    callingCode,
+    phoneNumber,
     email: formDataValue(formData, "email", "mail", "customerEmail"),
     message: formDataValue(formData, "message", "requirements", "comments"),
-    source: formDataValue(formData, "source", "sourceType", "source_type") || "website_form",
+    source: formDataValue(formData, "lead_source", "source", "sourceType", "source_type") || "website_form",
+    leadSource: formDataValue(formData, "lead_source"),
+    vehicleId: formDataValue(formData, "vehicle_id"),
+    vehicleName: formDataValue(formData, "vehicle_name"),
+    modelYear: formDataValue(formData, "model_year"),
+    salePrice: formDataValue(formData, "sale_price"),
+    inventoryType: formDataValue(formData, "inventory_type"),
+    pageUrl: formDataValue(formData, "page_url") || sourceUrl,
     sourceDetail: "Website Inquiry Form",
     sourceChannel: "inquiry_form",
     sourceEntry: form.dataset.sourceEntry || formDataValue(formData, "source_entry") || "inquiry_form",
@@ -772,6 +861,53 @@ const createOptionalInquiryField = (name, labelText, options = {}) => {
   label.append(span, input);
   return label;
 };
+const createCallingCodeField = () => {
+  const label = document.createElement("label");
+  const span = document.createElement("span");
+  span.textContent = "WhatsApp Country Code";
+  const select = document.createElement("select");
+  select.name = "calling_code";
+  select.autocomplete = "tel-country-code";
+  select.required = true;
+  select.append(new Option("Select code", ""));
+  callingCodeChoices.forEach(([value, labelText]) => select.append(new Option(labelText, value)));
+  label.append(span, select);
+  return label;
+};
+
+const createPhoneNumberField = () => {
+  const label = document.createElement("label");
+  const span = document.createElement("span");
+  span.textContent = "WhatsApp Number";
+  const input = document.createElement("input");
+  input.type = "tel";
+  input.name = "phone_number";
+  input.autocomplete = "tel-national";
+  input.inputMode = "tel";
+  input.pattern = "[0-9 ()-]{5,20}";
+  input.placeholder = "Number without +";
+  input.required = true;
+  label.append(span, input);
+  return label;
+};
+
+const ensureWhatsappPhoneFields = (form, fields) => {
+  const hasCallingCode = form.querySelector('[name="calling_code"]');
+  const hasPhoneNumber = form.querySelector('[name="phone_number"]');
+  const whatsappInput = form.querySelector('[name="whatsapp"]');
+  if (!hasCallingCode || !hasPhoneNumber) {
+    const phoneLabel = whatsappInput?.closest("label");
+    const replacement = [createCallingCodeField(), createPhoneNumberField()];
+    if (phoneLabel) phoneLabel.replaceWith(...replacement);
+    else {
+      const messageLabel = fields.querySelector('[name="message"]')?.closest("label");
+      fields.insertBefore(replacement[0], messageLabel || null);
+      fields.insertBefore(replacement[1], messageLabel || null);
+    }
+  }
+  const hiddenWhatsapp = ensureHiddenField(form, "whatsapp");
+  hiddenWhatsapp.autocomplete = "tel";
+};
 
 const insertInquiryField = (fields, node) => {
   const messageLabel = fields.querySelector('[name="message"]')?.closest("label");
@@ -809,8 +945,16 @@ const ensureInquiryFormFields = () => {
     } else {
       insertInquiryField(fields, createOptionalInquiryField("budget", "Budget (optional)", { placeholder: "USD or RMB", inputMode: "decimal" }));
     }
-    ensureHiddenField(form, "source", "website_form");
+    ensureHiddenField(form, "source", form.dataset.sourceEntry || "website_form");
+    ensureHiddenField(form, "lead_source", form.dataset.sourceEntry || "website_form");
+    ensureHiddenField(form, "vehicle_id");
+    ensureHiddenField(form, "vehicle_name");
+    ensureHiddenField(form, "model_year");
+    ensureHiddenField(form, "page_url");
+    ensureHiddenField(form, "sale_price");
+    ensureHiddenField(form, "inventory_type");
     ensureHiddenField(form, "createdAt");
+    ensureWhatsappPhoneFields(form, fields);
     syncVehicleAliasFields(form);
   });
 };
@@ -829,7 +973,15 @@ const applyInquiryFieldMappings = (formData) => {
   }
   formData.set("email", formDataValue(formData, "email", "mail", "customerEmail"));
   formData.set("budget", formDataValue(formData, "budget", "budgetPerUnit", "budget_per_unit", "totalBudget", "total_budget"));
-  formData.set("source", formDataValue(formData, "source", "sourceType", "source_type") || "website_form");
+  const callingCode = normalizeCallingCode(formDataValue(formData, "calling_code", "country_code", "dial_code"));
+  const phoneNumber = normalizePhoneNumber(formDataValue(formData, "phone_number", "national_phone", "whatsapp_number"));
+  if (callingCode) formData.set("calling_code", callingCode);
+  if (phoneNumber) formData.set("phone_number", phoneNumber);
+  const whatsapp = buildInternationalWhatsapp(formData);
+  if (whatsapp) formData.set("whatsapp", whatsapp);
+  formData.set("source", formDataValue(formData, "lead_source", "source", "sourceType", "source_type") || "website_form");
+  formData.set("lead_source", formDataValue(formData, "lead_source") || formDataValue(formData, "source") || "website_form");
+  formData.set("page_url", formDataValue(formData, "page_url", "source_url") || window.location.href);
   formData.set("createdAt", formDataValue(formData, "createdAt", "created_at") || new Date().toISOString());
 };
 
@@ -877,7 +1029,7 @@ const bindInquiryForms = () => {
         window.location.assign("/thank-you.html");
       } catch (error) {
         console.error("Inquiry submission failed", error);
-        window.alert("Submission failed. Please contact us on WhatsApp.");
+        window.alert("Submission failed. Please try again or contact our sales team.");
         if (submitButton) {
           submitButton.disabled = false;
           submitButton.textContent = originalLabel;
@@ -897,10 +1049,3 @@ ensureInquiryFormFields();
 bindInquiryForms();
 bindAfricaMarketTracking();
 if (document.body.classList.contains("company-page")) window.setInterval(updateCompanyMedia, 15000);
-
-
-
-
-
-
-

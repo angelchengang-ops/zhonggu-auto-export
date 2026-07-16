@@ -8,4 +8,4 @@ Disallow: /tmp/
 Disallow: /media-processed/
 Disallow: /media-trash/
 
-Sitemap: https://zhongguauto.com/sitemap.xml
+Sitemap: https://www.zhongguauto.com/sitemap-index.xml

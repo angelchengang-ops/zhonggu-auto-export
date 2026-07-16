@@ -1,4 +1,4 @@
-const leadWhatsappDisplayNumber = 'CRM inquiry form';
+﻿const leadWhatsappDisplayNumber = 'CRM inquiry form';
 const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
 
@@ -107,6 +107,7 @@ const saveLeadFallback = (lead) => {
 };
 
 const ensureWhatsappButton = () => {
+  if (document.body.classList.contains('vehicle-detail-page') || document.body.classList.contains('used-cars-page')) return;
   if (document.querySelector('.floating-whatsapp-btn')) return;
   const button = document.createElement('a');
   button.className = 'floating-whatsapp-btn';
@@ -129,6 +130,17 @@ const ensureWhatsappButton = () => {
   document.body.appendChild(button);
 };
 
+const setLeadHiddenField = (form, name, value = '') => {
+  let input = form.querySelector(`[name="${name}"]`);
+  if (!input) {
+    input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    form.appendChild(input);
+  }
+  input.value = value || '';
+  return input;
+};
 const bindInquiryCtas = () => {
   document.querySelectorAll('.js-inquiry-cta').forEach((button) => {
     if (button.dataset.prefillBound === 'true') return;
@@ -141,12 +153,24 @@ const bindInquiryCtas = () => {
         model: button.dataset.model || button.dataset.title || '',
         year: button.dataset.year || '',
         price: button.dataset.price || '',
-        url: button.dataset.url || currentUrl()
+        url: button.dataset.url || currentUrl(),
+        vehicleId: button.dataset.vehicleId || '',
+        leadSource: button.dataset.leadSource || 'website_form',
+        inventoryType: button.dataset.inventoryType || ''
       };
       const modelField = form.elements.namedItem('model');
       const messageField = form.elements.namedItem('message');
       if (modelField) modelField.value = context.title;
       if (messageField) messageField.value = buildWhatsappMessage(context);
+      setLeadHiddenField(form, 'vehicle_id', context.vehicleId);
+      setLeadHiddenField(form, 'vehicle_name', context.title);
+      setLeadHiddenField(form, 'model_year', context.year);
+      setLeadHiddenField(form, 'page_url', context.url);
+      setLeadHiddenField(form, 'source_url', context.url);
+      setLeadHiddenField(form, 'lead_source', context.leadSource);
+      setLeadHiddenField(form, 'source', context.leadSource);
+      setLeadHiddenField(form, 'sale_price', context.price);
+      setLeadHiddenField(form, 'inventory_type', context.inventoryType);
       form.scrollIntoView({ behavior: 'smooth', block: 'start' });
       const firstField = form.querySelector('input, textarea, select');
       firstField?.focus({ preventScroll: true });
@@ -183,6 +207,3 @@ if (document.readyState === 'loading') {
 } else {
   initLeadGen();
 }
-
-
-

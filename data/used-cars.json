@@ -1,5 +1,867 @@
 [
   {
+    "id": "used-bestune-b70-2021",
+    "slug": "used-bestune-b70-2021",
+    "sourceFolder": "used-bestune-b70-2021-001",
+    "brand": "Bestune",
+    "brandZh": "奔腾",
+    "model": "B70 1.5T",
+    "modelZh": "奔腾B70",
+    "year": "2021",
+    "productionYear": 2021,
+    "modelYear": 2021,
+    "trim": "2021款 1.5T 自动乐享型",
+    "trimZh": "2021款 1.5T 自动乐享型",
+    "trimEn": "1.5T Automatic Lexiang Edition",
+    "configuration": "1.5T Automatic Lexiang Edition",
+    "title": {
+      "en": "Used 2021 Bestune B70 1.5T"
+    },
+    "seoTitle": "Used 2021 Bestune B70 1.5T | Batch Used Car Supply from China",
+    "metaTitle": "Used 2021 Bestune B70 1.5T | Batch Used Car Supply from China",
+    "metaDescription": "Used 2021 Bestune B70 1.5T available from Qingdao, China. Batch inventory is offered at US$6,000 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability.",
+    "descriptionEn": "Used 2021 Bestune B70 1.5T available from Qingdao, China. Batch inventory is offered at US$6,000 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability.",
+    "descriptionZh": "2021款 1.5T 自动乐享型，6000美元，约3万–5万公里，中国青岛。批量供应，数量请咨询。无事故，车况良好，维修保养记录待提供。",
+    "description": {
+      "en": "Used 2021 Bestune B70 1.5T available from Qingdao, China. Batch inventory is offered at US$6,000 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability."
+    },
+    "shortDescription": {
+      "en": "Batch inventory from Qingdao, China. Contact us for current colors and availability."
+    },
+    "category": "used",
+    "type": "used",
+    "condition": "used",
+    "isUsed": true,
+    "listingType": "batch_inventory",
+    "isBatchInventory": true,
+    "supplyMode": "Batch inventory",
+    "inventoryBadge": "Batch Inventory",
+    "inventoryStatus": "available",
+    "inventoryStatusDisplay": "Available; contact us for quantity",
+    "quantity": null,
+    "quantityDisplay": "Bulk supply available; contact us for quantity",
+    "quantityDisplayZh": "批量供应，数量请咨询",
+    "vin": null,
+    "firstRegistrationDate": null,
+    "registrationDate": null,
+    "exactMileageKm": null,
+    "mileage": "Approx. 30,000–50,000 km",
+    "mileageZh": "约3万–5万公里",
+    "mileageData": {
+      "type": "range",
+      "min_km": 30000,
+      "max_km": 50000,
+      "display_zh": "约3万–5万公里",
+      "display_en": "Approx. 30,000–50,000 km"
+    },
+    "availableColor": "White, Black",
+    "color": "White, Black",
+    "colorZh": "白色, 黑色",
+    "exteriorColors": [
+      {
+        "zh": "白色",
+        "en": "White",
+        "availability": "available"
+      },
+      {
+        "zh": "黑色",
+        "en": "Black",
+        "availability": "available"
+      }
+    ],
+    "interiorColor": "Black",
+    "interiorColorZh": "黑色",
+    "salePriceDisplay": "US$6,000",
+    "salePriceDisplayZh": "6000美元",
+    "salePriceUsd": 6000,
+    "price": "US$6,000",
+    "priceCurrency": "USD",
+    "guidePriceRmb": "105,900 RMB",
+    "guidePriceDisplay": "105,900 RMB",
+    "location": "Qingdao, China",
+    "locationDisplay": "Qingdao, China",
+    "locationZh": "中国青岛",
+    "country": "China",
+    "city": "Qingdao",
+    "status": "Available",
+    "accidentStatus": "No accidents reported",
+    "accidentStatusZh": "无事故",
+    "overallCondition": "Good",
+    "overallConditionZh": "车况良好",
+    "maintenanceRecords": "To be provided",
+    "maintenanceRecordsZh": "待提供",
+    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "engine": "1.5T turbocharged L4 gasoline engine",
+    "engineZh": "1.5T 169马力 L4",
+    "transmission": "7-speed wet dual-clutch automatic",
+    "transmissionZh": "7挡湿式双离合",
+    "fuel": "Petrol",
+    "energyType": "Petrol",
+    "energyTypeZh": "汽油",
+    "bodyType": "Midsize sedan",
+    "vehicleClass": "中型车",
+    "dimensions": "4810 x 1840 x 1455 mm",
+    "wheelbase": "2800 mm",
+    "maxPower": "124 kW",
+    "maxTorque": "258 Nm",
+    "tireSpec": "225/50 R18 / 225/50 R18",
+    "autohomeSpecUrl": "https://car.autohome.com.cn/config/spec/49113.html",
+    "autohomeSeriesUrl": "https://car.autohome.com.cn/config/series/466.html",
+    "mainImage": "images/used-cars/used-bestune-b70-2021-001/05-front-right-zhonggu.png",
+    "image": "images/used-cars/used-bestune-b70-2021-001/05-front-right-zhonggu.png",
+    "images": [
+      "images/used-cars/used-bestune-b70-2021-001/05-front-right-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/01-rear-left-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/02-rear-right-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/03-front-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/04-rear-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/qnbdp7206x57c487566a1941e584fd5ff0145af57b1779600904.jpg",
+      "images/used-cars/used-bestune-b70-2021-001/qnbdp7964x0b94ceccb8984b8b95bad66b1b012d2b1779596923.jpg",
+      "images/used-cars/used-bestune-b70-2021-001/qnbdp7964xf367012ce0374a2091e62bdf9fc9c2ab1779596906.jpg"
+    ],
+    "gallery": [
+      "images/used-cars/used-bestune-b70-2021-001/05-front-right-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/01-rear-left-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/02-rear-right-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/03-front-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/04-rear-zhonggu.png",
+      "images/used-cars/used-bestune-b70-2021-001/qnbdp7206x57c487566a1941e584fd5ff0145af57b1779600904.jpg",
+      "images/used-cars/used-bestune-b70-2021-001/qnbdp7964x0b94ceccb8984b8b95bad66b1b012d2b1779596923.jpg",
+      "images/used-cars/used-bestune-b70-2021-001/qnbdp7964xf367012ce0374a2091e62bdf9fc9c2ab1779596906.jpg"
+    ],
+    "videos": [],
+    "detailSpecs": [
+      {
+        "label": "Manufacturer",
+        "value": "FAW Bestune"
+      },
+      {
+        "label": "Vehicle class",
+        "value": "Midsize sedan"
+      },
+      {
+        "label": "Body style",
+        "value": "4-door, 5-seat liftback"
+      },
+      {
+        "label": "Dimensions",
+        "value": "4810 x 1840 x 1455 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2800 mm"
+      },
+      {
+        "label": "Curb weight",
+        "value": "1485 kg"
+      },
+      {
+        "label": "Maximum power",
+        "value": "124 kW"
+      },
+      {
+        "label": "Maximum torque",
+        "value": "258 Nm"
+      },
+      {
+        "label": "Front / rear tire",
+        "value": "225/50 R18 / 225/50 R18"
+      },
+      {
+        "label": "Drive type",
+        "value": "Front-engine, front-wheel drive"
+      },
+      {
+        "label": "Front suspension",
+        "value": "MacPherson independent suspension"
+      },
+      {
+        "label": "Rear suspension",
+        "value": "Multi-link independent suspension"
+      },
+      {
+        "label": "Emission standard",
+        "value": "China VI emission standard"
+      },
+      {
+        "label": "Official fuel consumption",
+        "value": "6.4 L/100km"
+      }
+    ],
+    "featureHighlights": [],
+    "highlights": [
+      "1.5T turbocharged L4 gasoline engine",
+      "7-speed wet dual-clutch automatic",
+      "Approx. 30,000–50,000 km",
+      "White, Black exterior colors",
+      "No accidents reported",
+      "Batch inventory"
+    ],
+    "categories": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "filterTags": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
+    "canonicalPath": "/used-bestune-b70-2021.html",
+    "ogImage": "images/used-cars/used-bestune-b70-2021-001/05-front-right-zhonggu.png",
+    "cardTitle": "2021 Bestune B70 1.5T",
+    "accidentHistory": "No accidents reported"
+  },
+  {
+    "id": "used-bestune-b70-2022",
+    "slug": "used-bestune-b70-2022",
+    "sourceFolder": "used-bestune-b70-2022-001",
+    "brand": "Bestune",
+    "brandZh": "奔腾",
+    "model": "B70 1.5T",
+    "modelZh": "奔腾B70",
+    "year": "2022",
+    "productionYear": 2022,
+    "modelYear": 2022,
+    "trim": "2022款 第三代 1.5T 自动乐享型",
+    "trimZh": "2022款 第三代 1.5T 自动乐享型",
+    "trimEn": "Third Generation 1.5T Automatic Lexiang Edition",
+    "configuration": "Third Generation 1.5T Automatic Lexiang Edition",
+    "title": {
+      "en": "Used 2022 Bestune B70 1.5T"
+    },
+    "seoTitle": "Used 2022 Bestune B70 1.5T | Batch Used Car Supply from China",
+    "metaTitle": "Used 2022 Bestune B70 1.5T | Batch Used Car Supply from China",
+    "metaDescription": "Used 2022 Bestune B70 1.5T available from Qingdao, China. Batch inventory is offered at US$6,500 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability.",
+    "descriptionEn": "Used 2022 Bestune B70 1.5T available from Qingdao, China. Batch inventory is offered at US$6,500 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability.",
+    "descriptionZh": "2022款 第三代 1.5T 自动乐享型，6500美元，约3万–5万公里，中国青岛。批量供应，数量请咨询。无事故，车况良好，维修保养记录待提供。",
+    "description": {
+      "en": "Used 2022 Bestune B70 1.5T available from Qingdao, China. Batch inventory is offered at US$6,500 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability."
+    },
+    "shortDescription": {
+      "en": "Batch inventory from Qingdao, China. Contact us for current colors and availability."
+    },
+    "category": "used",
+    "type": "used",
+    "condition": "used",
+    "isUsed": true,
+    "listingType": "batch_inventory",
+    "isBatchInventory": true,
+    "supplyMode": "Batch inventory",
+    "inventoryBadge": "Batch Inventory",
+    "inventoryStatus": "available",
+    "inventoryStatusDisplay": "Available; contact us for quantity",
+    "quantity": null,
+    "quantityDisplay": "Bulk supply available; contact us for quantity",
+    "quantityDisplayZh": "批量供应，数量请咨询",
+    "vin": null,
+    "firstRegistrationDate": null,
+    "registrationDate": null,
+    "exactMileageKm": null,
+    "mileage": "Approx. 30,000–50,000 km",
+    "mileageZh": "约3万–5万公里",
+    "mileageData": {
+      "type": "range",
+      "min_km": 30000,
+      "max_km": 50000,
+      "display_zh": "约3万–5万公里",
+      "display_en": "Approx. 30,000–50,000 km"
+    },
+    "availableColor": "White, Black",
+    "color": "White, Black",
+    "colorZh": "白色, 黑色",
+    "exteriorColors": [
+      {
+        "zh": "白色",
+        "en": "White",
+        "availability": "available"
+      },
+      {
+        "zh": "黑色",
+        "en": "Black",
+        "availability": "available"
+      }
+    ],
+    "interiorColor": "Black",
+    "interiorColorZh": "黑色",
+    "salePriceDisplay": "US$6,500",
+    "salePriceDisplayZh": "6500美元",
+    "salePriceUsd": 6500,
+    "price": "US$6,500",
+    "priceCurrency": "USD",
+    "guidePriceRmb": "105,900 RMB",
+    "guidePriceDisplay": "105,900 RMB",
+    "location": "Qingdao, China",
+    "locationDisplay": "Qingdao, China",
+    "locationZh": "中国青岛",
+    "country": "China",
+    "city": "Qingdao",
+    "status": "Available",
+    "accidentStatus": "No accidents reported",
+    "accidentStatusZh": "无事故",
+    "overallCondition": "Good",
+    "overallConditionZh": "车况良好",
+    "maintenanceRecords": "To be provided",
+    "maintenanceRecordsZh": "待提供",
+    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "engine": "1.5T turbocharged L4 gasoline engine",
+    "engineZh": "1.5T 169马力 L4",
+    "transmission": "7-speed wet dual-clutch automatic",
+    "transmissionZh": "7挡湿式双离合",
+    "fuel": "Petrol",
+    "energyType": "Petrol",
+    "energyTypeZh": "汽油",
+    "bodyType": "Midsize sedan",
+    "vehicleClass": "中型车",
+    "dimensions": "4810 x 1840 x 1455 mm",
+    "wheelbase": "2800 mm",
+    "maxPower": "124 kW",
+    "maxTorque": "258 Nm",
+    "tireSpec": "225/50 R18 / 225/50 R18",
+    "autohomeSpecUrl": "https://car.autohome.com.cn/config/spec/56737.html",
+    "autohomeSeriesUrl": "https://car.autohome.com.cn/config/series/466.html",
+    "mainImage": "images/used-cars/used-bestune-b70-2022-001/05-front-three-quarter.png",
+    "image": "images/used-cars/used-bestune-b70-2022-001/05-front-three-quarter.png",
+    "images": [
+      "images/used-cars/used-bestune-b70-2022-001/05-front-three-quarter.png",
+      "images/used-cars/used-bestune-b70-2022-001/01-rear-left.png",
+      "images/used-cars/used-bestune-b70-2022-001/02-straight-rear.png",
+      "images/used-cars/used-bestune-b70-2022-001/03-rear-badge-detail.png",
+      "images/used-cars/used-bestune-b70-2022-001/04-rear-right.png",
+      "images/used-cars/used-bestune-b70-2022-001/06-engine-bay.png",
+      "images/used-cars/used-bestune-b70-2022-001/07-straight-front.png"
+    ],
+    "gallery": [
+      "images/used-cars/used-bestune-b70-2022-001/05-front-three-quarter.png",
+      "images/used-cars/used-bestune-b70-2022-001/01-rear-left.png",
+      "images/used-cars/used-bestune-b70-2022-001/02-straight-rear.png",
+      "images/used-cars/used-bestune-b70-2022-001/03-rear-badge-detail.png",
+      "images/used-cars/used-bestune-b70-2022-001/04-rear-right.png",
+      "images/used-cars/used-bestune-b70-2022-001/06-engine-bay.png",
+      "images/used-cars/used-bestune-b70-2022-001/07-straight-front.png"
+    ],
+    "videos": [],
+    "detailSpecs": [
+      {
+        "label": "Manufacturer",
+        "value": "FAW Bestune"
+      },
+      {
+        "label": "Vehicle class",
+        "value": "Midsize sedan"
+      },
+      {
+        "label": "Body style",
+        "value": "4-door, 5-seat liftback"
+      },
+      {
+        "label": "Dimensions",
+        "value": "4810 x 1840 x 1455 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2800 mm"
+      },
+      {
+        "label": "Curb weight",
+        "value": "1485 kg"
+      },
+      {
+        "label": "Maximum power",
+        "value": "124 kW"
+      },
+      {
+        "label": "Maximum torque",
+        "value": "258 Nm"
+      },
+      {
+        "label": "Front / rear tire",
+        "value": "225/50 R18 / 225/50 R18"
+      },
+      {
+        "label": "Drive type",
+        "value": "Front-engine, front-wheel drive"
+      },
+      {
+        "label": "Front suspension",
+        "value": "MacPherson independent suspension"
+      },
+      {
+        "label": "Rear suspension",
+        "value": "Multi-link independent suspension"
+      },
+      {
+        "label": "Emission standard",
+        "value": "China VI emission standard"
+      },
+      {
+        "label": "Official fuel consumption",
+        "value": "6.4 L/100km"
+      }
+    ],
+    "featureHighlights": [],
+    "highlights": [
+      "1.5T turbocharged L4 gasoline engine",
+      "7-speed wet dual-clutch automatic",
+      "Approx. 30,000–50,000 km",
+      "White, Black exterior colors",
+      "No accidents reported",
+      "Batch inventory"
+    ],
+    "categories": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "filterTags": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
+    "canonicalPath": "/used-bestune-b70-2022.html",
+    "ogImage": "images/used-cars/used-bestune-b70-2022-001/05-front-three-quarter.png",
+    "cardTitle": "2022 Bestune B70 1.5T",
+    "accidentHistory": "No accidents reported"
+  },
+  {
+    "id": "used-bestune-b70-2023",
+    "slug": "used-bestune-b70-2023",
+    "sourceFolder": "used-bestune-b70-2023-001",
+    "brand": "Bestune",
+    "brandZh": "奔腾",
+    "model": "B70 1.5T 70th Anniversary Edition",
+    "modelZh": "奔腾B70",
+    "year": "2023",
+    "productionYear": 2023,
+    "modelYear": 2023,
+    "trim": "2023款 第三代 1.5T 自动乐享型70周年纪念版",
+    "trimZh": "2023款 第三代 1.5T 自动乐享型70周年纪念版",
+    "trimEn": "Third Generation 1.5T Automatic Lexiang 70th Anniversary Edition",
+    "configuration": "Third Generation 1.5T Automatic Lexiang 70th Anniversary Edition",
+    "title": {
+      "en": "Used 2023 Bestune B70 1.5T 70th Anniversary Edition"
+    },
+    "seoTitle": "Used 2023 Bestune B70 1.5T 70th Anniversary Edition | Batch Used Car Supply from China",
+    "metaTitle": "Used 2023 Bestune B70 1.5T 70th Anniversary Edition | Batch Used Car Supply from China",
+    "metaDescription": "Used 2023 Bestune B70 1.5T 70th Anniversary Edition available from Qingdao, China. Batch inventory is offered at US$7,000 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability.",
+    "descriptionEn": "Used 2023 Bestune B70 1.5T 70th Anniversary Edition available from Qingdao, China. Batch inventory is offered at US$7,000 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability.",
+    "descriptionZh": "2023款 第三代 1.5T 自动乐享型70周年纪念版，7000美元，约3万–5万公里，中国青岛。批量供应，数量请咨询。无事故，车况良好，维修保养记录待提供。",
+    "description": {
+      "en": "Used 2023 Bestune B70 1.5T 70th Anniversary Edition available from Qingdao, China. Batch inventory is offered at US$7,000 per unit, with approximately 30,000-50,000 km mileage. Contact us for current colors and availability."
+    },
+    "shortDescription": {
+      "en": "Batch inventory from Qingdao, China. Contact us for current colors and availability."
+    },
+    "category": "used",
+    "type": "used",
+    "condition": "used",
+    "isUsed": true,
+    "listingType": "batch_inventory",
+    "isBatchInventory": true,
+    "supplyMode": "Batch inventory",
+    "inventoryBadge": "Batch Inventory",
+    "inventoryStatus": "available",
+    "inventoryStatusDisplay": "Available; contact us for quantity",
+    "quantity": null,
+    "quantityDisplay": "Bulk supply available; contact us for quantity",
+    "quantityDisplayZh": "批量供应，数量请咨询",
+    "vin": null,
+    "firstRegistrationDate": null,
+    "registrationDate": null,
+    "exactMileageKm": null,
+    "mileage": "Approx. 30,000–50,000 km",
+    "mileageZh": "约3万–5万公里",
+    "mileageData": {
+      "type": "range",
+      "min_km": 30000,
+      "max_km": 50000,
+      "display_zh": "约3万–5万公里",
+      "display_en": "Approx. 30,000–50,000 km"
+    },
+    "availableColor": "White, Black",
+    "color": "White, Black",
+    "colorZh": "白色, 黑色",
+    "exteriorColors": [
+      {
+        "zh": "白色",
+        "en": "White",
+        "availability": "available"
+      },
+      {
+        "zh": "黑色",
+        "en": "Black",
+        "availability": "available"
+      }
+    ],
+    "interiorColor": "Black",
+    "interiorColorZh": "黑色",
+    "salePriceDisplay": "US$7,000",
+    "salePriceDisplayZh": "7000美元",
+    "salePriceUsd": 7000,
+    "price": "US$7,000",
+    "priceCurrency": "USD",
+    "guidePriceRmb": "107,900 RMB",
+    "guidePriceDisplay": "107,900 RMB",
+    "location": "Qingdao, China",
+    "locationDisplay": "Qingdao, China",
+    "locationZh": "中国青岛",
+    "country": "China",
+    "city": "Qingdao",
+    "status": "Available",
+    "accidentStatus": "No accidents reported",
+    "accidentStatusZh": "无事故",
+    "overallCondition": "Good",
+    "overallConditionZh": "车况良好",
+    "maintenanceRecords": "To be provided",
+    "maintenanceRecordsZh": "待提供",
+    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "engine": "1.5T turbocharged L4 gasoline engine",
+    "engineZh": "1.5T 169马力 L4",
+    "transmission": "7-speed wet dual-clutch automatic",
+    "transmissionZh": "7挡湿式双离合",
+    "fuel": "Petrol",
+    "energyType": "Petrol",
+    "energyTypeZh": "汽油",
+    "bodyType": "Midsize sedan",
+    "vehicleClass": "中型车",
+    "dimensions": "4810 x 1840 x 1455 mm",
+    "wheelbase": "2800 mm",
+    "maxPower": "124 kW",
+    "maxTorque": "258 Nm",
+    "tireSpec": "225/50 R18 / 225/50 R18",
+    "autohomeSpecUrl": "https://car.autohome.com.cn/config/spec/63822.html",
+    "autohomeSeriesUrl": "https://car.autohome.com.cn/config/series/466.html",
+    "mainImage": "images/used-cars/used-bestune-b70-2023-001/02-front-left-wide.png",
+    "image": "images/used-cars/used-bestune-b70-2023-001/02-front-left-wide.png",
+    "images": [
+      "images/used-cars/used-bestune-b70-2023-001/02-front-left-wide.png",
+      "images/used-cars/used-bestune-b70-2023-001/01-front-left-close.png",
+      "images/used-cars/used-bestune-b70-2023-001/03-open-trunk.png",
+      "images/used-cars/used-bestune-b70-2023-001/04-rear-left.png",
+      "images/used-cars/used-bestune-b70-2023-001/qnbdp7206x1072d0f0c6e640b4905f28c5e32890231782697530.jpg",
+      "images/used-cars/used-bestune-b70-2023-001/qnbdp7964x4e91aa9e309c47a98f407a0d000e5ccf1782697253.jpg"
+    ],
+    "gallery": [
+      "images/used-cars/used-bestune-b70-2023-001/02-front-left-wide.png",
+      "images/used-cars/used-bestune-b70-2023-001/01-front-left-close.png",
+      "images/used-cars/used-bestune-b70-2023-001/03-open-trunk.png",
+      "images/used-cars/used-bestune-b70-2023-001/04-rear-left.png",
+      "images/used-cars/used-bestune-b70-2023-001/qnbdp7206x1072d0f0c6e640b4905f28c5e32890231782697530.jpg",
+      "images/used-cars/used-bestune-b70-2023-001/qnbdp7964x4e91aa9e309c47a98f407a0d000e5ccf1782697253.jpg"
+    ],
+    "videos": [],
+    "detailSpecs": [
+      {
+        "label": "Manufacturer",
+        "value": "FAW Bestune"
+      },
+      {
+        "label": "Vehicle class",
+        "value": "Midsize sedan"
+      },
+      {
+        "label": "Body style",
+        "value": "4-door, 5-seat liftback"
+      },
+      {
+        "label": "Dimensions",
+        "value": "4810 x 1840 x 1455 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2800 mm"
+      },
+      {
+        "label": "Curb weight",
+        "value": "1485 kg"
+      },
+      {
+        "label": "Maximum power",
+        "value": "124 kW"
+      },
+      {
+        "label": "Maximum torque",
+        "value": "258 Nm"
+      },
+      {
+        "label": "Front / rear tire",
+        "value": "225/50 R18 / 225/50 R18"
+      },
+      {
+        "label": "Drive type",
+        "value": "Front-engine, front-wheel drive"
+      },
+      {
+        "label": "Front suspension",
+        "value": "MacPherson independent suspension"
+      },
+      {
+        "label": "Rear suspension",
+        "value": "Multi-link independent suspension"
+      },
+      {
+        "label": "Emission standard",
+        "value": "China VI emission standard"
+      },
+      {
+        "label": "Official fuel consumption",
+        "value": "6.4 L/100km"
+      }
+    ],
+    "featureHighlights": [],
+    "highlights": [
+      "1.5T turbocharged L4 gasoline engine",
+      "7-speed wet dual-clutch automatic",
+      "Approx. 30,000–50,000 km",
+      "White, Black exterior colors",
+      "No accidents reported",
+      "Batch inventory"
+    ],
+    "categories": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "filterTags": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
+    "canonicalPath": "/used-bestune-b70-2023.html",
+    "ogImage": "images/used-cars/used-bestune-b70-2023-001/02-front-left-wide.png",
+    "cardTitle": "2023 Bestune B70 1.5T 70th Anniversary",
+    "accidentHistory": "No accidents reported"
+  },
+  {
+    "id": "used-bestune-yueyi-07-2025",
+    "slug": "used-bestune-yueyi-07-2025",
+    "sourceFolder": "used-bestune-yueyi-07-2025-001",
+    "brand": "Bestune",
+    "brandZh": "奔腾",
+    "model": "Yueyi 07 210 km",
+    "modelZh": "悦意07",
+    "year": "2025",
+    "productionYear": 2025,
+    "modelYear": 2025,
+    "trim": "2025款 210km 悠享版",
+    "trimZh": "2025款 210km 悠享版",
+    "trimEn": "210 km Youxiang Edition",
+    "configuration": "210 km Youxiang Edition",
+    "title": {
+      "en": "Used 2025 Bestune Yueyi 07 210 km"
+    },
+    "seoTitle": "Used 2025 Bestune Yueyi 07 210 km | Batch Used Car Supply from China",
+    "metaTitle": "Used 2025 Bestune Yueyi 07 210 km | Batch Used Car Supply from China",
+    "metaDescription": "Used 2025 Bestune Yueyi 07 210 km available from Qingdao, China. Batch inventory is offered at US$13,500 per unit, with approximately 10,000 km mileage. Contact us for current colors and availability.",
+    "descriptionEn": "Used 2025 Bestune Yueyi 07 210 km available from Qingdao, China. Batch inventory is offered at US$13,500 per unit, with approximately 10,000 km mileage. Contact us for current colors and availability.",
+    "descriptionZh": "2025款 210km 悠享版，13,500美元，约1万公里，中国青岛。批量供应，数量请咨询。无事故，车况良好，维修保养记录待提供。",
+    "description": {
+      "en": "Used 2025 Bestune Yueyi 07 210 km available from Qingdao, China. Batch inventory is offered at US$13,500 per unit, with approximately 10,000 km mileage. Contact us for current colors and availability."
+    },
+    "shortDescription": {
+      "en": "Batch inventory from Qingdao, China. Contact us for current colors and availability."
+    },
+    "category": "used",
+    "type": "used",
+    "condition": "used",
+    "isUsed": true,
+    "listingType": "batch_inventory",
+    "isBatchInventory": true,
+    "supplyMode": "Batch inventory",
+    "inventoryBadge": "Batch Inventory",
+    "inventoryStatus": "available",
+    "inventoryStatusDisplay": "Available; contact us for quantity",
+    "quantity": null,
+    "quantityDisplay": "Bulk supply available; contact us for quantity",
+    "quantityDisplayZh": "批量供应，数量请咨询",
+    "vin": null,
+    "firstRegistrationDate": null,
+    "registrationDate": null,
+    "exactMileageKm": null,
+    "mileage": "Approx. 10,000 km",
+    "mileageZh": "约1万公里",
+    "mileageData": {
+      "type": "approximate",
+      "approx_km": 10000,
+      "display_zh": "约1万公里",
+      "display_en": "Approx. 10,000 km"
+    },
+    "availableColor": "Green (actual vehicle color may vary), White, Black",
+    "color": "Green (actual vehicle color may vary), White, Black",
+    "colorZh": "绿色（以实车为准）, 白色, 黑色",
+    "exteriorColors": [
+      {
+        "zh": "绿色（以实车为准）",
+        "en": "Green (actual vehicle color may vary)",
+        "availability": "primary"
+      },
+      {
+        "zh": "白色",
+        "en": "White",
+        "availability": "available"
+      },
+      {
+        "zh": "黑色",
+        "en": "Black",
+        "availability": "available"
+      }
+    ],
+    "interiorColor": "Black",
+    "interiorColorZh": "黑色",
+    "salePriceDisplay": "US$13,500",
+    "salePriceDisplayZh": "13,500美元",
+    "salePriceUsd": 13500,
+    "price": "US$13,500",
+    "priceCurrency": "USD",
+    "guidePriceRmb": "139,900 RMB",
+    "guidePriceDisplay": "139,900 RMB",
+    "location": "Qingdao, China",
+    "locationDisplay": "Qingdao, China",
+    "locationZh": "中国青岛",
+    "country": "China",
+    "city": "Qingdao",
+    "status": "Available",
+    "accidentStatus": "No accidents reported",
+    "accidentStatusZh": "无事故",
+    "overallCondition": "Good",
+    "overallConditionZh": "车况良好",
+    "maintenanceRecords": "To be provided",
+    "maintenanceRecordsZh": "待提供",
+    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "engine": "1.5T plug-in hybrid powertrain",
+    "engineZh": "1.5T 150马力 L4 + 单电机",
+    "transmission": "DHT hybrid transmission",
+    "transmissionZh": "1挡DHT",
+    "fuel": "Plug-in Hybrid",
+    "energyType": "Plug-in Hybrid",
+    "energyTypeZh": "插电式混合动力",
+    "bodyType": "SUV",
+    "vehicleClass": "中型SUV",
+    "dimensions": "4745 x 1880 x 1710 mm",
+    "wheelbase": "2772 mm",
+    "maxPower": "",
+    "maxTorque": "",
+    "tireSpec": "225/55 R19 / 225/55 R19",
+    "autohomeSpecUrl": "https://car.autohome.com.cn/config/spec/71040.html",
+    "autohomeSeriesUrl": "https://car.autohome.com.cn/config/series/7978.html",
+    "mainImage": "images/used-cars/used-bestune-yueyi-07-2025-001/09-front-three-quarter-outdoor.png",
+    "image": "images/used-cars/used-bestune-yueyi-07-2025-001/09-front-three-quarter-outdoor.png",
+    "images": [
+      "images/used-cars/used-bestune-yueyi-07-2025-001/09-front-three-quarter-outdoor.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/01-rear-three-quarter.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/02-straight-rear.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/03-front-three-quarter-showroom.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/04-driver-cockpit.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/05-front-three-quarter-wide.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/06-center-console.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/07-instrument-display.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/08-straight-front.png"
+    ],
+    "gallery": [
+      "images/used-cars/used-bestune-yueyi-07-2025-001/09-front-three-quarter-outdoor.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/01-rear-three-quarter.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/02-straight-rear.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/03-front-three-quarter-showroom.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/04-driver-cockpit.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/05-front-three-quarter-wide.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/06-center-console.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/07-instrument-display.png",
+      "images/used-cars/used-bestune-yueyi-07-2025-001/08-straight-front.png"
+    ],
+    "videos": [],
+    "detailSpecs": [
+      {
+        "label": "Manufacturer",
+        "value": "FAW Bestune"
+      },
+      {
+        "label": "Vehicle class",
+        "value": "Mid-size SUV"
+      },
+      {
+        "label": "Body style",
+        "value": "5-door, 5-seat SUV"
+      },
+      {
+        "label": "Dimensions",
+        "value": "4745 x 1880 x 1710 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2772 mm"
+      },
+      {
+        "label": "Curb weight",
+        "value": "1830 kg"
+      },
+      {
+        "label": "Front / rear tire",
+        "value": "225/55 R19 / 225/55 R19"
+      },
+      {
+        "label": "Drive type",
+        "value": "Front-engine, front-wheel drive"
+      },
+      {
+        "label": "Front suspension",
+        "value": "MacPherson independent suspension"
+      },
+      {
+        "label": "Rear suspension",
+        "value": "Multi-link independent suspension"
+      },
+      {
+        "label": "Emission standard",
+        "value": "China VI emission standard"
+      },
+      {
+        "label": "CLTC pure electric range",
+        "value": "210 km"
+      }
+    ],
+    "featureHighlights": [],
+    "highlights": [
+      "1.5T plug-in hybrid powertrain",
+      "DHT hybrid transmission",
+      "CLTC pure electric range: 210 km",
+      "Approx. 10,000 km",
+      "Green (actual vehicle color may vary), White, Black exterior colors",
+      "No accidents reported",
+      "Batch inventory"
+    ],
+    "categories": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "filterTags": [
+      "Used Cars",
+      "Bestune",
+      "China",
+      "Batch Inventory"
+    ],
+    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
+    "canonicalPath": "/used-bestune-yueyi-07-2025.html",
+    "ogImage": "images/used-cars/used-bestune-yueyi-07-2025-001/09-front-three-quarter-outdoor.png",
+    "range": "210 km",
+    "cardTitle": "2025 Bestune Yueyi 07 210 km",
+    "accidentHistory": "No accidents reported"
+  },
+  {
     "id": "used-vw-t-cross-2024-001",
     "brand": "Volkswagen",
     "model": "T-Cross",
