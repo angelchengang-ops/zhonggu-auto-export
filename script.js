@@ -16,7 +16,7 @@ const fallbackVehicleInquiry = (() => {
     return `${brand} ${name}`;
   };
   const vehicleSlug = (car = {}) => text(car.slug || car.id) || slugify(formatVehicleName(car));
-  const vehicleDetailUrl = (car = {}) => `https://www.zhongguauto.com/${vehicleSlug(car)}.html`;
+  const vehicleDetailUrl = (car = {}) => `https://zhongguauto.com/${vehicleSlug(car)}.html`;
   const buildVehicleMessage = (car = {}) => {
     const title = formatVehicleName(car);
     const price = text(car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.guidePriceDisplay || car.guidePriceRmb || car.fobRange);

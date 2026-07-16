@@ -2,7 +2,7 @@
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const SITE = 'https://www.zhongguauto.com';
+const SITE = 'https://zhongguauto.com';
 const LASTMOD = '2026-07-17';
 const EXCLUDED_LANDING_DIRS = new Set(['export-cars-to-africa']);
 
@@ -20,8 +20,9 @@ const writeOptional = (relative, content) => {
 const siteUrl = (pathname = '') => `${SITE}${pathname.startsWith('/') ? pathname : `/${pathname}`}`;
 const xml = (urls, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>${url}</loc><lastmod>${LASTMOD}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
 const normalizePublishedUrls = (content) => content
+  .replace(/https:\/\/www\.zhongguauto\.com/g, SITE)
   .replace(/https:\/\/zhongguauto\.com/g, SITE)
-  .replace(/(https:\/\/www\.zhongguauto\.com\/(?:(?:fr|ar)\/)?landing\/[a-z0-9-]+)\/(?=["'<\s])/g, '$1');
+  .replace(/(https:\/\/zhongguauto\.com\/(?:(?:fr|ar)\/)?landing\/[a-z0-9-]+)\/(?=["'<\s])/g, '$1');
 
 const cars = JSON.parse(read('cars.json'));
 const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.html`));

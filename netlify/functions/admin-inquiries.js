@@ -36,7 +36,7 @@ exports.handler = async (event) => {
   const user = requireAdmin(event);
   if (user.statusCode) return user;
 
-  const url = new URL(event.rawUrl || `https://www.zhongguauto.com${event.path || "/api/admin/inquiries"}`);
+  const url = new URL(event.rawUrl || `https://zhongguauto.com${event.path || "/api/admin/inquiries"}`);
   const path = url.pathname;
   const parts = partsAfterInquiries(path);
 

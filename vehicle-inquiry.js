@@ -3,7 +3,7 @@
   if (typeof module === "object" && module.exports) module.exports = api;
   if (root) root.ZhongguVehicleInquiry = api;
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
-  const SITE_URL = "https://www.zhongguauto.com";
+  const SITE_URL = "https://zhongguauto.com";
   const WHATSAPP_NUMBER = "8618661888866";
 
   const text = (value) => {

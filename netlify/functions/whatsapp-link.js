@@ -56,7 +56,7 @@ exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return json(204, {});
   if (event.httpMethod !== "GET") return json(405, { ok: false, success: false, message: "Method not allowed" });
 
-  const url = new URL(event.rawUrl || `https://www.zhongguauto.com${event.path || "/api/public/whatsapp-link"}`);
+  const url = new URL(event.rawUrl || `https://zhongguauto.com${event.path || "/api/public/whatsapp-link"}`);
   const settings = await readWhatsappSettings();
   const number = pickNumber(settings);
   if (!number.waNumber) return json(500, { ok: false, success: false, message: "WhatsApp number is not configured" });

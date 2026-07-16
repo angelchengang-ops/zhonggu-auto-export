@@ -64,7 +64,7 @@ const clickFallbackBody = (event = {}) => ({
 });
 
 const submitToNetlifyForm = async (lead, event) => {
-  const siteUrl = (process.env.URL || process.env.DEPLOY_PRIME_URL || getHeader(event.headers, "origin") || "https://www.zhongguauto.com").replace(/\/$/, "");
+  const siteUrl = (process.env.URL || process.env.DEPLOY_PRIME_URL || getHeader(event.headers, "origin") || "https://zhongguauto.com").replace(/\/$/, "");
   const params = new URLSearchParams();
   params.set("form-name", process.env.NETLIFY_FORM_NAME || "inquiry");
   params.set("name", lead.name);
