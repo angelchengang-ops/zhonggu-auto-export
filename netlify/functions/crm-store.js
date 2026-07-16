@@ -433,7 +433,7 @@ const toCsv = (items = []) => {
 
 const defaultWhatsappSettings = () => ({
   activeMode: "default",
-  defaultWhatsapp: { id: "default", name: "Default WhatsApp", displayName: "Zhonggu Auto Export", rawNumber: "+44 7473 271351", waNumber: "447473271351", active: true },
+  defaultWhatsapp: { id: "default", name: "Default WhatsApp", displayName: "Zhonggu Auto Export", rawNumber: "+86 18661888866", waNumber: "8618661888866", active: true },
   salesNumbers: [],
   messageTemplate: { enabled: true, activeTemplateId: "vehicle_inquiry", templates: [], includeSource: true, includePage: true, includeVehicle: true, includeMarket: true },
   updatedAt: "",

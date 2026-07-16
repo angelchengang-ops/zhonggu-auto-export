@@ -1,7 +1,7 @@
 ﻿const header = document.querySelector(".site-header");
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
-const whatsappDisplayNumber = "CRM inquiry form";
+const whatsappDisplayNumber = "+86 18661888866";
 const fallbackVehicleInquiry = (() => {
   const text = (value) => {
     if (value && typeof value === "object" && !Array.isArray(value)) return text(value.en || Object.values(value).find(Boolean));
@@ -330,7 +330,7 @@ const versioned = (url) => url ? `${url}${url.includes("?") ? "&" : "?"}v=${Date
 const cleanPath = (url) => String(url || "").replace(/^\/+/, "");
 const vehicleUrl = (id) => `${id || "vehicle"}.html`;
 const escapeHtml = (value) => String(value || "").replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
-const waUrl = (_message) => "#contact-whatsapp";
+const waUrl = (message = "") => `https://wa.me/8618661888866${message ? `?text=${encodeURIComponent(message)}` : ""}`;
 const WHATSAPP_CLICK_API = "/api/whatsapp-clicks";
 const escapeRegExp = (value) => String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const normalizeVehicleName = (name, brand = "") => {

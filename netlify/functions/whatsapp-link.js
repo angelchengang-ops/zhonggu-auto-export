@@ -25,7 +25,7 @@ const pickNumber = (settings = {}) => {
   }
   const sales = (Array.isArray(settings.salesNumbers) ? settings.salesNumbers : []).find((item) => item.active !== false && (item.waNumber || item.rawNumber));
   return {
-    waNumber: digits(sales?.waNumber || sales?.rawNumber || "447473271351"),
+    waNumber: digits(sales?.waNumber || sales?.rawNumber || "8618661888866"),
     displayName: clean(sales?.displayName || sales?.name || "Zhonggu Auto Export")
   };
 };

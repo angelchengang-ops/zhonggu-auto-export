@@ -182,12 +182,12 @@
     "model": "Geely Coolray Full Option with Package and Panoramic Sunroof",
     "type": "New Car",
     "guidePriceRmb": "96,800 RMB",
-    "fobNanShaUsd": "11,800 USD",
+    "fobNanShaUsd": "US$11,800",
     "configuration": "Full Option with Package and Panoramic Sunroof",
-    "availableColor": "White, Grey",
-    "image": "images/new-cars/suv-04.png",
+    "availableColor": "Current colors confirmed during inquiry.",
+    "image": "images/og/vehicles/geely-coolray-full-option.jpg",
     "guidePriceDisplay": "96,800 RMB",
-    "fobPriceDisplay": "11,800 USD",
+    "fobPriceDisplay": "US$11,800",
     "title": {
       "en": "Geely Coolray Full Option with Package and Panoramic Sunroof",
       "fr": "Geely Coolray Full Option with Package and Panoramic Sunroof",
@@ -196,20 +196,86 @@
       "es": "Geely Coolray Full Option with Package and Panoramic Sunroof"
     },
     "description": {
-      "en": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
+      "en": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800. VIN information, available colors and current quantity can be provided on request.",
       "fr": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "ar": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "ru": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "es": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support."
     },
     "shortDescription": {
-      "en": "Available for export from China with FOB support",
-      "fr": "Disponible a l'export depuis la Chine avec support FOB",
-      "ar": "Available for export from China with FOB support",
-      "ru": "Available for export from China with FOB support",
-      "es": "Available for export from China with FOB support"
+      "en": "Brand-new Full Option ready stock at Nansha Port, China."
     },
-    "category": "new"
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "listingType": "brand_new_ready_stock",
+    "inventoryType": "brand_new_ready_stock",
+    "supplyMode": "Ready stock",
+    "inventoryBadge": "Brand New",
+    "inventoryStatus": "In Stock",
+    "inventoryStatusLabel": "In Stock",
+    "inventoryStatusDisplay": "Ready stock at Nansha Port; contact us for current quantity",
+    "availabilityNote": "Ready stock at Nansha Port, China. Current colors and quantity confirmed during inquiry.",
+    "isBatchInventory": true,
+    "location": "Nansha Port, China",
+    "locationDisplay": "Nansha Port, China",
+    "price": "US$11,800",
+    "priceCurrency": "USD",
+    "color": "Current colors confirmed during inquiry.",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "mainImage": "images/og/vehicles/geely-coolray-full-option.jpg",
+    "images": [
+      "images/og/vehicles/geely-coolray-full-option.jpg",
+      "images/og/vehicles/geely-coolray-battle-edition.jpg",
+      "images/og/vehicles/geely-coolray-automatic-super-power-edition-with-sunroof.jpg",
+      "images/og/vehicles/geely-coolray-super-max.jpg"
+    ],
+    "gallery": [
+      "images/og/vehicles/geely-coolray-full-option.jpg",
+      "images/og/vehicles/geely-coolray-battle-edition.jpg",
+      "images/og/vehicles/geely-coolray-automatic-super-power-edition-with-sunroof.jpg",
+      "images/og/vehicles/geely-coolray-super-max.jpg"
+    ],
+    "seoTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",
+    "metaTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",
+    "metaDescription": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800.",
+    "descriptionEn": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800. VIN information, available colors and current quantity can be provided on request.",
+    "detailSpecs": [
+      {
+        "label": "Vehicle type",
+        "value": "Brand New Car"
+      },
+      {
+        "label": "Configuration",
+        "value": "Full Option with Package and Panoramic Sunroof"
+      },
+      {
+        "label": "Stock location",
+        "value": "Nansha Port, China"
+      },
+      {
+        "label": "FOB reference price",
+        "value": "US$11,800 per unit"
+      },
+      {
+        "label": "VIN information",
+        "value": "Available on request"
+      },
+      {
+        "label": "Bulk dealer price",
+        "value": "Separate inquiry required"
+      }
+    ],
+    "relatedPages": [
+      {
+        "href": "/geely-coolray-ready-stock-nansha-port.html",
+        "label": "Geely Coolray Nansha Ready Stock",
+        "description": "Full Option with Package and Panoramic Sunroof ready stock at Nansha Port."
+      }
+    ]
   },
   {
     "id": "jetta-vs5-2026-280tsi-automatic-flagship-high-gloss-edition",

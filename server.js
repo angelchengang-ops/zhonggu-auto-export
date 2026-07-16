@@ -204,7 +204,7 @@ const DEFAULT_ADMIN_USERS = [
     role: "admin",
     username: "admin",
     passwordHash: process.env.ZHONGGU_ADMIN_PASSWORD_HASH || "",
-    whatsapp: "+44 7473 271351",
+    whatsapp: "+86 18661888866",
     markets: ["All"],
     active: true
   },
@@ -260,12 +260,12 @@ const DEFAULT_WHATSAPP_SETTINGS = {
     id: "default",
     name: "Default WhatsApp",
     displayName: "Zhonggu Auto Export",
-    rawNumber: "+44 7473 271351",
-    waNumber: "447473271351",
+    rawNumber: "+86 18661888866",
+    waNumber: "8618661888866",
     active: true
   },
   salesNumbers: [
-    { id: "chen_gang", name: "Chen Gang", displayName: "Chen Gang", role: "Sales Manager", rawNumber: "+44 7473 271351", waNumber: "447473271351", active: true, markets: ["All"], vehicleTypes: ["All"] },
+    { id: "chen_gang", name: "Chen Gang", displayName: "Chen Gang", role: "Sales Manager", rawNumber: "+86 18661888866", waNumber: "8618661888866", active: true, markets: ["All"], vehicleTypes: ["All"] },
     { id: "zheng_guozhi", name: "郑国志", displayName: "Zheng Guozhi", role: "Sales Manager", rawNumber: "", waNumber: "", active: true, markets: ["Used Cars", "Africa"], vehicleTypes: ["Used Cars"] }
   ],
   messageTemplate: {
@@ -3750,7 +3750,7 @@ const transformWhatsappHtml = (html = "") => {
 const transformWhatsappScript = (content = "", filePath = "") => {
   if (path.basename(filePath) !== "vehicle-inquiry.js") return content;
   return String(content || "")
-    .replace('const WHATSAPP_NUMBER = "447473271351";', 'const WHATSAPP_NUMBER = "";')
+    .replace('const WHATSAPP_NUMBER = "8618661888866";', 'const WHATSAPP_NUMBER = "";')
     .replace(/const buildVehicleWhatsappUrl = \(car = \{\}\) =>\s*`https:\/\/wa\.me\/\$\{WHATSAPP_NUMBER\}\?text=\$\{encodeURIComponent\(buildVehicleMessage\(car\)\)\}`;/, 'const buildVehicleWhatsappUrl = () => "#contact-whatsapp";');
 };
 const serveStatic = async (req, res) => {

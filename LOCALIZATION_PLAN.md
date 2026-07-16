@@ -31,6 +31,6 @@ English remains the `x-default` version. Every French and Arabic page has its ow
 
 - Use market-specific buyer terminology rather than literal translation.
 - Keep vehicle availability and import claims factual and confirm destination requirements before shipment.
-- Preserve the official WhatsApp number: `+44 7473 271351` and `https://wa.me/447473271351`.
+- Preserve the official WhatsApp number: `+86 18661888866` and `https://wa.me/8618661888866`.
 - Keep country flags as small market labels only.
 - Preserve the Netlify `inquiry` form name and `/thank-you.html` success route.

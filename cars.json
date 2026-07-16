@@ -153,7 +153,21 @@
         "label": "Cargo volume",
         "value": "81-734 L"
       }
-    ]
+    ],
+    "relatedPages": [
+      {
+        "href": "/bestune-k1-europe.html",
+        "label": "Bestune K1 Europe",
+        "description": "EU-certified compact electric city car, also known as Bestune Pony or Xiaoma in China."
+      }
+    ],
+    "europeName": "Bestune K1",
+    "aliases": [
+      "Bestune K1",
+      "Bestune Pony",
+      "Bestune Xiaoma"
+    ],
+    "certificationNote": "EU-certified. Registration and local compliance requirements should be confirmed for the destination country."
   },
   {
     "id": "bestune-yueyi-03-2026-445km-zhixuan-edition",
@@ -323,6 +337,13 @@
         "label": "Drag coefficient",
         "value": "0.248 Cd"
       }
+    ],
+    "relatedPages": [
+      {
+        "href": "/bestune-yueyi-03-wholesale.html",
+        "label": "Bestune Yueyi 03 Wholesale",
+        "description": "Compare 445 km and 565 km CLTC versions for dealer and fleet export."
+      }
     ]
   },
   {
@@ -490,6 +511,13 @@
       {
         "label": "Tire specification",
         "value": "215/55 R18"
+      }
+    ],
+    "relatedPages": [
+      {
+        "href": "/bestune-yueyi-03-wholesale.html",
+        "label": "Bestune Yueyi 03 Wholesale",
+        "description": "Compare 445 km and 565 km CLTC versions for dealer and fleet export."
       }
     ]
   },
@@ -676,12 +704,12 @@
     "model": "Geely Coolray Full Option with Package and Panoramic Sunroof",
     "type": "New Car",
     "guidePriceRmb": "96,800 RMB",
-    "fobNanShaUsd": "11,800 USD",
+    "fobNanShaUsd": "US$11,800",
     "configuration": "Full Option with Package and Panoramic Sunroof",
-    "availableColor": "White, Grey",
-    "image": "images/new-cars/suv-04.png",
+    "availableColor": "Current colors confirmed during inquiry.",
+    "image": "images/og/vehicles/geely-coolray-full-option.jpg",
     "guidePriceDisplay": "96,800 RMB",
-    "fobPriceDisplay": "11,800 USD",
+    "fobPriceDisplay": "US$11,800",
     "title": {
       "en": "Geely Coolray Full Option with Package and Panoramic Sunroof",
       "fr": "Geely Coolray Full Option with Package and Panoramic Sunroof",
@@ -690,20 +718,86 @@
       "es": "Geely Coolray Full Option with Package and Panoramic Sunroof"
     },
     "description": {
-      "en": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
+      "en": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800. VIN information, available colors and current quantity can be provided on request.",
       "fr": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "ar": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "ru": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "es": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support."
     },
     "shortDescription": {
-      "en": "Available for export from China with FOB support",
-      "fr": "Disponible a l'export depuis la Chine avec support FOB",
-      "ar": "Available for export from China with FOB support",
-      "ru": "Available for export from China with FOB support",
-      "es": "Available for export from China with FOB support"
+      "en": "Brand-new Full Option ready stock at Nansha Port, China."
     },
-    "category": "new"
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "listingType": "brand_new_ready_stock",
+    "inventoryType": "brand_new_ready_stock",
+    "supplyMode": "Ready stock",
+    "inventoryBadge": "Brand New",
+    "inventoryStatus": "In Stock",
+    "inventoryStatusLabel": "In Stock",
+    "inventoryStatusDisplay": "Ready stock at Nansha Port; contact us for current quantity",
+    "availabilityNote": "Ready stock at Nansha Port, China. Current colors and quantity confirmed during inquiry.",
+    "isBatchInventory": true,
+    "location": "Nansha Port, China",
+    "locationDisplay": "Nansha Port, China",
+    "price": "US$11,800",
+    "priceCurrency": "USD",
+    "color": "Current colors confirmed during inquiry.",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "mainImage": "images/og/vehicles/geely-coolray-full-option.jpg",
+    "images": [
+      "images/og/vehicles/geely-coolray-full-option.jpg",
+      "images/og/vehicles/geely-coolray-battle-edition.jpg",
+      "images/og/vehicles/geely-coolray-automatic-super-power-edition-with-sunroof.jpg",
+      "images/og/vehicles/geely-coolray-super-max.jpg"
+    ],
+    "gallery": [
+      "images/og/vehicles/geely-coolray-full-option.jpg",
+      "images/og/vehicles/geely-coolray-battle-edition.jpg",
+      "images/og/vehicles/geely-coolray-automatic-super-power-edition-with-sunroof.jpg",
+      "images/og/vehicles/geely-coolray-super-max.jpg"
+    ],
+    "seoTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",
+    "metaTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",
+    "metaDescription": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800.",
+    "descriptionEn": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800. VIN information, available colors and current quantity can be provided on request.",
+    "detailSpecs": [
+      {
+        "label": "Vehicle type",
+        "value": "Brand New Car"
+      },
+      {
+        "label": "Configuration",
+        "value": "Full Option with Package and Panoramic Sunroof"
+      },
+      {
+        "label": "Stock location",
+        "value": "Nansha Port, China"
+      },
+      {
+        "label": "FOB reference price",
+        "value": "US$11,800 per unit"
+      },
+      {
+        "label": "VIN information",
+        "value": "Available on request"
+      },
+      {
+        "label": "Bulk dealer price",
+        "value": "Separate inquiry required"
+      }
+    ],
+    "relatedPages": [
+      {
+        "href": "/geely-coolray-ready-stock-nansha-port.html",
+        "label": "Geely Coolray Nansha Ready Stock",
+        "description": "Full Option with Package and Panoramic Sunroof ready stock at Nansha Port."
+      }
+    ]
   },
   {
     "id": "jetta-vs5-2026-280tsi-automatic-flagship-high-gloss-edition",
@@ -1580,17 +1674,17 @@
     "firstRegistrationDate": null,
     "registrationDate": null,
     "exactMileageKm": null,
-    "mileage": "Approx. 30,000–50,000 km",
+    "mileage": "Approx. 30,000-50,000 km",
     "mileageZh": "约3万–5万公里",
     "mileageData": {
       "type": "range",
       "min_km": 30000,
       "max_km": 50000,
       "display_zh": "约3万–5万公里",
-      "display_en": "Approx. 30,000–50,000 km"
+      "display_en": "Approx. 30,000-50,000 km"
     },
-    "availableColor": "White, Black",
-    "color": "White, Black",
+    "availableColor": "White and black are commonly available; actual colors vary by unit",
+    "color": "White and black are commonly available; actual colors vary by unit",
     "colorZh": "白色, 黑色",
     "exteriorColors": [
       {
@@ -1619,13 +1713,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final mileage, condition, color and configuration must be confirmed by VIN.",
     "engine": "1.5T turbocharged L4 gasoline engine",
     "engineZh": "1.5T 169马力 L4",
     "transmission": "7-speed wet dual-clutch automatic",
@@ -1727,10 +1821,11 @@
     "highlights": [
       "1.5T turbocharged L4 gasoline engine",
       "7-speed wet dual-clutch automatic",
-      "Approx. 30,000–50,000 km",
+      "Approx. 30,000-50,000 km",
       "White, Black exterior colors",
       "No accidents reported",
-      "Batch inventory"
+      "Batch inventory",
+      "Final details confirmed by VIN"
     ],
     "categories": [
       "Used Cars",
@@ -1744,12 +1839,19 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final mileage, condition, color and configuration must be confirmed by VIN; units are not all identical.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-b70-2021.html",
     "ogImage": "images/used-cars/used-bestune-b70-2021-001/05-front-right-zhonggu.png",
     "cardTitle": "2021 Bestune B70 1.5T",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-b70-wholesale.html",
+        "label": "Used Bestune B70 Wholesale",
+        "description": "Compare 2021, 2022 and 2023 batch stock with FOB prices from US$6,000."
+      }
+    ]
   },
   {
     "id": "used-bestune-b70-2022",
@@ -1797,17 +1899,17 @@
     "firstRegistrationDate": null,
     "registrationDate": null,
     "exactMileageKm": null,
-    "mileage": "Approx. 30,000–50,000 km",
+    "mileage": "Approx. 30,000-50,000 km",
     "mileageZh": "约3万–5万公里",
     "mileageData": {
       "type": "range",
       "min_km": 30000,
       "max_km": 50000,
       "display_zh": "约3万–5万公里",
-      "display_en": "Approx. 30,000–50,000 km"
+      "display_en": "Approx. 30,000-50,000 km"
     },
-    "availableColor": "White, Black",
-    "color": "White, Black",
+    "availableColor": "White and black are commonly available; actual colors vary by unit",
+    "color": "White and black are commonly available; actual colors vary by unit",
     "colorZh": "白色, 黑色",
     "exteriorColors": [
       {
@@ -1836,13 +1938,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final mileage, condition, color and configuration must be confirmed by VIN.",
     "engine": "1.5T turbocharged L4 gasoline engine",
     "engineZh": "1.5T 169马力 L4",
     "transmission": "7-speed wet dual-clutch automatic",
@@ -1942,10 +2044,11 @@
     "highlights": [
       "1.5T turbocharged L4 gasoline engine",
       "7-speed wet dual-clutch automatic",
-      "Approx. 30,000–50,000 km",
+      "Approx. 30,000-50,000 km",
       "White, Black exterior colors",
       "No accidents reported",
-      "Batch inventory"
+      "Batch inventory",
+      "Final details confirmed by VIN"
     ],
     "categories": [
       "Used Cars",
@@ -1959,12 +2062,19 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final mileage, condition, color and configuration must be confirmed by VIN; units are not all identical.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-b70-2022.html",
     "ogImage": "images/used-cars/used-bestune-b70-2022-001/05-front-three-quarter.png",
     "cardTitle": "2022 Bestune B70 1.5T",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-b70-wholesale.html",
+        "label": "Used Bestune B70 Wholesale",
+        "description": "Compare 2021, 2022 and 2023 batch stock with FOB prices from US$6,000."
+      }
+    ]
   },
   {
     "id": "used-bestune-b70-2023",
@@ -2012,17 +2122,17 @@
     "firstRegistrationDate": null,
     "registrationDate": null,
     "exactMileageKm": null,
-    "mileage": "Approx. 30,000–50,000 km",
+    "mileage": "Approx. 30,000-50,000 km",
     "mileageZh": "约3万–5万公里",
     "mileageData": {
       "type": "range",
       "min_km": 30000,
       "max_km": 50000,
       "display_zh": "约3万–5万公里",
-      "display_en": "Approx. 30,000–50,000 km"
+      "display_en": "Approx. 30,000-50,000 km"
     },
-    "availableColor": "White, Black",
-    "color": "White, Black",
+    "availableColor": "White and black are commonly available; actual colors vary by unit",
+    "color": "White and black are commonly available; actual colors vary by unit",
     "colorZh": "白色, 黑色",
     "exteriorColors": [
       {
@@ -2051,13 +2161,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final mileage, condition, color and configuration must be confirmed by VIN.",
     "engine": "1.5T turbocharged L4 gasoline engine",
     "engineZh": "1.5T 169马力 L4",
     "transmission": "7-speed wet dual-clutch automatic",
@@ -2155,10 +2265,11 @@
     "highlights": [
       "1.5T turbocharged L4 gasoline engine",
       "7-speed wet dual-clutch automatic",
-      "Approx. 30,000–50,000 km",
+      "Approx. 30,000-50,000 km",
       "White, Black exterior colors",
       "No accidents reported",
-      "Batch inventory"
+      "Batch inventory",
+      "Final details confirmed by VIN"
     ],
     "categories": [
       "Used Cars",
@@ -2172,12 +2283,19 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final mileage, condition, color and configuration must be confirmed by VIN; units are not all identical.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-b70-2023.html",
     "ogImage": "images/used-cars/used-bestune-b70-2023-001/02-front-left-wide.png",
     "cardTitle": "2023 Bestune B70 1.5T 70th Anniversary",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-b70-wholesale.html",
+        "label": "Used Bestune B70 Wholesale",
+        "description": "Compare 2021, 2022 and 2023 batch stock with FOB prices from US$6,000."
+      }
+    ]
   },
   {
     "id": "used-bestune-yueyi-07-2025",
@@ -2268,13 +2386,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final condition must be confirmed by VIN.",
     "engine": "1.5T plug-in hybrid powertrain",
     "engineZh": "1.5T 150马力 L4 + 单电机",
     "transmission": "DHT hybrid transmission",
@@ -2388,13 +2506,20 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final condition, mileage, color and configuration must be confirmed by VIN.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-yueyi-07-2025.html",
     "ogImage": "images/used-cars/used-bestune-yueyi-07-2025-001/09-front-three-quarter-outdoor.png",
     "range": "210 km",
     "cardTitle": "2025 Bestune Yueyi 07 210 km",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-yueyi-07-phev-export.html",
+        "label": "Used Bestune Yueyi 07 PHEV Export",
+        "description": "Low-mileage 2025 PHEV SUV with 210 km CLTC pure-electric range."
+      }
+    ]
   },
   {
     "id": "used-vw-t-cross-2024-001",

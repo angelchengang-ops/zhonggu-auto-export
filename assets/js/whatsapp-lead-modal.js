@@ -25,7 +25,12 @@
     { code: "+998", label: "+998 Uzbekistan", aliases: ["uzbekistan"] },
     { code: "+996", label: "+996 Kyrgyzstan", aliases: ["kyrgyzstan"] },
     { code: "+234", label: "+234 Nigeria", aliases: ["nigeria"] },
+    { code: "+225", label: "+225 Cote d'Ivoire", aliases: ["cote d'ivoire", "cote divoire", "ivory coast", "abidjan"] },
     { code: "+233", label: "+233 Ghana", aliases: ["ghana"] },
+    { code: "+49", label: "+49 Germany", aliases: ["germany", "deutschland"] },
+    { code: "+33", label: "+33 France", aliases: ["france"] },
+    { code: "+39", label: "+39 Italy", aliases: ["italy", "italia"] },
+    { code: "+34", label: "+34 Spain", aliases: ["spain", "espana"] },
     { code: "+254", label: "+254 Kenya", aliases: ["kenya"] },
     { code: "+255", label: "+255 Tanzania", aliases: ["tanzania"] },
     { code: "+27", label: "+27 South Africa", aliases: ["south africa"] },
@@ -56,6 +61,7 @@
     { code: "+966", label: "Saudi" },
     { code: "+7", label: "Russia/Kazakhstan" },
     { code: "+234", label: "Nigeria" },
+    { code: "+225", label: "Cote d'Ivoire" },
     { code: "+44", label: "UK" },
     { code: "+1", label: "US/Canada" }
   ];

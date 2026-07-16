@@ -45,17 +45,17 @@
     "firstRegistrationDate": null,
     "registrationDate": null,
     "exactMileageKm": null,
-    "mileage": "Approx. 30,000–50,000 km",
+    "mileage": "Approx. 30,000-50,000 km",
     "mileageZh": "约3万–5万公里",
     "mileageData": {
       "type": "range",
       "min_km": 30000,
       "max_km": 50000,
       "display_zh": "约3万–5万公里",
-      "display_en": "Approx. 30,000–50,000 km"
+      "display_en": "Approx. 30,000-50,000 km"
     },
-    "availableColor": "White, Black",
-    "color": "White, Black",
+    "availableColor": "White and black are commonly available; actual colors vary by unit",
+    "color": "White and black are commonly available; actual colors vary by unit",
     "colorZh": "白色, 黑色",
     "exteriorColors": [
       {
@@ -84,13 +84,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final mileage, condition, color and configuration must be confirmed by VIN.",
     "engine": "1.5T turbocharged L4 gasoline engine",
     "engineZh": "1.5T 169马力 L4",
     "transmission": "7-speed wet dual-clutch automatic",
@@ -192,10 +192,11 @@
     "highlights": [
       "1.5T turbocharged L4 gasoline engine",
       "7-speed wet dual-clutch automatic",
-      "Approx. 30,000–50,000 km",
+      "Approx. 30,000-50,000 km",
       "White, Black exterior colors",
       "No accidents reported",
-      "Batch inventory"
+      "Batch inventory",
+      "Final details confirmed by VIN"
     ],
     "categories": [
       "Used Cars",
@@ -209,12 +210,19 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final mileage, condition, color and configuration must be confirmed by VIN; units are not all identical.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-b70-2021.html",
     "ogImage": "images/used-cars/used-bestune-b70-2021-001/05-front-right-zhonggu.png",
     "cardTitle": "2021 Bestune B70 1.5T",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-b70-wholesale.html",
+        "label": "Used Bestune B70 Wholesale",
+        "description": "Compare 2021, 2022 and 2023 batch stock with FOB prices from US$6,000."
+      }
+    ]
   },
   {
     "id": "used-bestune-b70-2022",
@@ -262,17 +270,17 @@
     "firstRegistrationDate": null,
     "registrationDate": null,
     "exactMileageKm": null,
-    "mileage": "Approx. 30,000–50,000 km",
+    "mileage": "Approx. 30,000-50,000 km",
     "mileageZh": "约3万–5万公里",
     "mileageData": {
       "type": "range",
       "min_km": 30000,
       "max_km": 50000,
       "display_zh": "约3万–5万公里",
-      "display_en": "Approx. 30,000–50,000 km"
+      "display_en": "Approx. 30,000-50,000 km"
     },
-    "availableColor": "White, Black",
-    "color": "White, Black",
+    "availableColor": "White and black are commonly available; actual colors vary by unit",
+    "color": "White and black are commonly available; actual colors vary by unit",
     "colorZh": "白色, 黑色",
     "exteriorColors": [
       {
@@ -301,13 +309,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final mileage, condition, color and configuration must be confirmed by VIN.",
     "engine": "1.5T turbocharged L4 gasoline engine",
     "engineZh": "1.5T 169马力 L4",
     "transmission": "7-speed wet dual-clutch automatic",
@@ -407,10 +415,11 @@
     "highlights": [
       "1.5T turbocharged L4 gasoline engine",
       "7-speed wet dual-clutch automatic",
-      "Approx. 30,000–50,000 km",
+      "Approx. 30,000-50,000 km",
       "White, Black exterior colors",
       "No accidents reported",
-      "Batch inventory"
+      "Batch inventory",
+      "Final details confirmed by VIN"
     ],
     "categories": [
       "Used Cars",
@@ -424,12 +433,19 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final mileage, condition, color and configuration must be confirmed by VIN; units are not all identical.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-b70-2022.html",
     "ogImage": "images/used-cars/used-bestune-b70-2022-001/05-front-three-quarter.png",
     "cardTitle": "2022 Bestune B70 1.5T",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-b70-wholesale.html",
+        "label": "Used Bestune B70 Wholesale",
+        "description": "Compare 2021, 2022 and 2023 batch stock with FOB prices from US$6,000."
+      }
+    ]
   },
   {
     "id": "used-bestune-b70-2023",
@@ -477,17 +493,17 @@
     "firstRegistrationDate": null,
     "registrationDate": null,
     "exactMileageKm": null,
-    "mileage": "Approx. 30,000–50,000 km",
+    "mileage": "Approx. 30,000-50,000 km",
     "mileageZh": "约3万–5万公里",
     "mileageData": {
       "type": "range",
       "min_km": 30000,
       "max_km": 50000,
       "display_zh": "约3万–5万公里",
-      "display_en": "Approx. 30,000–50,000 km"
+      "display_en": "Approx. 30,000-50,000 km"
     },
-    "availableColor": "White, Black",
-    "color": "White, Black",
+    "availableColor": "White and black are commonly available; actual colors vary by unit",
+    "color": "White and black are commonly available; actual colors vary by unit",
     "colorZh": "白色, 黑色",
     "exteriorColors": [
       {
@@ -516,13 +532,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final mileage, condition, color and configuration must be confirmed by VIN.",
     "engine": "1.5T turbocharged L4 gasoline engine",
     "engineZh": "1.5T 169马力 L4",
     "transmission": "7-speed wet dual-clutch automatic",
@@ -620,10 +636,11 @@
     "highlights": [
       "1.5T turbocharged L4 gasoline engine",
       "7-speed wet dual-clutch automatic",
-      "Approx. 30,000–50,000 km",
+      "Approx. 30,000-50,000 km",
       "White, Black exterior colors",
       "No accidents reported",
-      "Batch inventory"
+      "Batch inventory",
+      "Final details confirmed by VIN"
     ],
     "categories": [
       "Used Cars",
@@ -637,12 +654,19 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final mileage, condition, color and configuration must be confirmed by VIN; units are not all identical.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-b70-2023.html",
     "ogImage": "images/used-cars/used-bestune-b70-2023-001/02-front-left-wide.png",
     "cardTitle": "2023 Bestune B70 1.5T 70th Anniversary",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-b70-wholesale.html",
+        "label": "Used Bestune B70 Wholesale",
+        "description": "Compare 2021, 2022 and 2023 batch stock with FOB prices from US$6,000."
+      }
+    ]
   },
   {
     "id": "used-bestune-yueyi-07-2025",
@@ -733,13 +757,13 @@
     "country": "China",
     "city": "Qingdao",
     "status": "Available",
-    "accidentStatus": "No accidents reported",
+    "accidentStatus": "No major accidents reported",
     "accidentStatusZh": "无事故",
     "overallCondition": "Good",
     "overallConditionZh": "车况良好",
     "maintenanceRecords": "To be provided",
     "maintenanceRecordsZh": "待提供",
-    "conditionSummary": "No accidents reported. Good overall condition. Maintenance records to be provided.",
+    "conditionSummary": "No major accidents reported. Final condition must be confirmed by VIN.",
     "engine": "1.5T plug-in hybrid powertrain",
     "engineZh": "1.5T 150马力 L4 + 单电机",
     "transmission": "DHT hybrid transmission",
@@ -853,13 +877,20 @@
       "China",
       "Batch Inventory"
     ],
-    "noticeEn": "Vehicle mileage, color, configuration and availability may vary by unit. Please contact us for current inventory details.",
+    "noticeEn": "Batch inventory available. Final condition, mileage, color and configuration must be confirmed by VIN.",
     "noticeZh": "批量车源的实际里程、颜色、配置及库存数量可能因具体车辆而异，请联系确认当前车源。",
     "canonicalPath": "/used-bestune-yueyi-07-2025.html",
     "ogImage": "images/used-cars/used-bestune-yueyi-07-2025-001/09-front-three-quarter-outdoor.png",
     "range": "210 km",
     "cardTitle": "2025 Bestune Yueyi 07 210 km",
-    "accidentHistory": "No accidents reported"
+    "accidentHistory": "No major accidents reported",
+    "relatedPages": [
+      {
+        "href": "/used-bestune-yueyi-07-phev-export.html",
+        "label": "Used Bestune Yueyi 07 PHEV Export",
+        "description": "Low-mileage 2025 PHEV SUV with 210 km CLTC pure-electric range."
+      }
+    ]
   },
   {
     "id": "used-vw-t-cross-2024-001",

@@ -1,4 +1,5 @@
-﻿const leadWhatsappDisplayNumber = 'CRM inquiry form';
+﻿(() => {
+const leadWhatsappDisplayNumber = '+86 18661888866';
 const inquiryEmail = 'angelchengang@gmail.com';
 const leadStoreKey = 'zhonggu-leads';
 
@@ -34,7 +35,7 @@ const whatsappSourceLabel = (source = getInquirySource()) => inquiryChannels[sou
 
 const buildWhatsappSourceUrl = (message, source = getInquirySource()) => {
   const text = normalize(message).replace(/[.。?？]*$/, '.');
-  return '#contact-whatsapp';
+  return `https://wa.me/8618661888866${text ? `?text=${encodeURIComponent(text)}` : ''}`;
 };
 
 const bindSourceWhatsappLinks = () => {
@@ -207,3 +208,4 @@ if (document.readyState === 'loading') {
 } else {
   initLeadGen();
 }
+})();
