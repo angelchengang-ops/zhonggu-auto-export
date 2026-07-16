@@ -1,7 +1,25 @@
 # Canonical domain redirects
-http://zhongguauto.com/* https://zhongguauto.com/:splat 301!
-http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
-https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
+http://zhongguauto.com/landing/export-cars-to-africa https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+https://zhongguauto.com/landing/export-cars-to-africa https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+http://www.zhongguauto.com/landing/export-cars-to-africa https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+http://zhongguauto.com/landing/export-cars-to-africa/ https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+https://zhongguauto.com/landing/export-cars-to-africa/ https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+http://www.zhongguauto.com/landing/export-cars-to-africa/ https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+http://zhongguauto.com/landing/export-cars-to-africa/index.html https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+https://zhongguauto.com/landing/export-cars-to-africa/index.html https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+http://www.zhongguauto.com/landing/export-cars-to-africa/index.html https://www.zhongguauto.com/export-cars-from-china-to-africa.html 301!
+http://zhongguauto.com/landing/:slug/ https://www.zhongguauto.com/landing/:slug 301!
+https://zhongguauto.com/landing/:slug/ https://www.zhongguauto.com/landing/:slug 301!
+http://www.zhongguauto.com/landing/:slug/ https://www.zhongguauto.com/landing/:slug 301!
+http://zhongguauto.com/fr/landing/:slug/ https://www.zhongguauto.com/fr/landing/:slug 301!
+https://zhongguauto.com/fr/landing/:slug/ https://www.zhongguauto.com/fr/landing/:slug 301!
+http://www.zhongguauto.com/fr/landing/:slug/ https://www.zhongguauto.com/fr/landing/:slug 301!
+http://zhongguauto.com/ar/landing/:slug/ https://www.zhongguauto.com/ar/landing/:slug 301!
+https://zhongguauto.com/ar/landing/:slug/ https://www.zhongguauto.com/ar/landing/:slug 301!
+http://www.zhongguauto.com/ar/landing/:slug/ https://www.zhongguauto.com/ar/landing/:slug 301!
+http://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+http://www.zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 
 # Public lead collection on Netlify Functions
 /api/admin/login  /.netlify/functions/admin-login  200
@@ -112,7 +130,15 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 
 /landing/export-cars-to-algeria /landing/export-cars-to-algeria/index.html 200
 /landing/export-cars-to-uae /landing/export-cars-to-uae/index.html 200
-/landing/export-cars-to-africa /landing/export-cars-to-africa/index.html 200
+/landing/export-cars-to-africa /export-cars-from-china-to-africa.html 301!
+/landing/export-cars-to-africa/ /export-cars-from-china-to-africa.html 301!
+/landing/export-cars-to-africa/index.html /export-cars-from-china-to-africa.html 301!
+/landing/:slug/ /landing/:slug 301!
+/landing/:slug/index.html /landing/:slug 301!
+/fr/landing/:slug/ /fr/landing/:slug 301!
+/fr/landing/:slug/index.html /fr/landing/:slug 301!
+/ar/landing/:slug/ /ar/landing/:slug 301!
+/ar/landing/:slug/index.html /ar/landing/:slug 301!
 /landing/export-cars-to-central-asia /landing/export-cars-to-central-asia/index.html 200
 /landing/export-cars-to-southeast-asia /landing/export-cars-to-southeast-asia/index.html 200
 /landing/china-used-car-exporter /landing/china-used-car-exporter/index.html 200

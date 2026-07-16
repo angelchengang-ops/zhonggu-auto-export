@@ -3,7 +3,8 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://www.zhongguauto.com';
-const LASTMOD = '2026-07-16';
+const LASTMOD = '2026-07-17';
+const EXCLUDED_LANDING_DIRS = new Set(['export-cars-to-africa']);
 
 const read = (relative) => fs.readFileSync(path.join(ROOT, relative), 'utf8').replace(/^\uFEFF/, '');
 const write = (relative, content) => {
@@ -18,6 +19,9 @@ const writeOptional = (relative, content) => {
 };
 const siteUrl = (pathname = '') => `${SITE}${pathname.startsWith('/') ? pathname : `/${pathname}`}`;
 const xml = (urls, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>${url}</loc><lastmod>${LASTMOD}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
+const normalizePublishedUrls = (content) => content
+  .replace(/https:\/\/zhongguauto\.com/g, SITE)
+  .replace(/(https:\/\/www\.zhongguauto\.com\/(?:(?:fr|ar)\/)?landing\/[a-z0-9-]+)\/(?=["'<\s])/g, '$1');
 
 const cars = JSON.parse(read('cars.json'));
 const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.html`));
@@ -32,7 +36,7 @@ const pages = fs.readdirSync(ROOT, { withFileTypes: true })
 const landingRoot = path.join(ROOT, 'landing');
 const landingDirs = fs.existsSync(landingRoot)
   ? fs.readdirSync(landingRoot, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(landingRoot, entry.name, 'index.html')))
+    .filter((entry) => entry.isDirectory() && !EXCLUDED_LANDING_DIRS.has(entry.name) && fs.existsSync(path.join(landingRoot, entry.name, 'index.html')))
     .map((entry) => siteUrl(`landing/${entry.name}`))
   : [];
 const localizedLanding = [];
@@ -46,9 +50,15 @@ for (const code of ['fr', 'ar']) {
   }
 }
 
-write('sitemap-pages-current.xml', xml([siteUrl('/'), ...pages]));
-write('sitemap-landing-current.xml', xml([...landingDirs, ...localizedLanding]));
-write('sitemap-vehicles-current.xml', xml(vehicleUrls, 'weekly'));
+const pageSitemap = xml([siteUrl('/'), ...pages]);
+const landingSitemap = xml([...landingDirs, ...localizedLanding]);
+const vehicleSitemap = xml(vehicleUrls, 'weekly');
+write('sitemap-pages-current.xml', pageSitemap);
+write('sitemap-landing-current.xml', landingSitemap);
+write('sitemap-vehicles-current.xml', vehicleSitemap);
+writeOptional('sitemap-pages.xml', pageSitemap);
+writeOptional('sitemap-landing.xml', landingSitemap);
+writeOptional('sitemap-vehicles.xml', vehicleSitemap);
 const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${SITE}/sitemap-pages-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-landing-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-vehicles-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n</sitemapindex>\n`;
 write('sitemap-index.xml', sitemapIndex);
 writeOptional('sitemap.xml', sitemapIndex);
@@ -63,12 +73,25 @@ const normalizeRootFile = (relative) => {
   const file = path.join(ROOT, relative);
   if (!fs.existsSync(file)) return;
   const before = fs.readFileSync(file, 'utf8');
-  const after = before.replace(/https:\/\/zhongguauto\.com/g, SITE);
+  const after = normalizePublishedUrls(before);
   if (after !== before) writeOptional(relative, after);
+};
+const normalizeTree = (relativeDir) => {
+  const dir = path.join(ROOT, relativeDir);
+  if (!fs.existsSync(dir)) return;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const relative = path.join(relativeDir, entry.name);
+    if (entry.isDirectory()) {
+      normalizeTree(relative);
+    } else if (entry.isFile() && ['.html', '.xml'].includes(path.extname(entry.name).toLowerCase())) {
+      normalizeRootFile(relative);
+    }
+  }
 };
 for (const entry of fs.readdirSync(ROOT, { withFileTypes: true })) {
   if (entry.isFile() && ['.html', '.xml'].includes(path.extname(entry.name).toLowerCase())) normalizeRootFile(entry.name);
 }
+for (const relativeDir of ['landing', 'fr', 'ar', 'ru']) normalizeTree(relativeDir);
 normalizeRootFile('scripts/generate-vehicle-pages.js');
 normalizeRootFile('scripts/maintain-seo.js');
 

@@ -4,7 +4,7 @@ const { requireAdmin } = require("./admin-session");
 exports.handler = async (event) => {
   const user = requireAdmin(event);
   if (user.statusCode) return user;
-  const url = new URL(event.rawUrl || `https://zhongguauto.com${event.path || "/api/admin/inquiries/export.csv"}`);
+  const url = new URL(event.rawUrl || `https://www.zhongguauto.com${event.path || "/api/admin/inquiries/export.csv"}`);
   const { items } = await readLeads({ syncForms: true });
   const filtered = filterLeads(items, url.searchParams);
   return {
