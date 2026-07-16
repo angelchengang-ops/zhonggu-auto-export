@@ -114,12 +114,6 @@ http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /landing/export-cars-to-africa /export-cars-from-china-to-africa.html 301!
 /landing/export-cars-to-africa/ /export-cars-from-china-to-africa.html 301!
 /landing/export-cars-to-africa/index.html /export-cars-from-china-to-africa.html 301!
-/landing/:slug/ /landing/:slug 301!
-/landing/:slug/index.html /landing/:slug 301!
-/fr/landing/:slug/ /fr/landing/:slug 301!
-/fr/landing/:slug/index.html /fr/landing/:slug 301!
-/ar/landing/:slug/ /ar/landing/:slug 301!
-/ar/landing/:slug/index.html /ar/landing/:slug 301!
 /landing/export-cars-to-central-asia /landing/export-cars-to-central-asia/index.html 200
 /landing/export-cars-to-southeast-asia /landing/export-cars-to-southeast-asia/index.html 200
 /landing/china-used-car-exporter /landing/china-used-car-exporter/index.html 200
