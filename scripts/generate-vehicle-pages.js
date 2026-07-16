@@ -72,6 +72,8 @@ const vehicleNameFromParts = (brand, model, year = '') => {
 const getVehicleName = (car) => englishValue(car.pageTitle || car.title || car.cardTitle) || vehicleNameFromParts(englishValue(car.brand), englishValue(car.model || car.name), englishValue(car.year || car.modelYear));
 const getCardTitle = (car) => englishValue(car.cardTitle || car.title || car.model || car.name) || getVehicleName(car);
 const isUsed = (car) => car?.isUsed === true || String(car.category || car.type || car.condition || '').toLowerCase().includes('used');
+const isNewGalleryCar = (car) => !isUsed(car) && (car?.multiImageGallery === true || englishValue(car.detailPageVariant) === 'new_car_gallery');
+const hasDetailGallery = (car) => isUsed(car) || isNewGalleryCar(car);
 const getPrice = (car) => englishValue(car.salePriceDisplay || car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.fobRange || '');
 const getUsdPrice = (car) => {
   const source = getPrice(car);
@@ -136,7 +138,16 @@ const normalizedSpec = (item) => {
 };
 const technicalSpecs = (car) => toArray(car.detailSpecs).map(normalizedSpec).filter(([label, value]) => label && value);
 const compactSpecs = (items) => items.filter(([, value]) => englishValue(value)).map(([label, value]) => [label, englishValue(value)]);
-const summarySpecs = (car) => compactSpecs([
+const summarySpecs = (car) => isNewGalleryCar(car) ? compactSpecs([
+  ['Vehicle type', car.vehicleType || 'Brand New Car'],
+  ['Model year', car.modelYear || car.year],
+  ['Version', car.configuration || car.trimEn || car.trim],
+  ['CLTC range', car.cltcRange || car.range],
+  ['Mileage', car.mileage],
+  ['Exterior colors', car.availableColor || car.color],
+  ['Location', car.locationDisplay || car.location],
+  ['Inventory status', car.inventoryStatusDisplay || car.inventoryStatus || 'In stock']
+]) : compactSpecs([
   ['Year', car.year || car.modelYear],
   ['Model / trim', car.configuration || car.trimEn || car.trim],
   ['Mileage', car.mileage],
@@ -151,12 +162,24 @@ const overviewSpecs = (car) => compactSpecs([
   ['Model', car.model],
   ['Model year', car.modelYear || car.year],
   ['Version', car.configuration || car.trimEn],
+  ['Vehicle type', isNewGalleryCar(car) ? (car.vehicleType || 'Brand New Car') : ''],
   ['Energy type', car.energyType || car.fuel],
-  ['Engine', car.engine],
+  ['CLTC range', isNewGalleryCar(car) ? (car.cltcRange || car.range) : ''],
+  ['Official guide price', isNewGalleryCar(car) ? car.guidePriceDisplay : ''],
+  ['Engine', isNewGalleryCar(car) ? '' : car.engine],
   ['Transmission', car.transmission],
   ['Location', car.locationDisplay || car.location]
 ]);
 const conditionSpecs = (car) => {
+  if (isNewGalleryCar(car)) {
+    return compactSpecs([
+      ['Vehicle type', car.vehicleType || 'Brand New Car'],
+      ['Inventory status', car.inventoryStatusDisplay || car.inventoryStatus || 'In stock'],
+      ['Availability', car.availabilityNote || 'In stock / ample stock; contact us for current quantity.'],
+      ['Mileage', car.mileage || 'New vehicle; delivery mileage may vary'],
+      ['Exterior colors', car.availableColor || car.color]
+    ]);
+  }
   const availability = car.isBatchInventory
     ? 'Mileage, color and configuration may vary by unit. Contact us for current stock.'
     : getNotice(car);
@@ -172,14 +195,14 @@ const renderMedia = (images, name, car) => {
   const items = images.length ? images : ['images/new-cars/generic-new-car-bg-01.png'];
   const main = items[0];
   const alt = `${name} export from China`;
-  if (!isUsed(car)) return `<div class="detail-media"><img src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>`;
+  if (!hasDetailGallery(car)) return `<div class="detail-media"><img src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>`;
   const thumbs = items.length > 1 ? `<div class="vehicle-thumbnails" aria-label="Vehicle photo gallery">${items.map((image, index) => {
     const label = `${name} photo ${index + 1}`;
     return `<button class="vehicle-thumbnail" type="button" data-gallery-src="${escapeAttr(image)}" data-gallery-alt="${escapeAttr(label)}" aria-label="Show photo ${index + 1}" aria-current="${index === 0 ? 'true' : 'false'}"><img src="${escapeAttr(image)}" alt="${escapeAttr(label)}" loading="lazy"></button>`;
   }).join('')}</div>` : '';
   return `<div class="detail-media used-car-gallery${items.length > 1 ? ' has-thumbnails' : ''}" data-vehicle-gallery><div class="vehicle-main-image"><img class="vehicle-gallery-main" data-gallery-main src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>${thumbs}</div>`;
 };
-const renderGalleryScript = (car, images) => isUsed(car) && images.length > 1 ? `<script>(function(){document.querySelectorAll('[data-vehicle-gallery]').forEach(function(gallery){var main=gallery.querySelector('[data-gallery-main]');gallery.addEventListener('click',function(event){var button=event.target.closest('[data-gallery-src]');if(!button||!main)return;main.src=button.dataset.gallerySrc;main.alt=button.dataset.galleryAlt||main.alt;gallery.querySelectorAll('[data-gallery-src]').forEach(function(item){item.setAttribute('aria-current',item===button?'true':'false'});});});})();</script>` : '';
+const renderGalleryScript = (car, images) => hasDetailGallery(car) && images.length > 1 ? `<script>(function(){document.querySelectorAll('[data-vehicle-gallery]').forEach(function(gallery){var main=gallery.querySelector('[data-gallery-main]');gallery.addEventListener('click',function(event){var button=event.target.closest('[data-gallery-src]');if(!button||!main)return;main.src=button.dataset.gallerySrc;main.alt=button.dataset.galleryAlt||main.alt;gallery.querySelectorAll('[data-gallery-src]').forEach(function(item){item.setAttribute('aria-current',item===button?'true':'false'});});});})();</script>` : '';
 const renderVideoSection = (videos) => {
   if (!videos.length) return '';
   const cards = videos.map((video, index) => {
@@ -192,6 +215,8 @@ const renderVideoSection = (videos) => {
 const renderSpecGrid = (items, className = '') => items.length ? `<div class="vehicle-info-grid ${className}">${items.map(([label, value]) => `<div><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></div>`).join('')}</div>` : '';
 const renderTechnicalSpecs = (items) => items.length ? `<div class="vehicle-spec-table">${items.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')}</div>` : '';
 const hiddenInput = (name, value = '') => `<input type="hidden" name="${escapeAttr(name)}" value="${escapeAttr(value)}">`;
+const leadSourceFor = (car) => isNewGalleryCar(car) ? 'new_car_detail' : 'used_car_detail';
+const inventoryTypeFor = (car) => isNewGalleryCar(car) ? englishValue(car.inventoryType || car.listingType) || 'brand_new_batch_inventory' : (car.isBatchInventory ? 'batch_inventory' : '');
 const callingCodeOptions = [
   ['+213', 'Algeria (+213)'],
   ['+7', 'Russia / Kazakhstan (+7)'],
@@ -208,8 +233,11 @@ const callingCodeOptions = [
 ];
 const renderCallingCodeOptions = () => callingCodeOptions.map(([value, label]) => `<option value="${escapeAttr(value)}">${escapeHtml(label)}</option>`).join('');
 const inquiryPhoneFields = () => `<label><span>WhatsApp Country Code</span><select name="calling_code" autocomplete="tel-country-code" required><option value="" selected>Select code</option>${renderCallingCodeOptions()}</select></label><label><span>WhatsApp Number</span><input type="tel" name="phone_number" autocomplete="tel-national" inputmode="tel" pattern="[0-9 ()-]{5,20}" placeholder="Number without +" required></label><input type="hidden" name="whatsapp" value="">`;
-const inquiryHiddenFields = (car, name, url) => [hiddenInput('vehicle_id', car.id), hiddenInput('vehicle_name', name), hiddenInput('model_year', englishValue(car.modelYear || car.year)), hiddenInput('page_url', url), hiddenInput('source_url', url), hiddenInput('lead_source', 'used_car_detail'), hiddenInput('source', 'used_car_detail'), hiddenInput('sale_price', getPrice(car)), hiddenInput('inventory_type', car.isBatchInventory ? 'batch_inventory' : '')].join('');
-const ctaAttrs = (car, name, url) => `data-title="${escapeAttr(name)}" data-model="${escapeAttr(name)}" data-year="${escapeAttr(englishValue(car.modelYear || car.year))}" data-price="${escapeAttr(getPrice(car))}" data-url="${escapeAttr(url)}" data-vehicle-id="${escapeAttr(car.id)}" data-lead-source="used_car_detail" data-inventory-type="${escapeAttr(car.isBatchInventory ? 'batch_inventory' : '')}"`;
+const inquiryHiddenFields = (car, name, url) => {
+  const leadSource = leadSourceFor(car);
+  return [hiddenInput('vehicle_id', car.id), hiddenInput('vehicle_name', name), hiddenInput('model_year', englishValue(car.modelYear || car.year)), hiddenInput('page_url', url), hiddenInput('source_url', url), hiddenInput('lead_source', leadSource), hiddenInput('source', leadSource), hiddenInput('sale_price', getPrice(car)), hiddenInput('inventory_type', inventoryTypeFor(car))].join('');
+};
+const ctaAttrs = (car, name, url) => `data-title="${escapeAttr(name)}" data-model="${escapeAttr(name)}" data-year="${escapeAttr(englishValue(car.modelYear || car.year))}" data-price="${escapeAttr(getPrice(car))}" data-url="${escapeAttr(url)}" data-vehicle-id="${escapeAttr(car.id)}" data-lead-source="${escapeAttr(leadSourceFor(car))}" data-inventory-type="${escapeAttr(inventoryTypeFor(car))}"`;
 const render = (car) => {
   const id = car.id;
   if (!id) return '';
@@ -230,6 +258,19 @@ const render = (car) => {
   const specs = technicalSpecs(car);
   const condition = conditionSpecs(car);
   const price = getPrice(car) || 'Contact for price';
+  const newGallery = isNewGalleryCar(car);
+  const leadSource = leadSourceFor(car);
+  const heroEyebrow = newGallery ? 'Brand New Car Export from China' : 'Used Car Export from China';
+  const purchaseEyebrow = newGallery ? 'Brand New' : 'Batch inventory';
+  const priceLabel = newGallery ? 'FOB price' : 'Sale price';
+  const overviewText = newGallery
+    ? `${cardTitle} is available as brand-new batch inventory from Qingdao, China. FOB pricing, current colors and export timing are confirmed before order.`
+    : `${cardTitle} is listed as batch used-car inventory from Qingdao, China. Vehicle details are prepared for export inquiry and stock confirmation.`;
+  const availabilityHeading = newGallery ? 'Availability' : 'Condition &amp; Inventory';
+  const contactHeading = newGallery ? 'Check Current Stock' : 'Check Current Availability';
+  const contactText = newGallery
+    ? 'Send your destination country and timing. Our sales team will confirm current stock, available colors and FOB export quotation.'
+    : 'Send your destination country and timing. Our sales team will confirm current units, available colors, mileage and export quotation.';
   const jsonLd = { '@context': 'https://schema.org', '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: `ZG-${id.toUpperCase()}`, brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' }, offers: { '@type': 'Offer', url, priceCurrency: 'USD', availability: 'https://schema.org/InStock', itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}` } };
   const usdPrice = getUsdPrice(car);
   if (usdPrice) jsonLd.offers.price = usdPrice;
@@ -256,11 +297,11 @@ const render = (car) => {
 </head><body class="vehicle-detail-page seo-page" data-vehicle-id="${escapeAttr(id)}" data-vehicle-name="${escapeAttr(name)}" data-vehicle-year="${escapeAttr(englishValue(car.year || car.modelYear))}" data-vehicle-price="${escapeAttr(price)}" data-vehicle-url="${escapeAttr(url)}">
 <header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="index.html" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="new-cars.html">New Cars</a><a href="used-cars.html">Used Cars</a><a href="brands.html">Brands</a><a href="company.html">Company</a><a href="export-process.html">Export Process</a><a class="nav-cta" href="#contact">Contact Us</a></nav><select class="language-select" aria-label="Select language"><option value="en">English</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option><option value="fr">Fran&#231;ais</option><option value="es">Espa&#241;ol</option></select></div></header>
 <main>
-<section class="detail-hero used-detail-hero"><div class="container detail-grid"><article class="detail-card detail-main-panel"><p class="eyebrow">Used Car Export from China</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(description)}</p>${mediaMarkup}${videoMarkup}</article><aside class="detail-summary purchase-card"><p class="eyebrow">Batch inventory</p><div class="purchase-price"><small>Sale price</small><strong>${escapeHtml(price)}</strong></div>${renderSpecGrid(summary, 'purchase-specs')}<a class="btn btn-primary js-inquiry-cta detail-quote-btn" href="#contact" ${ctaAttrs(car, name, url)}>Request FOB Quote</a></aside></div></section>
-<section class="seo-section vehicle-overview-section"><div class="container"><h2>Vehicle Overview</h2><p>${escapeHtml(cardTitle)} is listed as batch used-car inventory from Qingdao, China. Vehicle details are prepared for export inquiry and stock confirmation.</p>${renderSpecGrid(overview, 'overview-specs')}</div></section>
+<section class="detail-hero used-detail-hero"><div class="container detail-grid"><article class="detail-card detail-main-panel"><p class="eyebrow">${escapeHtml(heroEyebrow)}</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(description)}</p>${mediaMarkup}${videoMarkup}</article><aside class="detail-summary purchase-card"><p class="eyebrow">${escapeHtml(purchaseEyebrow)}</p><div class="purchase-price"><small>${escapeHtml(priceLabel)}</small><strong>${escapeHtml(price)}</strong></div>${renderSpecGrid(summary, 'purchase-specs')}<a class="btn btn-primary js-inquiry-cta detail-quote-btn" href="#contact" ${ctaAttrs(car, name, url)}>Request FOB Quote</a></aside></div></section>
+<section class="seo-section vehicle-overview-section"><div class="container"><h2>Vehicle Overview</h2><p>${escapeHtml(overviewText)}</p>${renderSpecGrid(overview, 'overview-specs')}</div></section>
 <section class="seo-section key-specifications-section"><div class="container"><h2>Key Specifications</h2>${renderTechnicalSpecs(specs) || '<p>Detailed technical specifications can be confirmed during inquiry.</p>'}</div></section>
-<section class="seo-section condition-inventory-section"><div class="container"><h2>Condition &amp; Inventory</h2>${renderSpecGrid(condition, 'condition-specs')}</div></section>
-<section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-intro"><p class="eyebrow">Request FOB Quote</p><h2>Check Current Availability</h2><p>Send your destination country and timing. Our sales team will confirm current units, available colors, mileage and export quotation.</p></div><div class="inquiry-panel"><h3>Send Inquiry</h3><form class="inquiry-form" name="inquiry" method="POST" data-netlify="true" data-source-entry="used_car_detail" netlify-honeypot="bot-field" action="/thank-you.html"><input type="hidden" name="form-name" value="inquiry"><input type="hidden" name="bot-field" value="" aria-hidden="true" tabindex="-1">${inquiryHiddenFields(car, name, url)}<div class="inquiry-fields"><label><span>Name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Country</span><input type="text" name="country" autocomplete="country-name" required></label>${inquiryPhoneFields()}<label class="field-wide"><span>Interested Model</span><input type="text" name="model" value="${escapeAttr(name)}" required></label><label class="field-wide"><span>Message</span><textarea name="message" rows="4">${escapeHtml(`Please send current availability, FOB quotation, colors and export timing for ${name}.`)}</textarea></label></div><button class="btn inquiry-submit" type="submit">Request FOB Quote</button></form><p class="inquiry-success" role="status" aria-live="polite" hidden>Thank you, your inquiry has been received. Our sales team will contact you soon.</p></div></div></section>
+<section class="seo-section condition-inventory-section"><div class="container"><h2>${availabilityHeading}</h2>${renderSpecGrid(condition, 'condition-specs')}</div></section>
+<section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-intro"><p class="eyebrow">Request FOB Quote</p><h2>${escapeHtml(contactHeading)}</h2><p>${escapeHtml(contactText)}</p></div><div class="inquiry-panel"><h3>Send Inquiry</h3><form class="inquiry-form" name="inquiry" method="POST" data-netlify="true" data-source-entry="${escapeAttr(leadSource)}" netlify-honeypot="bot-field" action="/thank-you.html"><input type="hidden" name="form-name" value="inquiry"><input type="hidden" name="bot-field" value="" aria-hidden="true" tabindex="-1">${inquiryHiddenFields(car, name, url)}<div class="inquiry-fields"><label><span>Name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Country</span><input type="text" name="country" autocomplete="country-name" required></label>${inquiryPhoneFields()}<label class="field-wide"><span>Interested Model</span><input type="text" name="model" value="${escapeAttr(name)}" required></label><label class="field-wide"><span>Message</span><textarea name="message" rows="4">${escapeHtml(`Please send current availability, FOB quotation, colors and export timing for ${name}.`)}</textarea></label></div><button class="btn inquiry-submit" type="submit">Request FOB Quote</button></form><p class="inquiry-success" role="status" aria-live="polite" hidden>Thank you, your inquiry has been received. Our sales team will contact you soon.</p></div></div></section>
 </main>${galleryBehavior}
 <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>
 <footer class="site-footer"><div class="container footer-wrap"><a class="logo footer-logo" href="index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><p>Reliable vehicles from China, delivered worldwide.</p><nav class="footer-market-links export-market-links" aria-label="Export markets"><span>Export Markets:</span><a href="export-cars-from-china-to-africa.html">Africa</a><a href="export-cars-from-china-to-southeast-asia.html">Southeast Asia</a><a href="export-cars-from-china-to-central-asia.html">Central Asia</a></nav><p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p></div></footer><script src="script.js?v=20260716-used-list-crm"></script><script src="lead-gen.js?v=20260716-used-detail-crm"></script></body></html>

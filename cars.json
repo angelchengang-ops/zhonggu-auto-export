@@ -1,5 +1,499 @@
 [
   {
+    "id": "bestune-xiaoma-2026-222km-shanyaoma-edition",
+    "slug": "bestune-xiaoma-2026-222km-shanyaoma-edition",
+    "brand": "Bestune",
+    "model": "Bestune Xiaoma",
+    "type": "New Car",
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "listingType": "brand_new_batch_inventory",
+    "inventoryType": "brand_new_batch_inventory",
+    "supplyMode": "Batch supply",
+    "inventoryBadge": "Brand New",
+    "inventoryStatus": "In Stock",
+    "inventoryStatusLabel": "In Stock",
+    "inventoryStatusDisplay": "In stock / ample stock; contact us for current quantity",
+    "availabilityNote": "In stock / ample stock; contact us for current quantity.",
+    "isBatchInventory": true,
+    "year": "2026",
+    "modelYear": "2026",
+    "cardTitle": "Bestune Xiaoma 2026 222km Shanyaoma Edition",
+    "cardSubtitle": "222km Shanyaoma Edition | CLTC 222 km",
+    "trimEn": "222km Shanyaoma Edition",
+    "configuration": "222km Shanyaoma Edition",
+    "cltcRange": "222 km",
+    "range": "222 km",
+    "guidePriceRmb": "RMB 41,900",
+    "guidePriceDisplay": "RMB 41,900",
+    "fobPriceDisplay": "US$4,500",
+    "fobNanShaUsd": "US$4,500",
+    "price": "US$4,500",
+    "location": "Qingdao, China",
+    "locationDisplay": "Qingdao, China",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "availableColor": "Cream exterior shown; actual colors depend on current stock.",
+    "color": "Cream exterior shown; actual colors depend on current stock.",
+    "energyType": "Pure electric",
+    "fuel": "Electric",
+    "transmission": "Single-speed EV gearbox",
+    "bodyStyle": "3-door, 4-seat hatchback",
+    "seats": "4",
+    "image": "images/new-cars/xiaoma-419/03_front_left.jpg",
+    "mainImage": "images/new-cars/xiaoma-419/03_front_left.jpg",
+    "images": [
+      "images/new-cars/xiaoma-419/03_front_left.jpg",
+      "images/new-cars/xiaoma-419/01_front.jpg",
+      "images/new-cars/xiaoma-419/04_front_right.jpg",
+      "images/new-cars/xiaoma-419/1400x1050_autohomecar__ChxpV2jbcx6AUlr_AD-JCuhPIhA023.jpg",
+      "images/new-cars/xiaoma-419/02_rear.jpg",
+      "images/new-cars/xiaoma-419/1400x1050_autohomecar__ChxpWGiCEw-ACbpkABFqycw6krc799.jpg",
+      "images/new-cars/xiaoma-419/1400x1050_autohomecar__ChxpV2iCEw6ASezbAA8Y3rxqIXI445.jpg",
+      "images/new-cars/xiaoma-419/1400x1050_autohomecar__ChxpVmiCE2iAabF2ABHe8AE2ckk767.jpg"
+    ],
+    "seoTitle": "Bestune Xiaoma 2026 222km Shanyaoma Edition | FOB US$4,500 New Car Export",
+    "metaTitle": "Bestune Xiaoma 2026 222km Shanyaoma Edition | FOB US$4,500 New Car Export",
+    "metaDescription": "Brand-new Bestune Xiaoma 2026 222km Shanyaoma Edition available from Qingdao, China. FOB price is US$4,500 with ample stock and export quotation support.",
+    "descriptionEn": "Brand-new Bestune Xiaoma 2026 222km Shanyaoma Edition available from Qingdao, China. FOB price is US$4,500 with ample stock and export quotation support.",
+    "title": {
+      "en": "Bestune Xiaoma 2026 222km Shanyaoma Edition"
+    },
+    "description": {
+      "en": "Brand-new Bestune Xiaoma 2026 222km Shanyaoma Edition available from Qingdao, China. FOB price is US$4,500 with ample stock and export quotation support."
+    },
+    "shortDescription": {
+      "en": "Brand-new 222 km CLTC micro EV in stock from Qingdao, China."
+    },
+    "detailSpecs": [
+      {
+        "label": "Model year",
+        "value": "2026"
+      },
+      {
+        "label": "Version",
+        "value": "222km Shanyaoma Edition"
+      },
+      {
+        "label": "Vehicle type",
+        "value": "Brand New Car"
+      },
+      {
+        "label": "Energy type",
+        "value": "Pure electric"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "222 km"
+      },
+      {
+        "label": "Body structure",
+        "value": "3-door, 4-seat hatchback"
+      },
+      {
+        "label": "Seats",
+        "value": "4"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3000 x 1510 x 1630 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "1953 mm"
+      },
+      {
+        "label": "Drive",
+        "value": "Two-wheel drive"
+      },
+      {
+        "label": "Motor",
+        "value": "Single motor"
+      },
+      {
+        "label": "Total motor power",
+        "value": "30 kW (41 Ps)"
+      },
+      {
+        "label": "Total motor torque",
+        "value": "90 Nm"
+      },
+      {
+        "label": "Battery type",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "18.11 kWh"
+      },
+      {
+        "label": "Fast charging",
+        "value": "1.08 hours (30-80%)"
+      },
+      {
+        "label": "Slow charging",
+        "value": "6 hours"
+      },
+      {
+        "label": "Energy consumption",
+        "value": "8.8 kWh/100 km"
+      },
+      {
+        "label": "Top speed",
+        "value": "100 km/h"
+      },
+      {
+        "label": "Curb weight",
+        "value": "750 kg"
+      },
+      {
+        "label": "Cargo volume",
+        "value": "81-734 L"
+      }
+    ]
+  },
+  {
+    "id": "bestune-yueyi-03-2026-445km-zhixuan-edition",
+    "slug": "bestune-yueyi-03-2026-445km-zhixuan-edition",
+    "brand": "Bestune",
+    "model": "Bestune Yueyi 03",
+    "type": "New Car",
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "listingType": "brand_new_batch_inventory",
+    "inventoryType": "brand_new_batch_inventory",
+    "supplyMode": "Batch supply",
+    "inventoryBadge": "Brand New",
+    "inventoryStatus": "In Stock",
+    "inventoryStatusLabel": "In Stock",
+    "inventoryStatusDisplay": "In stock / ample stock; contact us for current quantity",
+    "availabilityNote": "In stock / ample stock; contact us for current quantity.",
+    "isBatchInventory": true,
+    "year": "2026",
+    "modelYear": "2026",
+    "cardTitle": "Bestune Yueyi 03 2026 445km Zhixuan Edition",
+    "cardSubtitle": "445km Zhixuan Edition | CLTC 445 km",
+    "trimEn": "445km Zhixuan Edition",
+    "configuration": "445km Zhixuan Edition",
+    "cltcRange": "445 km",
+    "range": "445 km",
+    "guidePriceRmb": "RMB 79,800",
+    "guidePriceDisplay": "RMB 79,800",
+    "fobPriceDisplay": "US$11,500",
+    "fobNanShaUsd": "US$11,500",
+    "price": "US$11,500",
+    "location": "Qingdao, China",
+    "locationDisplay": "Qingdao, China",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "availableColor": "Light blue exterior shown; actual colors depend on current stock.",
+    "color": "Light blue exterior shown; actual colors depend on current stock.",
+    "energyType": "Pure electric",
+    "fuel": "Electric",
+    "transmission": "Single-speed EV gearbox",
+    "bodyStyle": "5-door, 5-seat SUV",
+    "seats": "5",
+    "image": "images/new-cars/yueyi03-445-zhixuan/06_front_left.jpg",
+    "mainImage": "images/new-cars/yueyi03-445-zhixuan/06_front_left.jpg",
+    "images": [
+      "images/new-cars/yueyi03-445-zhixuan/06_front_left.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/02_front.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/04_front_right.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__CjIFVWheq3SAeTZmABBwN4iP4W4372.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/01_rear_three_quarter.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/03_rear_left.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/05_rear.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__Chtk2GhIYYuAV9CXAB4fzCZ9_V0467.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__Chtk2GhIYYyAc--RABbqPRAelrw001.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__Chxky2hIYf2ABWfrABcCs-OVTTA522.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__CjIFWGhIYfSAJU7mABgGgyUvMTE314.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__Chtk2GhIYYyASOysABfcHqexjuc972.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__CjIFU2hIYYyAUJF8ABmdaNdfs5I208.jpg",
+      "images/new-cars/yueyi03-445-zhixuan/1400x1050_autohomecar__CjIFVWheq36Aafc3ABNu0jj4_kI661.jpg"
+    ],
+    "seoTitle": "Bestune Yueyi 03 2026 445km Zhixuan Edition | FOB US$11,500 New Car Export",
+    "metaTitle": "Bestune Yueyi 03 2026 445km Zhixuan Edition | FOB US$11,500 New Car Export",
+    "metaDescription": "Brand-new Bestune Yueyi 03 2026 445km Zhixuan Edition available from Qingdao, China. FOB price is US$11,500 with ample stock and export quotation support.",
+    "descriptionEn": "Brand-new Bestune Yueyi 03 2026 445km Zhixuan Edition available from Qingdao, China. FOB price is US$11,500 with ample stock and export quotation support.",
+    "title": {
+      "en": "Bestune Yueyi 03 2026 445km Zhixuan Edition"
+    },
+    "description": {
+      "en": "Brand-new Bestune Yueyi 03 2026 445km Zhixuan Edition available from Qingdao, China. FOB price is US$11,500 with ample stock and export quotation support."
+    },
+    "shortDescription": {
+      "en": "Brand-new 445 km CLTC electric SUV in stock from Qingdao, China."
+    },
+    "detailSpecs": [
+      {
+        "label": "Model year",
+        "value": "2026"
+      },
+      {
+        "label": "Version",
+        "value": "445km Zhixuan Edition"
+      },
+      {
+        "label": "Vehicle type",
+        "value": "Brand New Car"
+      },
+      {
+        "label": "Energy type",
+        "value": "Pure electric"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "445 km"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 5-seat SUV"
+      },
+      {
+        "label": "Seats",
+        "value": "5"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "4450 x 1860 x 1635 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2750 mm"
+      },
+      {
+        "label": "Drive",
+        "value": "Two-wheel drive"
+      },
+      {
+        "label": "Motor",
+        "value": "Single motor"
+      },
+      {
+        "label": "Total motor power",
+        "value": "122 kW (166 Ps)"
+      },
+      {
+        "label": "Total motor torque",
+        "value": "200 Nm"
+      },
+      {
+        "label": "Battery type",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "48.35 kWh"
+      },
+      {
+        "label": "Battery cooling",
+        "value": "Liquid cooling"
+      },
+      {
+        "label": "Fast charging",
+        "value": "0.38 hours (30-80%)"
+      },
+      {
+        "label": "Slow charging",
+        "value": "3.6 hours"
+      },
+      {
+        "label": "Energy consumption",
+        "value": "11.8 kWh/100 km"
+      },
+      {
+        "label": "Top speed",
+        "value": "160 km/h"
+      },
+      {
+        "label": "Curb weight",
+        "value": "1530 kg"
+      },
+      {
+        "label": "Cargo volume",
+        "value": "415-1601 L"
+      },
+      {
+        "label": "Drag coefficient",
+        "value": "0.248 Cd"
+      }
+    ]
+  },
+  {
+    "id": "bestune-yueyi-03-2026-565km-xinxiang-edition",
+    "slug": "bestune-yueyi-03-2026-565km-xinxiang-edition",
+    "brand": "Bestune",
+    "model": "Bestune Yueyi 03",
+    "type": "New Car",
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "listingType": "brand_new_batch_inventory",
+    "inventoryType": "brand_new_batch_inventory",
+    "supplyMode": "Batch supply",
+    "inventoryBadge": "Brand New",
+    "inventoryStatus": "In Stock",
+    "inventoryStatusLabel": "In Stock",
+    "inventoryStatusDisplay": "In stock / ample stock; contact us for current quantity",
+    "availabilityNote": "In stock / ample stock; contact us for current quantity.",
+    "isBatchInventory": true,
+    "year": "2026",
+    "modelYear": "2026",
+    "cardTitle": "Bestune Yueyi 03 2026 565km Xinxiang Edition",
+    "cardSubtitle": "565km Xinxiang Edition | CLTC 565 km",
+    "trimEn": "565km Xinxiang Edition",
+    "configuration": "565km Xinxiang Edition",
+    "cltcRange": "565 km",
+    "range": "565 km",
+    "guidePriceRmb": "RMB 109,900",
+    "guidePriceDisplay": "RMB 109,900",
+    "fobPriceDisplay": "US$12,800",
+    "fobNanShaUsd": "US$12,800",
+    "price": "US$12,800",
+    "location": "Qingdao, China",
+    "locationDisplay": "Qingdao, China",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "availableColor": "White exterior shown; actual colors depend on current stock.",
+    "color": "White exterior shown; actual colors depend on current stock.",
+    "energyType": "Pure electric",
+    "fuel": "Electric",
+    "transmission": "Single-speed EV gearbox",
+    "bodyStyle": "5-door, 5-seat SUV",
+    "seats": "5",
+    "image": "images/new-cars/yueyi03-565-xinxiang/03_front_left.png",
+    "mainImage": "images/new-cars/yueyi03-565-xinxiang/03_front_left.png",
+    "images": [
+      "images/new-cars/yueyi03-565-xinxiang/03_front_left.png",
+      "images/new-cars/yueyi03-565-xinxiang/04_front.png",
+      "images/new-cars/yueyi03-565-xinxiang/1400x1050_autohomecar__ChxpVWmyEnuAXiH5ACt4Z1nXYCA550.jpg",
+      "images/new-cars/yueyi03-565-xinxiang/02_rear_right.png",
+      "images/new-cars/yueyi03-565-xinxiang/01_rear_left.png",
+      "images/new-cars/yueyi03-565-xinxiang/05_rear.png",
+      "images/new-cars/yueyi03-565-xinxiang/1400x1050_autohomecar__ChtpWGm8uoqARigFADVNOQ2agyU085.jpg",
+      "images/new-cars/yueyi03-565-xinxiang/1400x1050_autohomecar__ChxpV2myE2mAPVVRAB3MpkrPgvI765.jpg"
+    ],
+    "seoTitle": "Bestune Yueyi 03 2026 565km Xinxiang Edition | FOB US$12,800 New Car Export",
+    "metaTitle": "Bestune Yueyi 03 2026 565km Xinxiang Edition | FOB US$12,800 New Car Export",
+    "metaDescription": "Brand-new Bestune Yueyi 03 2026 565km Xinxiang Edition available from Qingdao, China. FOB price is US$12,800 with ample stock and export quotation support.",
+    "descriptionEn": "Brand-new Bestune Yueyi 03 2026 565km Xinxiang Edition available from Qingdao, China. FOB price is US$12,800 with ample stock and export quotation support.",
+    "title": {
+      "en": "Bestune Yueyi 03 2026 565km Xinxiang Edition"
+    },
+    "description": {
+      "en": "Brand-new Bestune Yueyi 03 2026 565km Xinxiang Edition available from Qingdao, China. FOB price is US$12,800 with ample stock and export quotation support."
+    },
+    "shortDescription": {
+      "en": "Brand-new 565 km CLTC electric SUV in stock from Qingdao, China."
+    },
+    "detailSpecs": [
+      {
+        "label": "Model year",
+        "value": "2026"
+      },
+      {
+        "label": "Version",
+        "value": "565km Xinxiang Edition"
+      },
+      {
+        "label": "Vehicle type",
+        "value": "Brand New Car"
+      },
+      {
+        "label": "Energy type",
+        "value": "Pure electric"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "565 km"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 5-seat SUV"
+      },
+      {
+        "label": "Seats",
+        "value": "5"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "4450 x 1860 x 1635 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2750 mm"
+      },
+      {
+        "label": "Drive",
+        "value": "Two-wheel drive"
+      },
+      {
+        "label": "Motor",
+        "value": "Single motor"
+      },
+      {
+        "label": "Total motor power",
+        "value": "122 kW (166 Ps)"
+      },
+      {
+        "label": "Total motor torque",
+        "value": "200 Nm"
+      },
+      {
+        "label": "Battery type",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "61.47 kWh"
+      },
+      {
+        "label": "Battery cooling",
+        "value": "Liquid cooling"
+      },
+      {
+        "label": "Fast charging",
+        "value": "0.47 hours (30-80%)"
+      },
+      {
+        "label": "Slow charging",
+        "value": "4.6 hours"
+      },
+      {
+        "label": "Energy consumption",
+        "value": "11.9 kWh/100 km"
+      },
+      {
+        "label": "Top speed",
+        "value": "160 km/h"
+      },
+      {
+        "label": "Curb weight",
+        "value": "1590 kg"
+      },
+      {
+        "label": "Cargo volume",
+        "value": "415-1601 L"
+      },
+      {
+        "label": "V2L output",
+        "value": "3.3 kW"
+      },
+      {
+        "label": "Tire specification",
+        "value": "215/55 R18"
+      }
+    ]
+  },
+  {
     "id": "geely-coolray-manual-super-power-edition",
     "brand": "Geely",
     "model": "Geely Coolray Super Power Edition Manual",

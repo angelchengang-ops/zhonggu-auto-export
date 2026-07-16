@@ -497,14 +497,17 @@ const makeVehicleCard = (car, type = "new") => {
   const image = getVehicleImage(car);
   const href = `${getVehicleSlug(car)}.html`;
   const video = type === "used" ? cleanPath(localized((car.videos || [])[0], "")) : "";
-  const location = type === "used" ? getVehicleLocation(car) : "";
-  const inventoryBadge = type === "used" ? getInventoryBadge(car) : "";
+  const location = getVehicleLocation(car);
+  const inventoryBadge = getInventoryBadge(car);
+  const inventoryStatus = localized(car.inventoryStatusLabel || car.inventoryStatusDisplay || car.inventoryStatus, "");
   const message = getVehicleMessage(car, title, href);
   const meta = type === "used"
     ? [year && `${t("car.year")}: ${year}`, mileage, location].filter(Boolean).join(" | ")
-    : [year && `${t("car.year")}: ${year}`, transmission].filter(Boolean).join(" | ");
-  const usedTags = type === "used" ? [inventoryBadge].filter(Boolean) : [];
-  const usedTagMarkup = usedTags.length ? `<div class="vehicle-tags">${usedTags.map((item) => `<span class="vehicle-tag">${escapeHtml(item)}</span>`).join("")}</div>` : "";
+    : [year && `${t("car.year")}: ${year}`, location || transmission].filter(Boolean).join(" | ");
+  const inventoryTags = type === "used"
+    ? [inventoryBadge]
+    : [inventoryBadge, inventoryStatus].filter((item) => !/ample stock|contact us/i.test(item));
+  const tagMarkup = inventoryTags.filter(Boolean).length ? `<div class="vehicle-tags">${inventoryTags.filter(Boolean).map((item) => `<span class="vehicle-tag">${escapeHtml(item)}</span>`).join("")}</div>` : "";
   const description = getVehicleDescription(car, type);
   const quoteAttrs = `data-title="${escapeHtml(title)}" data-model="${escapeHtml(displayModel)}" data-year="${escapeHtml(year)}" data-price="${escapeHtml(price)}" data-url="${escapeHtml(href)}" data-vehicle-id="${escapeHtml(car.id || "")}" data-lead-source="${type === "used" ? "used_car_list" : "vehicle_card"}" data-inventory-type="${escapeHtml(car.isBatchInventory ? "batch_inventory" : "")}"`;
   const card = document.createElement("article");
@@ -519,7 +522,7 @@ const makeVehicleCard = (car, type = "new") => {
       <h3><a href="${href}">${escapeHtml(displayModel)}</a></h3>
       <p class="vehicle-subtitle">${escapeHtml(trim)}</p>
       <p class="vehicle-meta">${escapeHtml(meta)}</p>
-      ${usedTagMarkup}
+      ${tagMarkup}
       ${description ? `<p class="vehicle-description">${escapeHtml(description)}</p>` : ""}
       ${type === "used" ? `<div class="vehicle-media-actions"><a class="media-action-btn" href="${href}">View Details</a>${video ? `<a class="media-action-btn media-action-video" href="${video}" target="_blank" rel="noopener">Play Video</a>` : ""}</div>` : ""}
     </div>
