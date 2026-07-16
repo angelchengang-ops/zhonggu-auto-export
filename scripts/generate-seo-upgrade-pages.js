@@ -183,6 +183,16 @@ const aggregateOfferProduct = ({ name, description, image, url, lowPrice, highPr
   }
 });
 
+const marketProductSchema = ({ name, description, url, image = 'images/og-image.jpg' }) => ({
+  '@type': 'Product',
+  name,
+  description,
+  image: absolute(image),
+  url: absolute(url),
+  brand: { '@type': 'Brand', name: 'Zhonggu Auto Export' },
+  category: 'Vehicle export service'
+});
+
 const faqSchema = (items) => ({
   '@type': 'FAQPage',
   mainEntity: items.map(([q, a]) => ({
@@ -312,7 +322,10 @@ ${contactSection({ heading: 'Get Latest FOB/CIF Price', intro: 'Tell us your tar
     h1: 'Export Cars from China to Ghana',
     market: 'Ghana',
     body,
-    schema: [faqSchema(faqs)]
+    schema: [
+      marketProductSchema({ name: 'China vehicle export service to Ghana', description: 'New and used vehicle sourcing from China for Ghana dealers and importers, with latest FOB or CIF quotation support.', url: '/export-cars-from-china-to-ghana.html' }),
+      faqSchema(faqs)
+    ]
   }));
 };
 
@@ -336,7 +349,10 @@ ${contactSection({ heading: 'Demander le prix FOB/CIF pour Abidjan', intro: 'Env
     h1: "Voitures de Chine vers la Cote d'Ivoire",
     market: "Cote d'Ivoire",
     body,
-    schema: [faqSchema(faqs)]
+    schema: [
+      marketProductSchema({ name: "Service d'export automobile de Chine vers la Cote d'Ivoire", description: "Service de sourcing de voitures neuves et d'occasion depuis la Chine vers Abidjan, Cote d'Ivoire, avec demande de prix FOB ou CIF actualisee.", url: '/export-cars-from-china-to-ivory-coast.html' }),
+      faqSchema(faqs)
+    ]
   }));
 };
 
@@ -363,7 +379,10 @@ ${contactSection({ heading: 'Get Latest FOB/CIF Price to Algiers', intro: 'Send 
     h1: 'Export Cars from China to Algeria',
     market: 'Algeria',
     body,
-    schema: [faqSchema(faqs)]
+    schema: [
+      marketProductSchema({ name: 'China vehicle export service to Algeria', description: 'Vehicle sourcing and export quotation support from China to Algeria, including Geely Coolray, used Bestune B70, Yueyi 03 and Yueyi 07 PHEV options.', url: '/export-cars-from-china-to-algeria.html' }),
+      faqSchema(faqs)
+    ]
   }));
 };
 
