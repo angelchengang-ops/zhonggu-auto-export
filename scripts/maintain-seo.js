@@ -22,7 +22,7 @@ const xml = (urls, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-
 const normalizePublishedUrls = (content) => content
   .replace(/https:\/\/www\.zhongguauto\.com/g, SITE)
   .replace(/https:\/\/zhongguauto\.com/g, SITE)
-  .replace(/(https:\/\/zhongguauto\.com\/(?:(?:fr|ar)\/)?landing\/[a-z0-9-]+)\/(?=["'<\s])/g, '$1');
+  .replace(/(https:\/\/zhongguauto\.com\/(?:(?:fr|ar)\/)?landing\/[a-z0-9-]+)\/?(?=["'<\s])/g, '$1/');
 
 const cars = JSON.parse(read('cars.json'));
 const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.html`));
@@ -38,7 +38,7 @@ const landingRoot = path.join(ROOT, 'landing');
 const landingDirs = fs.existsSync(landingRoot)
   ? fs.readdirSync(landingRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory() && !EXCLUDED_LANDING_DIRS.has(entry.name) && fs.existsSync(path.join(landingRoot, entry.name, 'index.html')))
-    .map((entry) => siteUrl(`landing/${entry.name}`))
+    .map((entry) => siteUrl(`landing/${entry.name}/`))
   : [];
 const localizedLanding = [];
 for (const code of ['fr', 'ar']) {
@@ -46,7 +46,7 @@ for (const code of ['fr', 'ar']) {
   if (!fs.existsSync(localizedRoot)) continue;
   for (const entry of fs.readdirSync(localizedRoot, { withFileTypes: true })) {
     if (entry.isDirectory() && fs.existsSync(path.join(localizedRoot, entry.name, 'index.html'))) {
-      localizedLanding.push(siteUrl(`${code}/landing/${entry.name}`));
+      localizedLanding.push(siteUrl(`${code}/landing/${entry.name}/`));
     }
   }
 }
