@@ -29,10 +29,16 @@ const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.
 const vehicleUrls = cars
   .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
   .map((car) => siteUrl(`${car.id}.html`));
+const canonicalFromRootPage = (filename) => {
+  const content = read(filename);
+  const match = content.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
+  if (match && match[1].startsWith(`${SITE}/`)) return match[1];
+  return siteUrl(filename);
+};
 
-const pages = fs.readdirSync(ROOT, { withFileTypes: true })
+const pages = Array.from(new Set(fs.readdirSync(ROOT, { withFileTypes: true })
   .filter((entry) => entry.isFile() && entry.name.endsWith('.html') && entry.name !== 'index.html' && !vehicleIds.has(entry.name))
-  .map((entry) => siteUrl(entry.name));
+  .map((entry) => canonicalFromRootPage(entry.name))));
 
 const landingRoot = path.join(ROOT, 'landing');
 const landingDirs = fs.existsSync(landingRoot)
