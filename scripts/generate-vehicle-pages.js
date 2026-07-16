@@ -296,9 +296,23 @@ const render = (car) => {
     : 'Send your destination country and timing. Our sales team will confirm current units, available colors, mileage and export quotation.';
   const styleVersion = hasDetailGallery(car) ? GALLERY_STYLE_VERSION : DETAIL_STYLE_VERSION;
   const scriptVersion = hasDetailGallery(car) ? GALLERY_SCRIPT_VERSION : DETAIL_SCRIPT_VERSION;
-  const jsonLd = { '@context': 'https://schema.org', '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: `ZG-${id.toUpperCase()}`, brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' }, offers: { '@type': 'Offer', url, priceCurrency: 'USD', availability: 'https://schema.org/InStock', itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}` } };
+  const productJsonLd = { '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: `ZG-${id.toUpperCase()}`, brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' }, offers: { '@type': 'Offer', url, priceCurrency: 'USD', availability: 'https://schema.org/InStock', itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}` } };
   const usdPrice = getUsdPrice(car);
-  if (usdPrice) jsonLd.offers.price = usdPrice;
+  if (usdPrice) productJsonLd.offers.price = usdPrice;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      productJsonLd,
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: newVehicle ? 'New Cars' : 'Used Cars', item: `${SITE}/${newVehicle ? 'new-cars.html' : 'used-cars.html'}` },
+          { '@type': 'ListItem', position: 3, name, item: url }
+        ]
+      }
+    ]
+  };
   return `<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
