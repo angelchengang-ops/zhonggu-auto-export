@@ -1210,6 +1210,10 @@ img { display: block; max-width: 100%; }
   aspect-ratio: 16 / 10;
   object-fit: cover;
 }
+body[data-vehicle-id="geely-coolray-full-option"] .vehicle-main-image img {
+  object-fit: contain;
+  background: #f3f6fa;
+}
 .vehicle-detail-page .vehicle-thumbnails {
   display: flex;
   gap: 8px;
@@ -1274,6 +1278,13 @@ img { display: block; max-width: 100%; }
   width: 100%;
   max-height: 420px;
   background: #07192d;
+}
+.vehicle-detail-page .vehicle-video-card p {
+  margin: 0;
+  padding: 12px 14px 14px;
+  color: var(--muted);
+  font-size: .86rem;
+  line-height: 1.6;
 }
 .vehicle-detail-page .vehicle-video-card .btn {
   margin: 0 14px 14px;

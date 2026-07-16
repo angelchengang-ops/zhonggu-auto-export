@@ -118,6 +118,21 @@ const videoTitleFrom = (value, index) => {
   if (value && typeof value === 'object' && !Array.isArray(value)) return englishValue(value.title || value.name || value.label) || `Vehicle video ${index + 1}`;
   return `Vehicle video ${index + 1}`;
 };
+const videoDescriptionFrom = (value) => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) return englishValue(value.description || value.summary || value.caption);
+  return '';
+};
+const videoPosterFrom = (value) => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const poster = pickText(value.poster || value.posterImage || value.thumbnail || value.thumbnailUrl || value.thumbnail_url, '');
+    return poster && isUsableImage(poster) ? cleanPath(poster) : '';
+  }
+  return '';
+};
+const videoMetaFrom = (value, key) => {
+  if (value && typeof value === 'object' && !Array.isArray(value)) return englishValue(value[key]);
+  return '';
+};
 const videoTypeFor = (source) => /\.webm(?:$|[?#])/i.test(source) ? 'video/webm' : (/\.mov(?:$|[?#])/i.test(source) ? 'video/quicktime' : 'video/mp4');
 const isYoutubeVideo = (source) => /(?:youtube\.com|youtu\.be)/i.test(source);
 const isUsableVideoSource = (source = '') => Boolean(cleanPath(source)) && (isRemoteAsset(source) || assetExists(source));
@@ -130,7 +145,7 @@ const getVideos = (car) => {
     const src = isRemoteAsset(source) ? source : cleanPath(source);
     if (seen.has(src)) return null;
     seen.add(src);
-    return { src, title: videoTitleFrom(item, index), type: videoTypeFor(src), youtube: isYoutubeVideo(src) };
+    return { src, title: videoTitleFrom(item, index), description: videoDescriptionFrom(item), poster: videoPosterFrom(item), uploadDate: videoMetaFrom(item, 'uploadDate'), duration: videoMetaFrom(item, 'duration'), type: videoTypeFor(src), youtube: isYoutubeVideo(src) };
   }).filter(Boolean);
 };
 const getDescription = (car, name) => englishValue(car.metaDescription || car.seoDescription || car.descriptionEn || car.description) || `Get latest price, stock list and export support for ${name} from China.`;
@@ -198,11 +213,14 @@ const conditionSpecs = (car) => {
 };
 const renderMedia = (images, name, car) => {
   const items = images.length ? images : ['images/new-cars/generic-new-car-bg-01.png'];
+  const altTexts = toArray(car.galleryAltTexts || car.imageAltTexts || car.altTexts);
+  const mainAlt = englishValue(altTexts[0]) || `${name} export from China`;
+  const thumbAltFor = (index) => englishValue(altTexts[index]) || `${name} photo ${index + 1}`;
   const main = items[0];
-  const alt = `${name} export from China`;
+  const alt = mainAlt;
   if (!hasDetailGallery(car)) return `<div class="detail-media"><img src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>`;
   const thumbs = items.length > 1 ? `<div class="vehicle-thumbnails" aria-label="Vehicle photo gallery">${items.map((image, index) => {
-    const label = `${name} photo ${index + 1}`;
+    const label = thumbAltFor(index);
     const selected = index === 0 ? 'true' : 'false';
     return `<button class="vehicle-thumbnail${index === 0 ? ' is-active' : ''}" type="button" data-gallery-src="${escapeAttr(image)}" data-gallery-alt="${escapeAttr(label)}" aria-label="Show photo ${index + 1}" aria-current="${selected}" aria-selected="${selected}"><img src="${escapeAttr(image)}" alt="${escapeAttr(label)}" loading="lazy"></button>`;
   }).join('')}</div>` : '';
@@ -213,7 +231,9 @@ const renderVideoSection = (videos) => {
   const cards = videos.map((video, index) => {
     const title = video.title || `Vehicle video ${index + 1}`;
     if (video.youtube) return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><a class="btn btn-light" href="${escapeAttr(video.src)}" target="_blank" rel="noopener">Open video</a></article>`;
-    return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><video controls preload="metadata" playsinline><source src="${escapeAttr(video.src)}" type="${escapeAttr(video.type)}">Your browser does not support this video.</video></article>`;
+    const poster = video.poster ? ` poster="${escapeAttr(video.poster)}"` : '';
+    const description = video.description ? `<p>${escapeHtml(video.description)}</p>` : '';
+    return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><video controls preload="metadata" playsinline${poster}><source src="${escapeAttr(video.src)}" type="${escapeAttr(video.type)}">Your browser does not support this video.</video>${description}</article>`;
   }).join('');
   return `<section class="vehicle-video-section" aria-label="Vehicle videos"><h2>Vehicle Video</h2><div class="vehicle-video-list">${cards}</div></section>`;
 };
@@ -313,6 +333,17 @@ const render = (car) => {
       }
     ]
   };
+  videos.filter((video) => !video.youtube && video.uploadDate && video.duration).forEach((video) => {
+    jsonLd['@graph'].push({
+      '@type': 'VideoObject',
+      name: video.title || `${name} video`,
+      description: video.description || description,
+      thumbnailUrl: absoluteUrl(video.poster || img),
+      uploadDate: video.uploadDate,
+      duration: video.duration,
+      contentUrl: absoluteUrl(video.src)
+    });
+  });
   return `<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

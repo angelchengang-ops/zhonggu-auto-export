@@ -707,7 +707,7 @@
     "fobNanShaUsd": "US$11,800",
     "configuration": "Full Option with Package and Panoramic Sunroof",
     "availableColor": "Current colors confirmed during inquiry.",
-    "image": "images/og/vehicles/geely-coolray-full-option.jpg",
+    "image": "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
     "guidePriceDisplay": "96,800 RMB",
     "fobPriceDisplay": "US$11,800",
     "title": {
@@ -748,18 +748,49 @@
     "priceCurrency": "USD",
     "color": "Current colors confirmed during inquiry.",
     "mileage": "New vehicle; delivery mileage may vary",
-    "mainImage": "images/og/vehicles/geely-coolray-full-option.jpg",
+    "mainImage": "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
     "images": [
-      "images/og/vehicles/geely-coolray-full-option.jpg",
-      "images/og/vehicles/geely-coolray-battle-edition.jpg",
-      "images/og/vehicles/geely-coolray-automatic-super-power-edition-with-sunroof.jpg",
-      "images/og/vehicles/geely-coolray-super-max.jpg"
+      "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/02-front-three-quarter-left.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/03-rear-three-quarter.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/04-front.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/05-rear.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/06-interior-dashboard.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/07-front-seat-and-door.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/08-rear-seat.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/09-infotainment-display.jpg"
     ],
     "gallery": [
-      "images/og/vehicles/geely-coolray-full-option.jpg",
-      "images/og/vehicles/geely-coolray-battle-edition.jpg",
-      "images/og/vehicles/geely-coolray-automatic-super-power-edition-with-sunroof.jpg",
-      "images/og/vehicles/geely-coolray-super-max.jpg"
+      "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/02-front-three-quarter-left.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/03-rear-three-quarter.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/04-front.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/05-rear.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/06-interior-dashboard.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/07-front-seat-and-door.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/08-rear-seat.jpg",
+      "images/new-cars/geely-coolray-full-option-nansha/09-infotainment-display.jpg"
+    ],
+    "galleryAltTexts": [
+      "Geely Coolray Full Option front right three-quarter view at Nansha Port ready stock",
+      "Geely Coolray Full Option front left three-quarter view",
+      "Geely Coolray Full Option rear three-quarter view",
+      "Geely Coolray Full Option front view",
+      "Geely Coolray Full Option rear view",
+      "Geely Coolray Full Option interior dashboard and panoramic sunroof",
+      "Geely Coolray Full Option front seat and driver door",
+      "Geely Coolray Full Option rear seat space",
+      "Geely Coolray Full Option infotainment display"
+    ],
+    "videos": [
+      {
+        "src": "images/new-cars/geely-coolray-full-option-nansha/geely-coolray-ready-stock-nansha-port.mp4",
+        "title": "Geely Coolray Ready Stock at Nansha Port, China",
+        "description": "Actual ready-stock Geely Coolray units at Nansha Port, China. Contact Zhonggu Auto Export for current quantity, VIN availability and FOB quotation.",
+        "poster": "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
+        "uploadDate": "2026-07-16",
+        "duration": "PT5.824S"
+      }
     ],
     "seoTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",
     "metaTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",

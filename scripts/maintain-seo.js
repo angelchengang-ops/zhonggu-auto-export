@@ -18,7 +18,10 @@ const writeOptional = (relative, content) => {
   try { write(relative, content); } catch (error) { if (error.code !== 'EPERM') throw error; }
 };
 const siteUrl = (pathname = '') => `${SITE}${pathname.startsWith('/') ? pathname : `/${pathname}`}`;
+const cleanPath = (value = '') => String(value || '').replace(/^\/+/, '');
+const assetUrl = (value = '') => /^https?:\/\//i.test(String(value || '')) ? String(value) : siteUrl(cleanPath(value));
 const xml = (urls, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>${url}</loc><lastmod>${LASTMOD}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
+const xmlWithImages = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.map((entry) => `  <url><loc>${entry.url}</loc><lastmod>${LASTMOD}</lastmod><changefreq>${frequency}</changefreq>${entry.image ? `<image:image><image:loc>${entry.image}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>\n`;
 const normalizePublishedUrls = (content) => content
   .replace(/https:\/\/www\.zhongguauto\.com/g, SITE)
   .replace(/https:\/\/zhongguauto\.com/g, SITE)
@@ -26,9 +29,11 @@ const normalizePublishedUrls = (content) => content
 
 const cars = JSON.parse(read('cars.json'));
 const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.html`));
-const vehicleUrls = cars
+const vehicleImage = (car = {}) => cleanPath(car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : ''));
+const vehicleEntries = cars
   .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
-  .map((car) => siteUrl(`${car.id}.html`));
+  .map((car) => ({ url: siteUrl(`${car.id}.html`), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '' }));
+const vehicleUrls = vehicleEntries.map((entry) => entry.url);
 const canonicalFromRootPage = (filename) => {
   const content = read(filename);
   const match = content.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
@@ -59,7 +64,7 @@ for (const code of ['fr', 'ar']) {
 
 const pageSitemap = xml([siteUrl('/'), ...pages]);
 const landingSitemap = xml([...landingDirs, ...localizedLanding]);
-const vehicleSitemap = xml(vehicleUrls, 'weekly');
+const vehicleSitemap = xmlWithImages(vehicleEntries, 'weekly');
 write('sitemap-pages-current.xml', pageSitemap);
 write('sitemap-landing-current.xml', landingSitemap);
 write('sitemap-vehicles-current.xml', vehicleSitemap);
