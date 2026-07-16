@@ -1232,7 +1232,9 @@ img { display: block; max-width: 100%; }
   cursor: pointer;
 }
 .vehicle-detail-page .vehicle-thumbnail:hover,
-.vehicle-detail-page .vehicle-thumbnail[aria-current="true"] {
+.vehicle-detail-page .vehicle-thumbnail[aria-current="true"],
+.vehicle-detail-page .vehicle-thumbnail[aria-selected="true"],
+.vehicle-detail-page .vehicle-thumbnail.is-active {
   border-color: var(--blue);
 }
 .vehicle-detail-page .vehicle-thumbnail img {

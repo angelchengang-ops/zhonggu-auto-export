@@ -2,7 +2,10 @@
 const path = require('path');
 
 const SITE = 'https://www.zhongguauto.com';
-const STYLE_VERSION = '20260716-used-detail-compact-phone';
+const DETAIL_STYLE_VERSION = '20260716-used-detail-compact-phone';
+const GALLERY_STYLE_VERSION = '20260716-gallery-navigation';
+const DETAIL_SCRIPT_VERSION = '20260716-used-list-crm';
+const GALLERY_SCRIPT_VERSION = '20260716-gallery-navigation';
 const rootDir = path.join(__dirname, '..');
 const cars = JSON.parse(fs.readFileSync(path.join(rootDir, 'cars.json'), 'utf8').replace(/^\uFEFF/, ''));
 const manualImageMapPath = path.join(rootDir, 'manual-image-map.json');
@@ -198,11 +201,11 @@ const renderMedia = (images, name, car) => {
   if (!hasDetailGallery(car)) return `<div class="detail-media"><img src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>`;
   const thumbs = items.length > 1 ? `<div class="vehicle-thumbnails" aria-label="Vehicle photo gallery">${items.map((image, index) => {
     const label = `${name} photo ${index + 1}`;
-    return `<button class="vehicle-thumbnail" type="button" data-gallery-src="${escapeAttr(image)}" data-gallery-alt="${escapeAttr(label)}" aria-label="Show photo ${index + 1}" aria-current="${index === 0 ? 'true' : 'false'}"><img src="${escapeAttr(image)}" alt="${escapeAttr(label)}" loading="lazy"></button>`;
+    const selected = index === 0 ? 'true' : 'false';
+    return `<button class="vehicle-thumbnail${index === 0 ? ' is-active' : ''}" type="button" data-gallery-src="${escapeAttr(image)}" data-gallery-alt="${escapeAttr(label)}" aria-label="Show photo ${index + 1}" aria-current="${selected}" aria-selected="${selected}"><img src="${escapeAttr(image)}" alt="${escapeAttr(label)}" loading="lazy"></button>`;
   }).join('')}</div>` : '';
   return `<div class="detail-media used-car-gallery${items.length > 1 ? ' has-thumbnails' : ''}" data-vehicle-gallery><div class="vehicle-main-image"><img class="vehicle-gallery-main" data-gallery-main src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>${thumbs}</div>`;
 };
-const renderGalleryScript = (car, images) => hasDetailGallery(car) && images.length > 1 ? `<script>(function(){document.querySelectorAll('[data-vehicle-gallery]').forEach(function(gallery){var main=gallery.querySelector('[data-gallery-main]');gallery.addEventListener('click',function(event){var button=event.target.closest('[data-gallery-src]');if(!button||!main)return;main.src=button.dataset.gallerySrc;main.alt=button.dataset.galleryAlt||main.alt;gallery.querySelectorAll('[data-gallery-src]').forEach(function(item){item.setAttribute('aria-current',item===button?'true':'false'});});});})();</script>` : '';
 const renderVideoSection = (videos) => {
   if (!videos.length) return '';
   const cards = videos.map((video, index) => {
@@ -252,7 +255,6 @@ const render = (car) => {
   const ogTitle = englishValue(car.seoTitle || car.metaTitle) || `${name} | Vehicle Export from China`;
   const mediaMarkup = renderMedia(galleryImages, name, car);
   const videoMarkup = renderVideoSection(videos);
-  const galleryBehavior = renderGalleryScript(car, galleryImages);
   const summary = summarySpecs(car);
   const overview = overviewSpecs(car);
   const specs = technicalSpecs(car);
@@ -271,6 +273,8 @@ const render = (car) => {
   const contactText = newGallery
     ? 'Send your destination country and timing. Our sales team will confirm current stock, available colors and FOB export quotation.'
     : 'Send your destination country and timing. Our sales team will confirm current units, available colors, mileage and export quotation.';
+  const styleVersion = hasDetailGallery(car) ? GALLERY_STYLE_VERSION : DETAIL_STYLE_VERSION;
+  const scriptVersion = hasDetailGallery(car) ? GALLERY_SCRIPT_VERSION : DETAIL_SCRIPT_VERSION;
   const jsonLd = { '@context': 'https://schema.org', '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: `ZG-${id.toUpperCase()}`, brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' }, offers: { '@type': 'Offer', url, priceCurrency: 'USD', availability: 'https://schema.org/InStock', itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}` } };
   const usdPrice = getUsdPrice(car);
   if (usdPrice) jsonLd.offers.price = usdPrice;
@@ -293,7 +297,7 @@ const render = (car) => {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=${STYLE_VERSION}">
+  <link rel="stylesheet" href="style.css?v=${styleVersion}">
 </head><body class="vehicle-detail-page seo-page" data-vehicle-id="${escapeAttr(id)}" data-vehicle-name="${escapeAttr(name)}" data-vehicle-year="${escapeAttr(englishValue(car.year || car.modelYear))}" data-vehicle-price="${escapeAttr(price)}" data-vehicle-url="${escapeAttr(url)}">
 <header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="index.html" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="new-cars.html">New Cars</a><a href="used-cars.html">Used Cars</a><a href="brands.html">Brands</a><a href="company.html">Company</a><a href="export-process.html">Export Process</a><a class="nav-cta" href="#contact">Contact Us</a></nav><select class="language-select" aria-label="Select language"><option value="en">English</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option><option value="fr">Fran&#231;ais</option><option value="es">Espa&#241;ol</option></select></div></header>
 <main>
@@ -302,9 +306,9 @@ const render = (car) => {
 <section class="seo-section key-specifications-section"><div class="container"><h2>Key Specifications</h2>${renderTechnicalSpecs(specs) || '<p>Detailed technical specifications can be confirmed during inquiry.</p>'}</div></section>
 <section class="seo-section condition-inventory-section"><div class="container"><h2>${availabilityHeading}</h2>${renderSpecGrid(condition, 'condition-specs')}</div></section>
 <section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-intro"><p class="eyebrow">Request FOB Quote</p><h2>${escapeHtml(contactHeading)}</h2><p>${escapeHtml(contactText)}</p></div><div class="inquiry-panel"><h3>Send Inquiry</h3><form class="inquiry-form" name="inquiry" method="POST" data-netlify="true" data-source-entry="${escapeAttr(leadSource)}" netlify-honeypot="bot-field" action="/thank-you.html"><input type="hidden" name="form-name" value="inquiry"><input type="hidden" name="bot-field" value="" aria-hidden="true" tabindex="-1">${inquiryHiddenFields(car, name, url)}<div class="inquiry-fields"><label><span>Name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Country</span><input type="text" name="country" autocomplete="country-name" required></label>${inquiryPhoneFields()}<label class="field-wide"><span>Interested Model</span><input type="text" name="model" value="${escapeAttr(name)}" required></label><label class="field-wide"><span>Message</span><textarea name="message" rows="4">${escapeHtml(`Please send current availability, FOB quotation, colors and export timing for ${name}.`)}</textarea></label></div><button class="btn inquiry-submit" type="submit">Request FOB Quote</button></form><p class="inquiry-success" role="status" aria-live="polite" hidden>Thank you, your inquiry has been received. Our sales team will contact you soon.</p></div></div></section>
-</main>${galleryBehavior}
+</main>
 <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>
-<footer class="site-footer"><div class="container footer-wrap"><a class="logo footer-logo" href="index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><p>Reliable vehicles from China, delivered worldwide.</p><nav class="footer-market-links export-market-links" aria-label="Export markets"><span>Export Markets:</span><a href="export-cars-from-china-to-africa.html">Africa</a><a href="export-cars-from-china-to-southeast-asia.html">Southeast Asia</a><a href="export-cars-from-china-to-central-asia.html">Central Asia</a></nav><p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p></div></footer><script src="script.js?v=20260716-used-list-crm"></script><script src="lead-gen.js?v=20260716-used-detail-crm"></script></body></html>
+<footer class="site-footer"><div class="container footer-wrap"><a class="logo footer-logo" href="index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><p>Reliable vehicles from China, delivered worldwide.</p><nav class="footer-market-links export-market-links" aria-label="Export markets"><span>Export Markets:</span><a href="export-cars-from-china-to-africa.html">Africa</a><a href="export-cars-from-china-to-southeast-asia.html">Southeast Asia</a><a href="export-cars-from-china-to-central-asia.html">Central Asia</a></nav><p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p></div></footer><script src="script.js?v=${scriptVersion}"></script><script src="lead-gen.js?v=20260716-used-detail-crm"></script></body></html>
 `;
 };
 let count = 0;

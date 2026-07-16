@@ -735,6 +735,49 @@ const bindVideoStages = () => {
     stage.addEventListener("click", (event) => { if (!event.target.closest("video")) video.play().catch(() => {}); });
   });
 };
+const selectVehicleGalleryImage = (gallery, button) => {
+  if (!gallery || !button) return;
+  const main = gallery.querySelector("[data-gallery-main]");
+  const nextSrc = button.dataset.gallerySrc || "";
+  if (!main || !nextSrc) return;
+  main.removeAttribute("srcset");
+  main.removeAttribute("sizes");
+  main.src = nextSrc;
+  main.setAttribute("src", nextSrc);
+  main.alt = button.dataset.galleryAlt || button.querySelector("img")?.alt || main.alt;
+  gallery.querySelectorAll("[data-gallery-src]").forEach((item) => {
+    const selected = item === button;
+    item.setAttribute("aria-current", selected ? "true" : "false");
+    item.setAttribute("aria-selected", selected ? "true" : "false");
+    item.classList.toggle("is-active", selected);
+  });
+};
+const initVehicleGalleries = () => {
+  document.querySelectorAll("[data-vehicle-gallery]").forEach((gallery) => {
+    if (gallery.dataset.galleryBound === "true") return;
+    gallery.dataset.galleryBound = "true";
+    const buttons = Array.from(gallery.querySelectorAll("[data-gallery-src]"));
+    buttons.forEach((button) => {
+      if (button.tagName === "BUTTON" && !button.getAttribute("type")) button.setAttribute("type", "button");
+      const selected = button.getAttribute("aria-current") === "true" || button.classList.contains("is-active");
+      button.setAttribute("aria-selected", selected ? "true" : "false");
+      button.classList.toggle("is-active", selected);
+    });
+    gallery.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-gallery-src]");
+      if (!button || !gallery.contains(button)) return;
+      event.preventDefault();
+      selectVehicleGalleryImage(gallery, button);
+    });
+    gallery.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const button = event.target.closest("[data-gallery-src]");
+      if (!button || !gallery.contains(button)) return;
+      event.preventDefault();
+      selectVehicleGalleryImage(gallery, button);
+    });
+  });
+};
 
 const encodeFormData = (formData) => new URLSearchParams(formData).toString();
 const INQUIRY_API = "/api/public/inquiries";
@@ -1048,6 +1091,7 @@ loadVehicles().catch((error) => console.error("Vehicle data engine failed", erro
 bindWhatsappButtons();
 updateCompanyMedia();
 bindVideoStages();
+initVehicleGalleries();
 ensureInquiryFormFields();
 bindInquiryForms();
 bindAfricaMarketTracking();
