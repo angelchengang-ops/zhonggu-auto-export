@@ -29,7 +29,7 @@ const normalizePublishedUrls = (content) => content
 
 const cars = JSON.parse(read('cars.json'));
 const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.html`));
-const vehicleImage = (car = {}) => cleanPath(car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : ''));
+const vehicleImage = (car = {}) => cleanPath(car.sitemapImage || car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : ''));
 const vehicleCanonicalPath = (car = {}) => cleanPath(car.canonicalPath || car.urlPath || `${car.id}.html`);
 const vehicleEntries = cars
   .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
