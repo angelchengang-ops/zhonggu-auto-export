@@ -105,12 +105,9 @@ const pageShell = ({ lang = 'en', title, description, path: pagePath, canonicalP
   <meta property="og:url" content="${url}">
   <meta property="og:image" content="${SITE}/images/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css?v=${STYLE_VERSION}">
   <link rel="stylesheet" href="/assets/css/whatsapp-lead-modal.css">
-</head><body class="seo-page ${escapeAttr(bodyClass)}" ${market ? `data-market-country="${escapeAttr(market)}"` : ''}>${nav}<main>${body}</main>${footer}<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script><script src="/script.js?v=${SCRIPT_VERSION}"></script><script src="/lead-gen.js?v=${SCRIPT_VERSION}"></script><script src="/assets/js/whatsapp-lead-modal.js"></script></body></html>
+</head><body class="seo-page ${escapeAttr(bodyClass)}" ${market ? `data-market-country="${escapeAttr(market)}"` : ''}>${nav}<main>${body}</main>${footer}<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script><script defer src="/script.js?v=${SCRIPT_VERSION}"></script><script defer src="/lead-gen.js?v=${SCRIPT_VERSION}"></script><script defer src="/assets/js/whatsapp-lead-modal.js"></script></body></html>
 `;
 };
 

@@ -1058,7 +1058,7 @@
     "fobNanShaUsd": "US$11,800",
     "configuration": "Full Option with Package and Panoramic Sunroof",
     "availableColor": "Current colors confirmed during inquiry.",
-    "image": "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
+    "image": "images/new-cars/geely-coolray-full-option-nansha/optimized/01-front-three-quarter-right.webp",
     "guidePriceDisplay": "96,800 RMB",
     "fobPriceDisplay": "US$11,800",
     "title": {
@@ -1099,28 +1099,39 @@
     "priceCurrency": "USD",
     "color": "Current colors confirmed during inquiry.",
     "mileage": "New vehicle; delivery mileage may vary",
-    "mainImage": "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
+    "mainImage": "images/new-cars/geely-coolray-full-option-nansha/optimized/01-front-three-quarter-right.webp",
     "images": [
-      "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/02-front-three-quarter-left.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/03-rear-three-quarter.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/04-front.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/05-rear.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/06-interior-dashboard.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/07-front-seat-and-door.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/08-rear-seat.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/09-infotainment-display.jpg"
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/01-front-three-quarter-right.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/02-front-three-quarter-left.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/03-rear-three-quarter.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/04-front.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/05-rear.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/06-interior-dashboard.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/07-front-seat-and-door.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/08-rear-seat.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/09-infotainment-display.webp"
     ],
     "gallery": [
-      "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/02-front-three-quarter-left.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/03-rear-three-quarter.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/04-front.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/05-rear.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/06-interior-dashboard.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/07-front-seat-and-door.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/08-rear-seat.jpg",
-      "images/new-cars/geely-coolray-full-option-nansha/09-infotainment-display.jpg"
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/01-front-three-quarter-right.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/02-front-three-quarter-left.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/03-rear-three-quarter.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/04-front.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/05-rear.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/06-interior-dashboard.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/07-front-seat-and-door.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/08-rear-seat.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/optimized/09-infotainment-display.webp"
+    ],
+    "galleryThumbnails": [
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/01-front-three-quarter-right.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/02-front-three-quarter-left.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/03-rear-three-quarter.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/04-front.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/05-rear.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/06-interior-dashboard.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/07-front-seat-and-door.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/08-rear-seat.webp",
+      "images/new-cars/geely-coolray-full-option-nansha/thumbs/09-infotainment-display.webp"
     ],
     "galleryAltTexts": [
       "Geely Coolray Full Option front right three-quarter view at Nansha Port ready stock",
@@ -1138,7 +1149,7 @@
         "src": "images/new-cars/geely-coolray-full-option-nansha/geely-coolray-ready-stock-nansha-port.mp4",
         "title": "Geely Coolray Ready Stock at Nansha Port, China",
         "description": "Actual ready-stock Geely Coolray units at Nansha Port, China. Contact Zhonggu Auto Export for current quantity, VIN availability and FOB quotation.",
-        "poster": "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
+        "poster": "images/new-cars/geely-coolray-full-option-nansha/optimized/01-front-three-quarter-right.webp",
         "uploadDate": "2026-07-16",
         "duration": "PT5.824S"
       }

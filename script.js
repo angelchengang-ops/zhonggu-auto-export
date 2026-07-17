@@ -709,6 +709,44 @@ const bindWhatsappButtons = () => {
     }
   });
 };
+const loadLazyVideo = (video) => {
+  if (!video || video.dataset.lazyVideoLoaded === "true") return false;
+  let changed = false;
+  const videoSrc = video.dataset.src;
+  if (videoSrc && !video.getAttribute("src")) {
+    video.setAttribute("src", videoSrc);
+    changed = true;
+  }
+  video.querySelectorAll("source[data-src]").forEach((source) => {
+    if (!source.getAttribute("src")) {
+      source.setAttribute("src", source.dataset.src);
+      changed = true;
+    }
+  });
+  video.dataset.lazyVideoLoaded = "true";
+  if (changed) video.load();
+  return changed;
+};
+const playLazyVideo = (video) => {
+  const wasLoaded = video?.dataset.lazyVideoLoaded === "true";
+  loadLazyVideo(video);
+  if (!wasLoaded) video?.play?.().catch(() => {});
+};
+const prepareLazyVideo = (video) => {
+  if (!video) return;
+  const hasDeferredSource = Boolean(video.dataset.src || video.querySelector("source[data-src]"));
+  video.controls = true;
+  video.preload = hasDeferredSource ? "none" : video.preload || "metadata";
+  video.removeAttribute("autoplay");
+  video.playsInline = true;
+  if (!hasDeferredSource || video.dataset.lazyVideoBound === "true") return;
+  video.dataset.lazyVideoBound = "true";
+  video.addEventListener("click", () => playLazyVideo(video));
+  video.addEventListener("play", () => loadLazyVideo(video), { once: true });
+};
+const initLazyVideos = (root = document) => {
+  root.querySelectorAll("video").forEach(prepareLazyVideo);
+};
 const updateCompanyMedia = async () => {
   if (!document.body.classList.contains("company-page")) return;
   try {
@@ -727,11 +765,14 @@ const updateCompanyMedia = async () => {
       const card = document.querySelector(`[data-video-slot="${slot}"]`);
       const video = card?.querySelector("[data-media-video]");
       if (!video || !entry.active) return;
-      video.src = versioned(entry.active);
+      const nextSrc = versioned(entry.active);
+      if (video.dataset.src !== nextSrc && video.getAttribute("src") !== nextSrc) {
+        video.removeAttribute("src");
+        video.dataset.src = nextSrc;
+        video.dataset.lazyVideoLoaded = "false";
+      }
       if (entry.poster) video.poster = versioned(entry.poster);
-      video.controls = true;
-      video.preload = "metadata";
-      video.playsInline = true;
+      prepareLazyVideo(video);
       const title = card.querySelector("[data-media-title]");
       const subtitle = card.querySelector("[data-media-subtitle]");
       if (title && entry.title) title.textContent = entry.title;
@@ -743,10 +784,8 @@ const bindVideoStages = () => {
   document.querySelectorAll(".video-stage").forEach((stage) => {
     const video = stage.querySelector("video");
     if (!video) return;
-    video.controls = true;
-    video.preload = "metadata";
-    video.playsInline = true;
-    stage.addEventListener("click", (event) => { if (!event.target.closest("video")) video.play().catch(() => {}); });
+    prepareLazyVideo(video);
+    stage.addEventListener("click", (event) => { if (!event.target.closest("video")) playLazyVideo(video); });
   });
 };
 const selectVehicleGalleryImage = (gallery, button) => {
@@ -1105,6 +1144,7 @@ loadVehicles().catch((error) => console.error("Vehicle data engine failed", erro
 bindWhatsappButtons();
 updateCompanyMedia();
 bindVideoStages();
+initLazyVideos();
 initVehicleGalleries();
 ensureInquiryFormFields();
 bindInquiryForms();
