@@ -1697,3 +1697,40 @@ body[data-vehicle-id="geely-coolray-full-option"] .vehicle-main-image img {
   .vehicle-detail-page .seo-section .vehicle-info-grid,
   .vehicle-detail-page .seo-section .vehicle-spec-table { margin-top: 14px; }
 }
+
+
+.vehicle-hero-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 18px;
+}
+.vehicle-hero-highlights span {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  padding: 0 11px;
+  border: 1px solid rgba(18, 104, 232, .16);
+  border-radius: 999px;
+  color: #12385f;
+  font-size: .78rem;
+  font-weight: 850;
+  background: #f3f8ff;
+}
+body[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-main-image,
+body[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-thumbnail,
+.vehicle-card[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-image {
+  background: #f3f6fa;
+}
+body[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-main-image img,
+body[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-thumbnail img,
+.vehicle-card[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-image img {
+  object-fit: contain;
+  background: #f3f6fa;
+}
+body[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-main-image img {
+  max-height: 700px;
+}
+@media (max-width: 680px) {
+  .vehicle-hero-highlights span { min-height: 28px; font-size: .72rem; }
+}

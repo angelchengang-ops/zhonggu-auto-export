@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const SITE = 'https://zhongguauto.com';
+const SITE = 'https://www.zhongguauto.com';
 const STYLE_VERSION = '20260716-seo-market-upgrade';
 const SCRIPT_VERSION = '20260716-seo-market-upgrade';
 const WA_DISPLAY = '+86 18661888866';
@@ -42,6 +42,11 @@ const priceNumber = (value = '') => {
 const vehicleTitle = (car = {}) => pickText(car.cardTitle || car.title || car.model || car.id);
 const vehiclePrice = (car = {}) => pickText(car.salePriceDisplay || car.fobPriceDisplay || car.fobNanShaUsd || car.price || 'Contact for price');
 const vehicleImage = (car = {}) => cleanPath(car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : '') || 'images/og-image.jpg');
+const vehicleHref = (car = {}) => {
+  const detailUrl = pickText(car.detailUrl || car.canonicalPath || car.urlPath, '');
+  if (detailUrl) return /^https?:\/\//i.test(detailUrl) || detailUrl.startsWith('/') ? detailUrl : `/${cleanPath(detailUrl)}`;
+  return `/${car.id}.html`;
+};
 const waHref = (message = '') => `https://wa.me/${WA_NUMBER}${message ? `?text=${encodeURIComponent(message)}` : ''}`;
 
 const nav = `<header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="/index.html" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="/index.html">Home</a><a href="/new-cars.html">New Cars</a><a href="/used-cars.html">Used Cars</a><a href="/brands.html">Brands</a><a href="/company.html">Company</a><a href="/export-process.html">Export Process</a><a class="nav-cta" href="/contact.html">Contact Us</a></nav></div></header>`;
@@ -123,16 +128,19 @@ const vehicleCard = (car, note = '') => {
 
 const staticVehicleCard = (car) => {
   const title = vehicleTitle(car);
-  const href = `${car.id}.html`;
+  const href = vehicleHref(car);
   const used = car.isUsed === true || String(car.category || car.type || car.condition || '').toLowerCase().includes('used');
   const badge = used ? 'Used Car' : 'Brand New';
   const location = pickText(car.locationDisplay || car.location || '');
   const status = pickText(car.inventoryStatusLabel || car.inventoryStatusDisplay || car.inventoryStatus || car.inventoryBadge || '');
   const year = pickText(car.year || car.modelYear || '');
   const subtitle = pickText(car.cardSubtitle || car.configuration || car.trimEn || car.transmission || '');
-  return `<article class="vehicle-card static-vehicle-card">
+  const extraTags = (Array.isArray(car.listingTags) ? car.listingTags : Array.isArray(car.tags) ? car.tags : []).map((item) => pickText(item, '')).filter(Boolean);
+  const tags = [...new Set([car.inventoryBadge, status, ...extraTags].map((item) => pickText(item, '')).filter((item) => item && !/ample stock|contact us/i.test(item)))];
+  const tagMarkup = tags.length ? `<div class="vehicle-tags">${tags.map((item) => `<span class="vehicle-tag">${escapeHtml(item)}</span>`).join('')}</div>` : '';
+  return `<article class="vehicle-card static-vehicle-card" data-vehicle-id="${escapeAttr(car.id || '')}">
   <a class="vehicle-image" href="${escapeAttr(href)}" aria-label="View ${escapeAttr(title)}"><img src="${escapeAttr(vehicleImage(car))}" alt="${escapeAttr(title)} ${escapeAttr(badge)} for export from China" loading="lazy"><span class="vehicle-badge">${escapeHtml(badge)}</span></a>
-  <div class="vehicle-body"><p class="vehicle-brand">${escapeHtml(pickText(car.brand, 'Zhonggu Auto Export'))}</p><h3><a href="${escapeAttr(href)}">${escapeHtml(title)}</a></h3><p class="vehicle-subtitle">${escapeHtml(subtitle)}</p><p class="vehicle-meta">${escapeHtml([year && `Year: ${year}`, location, status].filter(Boolean).join(' | '))}</p></div>
+  <div class="vehicle-body"><p class="vehicle-brand">${escapeHtml(pickText(car.brand, 'Zhonggu Auto Export'))}</p><h3><a href="${escapeAttr(href)}">${escapeHtml(title)}</a></h3><p class="vehicle-subtitle">${escapeHtml(subtitle)}</p><p class="vehicle-meta">${escapeHtml([year && `Year: ${year}`, location, status].filter(Boolean).join(' | '))}</p>${tagMarkup}</div>
   <div class="vehicle-footer"><div class="price"><small>${used ? 'Sale Price' : 'FOB Price'}</small><strong>${escapeHtml(vehiclePrice(car))}</strong></div><a class="vehicle-fob-btn js-inquiry-cta" href="#contact" data-title="${escapeAttr(title)}" data-url="${escapeAttr(href)}" data-vehicle-id="${escapeAttr(car.id || '')}" data-lead-source="${used ? 'used_car_list' : 'vehicle_card'}">Request FOB Quote</a></div>
 </article>`;
 };

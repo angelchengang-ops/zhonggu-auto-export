@@ -1,7 +1,7 @@
 ﻿const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://zhongguauto.com';
+const SITE = 'https://www.zhongguauto.com';
 const DETAIL_STYLE_VERSION = '20260716-used-detail-compact-phone';
 const GALLERY_STYLE_VERSION = '20260716-gallery-navigation';
 const DETAIL_SCRIPT_VERSION = '20260716-used-list-crm';
@@ -17,6 +17,7 @@ const escapeAttr = escapeHtml;
 const cleanPath = (value = '') => String(value || '').replace(/^\/+/, '');
 const isRemoteAsset = (value = '') => /^https?:\/\//i.test(String(value || ''));
 const absoluteUrl = (value = '') => isRemoteAsset(value) ? String(value) : `${SITE}/${cleanPath(value)}`;
+const publicAssetPath = (value = '') => isRemoteAsset(value) ? String(value) : `/${cleanPath(value)}`;
 const toArray = (value) => Array.isArray(value) ? value : (value ? [value] : []);
 const unique = (items = []) => [...new Set(items.filter(Boolean))];
 const slugify = (value = '') => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -81,6 +82,7 @@ const getPrice = (car) => englishValue(car.salePriceDisplay || car.fobPriceDispl
 const getUsdPrice = (car) => {
   const source = getPrice(car);
   if (!source || !/us\$|usd/i.test(source)) return '';
+  if (/[x?]/i.test(source)) return '';
   const match = String(source).replace(/,/g, '').match(/\d+(?:\.\d+)?/);
   return match ? match[0] : '';
 };
@@ -213,32 +215,49 @@ const conditionSpecs = (car) => {
 };
 const renderMedia = (images, name, car) => {
   const items = images.length ? images : ['images/new-cars/generic-new-car-bg-01.png'];
+  const thumbnails = toArray(car.galleryThumbnails || car.thumbnails).map(cleanPath);
   const altTexts = toArray(car.galleryAltTexts || car.imageAltTexts || car.altTexts);
   const mainAlt = englishValue(altTexts[0]) || `${name} export from China`;
   const thumbAltFor = (index) => englishValue(altTexts[index]) || `${name} photo ${index + 1}`;
   const main = items[0];
   const alt = mainAlt;
-  if (!hasDetailGallery(car)) return `<div class="detail-media"><img src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>`;
+  if (!hasDetailGallery(car)) return `<div class="detail-media"><img src="${escapeAttr(publicAssetPath(main))}" alt="${escapeAttr(alt)}" loading="eager" decoding="async" fetchpriority="high"></div>`;
   const thumbs = items.length > 1 ? `<div class="vehicle-thumbnails" aria-label="Vehicle photo gallery">${items.map((image, index) => {
     const label = thumbAltFor(index);
     const selected = index === 0 ? 'true' : 'false';
-    return `<button class="vehicle-thumbnail${index === 0 ? ' is-active' : ''}" type="button" data-gallery-src="${escapeAttr(image)}" data-gallery-alt="${escapeAttr(label)}" aria-label="Show photo ${index + 1}" aria-current="${selected}" aria-selected="${selected}"><img src="${escapeAttr(image)}" alt="${escapeAttr(label)}" loading="lazy"></button>`;
+    const thumb = thumbnails[index] && isUsableImage(thumbnails[index]) ? thumbnails[index] : image;
+    return `<button class="vehicle-thumbnail${index === 0 ? ' is-active' : ''}" type="button" data-gallery-src="${escapeAttr(publicAssetPath(image))}" data-gallery-alt="${escapeAttr(label)}" aria-label="Show photo ${index + 1}" aria-current="${selected}" aria-selected="${selected}"><img src="${escapeAttr(publicAssetPath(thumb))}" alt="${escapeAttr(label)}" loading="lazy" decoding="async"></button>`;
   }).join('')}</div>` : '';
-  return `<div class="detail-media used-car-gallery${items.length > 1 ? ' has-thumbnails' : ''}" data-vehicle-gallery><div class="vehicle-main-image"><img class="vehicle-gallery-main" data-gallery-main src="${escapeAttr(main)}" alt="${escapeAttr(alt)}" loading="eager"></div>${thumbs}</div>`;
+  return `<div class="detail-media used-car-gallery${items.length > 1 ? ' has-thumbnails' : ''}" data-vehicle-gallery><div class="vehicle-main-image"><img class="vehicle-gallery-main" data-gallery-main src="${escapeAttr(publicAssetPath(main))}" alt="${escapeAttr(alt)}" loading="eager" decoding="async" fetchpriority="high"></div>${thumbs}</div>`;
 };
 const renderVideoSection = (videos) => {
   if (!videos.length) return '';
   const cards = videos.map((video, index) => {
     const title = video.title || `Vehicle video ${index + 1}`;
     if (video.youtube) return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><a class="btn btn-light" href="${escapeAttr(video.src)}" target="_blank" rel="noopener">Open video</a></article>`;
-    const poster = video.poster ? ` poster="${escapeAttr(video.poster)}"` : '';
+    const poster = video.poster ? ` poster="${escapeAttr(publicAssetPath(video.poster))}"` : '';
     const description = video.description ? `<p>${escapeHtml(video.description)}</p>` : '';
-    return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><video controls preload="metadata" playsinline${poster}><source src="${escapeAttr(video.src)}" type="${escapeAttr(video.type)}">Your browser does not support this video.</video>${description}</article>`;
+    return `<article class="vehicle-video-card"><h3>${escapeHtml(title)}</h3><video controls preload="metadata" playsinline${poster}><source src="${escapeAttr(publicAssetPath(video.src))}" type="${escapeAttr(video.type)}">Your browser does not support this video.</video>${description}</article>`;
   }).join('');
   return `<section class="vehicle-video-section" aria-label="Vehicle videos"><h2>Vehicle Video</h2><div class="vehicle-video-list">${cards}</div></section>`;
 };
 const renderSpecGrid = (items, className = '') => items.length ? `<div class="vehicle-info-grid ${className}">${items.map(([label, value]) => `<div><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></div>`).join('')}</div>` : '';
 const renderTechnicalSpecs = (items) => items.length ? `<div class="vehicle-spec-table">${items.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')}</div>` : '';
+const renderHeroHighlights = (car) => {
+  const items = toArray(car.heroHighlights || car.listingTags || car.tags).map((item) => pickText(item, '')).filter(Boolean);
+  return items.length ? `<div class="vehicle-hero-highlights">${items.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>` : '';
+};
+const renderDetailSections = (car) => toArray(car.detailSections).map((section) => {
+  if (!section || typeof section !== 'object') return '';
+  const title = pickText(section.title || section.heading, '');
+  const paragraphs = toArray(section.paragraphs || section.content || section.text).map((item) => pickText(item, '')).filter(Boolean);
+  const bullets = toArray(section.bullets || section.items).map((item) => pickText(item, '')).filter(Boolean);
+  const specs = toArray(section.specs || section.facts).map(normalizedSpec).filter(([label, value]) => label && value);
+  const links = toArray(section.links).map((item) => item && typeof item === 'object' ? { href: pickText(item.href || item.url, ''), label: pickText(item.label || item.title, '') } : null).filter((item) => item && item.href && item.label);
+  if (!title && !paragraphs.length && !bullets.length && !specs.length && !links.length) return '';
+  const className = section.className ? ` ${escapeAttr(pickText(section.className, ''))}` : '';
+  return `<section class="seo-section vehicle-custom-section${className}"><div class="container">${title ? `<h2>${escapeHtml(title)}</h2>` : ''}${paragraphs.map((item) => `<p>${escapeHtml(item)}</p>`).join('')}${bullets.length ? `<ul class="seo-list">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}${renderSpecGrid(specs, 'custom-section-specs')}${links.length ? `<div class="link-cloud">${links.map((link) => `<a href="${escapeAttr(link.href)}">${escapeHtml(link.label)}</a>`).join('')}</div>` : ''}</div></section>`;
+}).join('');
 const hiddenInput = (name, value = '') => `<input type="hidden" name="${escapeAttr(name)}" value="${escapeAttr(value)}">`;
 const leadSourceFor = (car) => isNewVehicle(car) ? 'new_car_detail' : 'used_car_detail';
 const inventoryTypeFor = (car) => isNewVehicle(car) ? englishValue(car.inventoryType || car.listingType) || 'brand_new_inventory' : (car.isBatchInventory ? 'batch_inventory' : '');
@@ -285,7 +304,8 @@ const render = (car) => {
   if (!id) return '';
   const name = getVehicleName(car);
   const cardTitle = getCardTitle(car);
-  const url = `${SITE}/${id}.html`;
+  const canonicalPath = cleanPath(car.canonicalPath || car.urlPath || `${id}.html`);
+  const url = `${SITE}/${canonicalPath}`;
   const galleryImages = getImages(car);
   const videos = getVideos(car);
   const img = galleryImages[0];
@@ -294,6 +314,8 @@ const render = (car) => {
   const ogTitle = englishValue(car.seoTitle || car.metaTitle) || `${name} | Vehicle Export from China`;
   const mediaMarkup = renderMedia(galleryImages, name, car);
   const videoMarkup = renderVideoSection(videos);
+  const heroHighlightsMarkup = renderHeroHighlights(car);
+  const customSectionsMarkup = renderDetailSections(car);
   const summary = summarySpecs(car);
   const overview = overviewSpecs(car);
   const specs = technicalSpecs(car);
@@ -302,23 +324,35 @@ const render = (car) => {
   const newGallery = isNewGalleryCar(car);
   const leadSource = leadSourceFor(car);
   const newVehicle = isNewVehicle(car);
-  const heroEyebrow = newVehicle ? 'Brand New Car Export from China' : 'Used Car Export from China';
-  const purchaseEyebrow = newVehicle ? (englishValue(car.inventoryBadge) || 'Brand New') : 'Batch inventory';
-  const priceLabel = newVehicle ? 'FOB price' : 'Sale price';
+  const sold = car.sold === true || /sold/i.test(englishValue(car.inventoryStatus || car.status));
+  const heroEyebrow = englishValue(car.heroEyebrow) || (newVehicle ? 'Brand New Car Export from China' : 'Used Car Export from China');
+  const purchaseEyebrow = englishValue(car.purchaseEyebrow) || (newVehicle ? (englishValue(car.inventoryBadge) || 'Brand New') : 'Batch inventory');
+  const priceLabel = englishValue(car.priceLabel) || (newVehicle ? 'FOB price' : 'Sale price');
+  const ctaLabel = englishValue(sold ? (car.soldCtaLabel || car.ctaLabel) : car.ctaLabel) || (sold ? 'Find a Similar Vehicle' : 'Request FOB Quote');
   const overviewLocation = englishValue(car.locationDisplay || car.location) || 'China';
-  const overviewText = newVehicle
+  const overviewText = englishValue(car.overviewText) || (newVehicle
     ? `${cardTitle} is available as brand-new inventory from ${overviewLocation}. FOB pricing, current colors and export timing are confirmed before order.`
-    : `${cardTitle} is listed as batch used-car inventory from Qingdao, China. Vehicle details are prepared for export inquiry and stock confirmation.`;
-  const availabilityHeading = newVehicle ? 'Availability' : 'Condition &amp; Inventory';
-  const contactHeading = newVehicle ? 'Check Current Stock' : 'Check Current Availability';
-  const contactText = newVehicle
+    : `${cardTitle} is listed as batch used-car inventory from Qingdao, China. Vehicle details are prepared for export inquiry and stock confirmation.`);
+  const availabilityHeading = englishValue(car.availabilityHeading) || (newVehicle ? 'Availability' : 'Condition &amp; Inventory');
+  const contactHeading = englishValue(car.contactHeading) || (newVehicle ? 'Check Current Stock' : 'Check Current Availability');
+  const contactText = englishValue(car.contactText) || (newVehicle
     ? 'Send your destination country and timing. Our sales team will confirm current stock, available colors and FOB export quotation.'
-    : 'Send your destination country and timing. Our sales team will confirm current units, available colors, mileage and export quotation.';
+    : 'Send your destination country and timing. Our sales team will confirm current units, available colors, mileage and export quotation.');
+  const contactEyebrow = englishValue(car.contactEyebrow) || (sold ? 'Similar Vehicle Request' : 'Request FOB Quote');
+  const inquiryMessage = englishValue(sold ? (car.soldInquiryMessage || car.inquiryMessage) : car.inquiryMessage) || (sold
+    ? `Please help me find a similar vehicle to ${name}.`
+    : `Please send current availability, FOB quotation, colors and export timing for ${name}.`);
   const styleVersion = hasDetailGallery(car) ? GALLERY_STYLE_VERSION : DETAIL_STYLE_VERSION;
   const scriptVersion = hasDetailGallery(car) ? GALLERY_SCRIPT_VERSION : DETAIL_SCRIPT_VERSION;
-  const productJsonLd = { '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: `ZG-${id.toUpperCase()}`, brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' }, offers: { '@type': 'Offer', url, priceCurrency: 'USD', availability: 'https://schema.org/InStock', itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}` } };
+  const productJsonLd = { '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: `ZG-${id.toUpperCase()}`, brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' } };
   const usdPrice = getUsdPrice(car);
-  if (usdPrice) productJsonLd.offers.price = usdPrice;
+  if (usdPrice) {
+    productJsonLd.offers = { '@type': 'Offer', url, priceCurrency: 'USD', availability: `https://schema.org/${sold ? 'OutOfStock' : 'InStock'}`, itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}`, price: usdPrice };
+  }
+  const structuredProperties = toArray(car.structuredProperties || car.additionalProperties).map(normalizedSpec).filter(([label, value]) => label && value);
+  if (structuredProperties.length) productJsonLd.additionalProperty = structuredProperties.map(([name, value]) => ({ '@type': 'PropertyValue', name, value }));
+  const targetMarkets = toArray(car.targetMarkets).map((item) => pickText(item, '')).filter(Boolean);
+  if (targetMarkets.length) productJsonLd.areaServed = targetMarkets;
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -363,27 +397,33 @@ const render = (car) => {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=${styleVersion}">
-</head><body class="vehicle-detail-page seo-page" data-vehicle-id="${escapeAttr(id)}" data-vehicle-name="${escapeAttr(name)}" data-vehicle-year="${escapeAttr(englishValue(car.year || car.modelYear))}" data-vehicle-price="${escapeAttr(price)}" data-vehicle-url="${escapeAttr(url)}">
-<header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="index.html" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="new-cars.html">New Cars</a><a href="used-cars.html">Used Cars</a><a href="brands.html">Brands</a><a href="company.html">Company</a><a href="export-process.html">Export Process</a><a class="nav-cta" href="#contact">Contact Us</a></nav><select class="language-select" aria-label="Select language"><option value="en">English</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option><option value="ru">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</option><option value="fr">Fran&#231;ais</option><option value="es">Espa&#241;ol</option></select></div></header>
+  <link rel="stylesheet" href="/style.css?v=${styleVersion}">
+</head><body class="vehicle-detail-page seo-page${sold ? ' vehicle-sold-page' : ''}" data-vehicle-id="${escapeAttr(id)}" data-vehicle-name="${escapeAttr(name)}" data-vehicle-year="${escapeAttr(englishValue(car.year || car.modelYear))}" data-vehicle-price="${escapeAttr(price)}" data-vehicle-url="${escapeAttr(url)}">
+<header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="/index.html" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="/index.html">Home</a><a href="/new-cars.html">New Cars</a><a href="/used-cars.html">Used Cars</a><a href="/brands.html">Brands</a><a href="/company.html">Company</a><a href="/export-process.html">Export Process</a><a class="nav-cta" href="#contact">Contact Us</a></nav><select class="language-select" aria-label="Select language"><option value="en">English</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option><option value="ru">&#1056;&#1091;&#1089;&#1082;&#1080;&#1081;</option><option value="fr">Fran&#231;ais</option><option value="es">Espa&#241;ol</option></select></div></header>
 <main>
-<section class="detail-hero used-detail-hero"><div class="container detail-grid"><article class="detail-card detail-main-panel"><p class="eyebrow">${escapeHtml(heroEyebrow)}</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(description)}</p>${mediaMarkup}${videoMarkup}</article><aside class="detail-summary purchase-card"><p class="eyebrow">${escapeHtml(purchaseEyebrow)}</p><div class="purchase-price"><small>${escapeHtml(priceLabel)}</small><strong>${escapeHtml(price)}</strong></div>${renderSpecGrid(summary, 'purchase-specs')}<a class="btn btn-primary js-inquiry-cta detail-quote-btn" href="#contact" ${ctaAttrs(car, name, url)}>Request FOB Quote</a></aside></div></section>
+<section class="detail-hero used-detail-hero"><div class="container detail-grid"><article class="detail-card detail-main-panel"><p class="eyebrow">${escapeHtml(heroEyebrow)}</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(description)}</p>${heroHighlightsMarkup}${mediaMarkup}${videoMarkup}</article><aside class="detail-summary purchase-card"><p class="eyebrow">${escapeHtml(purchaseEyebrow)}</p><div class="purchase-price"><small>${escapeHtml(priceLabel)}</small><strong>${escapeHtml(price)}</strong></div>${renderSpecGrid(summary, 'purchase-specs')}<a class="btn btn-primary js-inquiry-cta detail-quote-btn" href="#contact" data-static-label="${escapeAttr(ctaLabel)}" ${ctaAttrs(car, name, url)}>${escapeHtml(ctaLabel)}</a></aside></div></section>
 <section class="seo-section vehicle-overview-section"><div class="container"><h2>Vehicle Overview</h2><p>${escapeHtml(overviewText)}</p>${renderSpecGrid(overview, 'overview-specs')}</div></section>
 <section class="seo-section key-specifications-section"><div class="container"><h2>Key Specifications</h2>${renderTechnicalSpecs(specs) || '<p>Detailed technical specifications can be confirmed during inquiry.</p>'}</div></section>
 <section class="seo-section condition-inventory-section"><div class="container"><h2>${availabilityHeading}</h2>${renderSpecGrid(condition, 'condition-specs')}</div></section>
+${customSectionsMarkup}
 ${renderRelatedPages(car)}
-<section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-intro"><p class="eyebrow">Request FOB Quote</p><h2>${escapeHtml(contactHeading)}</h2><p>${escapeHtml(contactText)}</p></div><div class="inquiry-panel"><h3>Send Inquiry</h3><form class="inquiry-form" name="inquiry" method="POST" data-netlify="true" data-source-entry="${escapeAttr(leadSource)}" netlify-honeypot="bot-field" action="/thank-you.html"><input type="hidden" name="form-name" value="inquiry"><input type="hidden" name="bot-field" value="" aria-hidden="true" tabindex="-1">${inquiryHiddenFields(car, name, url)}<div class="inquiry-fields"><label><span>Name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Country</span><input type="text" name="country" autocomplete="country-name" required></label>${inquiryPhoneFields()}<label class="field-wide"><span>Interested Model</span><input type="text" name="model" value="${escapeAttr(name)}" required></label><label class="field-wide"><span>Message</span><textarea name="message" rows="4">${escapeHtml(`Please send current availability, FOB quotation, colors and export timing for ${name}.`)}</textarea></label></div><button class="btn inquiry-submit" type="submit">Request FOB Quote</button></form><p class="inquiry-success" role="status" aria-live="polite" hidden>Thank you, your inquiry has been received. Our sales team will contact you soon.</p></div></div></section>
+<section id="contact" class="contact-section"><div class="container contact-layout"><div class="contact-intro"><p class="eyebrow">${escapeHtml(contactEyebrow)}</p><h2>${escapeHtml(contactHeading)}</h2><p>${escapeHtml(contactText)}</p></div><div class="inquiry-panel"><h3>Send Inquiry</h3><form class="inquiry-form" name="inquiry" method="POST" data-netlify="true" data-source-entry="${escapeAttr(leadSource)}" netlify-honeypot="bot-field" action="/thank-you.html"><input type="hidden" name="form-name" value="inquiry"><input type="hidden" name="bot-field" value="" aria-hidden="true" tabindex="-1">${inquiryHiddenFields(car, name, url)}<div class="inquiry-fields"><label><span>Name</span><input type="text" name="name" autocomplete="name" required></label><label><span>Country</span><input type="text" name="country" autocomplete="country-name" required></label>${inquiryPhoneFields()}<label class="field-wide"><span>Interested Model</span><input type="text" name="model" value="${escapeAttr(name)}" required></label><label class="field-wide"><span>Message</span><textarea name="message" rows="4">${escapeHtml(inquiryMessage)}</textarea></label></div><button class="btn inquiry-submit" type="submit" data-static-label="${escapeAttr(ctaLabel)}">${escapeHtml(ctaLabel)}</button></form><p class="inquiry-success" role="status" aria-live="polite" hidden>Thank you, your inquiry has been received. Our sales team will contact you soon.</p></div></div></section>
 </main>
 <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>
-<footer class="site-footer"><div class="container footer-wrap"><a class="logo footer-logo" href="index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><p>Reliable vehicles from China, delivered worldwide.</p><nav class="footer-market-links export-market-links" aria-label="Export markets"><span>Export Markets:</span><a href="export-cars-from-china-to-africa.html">Africa</a><a href="export-cars-from-china-to-southeast-asia.html">Southeast Asia</a><a href="export-cars-from-china-to-central-asia.html">Central Asia</a></nav><p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p></div></footer><script src="script.js?v=${scriptVersion}"></script><script src="lead-gen.js?v=20260716-used-detail-crm"></script></body></html>
+<footer class="site-footer"><div class="container footer-wrap"><a class="logo footer-logo" href="/index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><p>Reliable vehicles from China, delivered worldwide.</p><nav class="footer-market-links export-market-links" aria-label="Export markets"><span>Export Markets:</span><a href="/export-cars-from-china-to-africa.html">Africa</a><a href="/export-cars-from-china-to-southeast-asia.html">Southeast Asia</a><a href="/export-cars-from-china-to-central-asia.html">Central Asia</a></nav><p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p></div></footer><script src="/script.js?v=${scriptVersion}"></script><script src="/lead-gen.js?v=20260716-used-detail-crm"></script></body></html>
 `;
 };
+const outputPathsFor = (car) => unique([`${car.id}.html`, ...toArray(car.outputPath || car.outputPaths).map(cleanPath)]);
 let count = 0;
 for (const car of cars) {
   if (!car.id) continue;
   const html = render(car);
   if (!html) continue;
-  fs.writeFileSync(path.join(rootDir, `${car.id}.html`), html, 'utf8');
+  for (const outputPath of outputPathsFor(car)) {
+    const file = path.join(rootDir, outputPath);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, html, 'utf8');
+  }
   count += 1;
 }
 console.log(`Generated ${count} vehicle detail pages.`);

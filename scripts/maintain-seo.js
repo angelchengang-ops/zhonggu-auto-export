@@ -2,7 +2,7 @@
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const SITE = 'https://zhongguauto.com';
+const SITE = 'https://www.zhongguauto.com';
 const LASTMOD = '2026-07-17';
 const EXCLUDED_LANDING_DIRS = new Set(['export-cars-to-africa']);
 
@@ -30,9 +30,10 @@ const normalizePublishedUrls = (content) => content
 const cars = JSON.parse(read('cars.json'));
 const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.html`));
 const vehicleImage = (car = {}) => cleanPath(car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : ''));
+const vehicleCanonicalPath = (car = {}) => cleanPath(car.canonicalPath || car.urlPath || `${car.id}.html`);
 const vehicleEntries = cars
   .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
-  .map((car) => ({ url: siteUrl(`${car.id}.html`), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '' }));
+  .map((car) => ({ url: siteUrl(vehicleCanonicalPath(car)), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '' }));
 const vehicleUrls = vehicleEntries.map((entry) => entry.url);
 const canonicalFromRootPage = (filename) => {
   const content = read(filename);

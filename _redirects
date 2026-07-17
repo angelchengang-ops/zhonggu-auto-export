@@ -1,6 +1,7 @@
 # Canonical domain redirects
-http://zhongguauto.com/* https://zhongguauto.com/:splat 301!
-http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
+http://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
+http://www.zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
 
 # Public lead collection on Netlify Functions
 /api/admin/login  /.netlify/functions/admin-login  200
@@ -68,6 +69,9 @@ http://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /honda-used-cars-china /honda-used-cars-china.html 200
 /brands /brands.html 200
 /new-cars /new-cars.html 200
+/new-cars/2024-bmw-x1-xdrive25li-awd-horgos /new-cars/2024-bmw-x1-xdrive25li-awd-horgos.html 200
+/2024-bmw-x1-xdrive25li-awd-horgos /new-cars/2024-bmw-x1-xdrive25li-awd-horgos 301!
+/2024-bmw-x1-xdrive25li-awd-horgos.html /new-cars/2024-bmw-x1-xdrive25li-awd-horgos 301!
 /process /export-process.html 200
 /export-process /export-process.html 200
 /contact /contact.html 200

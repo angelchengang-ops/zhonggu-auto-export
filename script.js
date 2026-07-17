@@ -16,7 +16,7 @@ const fallbackVehicleInquiry = (() => {
     return `${brand} ${name}`;
   };
   const vehicleSlug = (car = {}) => text(car.slug || car.id) || slugify(formatVehicleName(car));
-  const vehicleDetailUrl = (car = {}) => `https://zhongguauto.com/${vehicleSlug(car)}.html`;
+  const vehicleDetailUrl = (car = {}) => `https://www.zhongguauto.com/${vehicleSlug(car)}.html`;
   const buildVehicleMessage = (car = {}) => {
     const title = formatVehicleName(car);
     const price = text(car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.guidePriceDisplay || car.guidePriceRmb || car.fobRange);
@@ -401,7 +401,13 @@ const applyLanguage = () => {
   document.querySelectorAll(".inquiry-form [name='model']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.vehicle"); });
   document.querySelectorAll(".inquiry-form [name='message']").forEach((input) => { const label = input.closest("label")?.querySelector("span"); if (label) label.textContent = t("form.message"); });
   document.querySelectorAll(".inquiry-success").forEach((node) => { node.textContent = t("form.success"); });
-  document.querySelectorAll(".js-inquiry-cta, .inquiry-submit").forEach((node) => { node.textContent = node.classList.contains("inquiry-submit") ? t("form.submit") : t("hero.quote"); });
+  document.querySelectorAll(".js-inquiry-cta, .inquiry-submit").forEach((node) => {
+    if (node.dataset.staticLabel) {
+      node.textContent = node.dataset.staticLabel;
+      return;
+    }
+    node.textContent = node.classList.contains("inquiry-submit") ? t("form.submit") : t("hero.quote");
+  });
   document.querySelectorAll("a.whatsapp-btn, .hero-actions a[href*='wa.me']").forEach((node) => { node.textContent = t("contact.whatsapp"); });
 };
 const setLanguage = (language) => {
@@ -436,7 +442,7 @@ document.querySelectorAll("[data-brand-logo-grid]").forEach((grid) => {
   }));
 });
 
-const handleImageError = (image) => { image.onerror = null; image.src = "images/hero/hero-car.jpg"; };
+const handleImageError = (image) => { image.onerror = null; image.src = "/images/hero/hero-car.jpg"; };
 const getVehicleTitle = (car = {}) => {
   const brand = localized(car.brand, "");
   const name = localized(car.cardTitle || car.title || car.model) || localized(car.name) || String(car.id || "Vehicle");
@@ -446,6 +452,11 @@ const getVehicleDescription = (car = {}, type = "new") => type === "used" ? "" :
 const getVehiclePrice = (car = {}) => localized(car.salePriceDisplay || car.fobPriceDisplay || car.fobNanShaUsd || car.price || car.guidePriceDisplay || car.guidePriceRmb || car.fobRange, "Contact for price");
 const getVehicleImage = (car = {}) => cleanPath(localized(car.image || car.mainImage || car.thumbnail || (Array.isArray(car.images) ? car.images[0] : ""), "images/hero/hero-car.jpg"));
 const getVehicleSlug = (car = {}) => localized(car.slug || car.id) || vehicleInquiry.vehicleSlug?.(car) || fallbackVehicleInquiry.vehicleSlug(car);
+const getVehicleHref = (car = {}) => {
+  const detailUrl = localized(car.detailUrl || car.canonicalPath || car.urlPath, "");
+  if (detailUrl) return /^https?:\/\//i.test(detailUrl) || detailUrl.startsWith("/") ? detailUrl : `/${cleanPath(detailUrl)}`;
+  return `/${getVehicleSlug(car)}.html`;
+};
 const getVehicleLocation = (car = {}) => localized(car.locationDisplay || car.location, "");
 const getInventoryBadge = (car = {}) => localized(car.inventoryBadge || car.supplyMode || (car.isBatchInventory ? "Batch Inventory" : ""), "");
 const getVehicleMessage = (car = {}, title = "Vehicle", href = "") => {
@@ -495,7 +506,7 @@ const makeVehicleCard = (car, type = "new") => {
   const mileage = localized(car.mileage, type === "used" ? "" : "New vehicle");
   const price = getVehiclePrice(car);
   const image = getVehicleImage(car);
-  const href = `${getVehicleSlug(car)}.html`;
+  const href = getVehicleHref(car);
   const video = type === "used" ? cleanPath(localized((car.videos || [])[0], "")) : "";
   const location = getVehicleLocation(car);
   const inventoryBadge = getInventoryBadge(car);
@@ -504,14 +515,17 @@ const makeVehicleCard = (car, type = "new") => {
   const meta = type === "used"
     ? [year && `${t("car.year")}: ${year}`, mileage, location].filter(Boolean).join(" | ")
     : [year && `${t("car.year")}: ${year}`, location || transmission].filter(Boolean).join(" | ");
+  const extraTags = (Array.isArray(car.listingTags) ? car.listingTags : Array.isArray(car.tags) ? car.tags : []).map((item) => localized(item, "")).filter(Boolean);
   const inventoryTags = type === "used"
-    ? [inventoryBadge]
-    : [inventoryBadge, inventoryStatus].filter((item) => !/ample stock|contact us/i.test(item));
-  const tagMarkup = inventoryTags.filter(Boolean).length ? `<div class="vehicle-tags">${inventoryTags.filter(Boolean).map((item) => `<span class="vehicle-tag">${escapeHtml(item)}</span>`).join("")}</div>` : "";
+    ? [inventoryBadge, ...extraTags]
+    : [inventoryBadge, inventoryStatus, ...extraTags].filter((item) => !/ample stock|contact us/i.test(item));
+  const tagMarkup = inventoryTags.filter(Boolean).length ? `<div class="vehicle-tags">${[...new Set(inventoryTags.filter(Boolean))].map((item) => `<span class="vehicle-tag">${escapeHtml(item)}</span>`).join("")}</div>` : "";
   const description = getVehicleDescription(car, type);
-  const quoteAttrs = `data-title="${escapeHtml(title)}" data-model="${escapeHtml(displayModel)}" data-year="${escapeHtml(year)}" data-price="${escapeHtml(price)}" data-url="${escapeHtml(href)}" data-vehicle-id="${escapeHtml(car.id || "")}" data-lead-source="${type === "used" ? "used_car_list" : "vehicle_card"}" data-inventory-type="${escapeHtml(car.isBatchInventory ? "batch_inventory" : "")}"`;
+  const inventoryType = localized(car.inventoryType || car.listingType || (car.isBatchInventory ? "batch_inventory" : ""), "");
+  const quoteAttrs = `data-title="${escapeHtml(title)}" data-model="${escapeHtml(displayModel)}" data-year="${escapeHtml(year)}" data-price="${escapeHtml(price)}" data-url="${escapeHtml(href)}" data-vehicle-id="${escapeHtml(car.id || "")}" data-lead-source="${type === "used" ? "used_car_list" : "vehicle_card"}" data-inventory-type="${escapeHtml(inventoryType)}"`;
   const card = document.createElement("article");
   card.className = "vehicle-card";
+  card.dataset.vehicleId = car.id || "";
   card.innerHTML = `
     <a class="vehicle-image" href="${href}" aria-label="View ${escapeHtml(title)}">
       <img src="${image}" alt="${escapeHtml(title)} ${type === "used" ? "used car" : "new car"} for export from China" loading="lazy">
@@ -542,7 +556,7 @@ const makeVehicleCard = (car, type = "new") => {
       url: href,
       vehicleId: car.id || "",
       leadSource: type === "used" ? "used_car_list" : "vehicle_card",
-      inventoryType: car.isBatchInventory ? "batch_inventory" : ""
+      inventoryType
     });
   });
   return card;

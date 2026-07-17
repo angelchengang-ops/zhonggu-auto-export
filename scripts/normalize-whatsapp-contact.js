@@ -1,7 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
-
 const ROOT = path.join(__dirname, '..');
 const NEW_DISPLAY = '+86 18661888866';
 const NEW_DIGITS = '8618661888866';
@@ -12,11 +10,21 @@ const textExtensions = new Set([
   '.html', '.js', '.json', '.xml', '.txt', '.md', '.css', '.toml'
 ]);
 
-const trackedFiles = execSync('git ls-files', { cwd: ROOT, encoding: 'utf8' })
-  .split(/\r?\n/)
-  .map((item) => item.trim())
-  .filter(Boolean)
-  .filter((file) => textExtensions.has(path.extname(file).toLowerCase()));
+const ignoredDirs = new Set(['.git', 'node_modules', '.npm-cache', 'tmp', 'media-inbox', 'media-processed', 'media-trash', '__pycache__']);
+const listTextFiles = (dir, prefix = '') => {
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      if (!ignoredDirs.has(entry.name)) files.push(...listTextFiles(path.join(dir, entry.name), path.join(prefix, entry.name)));
+      continue;
+    }
+    if (!entry.isFile()) continue;
+    const relative = path.join(prefix, entry.name);
+    if (textExtensions.has(path.extname(entry.name).toLowerCase())) files.push(relative);
+  }
+  return files;
+};
+const trackedFiles = listTextFiles(ROOT);
 
 let changed = 0;
 for (const relative of trackedFiles) {
