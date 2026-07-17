@@ -1,7 +1,7 @@
 ﻿const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://www.zhongguauto.com';
+const SITE = 'https://zhongguauto.com';
 const DETAIL_STYLE_VERSION = '20260716-used-detail-compact-phone';
 const GALLERY_STYLE_VERSION = '20260716-gallery-navigation';
 const DETAIL_SCRIPT_VERSION = '20260716-used-list-crm';

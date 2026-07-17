@@ -3,7 +3,7 @@
 ## Fixed Before Deployment
 
 - Added unique SEO titles and meta descriptions for the main public pages.
-- Added canonical URLs using the placeholder production domain: `https://www.zhongguauto.com`.
+- Added canonical URLs using the production domain: `https://zhongguauto.com`.
 - Added Open Graph and Twitter card metadata across public HTML pages.
 - Added a default OG image at `/images/og-image.jpg`.
 - Replaced redirect-only SEO landing pages with real static English pages containing H1, H2 sections, featured vehicle links, export process content, FAQ, WhatsApp CTA and inquiry forms.
@@ -19,7 +19,7 @@
 
 ## Items To Confirm
 
-- Replace the placeholder domain `https://www.zhongguauto.com` if the final production domain is different.
+- Replace the production domain `https://zhongguauto.com` if the final production domain is different.
 - Provide Google Search Console verification code or DNS verification method after deployment.
 - Confirm the final WhatsApp number and email before promoting the site.
 - Replace `/images/og-image.jpg` with a designed 1200x630 social sharing image when available.
@@ -33,8 +33,8 @@
 
 ## After Going Live
 
-- Open `https://www.zhongguauto.com/robots.txt` and verify it is accessible.
-- Open `https://www.zhongguauto.com/sitemap.xml` and verify it is accessible.
+- Open `https://zhongguauto.com/robots.txt` and verify it is accessible.
+- Open `https://zhongguauto.com/sitemap.xml` and verify it is accessible.
 - Submit the sitemap in Google Search Console.
 - Use URL Inspection in Search Console for the home page, used cars page, company page and several vehicle detail pages.
 - Test WhatsApp buttons on desktop and mobile.

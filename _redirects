@@ -1,8 +1,3 @@
-# Canonical domain redirects
-http://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
-https://zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
-http://www.zhongguauto.com/* https://www.zhongguauto.com/:splat 301!
-
 # Public lead collection on Netlify Functions
 /api/admin/login  /.netlify/functions/admin-login  200
 /api/admin/me  /.netlify/functions/admin-me  200

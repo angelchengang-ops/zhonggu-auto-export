@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const SITE = 'https://www.zhongguauto.com';
+const SITE = 'https://zhongguauto.com';
 const STYLE_VERSION = '20260716-seo-market-upgrade';
 const SCRIPT_VERSION = '20260716-seo-market-upgrade';
 const WA_DISPLAY = '+86 18661888866';

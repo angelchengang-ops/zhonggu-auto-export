@@ -2,7 +2,7 @@
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const SITE = 'https://www.zhongguauto.com';
+const SITE = 'https://zhongguauto.com';
 const LASTMOD = '2026-07-17';
 const EXCLUDED_LANDING_DIRS = new Set(['export-cars-to-africa']);
 
