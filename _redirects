@@ -1,3 +1,7 @@
+# Canonical host and company page redirects
+https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
+/company /company.html 301!
+
 # Public lead collection on Netlify Functions
 /api/admin/login  /.netlify/functions/admin-login  200
 /api/admin/me  /.netlify/functions/admin-me  200

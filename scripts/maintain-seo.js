@@ -28,23 +28,13 @@ const normalizePublishedUrls = (content) => content
   .replace(/(https:\/\/zhongguauto\.com\/(?:(?:fr|ar)\/)?landing\/[a-z0-9-]+)\/?(?=["'<\s])/g, '$1/');
 
 const cars = JSON.parse(read('cars.json'));
-const vehicleIds = new Set(cars.filter((car) => car.id).map((car) => `${car.id}.html`));
 const vehicleImage = (car = {}) => cleanPath(car.sitemapImage || car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : ''));
 const vehicleCanonicalPath = (car = {}) => cleanPath(car.canonicalPath || car.urlPath || `${car.id}.html`);
 const vehicleEntries = cars
   .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
   .map((car) => ({ url: siteUrl(vehicleCanonicalPath(car)), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '' }));
 const vehicleUrls = vehicleEntries.map((entry) => entry.url);
-const canonicalFromRootPage = (filename) => {
-  const content = read(filename);
-  const match = content.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
-  if (match && match[1].startsWith(`${SITE}/`)) return match[1];
-  return siteUrl(filename);
-};
-
-const pages = Array.from(new Set(fs.readdirSync(ROOT, { withFileTypes: true })
-  .filter((entry) => entry.isFile() && entry.name.endsWith('.html') && entry.name !== 'index.html' && !vehicleIds.has(entry.name))
-  .map((entry) => canonicalFromRootPage(entry.name))));
+const pages = [siteUrl('company.html')];
 
 const landingRoot = path.join(ROOT, 'landing');
 const landingDirs = fs.existsSync(landingRoot)
@@ -63,7 +53,7 @@ for (const code of ['fr', 'ar']) {
   }
 }
 
-const pageSitemap = xml([siteUrl('/'), ...pages]);
+const pageSitemap = xml(pages);
 const landingSitemap = xml([...landingDirs, ...localizedLanding]);
 const vehicleSitemap = xmlWithImages(vehicleEntries, 'weekly');
 write('sitemap-pages-current.xml', pageSitemap);
@@ -108,4 +98,4 @@ for (const relativeDir of ['landing', 'fr', 'ar', 'ru']) normalizeTree(relativeD
 normalizeRootFile('scripts/generate-vehicle-pages.js');
 normalizeRootFile('scripts/maintain-seo.js');
 
-console.log(`SEO sitemaps generated: pages=${pages.length + 1}, landing=${landingDirs.length + localizedLanding.length}, vehicles=${vehicleUrls.length}`);
+console.log(`SEO sitemaps generated: pages=${pages.length}, landing=${landingDirs.length + localizedLanding.length}, vehicles=${vehicleUrls.length}`);
