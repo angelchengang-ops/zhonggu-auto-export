@@ -74,6 +74,8 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /process /export-process.html 200
 /export-process /export-process.html 200
 /contact /contact.html 200
+/car-importer-center /car-importer-center.html 200
+/wholesale-cars-from-china /wholesale-cars-from-china.html 200
 /used-vw-t-cross-2024-001 /used-vw-t-cross-2024-001.html 200
 /used-toyota-corolla-2023 /used-toyota-corolla-2023.html 200
 /used-toyota-corolla-2023-001 /used-toyota-corolla-2023-001.html 200
@@ -148,4 +150,3 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /landing/china-used-cars-export-to-west-africa /landing/china-used-cars-export-to-west-africa/index.html 200
 /landing/used-cars-export-to-myanmar /landing/used-cars-export-to-myanmar/index.html 200
 /landing/china-car-exporter-for-central-asia /landing/china-car-exporter-for-central-asia/index.html 200
-

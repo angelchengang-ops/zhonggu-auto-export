@@ -4,6 +4,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://zhongguauto.com';
 const LASTMOD = '2026-07-17';
+const PAGE_LASTMOD = '2026-07-20';
 const EXCLUDED_LANDING_DIRS = new Set(['export-cars-to-africa']);
 
 const read = (relative) => fs.readFileSync(path.join(ROOT, relative), 'utf8').replace(/^\uFEFF/, '');
@@ -20,7 +21,7 @@ const writeOptional = (relative, content) => {
 const siteUrl = (pathname = '') => `${SITE}${pathname.startsWith('/') ? pathname : `/${pathname}`}`;
 const cleanPath = (value = '') => String(value || '').replace(/^\/+/, '');
 const assetUrl = (value = '') => /^https?:\/\//i.test(String(value || '')) ? String(value) : siteUrl(cleanPath(value));
-const xml = (urls, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>${url}</loc><lastmod>${LASTMOD}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
+const xml = (urls, frequency = 'monthly', lastmod = LASTMOD) => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>${url}</loc><lastmod>${lastmod}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
 const xmlWithImages = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.map((entry) => `  <url><loc>${entry.url}</loc><lastmod>${LASTMOD}</lastmod><changefreq>${frequency}</changefreq>${entry.image ? `<image:image><image:loc>${entry.image}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>\n`;
 const normalizePublishedUrls = (content) => content
   .replace(/https:\/\/www\.zhongguauto\.com/g, SITE)
@@ -34,7 +35,18 @@ const vehicleEntries = cars
   .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
   .map((car) => ({ url: siteUrl(vehicleCanonicalPath(car)), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '' }));
 const vehicleUrls = vehicleEntries.map((entry) => entry.url);
-const pages = [siteUrl('company.html')];
+const pages = [
+  'company.html',
+  'car-importer-center.html',
+  'wholesale-cars-from-china.html',
+  'geely-coolray-ready-stock-nansha-port.html',
+  'used-bestune-b70-wholesale.html',
+  'bestune-yueyi-03-wholesale.html',
+  'used-bestune-yueyi-07-phev-export.html',
+  'bestune-k1-europe.html',
+  'export-cars-from-china-to-algeria.html',
+  'export-cars-from-china-to-central-asia.html'
+].map(siteUrl);
 
 const landingRoot = path.join(ROOT, 'landing');
 const landingDirs = fs.existsSync(landingRoot)
@@ -53,7 +65,7 @@ for (const code of ['fr', 'ar']) {
   }
 }
 
-const pageSitemap = xml(pages);
+const pageSitemap = xml(pages, 'monthly', PAGE_LASTMOD);
 const landingSitemap = xml([...landingDirs, ...localizedLanding]);
 const vehicleSitemap = xmlWithImages(vehicleEntries, 'weekly');
 write('sitemap-pages-current.xml', pageSitemap);
@@ -62,7 +74,7 @@ write('sitemap-vehicles-current.xml', vehicleSitemap);
 writeOptional('sitemap-pages.xml', pageSitemap);
 writeOptional('sitemap-landing.xml', landingSitemap);
 writeOptional('sitemap-vehicles.xml', vehicleSitemap);
-const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${SITE}/sitemap-pages-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-landing-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-vehicles-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n</sitemapindex>\n`;
+const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${SITE}/sitemap-pages-current.xml</loc><lastmod>${PAGE_LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-landing-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-vehicles-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n</sitemapindex>\n`;
 write('sitemap-index.xml', sitemapIndex);
 writeOptional('sitemap.xml', sitemapIndex);
 
