@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/generate-vehicle-pages.js && node scripts/generate-seo-upgrade-pages.js && node scripts/normalize-whatsapp-contact.js && node scripts/maintain-seo.js && node scripts/inject-webmaster-verification.js",
+    "build": "node scripts/generate-vehicle-pages.js && node scripts/generate-seo-upgrade-pages.js && node scripts/normalize-whatsapp-contact.js && node scripts/maintain-seo.js && node scripts/fix-published-seo.js && node scripts/inject-webmaster-verification.js",
     "start": "node server.js",
     "media": "node server.js",
     "netlify:ignore": "node scripts/netlify-ignore.js",
