@@ -30,23 +30,19 @@ const textFixes = [
 
 const read = (file) => fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '');
 const write = (file, content) => fs.writeFileSync(file, content, 'utf8');
-
 const replaceAll = (content, from, to) => content.split(from).join(to);
-
 const stripTags = (value = '') => String(value).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
 const removeInternalVehicleSections = (html, relativePath) => {
   html = html.replace(
-    /<section class="seo-section vehicle-custom-section[^"]*">[\s\S]*?<h2>If This Unit Is Sold<\/h2>[\s\S]*?<\/section>/gi,
-    ''
+    /<section class="seo-section vehicle-custom-section[^"]*">[\s\S]*?<\/section>/gi,
+    (section) => {
+      const text = stripTags(section);
+      if (/\bIf This Unit Is Sold\b/i.test(text)) return '';
+      if (!relativePath.startsWith('ru/') && /[\u0400-\u04ff]/.test(text)) return '';
+      return section;
+    }
   );
-
-  if (!relativePath.startsWith('ru/')) {
-    html = html.replace(
-      /<section class="seo-section vehicle-custom-section[^"]*">[\s\S]*?<\/section>/gi,
-      (section) => /[\u0400-\u04ff]/.test(stripTags(section)) ? '' : section
-    );
-  }
 
   html = replaceAll(html, 'Geely Binyue and Coolray SEO Focus', 'Geely Binyue and Coolray Supply');
   html = replaceAll(
@@ -103,7 +99,7 @@ const fixMgLanding = (html, relativePath) => {
   );
 
   html = replaceAll(html, 'Do you have Geely Binyue ready stock for Algeria?', 'Can you confirm current MG stock?');
-  html = replaceAll(html, 'For Algeria inquiries, Geely Binyue is a priority model. Availability changes, so we confirm current stock, colors and configuration before quotation.', `Yes. Send the required MG model, year, condition and quantity. We will check current stock, colors, configuration and vehicle location before quotation.`);
+  html = replaceAll(html, 'For Algeria inquiries, Geely Binyue is a priority model. Availability changes, so we confirm current stock, colors and configuration before quotation.', 'Yes. Send the required MG model, year, condition and quantity. We will check current stock, colors, configuration and vehicle location before quotation.');
   html = replaceAll(html, 'Which ports do you usually use?', 'Which China loading ports may be used?');
   html = replaceAll(html, 'Common China departure ports include China ports. For Algeria inquiries, the destination port is usually buyer destination port.', 'Common loading ports include Qingdao, Shanghai and Nansha, depending on vehicle location and carrier schedule. The destination port is confirmed before quotation.');
   html = replaceAll(html, 'name="market_country" value="Algeria"', 'name="market_country" value="Global"');
