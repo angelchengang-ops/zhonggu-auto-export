@@ -42,3 +42,5 @@
     Cache-Control = "no-store, no-cache, must-revalidate"
     X-Robots-Tag = "noindex, nofollow"
     X-Content-Type-Options = "nosniff"
+
+# Production redeploy trigger: 2026-07-27
