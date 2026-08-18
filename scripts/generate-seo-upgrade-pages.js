@@ -49,8 +49,8 @@ const vehicleHref = (car = {}) => {
 };
 const waHref = (message = '') => `https://wa.me/${WA_NUMBER}${message ? `?text=${encodeURIComponent(message)}` : ''}`;
 
-const nav = `<header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="/index.html" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="/index.html">Home</a><a href="/new-cars.html">New Cars</a><a href="/used-cars.html">Used Cars</a><a href="/brands.html">Brands</a><a href="/company.html">Company</a><a href="/export-process.html">Export Process</a><a class="nav-cta" href="/contact.html">Contact Us</a></nav></div></header>`;
-const footer = `<footer class="site-footer"><div class="container footer-wrap"><a class="logo footer-logo" href="/index.html"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><p>Reliable vehicles from China, delivered worldwide.</p><nav class="footer-market-links export-market-links" aria-label="Export markets"><span>Export Markets:</span><a href="/export-cars-from-china-to-africa.html">Africa</a><a href="/export-cars-from-china-to-algeria.html">Algeria</a><a href="/export-cars-from-china-to-ivory-coast.html">Cote d'Ivoire</a><a href="/export-cars-from-china-to-ghana.html">Ghana</a><a href="/bestune-k1-europe.html">Bestune K1 Europe</a></nav><p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p></div></footer>`;
+const nav = `<header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="/" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/new-cars.html">New Cars</a><a href="/used-cars.html">Used Cars</a><a href="/brands.html">Brands</a><a href="/company.html">Company</a><a href="/export-process.html">Export Process</a><a class="nav-cta" href="/contact.html">Contact Us</a></nav></div></header>`;
+const footer = `<footer class="site-footer"><div class="container footer-wrap"><a class="logo footer-logo" href="/"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><p>Reliable vehicles from China, delivered worldwide.</p><nav class="footer-market-links export-market-links" aria-label="Export markets"><span>Export Markets:</span><a href="/export-cars-from-china-to-africa.html">Africa</a><a href="/export-cars-from-china-to-algeria.html">Algeria</a><a href="/export-cars-from-china-to-ivory-coast.html">Cote d'Ivoire</a><a href="/export-cars-from-china-to-ghana.html">Ghana</a><a href="/bestune-k1-europe.html">Bestune K1 Europe</a></nav><p>&copy; <span id="year"></span> Zhonggu Auto Export. All rights reserved.</p></div></footer>`;
 
 const breadcrumbSchema = (items) => ({
   '@type': 'BreadcrumbList',
@@ -62,8 +62,9 @@ const breadcrumbSchema = (items) => ({
   }))
 });
 
-const pageShell = ({ lang = 'en', title, description, path: pagePath, canonicalPath = pagePath, h1, bodyClass = '', market = '', body, schema = [] }) => {
+const pageShell = ({ lang = 'en', title, description, path: pagePath, canonicalPath = pagePath, h1, bodyClass = '', market = '', body, schema = [], hreflangs = [] }) => {
   const url = `${SITE}/${canonicalPath}`;
+  const alternateLinks = hreflangs.map(({ lang: hreflang, href }) => `  <link rel="alternate" hreflang="${escapeAttr(hreflang)}" href="${escapeAttr(href)}">`).join('\n');
   const graph = [
     {
       '@type': 'Organization',
@@ -99,7 +100,7 @@ const pageShell = ({ lang = 'en', title, description, path: pagePath, canonicalP
   <title>${title}</title>
   <meta name="description" content="${escapeAttr(description)}">
   <link rel="canonical" href="${url}">
-  <meta property="og:type" content="website">
+${alternateLinks ? `${alternateLinks}\n` : ''}  <meta property="og:type" content="website">
   <meta property="og:title" content="${escapeAttr(title)}">
   <meta property="og:description" content="${escapeAttr(description)}">
   <meta property="og:url" content="${url}">
@@ -442,14 +443,20 @@ const writeAlgeriaPage = () => {
 <section class="seo-section"><div class="container"><h2>Geely Binyue and Coolray SEO Focus</h2><p>Algeria buyers continue to ask about Geely Binyue and Geely Coolray compact SUV options. We preserve this page URL and canonical while adding a higher-priority entry for Geely Coolray Full Option ready stock at Nansha Port. Current colors, quantity and VIN information are confirmed during inquiry instead of being published as a fixed list.</p></div></section>
 <section class="seo-section"><div class="container"><h2>FOB and CIF Price to Algiers</h2><p>To prepare a meaningful quotation, we need the target model, quantity, color preference, departure port, destination port and current vessel schedule. CIF price changes with sea freight and stock availability, so this page uses Get Latest FOB/CIF Price instead of a fixed country-page price.</p></div></section>
 <section class="seo-section"><div class="container"><h2>Contenu en francais pour les acheteurs en Algerie</h2><p>Nous pouvons verifier Geely Coolray stock disponible Algerie, Bestune B70 occasion, voiture d'occasion Chine, export voiture Chine Algerie, Bestune Yueyi 03 electrique et Bestune Yueyi 07 hybride rechargeable. Les prix FOB/CIF sont confirmes selon le stock et le fret du moment.</p></div></section>
-<section class="seo-section"><div class="container"><h2>Related Algeria Export Pages</h2><div class="link-cloud"><a href="/geely-coolray-ready-stock-nansha-port.html">Geely Coolray Nansha Ready Stock</a><a href="/used-bestune-b70-wholesale.html">Used Bestune B70 Wholesale</a><a href="/bestune-yueyi-03-wholesale.html">Bestune Yueyi 03 EV</a><a href="/used-bestune-yueyi-07-phev-export.html">Used Bestune Yueyi 07 PHEV</a><a href="/landing/geely-binyue-export-algeria">Geely Binyue Export to Algeria</a><a href="/landing/cif-car-price-to-algiers">CIF Car Price to Algiers</a></div></div></section>
+<section class="seo-section"><div class="container"><h2>Related Algeria Export Pages</h2><div class="link-cloud"><a href="/geely-coolray-ready-stock-nansha-port.html">Geely Coolray Nansha Ready Stock</a><a href="/used-bestune-b70-wholesale.html">Used Bestune B70 Wholesale</a><a href="/bestune-yueyi-03-wholesale.html">Bestune Yueyi 03 EV</a><a href="/used-bestune-yueyi-07-phev-export.html">Used Bestune Yueyi 07 PHEV</a><a href="/landing/geely-binyue-export-algeria/">Geely Binyue Export to Algeria</a><a href="/landing/cif-car-price-to-algiers/">CIF Car Price to Algiers</a></div></div></section>
 <section class="seo-section"><div class="container"><h2>FAQ for Algeria Car Importers</h2><div class="faq-list">${faqs.map(([q, a]) => `<article class="faq-item"><h3>${escapeHtml(q)}</h3><p>${escapeHtml(a)}</p></article>`).join('')}</div></div></section>
 ${contactSection({ heading: 'Get Latest FOB/CIF Price to Algiers', intro: 'Send target model, quantity and destination port. We will confirm current stock, FOB price, CIF price and vessel schedule when available.', model: 'Export Cars from China to Algeria', sourcePath: 'export-cars-from-china-to-algeria.html', message: 'Please send Geely Coolray Nansha ready stock, Bestune B70 batch stock, Bestune Yueyi 03 and Used Bestune Yueyi 07 PHEV options with latest FOB/CIF price to Algiers.', country: 'Algeria', button: 'Get Latest FOB/CIF Price' })}`;
   write('export-cars-from-china-to-algeria.html', pageShell({
     title: 'Export Cars from China to Algeria | Geely Coolray and Bestune Stock',
     description: 'Export cars from China to Algeria with Geely Coolray Nansha ready stock, used Bestune B70 batch stock, Yueyi 03 EV and Yueyi 07 PHEV options.',
     path: 'export-cars-from-china-to-algeria.html',
-    canonicalPath: 'export-cars-from-china-to-algeria',
+    canonicalPath: 'export-cars-from-china-to-algeria.html',
+    hreflangs: [
+      { lang: 'en', href: `${SITE}/export-cars-from-china-to-algeria.html` },
+      { lang: 'fr', href: `${SITE}/fr/export-cars-from-china-to-algeria.html` },
+      { lang: 'ar', href: `${SITE}/ar/export-cars-from-china-to-algeria.html` },
+      { lang: 'x-default', href: `${SITE}/export-cars-from-china-to-algeria.html` }
+    ],
     h1: 'Export Cars from China to Algeria',
     market: 'Algeria',
     body,
