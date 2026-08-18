@@ -74,29 +74,28 @@ const fixMgLanding = (html, relativePath) => {
   html = replaceAll(html, 'Ask for Algeria Shipping Quote', 'Request Shipping Quote');
   html = html.replace(/<section class="seo-section"><div class="container"><div class="algeria-image-row">[\s\S]*?<\/section>/i, '');
 
-  html = replaceSimpleSection(
-    html,
-    'Buyer Demand and Market Fit',
-    `<section class="seo-section"><div class="container"><h2>Buyer Demand and Market Fit</h2><p>Overseas dealers and importers usually need confirmed model year, mileage or new-car status, configuration, available colors, inspection material, vehicle location and a current FOB or CIF quotation. Zhonggu Auto Export checks ${focus} according to the buyer's destination, quantity, budget and purchasing schedule.</p></div></section>`
-  );
+  const buyerDemandSection = isUsed
+    ? `<section class="seo-section"><div class="container"><h2>Buyer Demand and Market Fit</h2><p>Used MG buyers usually compare model year, mileage, trim, condition, color and export-ready documents before choosing a unit. Zhonggu Auto Export checks ${focus} from China for overseas dealers and importers, then confirms stock location, inspection media, FOB quotation needs, possible CIF inquiry details and purchasing schedule before replying.</p></div></section>`
+    : `<section class="seo-section"><div class="container"><h2>Buyer Demand and Market Fit</h2><p>Overseas dealers and importers usually need confirmed model year, mileage or new-car status, configuration, available colors, inspection material, vehicle location and a current FOB or CIF quotation. Zhonggu Auto Export checks ${focus} according to the buyer's destination, quantity, budget and purchasing schedule.</p></div></section>`;
+  html = replaceSimpleSection(html, 'Buyer Demand and Market Fit', buyerDemandSection);
 
-  html = replaceSimpleSection(
-    html,
-    'Ready Stock and Vehicle Sourcing',
-    `<section class="seo-section"><div class="container"><h2>MG Vehicle Sourcing</h2><p>Zhonggu Auto Export checks ${focus} from current China dealer and inventory channels. Stock, condition, mileage, configuration, left-hand or right-hand drive requirements, photos and export timing are confirmed before quotation.</p></div></section>`
-  );
+  const mgSourcingSection = isUsed
+    ? `<section class="seo-section"><div class="container"><h2>MG Vehicle Sourcing and Inspection</h2><p>Zhonggu Auto Export checks ${focus} through current China dealer and inventory channels. Before quotation we confirm stock status, mileage, exterior and interior condition, trim configuration, LHD/RHD requirement, available photos, VIN or inspection material and export timing.</p></div></section>`
+    : `<section class="seo-section"><div class="container"><h2>MG Vehicle Sourcing</h2><p>Zhonggu Auto Export checks ${focus} from current China dealer and inventory channels. Stock, condition, mileage, configuration, left-hand or right-hand drive requirements, photos and export timing are confirmed before quotation.</p></div></section>`;
+  html = replaceSimpleSection(html, 'Ready Stock and Vehicle Sourcing', mgSourcingSection);
+  html = replaceSimpleSection(html, 'MG Vehicle Sourcing', mgSourcingSection);
+  html = replaceSimpleSection(html, 'MG Vehicle Sourcing and Inspection', mgSourcingSection);
 
-  html = replaceSimpleSection(
-    html,
-    'Shipping and China Port Delivery',
-    '<section class="seo-section"><div class="container"><h2>Shipping and China Port Delivery</h2><p>Vehicle location and the selected carrier determine the loading port. Common options include Qingdao, Shanghai and Nansha. Shipping preparation and transit estimates are confirmed after the model, quantity and destination port are provided.</p></div></section>'
-  );
+  const mgShippingSection = isUsed
+    ? '<section class="seo-section"><div class="container"><h2>Shipping and China Port Delivery</h2><p>Vehicle location and carrier schedule determine the China loading port. Common options include Qingdao, Shanghai and Nansha. We coordinate port delivery, export documents, loading preparation and FOB/CIF shipping inquiry details after the model, quantity and destination port are provided.</p></div></section>'
+    : '<section class="seo-section"><div class="container"><h2>Shipping and China Port Delivery</h2><p>Vehicle location and the selected carrier determine the loading port. Common options include Qingdao, Shanghai and Nansha. Shipping preparation and transit estimates are confirmed after the model, quantity and destination port are provided.</p></div></section>';
+  html = replaceSimpleSection(html, 'Shipping and China Port Delivery', mgShippingSection);
 
-  html = replaceSimpleSection(
-    html,
-    'What Buyers Should Send',
-    `<section class="seo-section"><div class="container"><h2>What Buyers Should Send</h2><p>Send the target MG model, year, quantity, condition preference, budget, destination country and port, and whether FOB or CIF pricing is required. We will confirm current availability and the documents available for the selected vehicle.</p></div></section>`
-  );
+  const mgBuyerInfoSection = isUsed
+    ? `<section class="seo-section"><div class="container"><h2>What MG Used Car Buyers Should Send</h2><p>Send target MG model, model year, quantity, mileage range, condition preference, budget, destination country and port, and whether FOB or CIF pricing is required. We will respond with current availability, document status and the next export quotation step.</p></div></section>`
+    : `<section class="seo-section"><div class="container"><h2>What Buyers Should Send</h2><p>Send the target MG model, year, quantity, condition preference, budget, destination country and port, and whether FOB or CIF pricing is required. We will confirm current availability and the documents available for the selected vehicle.</p></div></section>`;
+  html = replaceSimpleSection(html, 'What Buyers Should Send', mgBuyerInfoSection);
+  html = replaceSimpleSection(html, 'What MG Used Car Buyers Should Send', mgBuyerInfoSection);
 
   html = replaceAll(html, 'Do you have Geely Binyue ready stock for Algeria?', 'Can you confirm current MG stock?');
   html = replaceAll(html, 'For Algeria inquiries, Geely Binyue is a priority model. Availability changes, so we confirm current stock, colors and configuration before quotation.', 'Yes. Send the required MG model, year, condition and quantity. We will check current stock, colors, configuration and vehicle location before quotation.');

@@ -293,11 +293,12 @@ const renderRelatedPages = (car) => {
     const href = englishValue(item.href || item.url);
     const label = englishValue(item.label || item.title);
     const text = englishValue(item.description || item.text);
+    const cta = englishValue(item.cta || item.anchor || item.linkText) || 'View details';
     if (!href || !label) return null;
-    return { href, label, text };
+    return { href, label, text, cta };
   }).filter(Boolean);
   if (!links.length) return '';
-  return `<section class="seo-section vehicle-related-pages"><div class="container"><h2>Related Export Pages</h2><div class="seo-card-grid">${links.map((link) => `<article class="seo-card"><h3>${escapeHtml(link.label)}</h3>${link.text ? `<p>${escapeHtml(link.text)}</p>` : ''}<a href="${escapeAttr(link.href)}">View details</a></article>`).join('')}</div></div></section>`;
+  return `<section class="seo-section vehicle-related-pages"><div class="container"><h2>Related Export Pages</h2><div class="seo-card-grid">${links.map((link) => `<article class="seo-card"><h3>${escapeHtml(link.label)}</h3>${link.text ? `<p>${escapeHtml(link.text)}</p>` : ''}<a href="${escapeAttr(link.href)}">${escapeHtml(link.cta)}</a></article>`).join('')}</div></div></section>`;
 };
 const render = (car) => {
   const id = car.id;
@@ -311,6 +312,7 @@ const render = (car) => {
   const img = galleryImages[0];
   const imgUrl = absoluteUrl(img);
   const description = getDescription(car, name);
+  const heroDescription = englishValue(car.heroDescription) || description;
   const ogTitle = englishValue(car.seoTitle || car.metaTitle) || `${name} | Vehicle Export from China`;
   const mediaMarkup = renderMedia(galleryImages, name, car);
   const videoMarkup = renderVideoSection(videos);
@@ -398,7 +400,7 @@ const render = (car) => {
 </head><body class="vehicle-detail-page seo-page${sold ? ' vehicle-sold-page' : ''}" data-vehicle-id="${escapeAttr(id)}" data-vehicle-name="${escapeAttr(name)}" data-vehicle-year="${escapeAttr(englishValue(car.year || car.modelYear))}" data-vehicle-price="${escapeAttr(price)}" data-vehicle-url="${escapeAttr(url)}">
 <header class="site-header scrolled"><div class="container nav-wrap"><a class="logo" href="/" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/new-cars.html">New Cars</a><a href="/used-cars.html">Used Cars</a><a href="/brands.html">Brands</a><a href="/company.html">Company</a><a href="/export-process.html">Export Process</a><a class="nav-cta" href="#contact">Contact Us</a></nav><select class="language-select" aria-label="Select language"><option value="en">English</option><option value="ar">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</option><option value="ru">&#1056;&#1091;&#1089;&#1082;&#1080;&#1081;</option><option value="fr">Fran&#231;ais</option><option value="es">Espa&#241;ol</option></select></div></header>
 <main>
-<section class="detail-hero used-detail-hero"><div class="container detail-grid"><article class="detail-card detail-main-panel"><p class="eyebrow">${escapeHtml(heroEyebrow)}</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(description)}</p>${heroHighlightsMarkup}${mediaMarkup}${videoMarkup}</article><aside class="detail-summary purchase-card"><p class="eyebrow">${escapeHtml(purchaseEyebrow)}</p><div class="purchase-price"><small>${escapeHtml(priceLabel)}</small><strong>${escapeHtml(price)}</strong></div>${renderSpecGrid(summary, 'purchase-specs')}<a class="btn btn-primary js-inquiry-cta detail-quote-btn" href="#contact" data-static-label="${escapeAttr(ctaLabel)}" ${ctaAttrs(car, name, url)}>${escapeHtml(ctaLabel)}</a></aside></div></section>
+<section class="detail-hero used-detail-hero"><div class="container detail-grid"><article class="detail-card detail-main-panel"><p class="eyebrow">${escapeHtml(heroEyebrow)}</p><h1>${escapeHtml(name)}</h1><p>${escapeHtml(heroDescription)}</p>${heroHighlightsMarkup}${mediaMarkup}${videoMarkup}</article><aside class="detail-summary purchase-card"><p class="eyebrow">${escapeHtml(purchaseEyebrow)}</p><div class="purchase-price"><small>${escapeHtml(priceLabel)}</small><strong>${escapeHtml(price)}</strong></div>${renderSpecGrid(summary, 'purchase-specs')}<a class="btn btn-primary js-inquiry-cta detail-quote-btn" href="#contact" data-static-label="${escapeAttr(ctaLabel)}" ${ctaAttrs(car, name, url)}>${escapeHtml(ctaLabel)}</a></aside></div></section>
 <section class="seo-section vehicle-overview-section"><div class="container"><h2>Vehicle Overview</h2><p>${escapeHtml(overviewText)}</p>${renderSpecGrid(overview, 'overview-specs')}</div></section>
 <section class="seo-section key-specifications-section"><div class="container"><h2>Key Specifications</h2>${renderTechnicalSpecs(specs) || '<p>Detailed technical specifications can be confirmed during inquiry.</p>'}</div></section>
 <section class="seo-section condition-inventory-section"><div class="container"><h2>${availabilityHeading}</h2>${renderSpecGrid(condition, 'condition-specs')}</div></section>
