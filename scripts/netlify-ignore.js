@@ -1,99 +1,122 @@
-﻿const { execFileSync } = require("child_process");
+const { execFileSync } = require('child_process');
 
-const relevantPatterns = [
-  /^index\.html$/i,
-  /^used-cars\.html$/i,
-  /^company\.html$/i,
-  /^new-cars\.html$/i,
-  /^brands\.html$/i,
-  /^contact\.html$/i,
-  /^export-process\.html$/i,
-  /^process\.html$/i,
-  /^seo\.html$/i,
-  /^vehicle\.html$/i,
-  /^lead-gen\.js$/i,
-  /^data\/seo-pages\.json$/i,
-  /^data\/algeria-inquiry-channels\.json$/i,
-  /^sitemap\.xml$/i,
-  /^robots\.txt$/i,
+const BUILD = 1;
+const SKIP = 0;
+
+const buildPatterns = [
+  /^_headers$/i,
   /^_redirects$/i,
-  /^china-.*\.html$/i,
-  /^chinese-.*\.html$/i,
-  /^buy-cars-from-china\.html$/i,
-  /^export-cars-from-china-.*\.html$/i,
-  /^byd-car-exporter-china\.html$/i,
-  /^geely-car-exporter-china\.html$/i,
-  /^bestune-car-exporter-china\.html$/i,
-  /^toyota-used-cars-china\.html$/i,
-  /^honda-used-cars-china\.html$/i,
-  /^landing\//i,
-  /^used-.*\.html$/i,
-  /^style\.css$/i,
-  /^script\.js$/i,
+  /^netlify\.toml$/i,
+  /^package(?:-lock)?\.json$/i,
+  /^robots\.txt$/i,
+  /^sitemap(?:-[a-z0-9-]+)?\.xml$/i,
   /^lang\.json$/i,
   /^cars\.json$/i,
   /^grouped-cars\.json$/i,
   /^manual-image-map\.json$/i,
-  /^data\/used-cars\.json$/i,
-  /^data\/media-config\.json$/i,
+  /^[^/]+\.html$/i,
+  /^landing\/.*\.html$/i,
+  /^(?:ar|fr|ru)\/.*\.html$/i,
+  /^new-cars\/.*\.html$/i,
+  /^assets\//i,
   /^images\//i,
   /^videos\//i,
-  /^admin\//i,
-  /^sw\.js$/i,
-  /^service-worker\.js$/i,
-  /^netlify\.toml$/i,
-  /^_headers$/i,
-  /^_redirects$/i,
-  /^package\.json$/i,
-  /^package-lock\.json$/i
+  /^data\//i,
+  /^netlify\/functions\//i,
+  /^scripts\/.*\.js$/i,
+  /(^|\/)[^/]+\.css$/i,
+  /(^|\/)[^/]+\.js$/i
 ];
 
-const ignoredPatterns = [
-  /^README/i,
+const skipPatterns = [
+  /^README(?:\..*)?$/i,
+  /^docs\//i,
+  /^\.agents\//i,
+  /^\.codex\//i,
+  /\.md$/i,
+  /\.txt$/i,
   /_REPORT\.md$/i,
   /_TODO\.md$/i,
-  /\.txt$/i,
   /^COMPANY_.*\.md$/i,
   /^IMAGE_.*\.md$/i,
   /^MEDIA_.*\.md$/i,
   /^OFFICIAL_IMAGE_SOURCES\.md$/i
 ];
 
-const diffBase = process.env.CACHED_COMMIT_REF;
-const diffHead = process.env.COMMIT_REF;
+const normalizeFile = (file) => String(file || '').trim().replace(/\\/g, '/').replace(/^\.\//, '');
+const isBuildRelevant = (file) => buildPatterns.some((pattern) => pattern.test(file));
+const isSkippable = (file) => skipPatterns.some((pattern) => pattern.test(file));
 
-if (!diffBase || !diffHead) {
-  process.exit(1);
-}
+const log = (message) => console.log(`[netlify-ignore] ${message}`);
 
-let changedFiles = [];
-try {
-  const output = execFileSync("git", ["diff", "--name-only", diffBase, diffHead], {
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "ignore"]
+const testChangedFiles = process.env.NETLIFY_IGNORE_TEST_CHANGED_FILES;
+const getTestChangedFiles = () => testChangedFiles
+  ? testChangedFiles.split(/\r?\n|,/).map(normalizeFile).filter(Boolean)
+  : null;
+
+const diffCommits = (base, head) => {
+  const output = execFileSync('git', ['diff', '--name-only', base, head], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe']
   });
-  changedFiles = output.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-} catch {
-  process.exit(1);
+  return output.split(/\r?\n/).map(normalizeFile).filter(Boolean);
+};
+
+const getChangedFiles = () => {
+  const testFiles = getTestChangedFiles();
+  if (testFiles) {
+    log(`using test changed files: ${testFiles.join(', ') || '(empty)'}`);
+    return { files: testFiles, reliable: true, source: 'test-env' };
+  }
+
+  const base = process.env.CACHED_COMMIT_REF;
+  const head = process.env.COMMIT_REF;
+
+  if (!head) {
+    log('COMMIT_REF is unavailable; continuing build.');
+    return { files: [], reliable: false, source: 'missing-head' };
+  }
+
+  if (!base) {
+    log('CACHED_COMMIT_REF is unavailable; continuing build.');
+    return { files: [], reliable: false, source: 'missing-base' };
+  }
+
+  if (base === head) {
+    log('CACHED_COMMIT_REF equals COMMIT_REF; Netlify may be building without cache. Continuing build.');
+    return { files: [], reliable: false, source: 'same-ref' };
+  }
+
+  try {
+    return { files: diffCommits(base, head), reliable: true, source: `${base}..${head}` };
+  } catch (error) {
+    log(`git diff failed for ${base}..${head}: ${error.message}. Continuing build.`);
+    return { files: [], reliable: false, source: 'diff-error' };
+  }
+};
+
+const { files: changedFiles, reliable, source } = getChangedFiles();
+
+if (!reliable) {
+  process.exit(BUILD);
 }
 
 if (!changedFiles.length) {
-  process.exit(0);
+  log(`no changed files from ${source}; continuing build because an empty diff is not a reliable no-op signal.`);
+  process.exit(BUILD);
 }
 
-const isRelevant = (file) => relevantPatterns.some((pattern) => pattern.test(file));
-const isIgnored = (file) => ignoredPatterns.some((pattern) => pattern.test(file));
-
-if (changedFiles.some(isRelevant)) {
-  process.exit(1);
+const relevantFiles = changedFiles.filter(isBuildRelevant);
+if (relevantFiles.length) {
+  log(`build required by: ${relevantFiles.slice(0, 20).join(', ')}${relevantFiles.length > 20 ? ', ...' : ''}`);
+  process.exit(BUILD);
 }
 
-if (changedFiles.every(isIgnored)) {
-  process.exit(0);
+const unknownFiles = changedFiles.filter((file) => !isSkippable(file));
+if (unknownFiles.length) {
+  log(`build required by conservative fallback for: ${unknownFiles.slice(0, 20).join(', ')}${unknownFiles.length > 20 ? ', ...' : ''}`);
+  process.exit(BUILD);
 }
 
-process.exit(1);
-
-
-
-
+log(`skipping build; only non-production files changed: ${changedFiles.join(', ')}`);
+process.exit(SKIP);
