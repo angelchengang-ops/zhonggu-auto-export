@@ -259,7 +259,6 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /landing/left-hand-drive-cars-export-to-algeria/index.html /landing/left-hand-drive-cars-export-to-algeria/ 301!
 /landing/ready-stock-cars-export-to-algeria /landing/ready-stock-cars-export-to-algeria/ 301!
 /landing/ready-stock-cars-export-to-algeria/index.html /landing/ready-stock-cars-export-to-algeria/ 301!
-/landing/cif-car-price-to-algiers /landing/cif-car-price-to-algiers/ 301!
 /landing/cif-car-price-to-algiers/index.html /landing/cif-car-price-to-algiers/ 301!
 /landing/china-to-algeria-car-shipping /landing/china-to-algeria-car-shipping/ 301!
 /landing/china-to-algeria-car-shipping/index.html /landing/china-to-algeria-car-shipping/ 301!
@@ -275,17 +274,12 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /landing/used-cars-export-to-myanmar/index.html /landing/used-cars-export-to-myanmar/ 301!
 /landing/china-car-exporter-for-central-asia /landing/china-car-exporter-for-central-asia/ 301!
 /landing/china-car-exporter-for-central-asia/index.html /landing/china-car-exporter-for-central-asia/ 301!
-/fr/landing/cif-car-price-to-algiers /fr/landing/cif-car-price-to-algiers/ 301!
 /fr/landing/cif-car-price-to-algiers/index.html /fr/landing/cif-car-price-to-algiers/ 301!
 /fr/landing/geely-binyue-export-algeria /fr/landing/geely-binyue-export-algeria/ 301!
 /fr/landing/geely-binyue-export-algeria/index.html /fr/landing/geely-binyue-export-algeria/ 301!
-/ar/landing/cif-car-price-to-algiers /ar/landing/cif-car-price-to-algiers/ 301!
 /ar/landing/cif-car-price-to-algiers/index.html /ar/landing/cif-car-price-to-algiers/ 301!
 /ar/landing/geely-binyue-export-algeria /ar/landing/geely-binyue-export-algeria/ 301!
 /ar/landing/geely-binyue-export-algeria/index.html /ar/landing/geely-binyue-export-algeria/ 301!
-/landing/:slug /landing/:slug/ 301!
-/fr/landing/:slug /fr/landing/:slug/ 301!
-/ar/landing/:slug /ar/landing/:slug/ 301!
 
 /admin /admin/index.html 302
 /admin/ /admin/index.html 302
