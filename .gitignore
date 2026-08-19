@@ -9,3 +9,10 @@ netlify/functions/*.log
 *.pid
 node_modules/
 .npm-cache/
+
+# Local runtime data
+data/admin-users.json
+data/inquiries.json
+data/whatsapp-clicks.json
+data/whatsapp-settings.json
+data/manual-image-map.json

@@ -3756,6 +3756,11 @@ const transformWhatsappScript = (content = "", filePath = "") => {
 const serveStatic = async (req, res) => {
   const requestUrl = new URL(req.url, `http://${req.headers.host || "localhost"}`);
   let pathname = decodeURIComponent(requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname);
+  if (pathname === "/data" || pathname.startsWith("/data/")) {
+    res.writeHead(404, { ...noCacheHeaders, "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Not found");
+    return;
+  }
   const protectedAdminAsset = pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/public/admin/");
   if (protectedAdminAsset && pathname !== "/admin/login.html") {
     const user = await getCurrentUser(req);
