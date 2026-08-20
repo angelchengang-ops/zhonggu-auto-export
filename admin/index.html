@@ -49,6 +49,7 @@
     const card = (entry) => `<a class="card" href="${esc(entry.href)}"><h2>${esc(entry.title)}</h2><p>${esc(entry.description)}</p><span class="go">进入</span></a>`;
     const status = document.getElementById("status");
     const adminCards = [
+      { title:"每日CRM报告", description:"查看过去24小时新增线索、未分配客户、超时跟进和来源分布。", href:"/admin/daily-report.html" },
       { title:"询盘管理", description:"查看、筛选、分配、备注、导出官网询盘。", href:"/admin/inquiries.html" },
       { title:"员工管理", description:"维护管理员和业务员账号、角色、WhatsApp 和负责市场。", href:"/admin/employees.html" },
       { title:"WhatsApp 设置", description:"统一维护前台 WhatsApp 号码、业务员号码和消息模板。", href:"/admin/whatsapp-settings.html" },
