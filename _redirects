@@ -129,6 +129,7 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /api/admin/session  /.netlify/functions/admin-session  200
 /api/admin/stats  /.netlify/functions/admin-stats  200
 /api/admin/inquiry-stats  /.netlify/functions/admin-stats  200
+/api/admin/daily-report  /.netlify/functions/admin-daily-report  200
 /api/admin/inquiries/export.csv  /.netlify/functions/admin-export-inquiries  200
 /api/admin/inquiries  /.netlify/functions/admin-inquiries  200
 /api/admin/inquiries/*  /.netlify/functions/admin-inquiries  200
