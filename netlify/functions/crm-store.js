@@ -420,6 +420,91 @@ const buildStats = (items = []) => {
   };
 };
 
+const buildDailyReport = (items = [], options = {}) => {
+  const now = options.now ? new Date(options.now) : new Date();
+  const since24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const since7d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const customer = items.filter((item) => !isWhatsappClick(item));
+  const clicks = items.filter(isWhatsappClick);
+  const within = (item, since) => {
+    const created = new Date(item.createdAt || 0);
+    return Number.isFinite(created.getTime()) && created >= since && created <= now;
+  };
+  const customer24h = customer.filter((item) => within(item, since24h));
+  const clicks24h = clicks.filter((item) => within(item, since24h));
+  const customer7d = customer.filter((item) => within(item, since7d));
+  const unresolvedStatuses = new Set(["new", "assigned"]);
+  const overdue = customer.filter((item) => {
+    const created = new Date(item.createdAt || 0);
+    return Number.isFinite(created.getTime())
+      && created < since24h
+      && unresolvedStatuses.has(normalizeStatus(item.status));
+  });
+  const unassigned = customer24h.filter((item) => !isAssigned(item));
+  const countBy = (list, getter, fallback = "Unknown") => Object.fromEntries(
+    [...list.reduce((map, item) => {
+      const key = clean(getter(item)) || fallback;
+      map.set(key, (map.get(key) || 0) + 1);
+      return map;
+    }, new Map())].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  );
+  const contactKey = (item) => clean(item.whatsapp || item.email).toLowerCase();
+  const duplicateGroups = [...customer.reduce((map, item) => {
+    const key = contactKey(item);
+    if (!key) return map;
+    const group = map.get(key) || [];
+    group.push(item);
+    map.set(key, group);
+    return map;
+  }, new Map()).values()].filter((group) => group.length > 1);
+  const publicLead = (item) => ({
+    id: item.id,
+    createdAt: item.createdAt,
+    name: item.name || "Unknown",
+    country: item.country || item.market || "Unknown",
+    vehicle: item.vehicle || item.interestedModel || "Unknown",
+    quoteType: item.fobOrCif || item.quoteType || "Unknown",
+    destinationPort: item.destinationPort || "",
+    source: sourceTypeOf(item),
+    status: normalizeStatus(item.status),
+    assignedTo: assignedName(item.assignedTo)
+  });
+  const priority = customer24h
+    .filter((item) => {
+      const text = [item.message, item.vehicle, item.fobOrCif, item.destinationPort].join(" ");
+      return !isAssigned(item) || /\b(fob|cif|stock|inventory|vin|urgent|delivery|document|price|quote)\b/i.test(text);
+    })
+    .slice(0, 20)
+    .map(publicLead);
+
+  return {
+    generatedAt: now.toISOString(),
+    window: { from: since24h.toISOString(), to: now.toISOString() },
+    summary: {
+      newLeads24h: customer24h.length,
+      whatsappClicks24h: clicks24h.length,
+      unassigned24h: unassigned.length,
+      overdueFirstFollowUp: overdue.length,
+      last7Days: customer7d.length,
+      sevenDayDailyAverage: Number((customer7d.length / 7).toFixed(1)),
+      duplicateContactGroups: duplicateGroups.length
+    },
+    sources24h: countBy(customer24h, sourceTypeOf),
+    countries24h: countBy(customer24h, (item) => item.country || item.market),
+    vehicles24h: countBy(customer24h, (item) => item.vehicle || item.interestedModel),
+    statusesAll: countBy(customer, (item) => normalizeStatus(item.status)),
+    assigneesAll: countBy(customer, (item) => assignedName(item.assignedTo), "unassigned"),
+    priorityLeads: priority,
+    unassignedLeads: unassigned.slice(0, 20).map(publicLead),
+    overdueLeads: overdue.slice(0, 20).map(publicLead),
+    duplicateGroups: duplicateGroups.slice(0, 20).map((group) => ({
+      count: group.length,
+      leadIds: group.map((item) => item.id),
+      newestAt: group.map((item) => item.createdAt).sort().at(-1) || ""
+    }))
+  };
+};
+
 const escapeCsv = (value) => `"${String(value ?? "").replace(/"/g, '""').replace(/\r?\n/g, " ")}"`;
 const toCsv = (items = []) => {
   const headers = ["createdAt", "name", "country", "whatsapp", "email", "vehicle", "quantity", "budget", "fobOrCif", "destinationPort", "source", "status", "assignedTo", "message", "notes"];
@@ -450,6 +535,7 @@ const writeWhatsappSettings = async (settings, user = {}) => {
 module.exports = {
   assignedName,
   blobDebug,
+  buildDailyReport,
   buildStats,
   createLead,
   filterLeads,
