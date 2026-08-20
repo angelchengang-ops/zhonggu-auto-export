@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日CRM报告 | 中谷汽车</title>
+  <style>
+    body{margin:0;background:#f5f7fb;color:#172033;font-family:Arial,"Microsoft YaHei",sans-serif}.shell{width:min(1180px,calc(100% - 32px));margin:32px auto}.top{display:flex;justify-content:space-between;gap:16px;align-items:center}.back{color:#153f75;text-decoration:none;font-weight:700}.status{color:#b42318}.stats,.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:20px}.card,.panel{background:#fff;border:1px solid #e3e8f2;border-radius:9px;padding:16px;box-shadow:0 8px 24px rgba(15,23,42,.05)}.card small{display:block;color:#667085;margin-bottom:8px}.card strong{font-size:28px;color:#153f75}.panel{margin-top:18px;overflow:auto}.panel h2{margin:0 0 12px;font-size:19px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px;border-bottom:1px solid #edf0f5;white-space:nowrap}th{color:#667085}.empty{color:#667085}code{background:#eef2f7;padding:2px 5px;border-radius:4px}@media(max-width:700px){.top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top"><div><h1>每日CRM报告</h1><p id="range">正在读取最近24小时数据…</p></div><a class="back" href="/admin/">返回后台</a></header>
+    <p class="status" id="status"></p><section class="stats" id="stats"></section>
+    <section class="grid"><article class="panel"><h2>来源（24小时）</h2><div id="sources"></div></article><article class="panel"><h2>国家（24小时）</h2><div id="countries"></div></article><article class="panel"><h2>车型（24小时）</h2><div id="vehicles"></div></article></section>
+    <section class="panel"><h2>今日优先客户</h2><div id="priority"></div></section>
+    <section class="panel"><h2>未分配客户</h2><div id="unassigned"></div></section>
+    <section class="panel"><h2>超过24小时未首次跟进</h2><div id="overdue"></div></section>
+  </main>
+  <script>
+    const esc=(v)=>String(v??"").replace(/[&<>\"]/g,(c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    const metric=(label,value)=>`<article class="card"><small>${esc(label)}</small><strong>${esc(value)}</strong></article>`;
+    const breakdown=(obj)=>{const rows=Object.entries(obj||{});return rows.length?`<table><tbody>${rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join("")}</tbody></table>`:'<p class="empty">暂无数据</p>'};
+    const leads=(items)=>items?.length?`<table><thead><tr><th>时间</th><th>客户</th><th>国家</th><th>车型</th><th>报价</th><th>负责人</th><th>状态</th></tr></thead><tbody>${items.map((x)=>`<tr><td>${esc(x.createdAt)}</td><td><code>${esc(x.id)}</code> ${esc(x.name)}</td><td>${esc(x.country)}</td><td>${esc(x.vehicle)}</td><td>${esc(x.quoteType)}</td><td>${esc(x.assignedTo)}</td><td>${esc(x.status)}</td></tr>`).join("")}</tbody></table>`:'<p class="empty">暂无数据</p>';
+    async function requireLogin(){const cached=sessionStorage.getItem("zhonggu_admin_user");if(!cached){location.href="/admin/login.html";return false}const res=await fetch("/api/admin/me",{cache:"no-store"});if(res.status===401){sessionStorage.removeItem("zhonggu_admin_user");location.href="/admin/login.html";return false}return res.ok}
+    (async()=>{try{if(!await requireLogin())return;const res=await fetch("/api/admin/daily-report",{cache:"no-store"});const data=await res.json();if(!res.ok||!data.report)throw new Error(data.message||"日报读取失败");const r=data.report,s=r.summary;document.getElementById("range").textContent=`统计区间：${r.window.from} 至 ${r.window.to}`;document.getElementById("stats").innerHTML=[metric("新增线索",s.newLeads24h),metric("WhatsApp点击",s.whatsappClicks24h),metric("未分配",s.unassigned24h),metric("超时未跟进",s.overdueFirstFollowUp),metric("近7日线索",s.last7Days),metric("7日日均",s.sevenDayDailyAverage),metric("疑似重复组",s.duplicateContactGroups)].join("");document.getElementById("sources").innerHTML=breakdown(r.sources24h);document.getElementById("countries").innerHTML=breakdown(r.countries24h);document.getElementById("vehicles").innerHTML=breakdown(r.vehicles24h);document.getElementById("priority").innerHTML=leads(r.priorityLeads);document.getElementById("unassigned").innerHTML=leads(r.unassignedLeads);document.getElementById("overdue").innerHTML=leads(r.overdueLeads)}catch(e){document.getElementById("status").textContent=e.message}})();
+  </script>
+</body>
+</html>
