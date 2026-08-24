@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
+const { isoDate, latestLastmod, resolveLastmod: resolveEntryLastmod } = require('./lib/sitemap-lastmod');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://zhongguauto.com';
-const LASTMOD = '2026-07-17';
-const PAGE_LASTMOD = '2026-07-20';
 const EXCLUDED_LANDING_DIRS = new Set(['export-cars-to-africa']);
 const skippedWrites = [];
 
@@ -29,8 +29,34 @@ const cleanPath = (value = '') => String(value || '').replace(/^\/+/, '');
 const assetUrl = (value = '') => /^https?:\/\//i.test(String(value || '')) ? String(value) : siteUrl(cleanPath(value));
 const unique = (items) => [...new Set(items.filter(Boolean))];
 const xmlEscape = (value = '') => String(value).replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
-const xml = (urls, frequency = 'monthly', lastmod = LASTMOD) => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url><loc>${xmlEscape(url)}</loc><lastmod>${lastmod}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
-const xmlWithImages = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.map((entry) => `  <url><loc>${xmlEscape(entry.url)}</loc><lastmod>${LASTMOD}</lastmod><changefreq>${frequency}</changefreq>${entry.image ? `<image:image><image:loc>${xmlEscape(entry.image)}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>\n`;
+const gitLastModified = (relative) => {
+  try {
+    const history = execFileSync('git', ['log', '--format=%H%x09%cs', '-12', '--', relative], { cwd: ROOT, encoding: 'utf8', windowsHide: true }).trim().split(/\r?\n/).filter(Boolean);
+    if (!history.length) return '';
+    for (const line of history) {
+      const [commit, date] = line.split('\t');
+      if (!isBulkGeneratedCommit(commit)) return isoDate(date);
+    }
+    return isoDate(history[0].split('\t')[1]);
+  } catch (_) { return ''; }
+};
+const bulkCommitCache = new Map();
+function isBulkGeneratedCommit(commit) {
+  if (bulkCommitCache.has(commit)) return bulkCommitCache.get(commit);
+  const files = execFileSync('git', ['diff-tree', '--no-commit-id', '--name-only', '-r', commit], { cwd: ROOT, encoding: 'utf8', windowsHide: true }).split(/\r?\n/).filter(Boolean);
+  const result = files.filter((file) => file.endsWith('.html')).length > 20;
+  bulkCommitCache.set(commit, result);
+  return result;
+}
+const fileLastModified = (relative) => {
+  const gitDate = gitLastModified(relative);
+  if (gitDate) return gitDate;
+  const file = path.join(ROOT, relative);
+  return fs.existsSync(file) ? isoDate(fs.statSync(file).mtime.toISOString()) : '';
+};
+const resolveLastmod = (entry) => resolveEntryLastmod(entry, fileLastModified);
+const xml = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map((entry) => `  <url><loc>${xmlEscape(entry.url)}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
+const xmlWithImages = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.map((entry) => `  <url><loc>${xmlEscape(entry.url)}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>${frequency}</changefreq>${entry.image ? `<image:image><image:loc>${xmlEscape(entry.image)}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>\n`;
 
 const landingToRoot = new Map([
   ['/landing/china-used-car-exporter/', '/china-used-car-exporter.html'],
@@ -176,7 +202,10 @@ const vehicleCanonicalPath = (car = {}) => cleanPath(car.canonicalPath || car.ur
 const vehicleCanonicalUrlsAll = new Set(cars.filter((car) => car.id).map((car) => siteUrl(vehicleCanonicalPath(car))));
 const vehicleEntries = cars
   .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
-  .map((car) => ({ url: siteUrl(vehicleCanonicalPath(car)), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '' }));
+  .map((car) => {
+    const outputFile = cleanPath(car.outputPath || `${car.id}.html`);
+    return { url: siteUrl(vehicleCanonicalPath(car)), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '', lastmod: resolveLastmod({ metadataDate: car.updatedAt || car.lastmod || car.contentUpdatedAt, sourceFile: outputFile, outputFile: 'cars.json' }) };
+  });
 const vehicleUrls = vehicleEntries.map((entry) => entry.url);
 const importerSeoPagePaths = [
   'company.html',
@@ -207,34 +236,34 @@ const isSitemapCandidate = (relative, canonical) => {
 };
 const normalizedFiles = normalizeTextFiles();
 
-const importerSeoPageUrls = importerSeoPagePaths
-  .filter((relative) => fs.existsSync(path.join(ROOT, relative)))
-  .map((relative) => htmlCanonical(relative) || siteUrl(relative));
-
-const pageUrls = unique([
+const pageRecords = [
   ...listFiles(ROOT, (_relative, name) => path.extname(name).toLowerCase() === '.html')
     .map((relative) => ({ relative, canonical: htmlCanonical(relative) }))
-    .filter(({ relative, canonical }) => isSitemapCandidate(relative, canonical))
-    .map(({ canonical }) => canonical),
-  ...importerSeoPageUrls
-]).sort();
+    .filter(({ relative, canonical }) => isSitemapCandidate(relative, canonical)),
+  ...importerSeoPagePaths.filter((relative) => fs.existsSync(path.join(ROOT, relative))).map((relative) => ({ relative, canonical: htmlCanonical(relative) || siteUrl(relative) }))
+];
+const pageEntries = [...new Map(pageRecords.map(({ relative, canonical }) => [canonical, { url: canonical, lastmod: resolveLastmod({ sourceFile: relative, outputFile: relative }) }])).values()]
+  .sort((a, b) => a.url.localeCompare(b.url));
+const pageUrls = pageEntries.map((entry) => entry.url);
 
 const landingHtmlFiles = listFiles(path.join(ROOT, 'landing'), (_relative, name) => name === 'index.html', 'landing')
   .concat(listFiles(path.join(ROOT, 'fr', 'landing'), (_relative, name) => name === 'index.html', 'fr/landing'))
   .concat(listFiles(path.join(ROOT, 'ar', 'landing'), (_relative, name) => name === 'index.html', 'ar/landing'));
-const landingUrls = unique(landingHtmlFiles
+const landingEntries = landingHtmlFiles
   .filter((relative) => {
     const dir = relative.replace(/index\.html$/, '');
     if (landingToRootDirs.has(dir)) return false;
     if (relative.startsWith('landing/') && EXCLUDED_LANDING_DIRS.has(dir.replace(/^landing\//, '').replace(/\/$/, ''))) return false;
     return true;
   })
-  .map((relative) => htmlCanonical(relative))
-  .filter((canonical) => canonical && canonical.startsWith(SITE) && canonical.endsWith('/')))
-  .sort();
+  .map((relative) => ({ relative, canonical: htmlCanonical(relative) }))
+  .filter(({ canonical }) => canonical && canonical.startsWith(SITE) && canonical.endsWith('/'))
+  .map(({ relative, canonical }) => ({ url: canonical, lastmod: resolveLastmod({ sourceFile: relative, outputFile: relative }) }))
+  .sort((a, b) => a.url.localeCompare(b.url));
+const landingUrls = landingEntries.map((entry) => entry.url);
 
-const pageSitemap = xml(pageUrls, 'monthly', PAGE_LASTMOD);
-const landingSitemap = xml(landingUrls);
+const pageSitemap = xml(pageEntries, 'monthly');
+const landingSitemap = xml(landingEntries);
 const vehicleSitemap = xmlWithImages(vehicleEntries, 'weekly');
 write('sitemap-pages-current.xml', pageSitemap);
 write('sitemap-landing-current.xml', landingSitemap);
@@ -242,7 +271,7 @@ write('sitemap-vehicles-current.xml', vehicleSitemap);
 writeOptional('sitemap-pages.xml', pageSitemap);
 writeOptional('sitemap-landing.xml', landingSitemap);
 writeOptional('sitemap-vehicles.xml', vehicleSitemap);
-const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${SITE}/sitemap-pages-current.xml</loc><lastmod>${PAGE_LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-landing-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-vehicles-current.xml</loc><lastmod>${LASTMOD}</lastmod></sitemap>\n</sitemapindex>\n`;
+const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${SITE}/sitemap-pages-current.xml</loc><lastmod>${latestLastmod(pageEntries)}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-landing-current.xml</loc><lastmod>${latestLastmod(landingEntries)}</lastmod></sitemap>\n  <sitemap><loc>${SITE}/sitemap-vehicles-current.xml</loc><lastmod>${latestLastmod(vehicleEntries)}</lastmod></sitemap>\n</sitemapindex>\n`;
 write('sitemap-index.xml', sitemapIndex);
 writeOptional('sitemap.xml', sitemapIndex);
 

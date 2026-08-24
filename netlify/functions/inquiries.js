@@ -50,6 +50,23 @@ const isWhatsappClickRequest = (event, body = {}) => {
   return path.includes("whatsapp-clicks") || eventType.includes("click") || eventType === "whatsapp_form_open";
 };
 
+const syntheticRequested = (body = {}) => body.is_test === true || String(body.is_test ?? body.isTest ?? "").toLowerCase() === "true";
+const safeEqual = (left, right) => {
+  const a = Buffer.from(String(left || ""));
+  const b = Buffer.from(String(right || ""));
+  return a.length === b.length && require("crypto").timingSafeEqual(a, b);
+};
+const authorizeSynthetic = (event, body = {}) => {
+  if (!syntheticRequested(body)) return false;
+  const expected = process.env.ZHONGGU_SYNTHETIC_LEAD_SECRET;
+  const supplied = getHeader(event.headers, "x-zhonggu-synthetic-secret");
+  if (!expected || !safeEqual(supplied, expected)) throw Object.assign(new Error("Synthetic lead authorization failed"), { statusCode: 403 });
+  const testType = String(body.test_type || body.testType || "");
+  const testId = String(body.test_id || body.testId || "");
+  if (testType !== "daily_morning_check" || !/^AUTO-TEST-\d{8}$/.test(testId)) throw Object.assign(new Error("Invalid synthetic lead metadata"), { statusCode: 400 });
+  return true;
+};
+
 const clickFallbackBody = (event = {}) => ({
   eventType: "whatsapp_click",
   source: "whatsapp_click",
@@ -112,24 +129,26 @@ exports.handler = async (event) => {
 
   try {
     body = parseBody(event);
+    const isTest = authorizeSynthetic(event, body);
     isClickEvent = isWhatsappClickRequest(event, body);
     if (isClickEvent && !Object.keys(body).length) body = clickFallbackBody(event);
-    lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website" });
+    lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website", isTest });
     assertLead(lead, isClickEvent);
 
     console.info("[inquiries] received", { path: event.path, source: lead.source, sourceType: lead.sourceType, eventType: lead.eventType || "" });
 
     let saved;
     try {
-      saved = await createLead(lead, event, { kind: isClickEvent ? "whatsapp_click" : "website" });
+      saved = await createLead(lead, event, { kind: isClickEvent ? "whatsapp_click" : "website", isTest });
       results.blobs = true;
       results.storage = saved.storage;
       Object.assign(lead, saved.lead);
+      results.duplicate = saved.duplicate === true;
       console.info("[inquiries] stored in blobs", { id: lead.id, source: lead.source, sourceType: lead.sourceType, storage: saved.storage });
     } catch (error) {
       results.blobsError = error.message;
       console.error("[inquiries] blobs write failed", { source: lead.source, sourceType: lead.sourceType, error: error.message });
-      if (!isClickEvent) {
+      if (!isClickEvent && !lead?.is_test) {
         try { results.netlifyFormFallback = await submitToNetlifyForm(lead, event); }
         catch (fallbackError) { results.netlifyFormError = fallbackError.message; }
       }
@@ -147,7 +166,8 @@ exports.handler = async (event) => {
       });
     }
 
-    try { results.webhook = await forwardWebhook(lead); } catch (error) { results.webhookError = error.message; }
+    if (lead.is_test) results.externalActionsSuppressed = true;
+    else try { results.webhook = await forwardWebhook(lead); } catch (error) { results.webhookError = error.message; }
 
     return json(200, {
       ok: true,

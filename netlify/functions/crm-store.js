@@ -170,6 +170,9 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
   const idPrefix = isClick ? "WA" : isManual ? "MAN" : "INQ";
   const notes = Array.isArray(body.notes) ? body.notes : [];
   const noteText = firstValue(body.note, body.followUp, body.follow_up);
+  const isTest = options.isTest === true || body.is_test === true || clean(body.is_test || body.isTest).toLowerCase() === "true";
+  const testType = isTest ? firstValue(body.test_type, body.testType) : "";
+  const testId = isTest ? firstValue(body.test_id, body.testId) : "";
   if (noteText && !notes.some((note) => clean(note.text) === noteText)) notes.push({ id: leadId("NOTE"), createdAt: nowIso(), authorName: "admin", text: noteText });
 
   return {
@@ -198,8 +201,8 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
     destinationPort,
     message: firstValue(body.message, body.requirements, body.remark, body.comments),
     status: isClick ? "whatsapp_click" : normalizeStatus(body.status, "new"),
-    assignedTo: normalizeAssignedTo(firstValue(body.assignedTo, body.assigned_to, body.owner, body.salesId, body.sales_id)),
-    assignedName: assignedName(firstValue(body.assignedTo, body.assigned_to, body.owner, body.salesId, body.sales_id)),
+    assignedTo: isTest ? "" : normalizeAssignedTo(firstValue(body.assignedTo, body.assigned_to, body.owner, body.salesId, body.sales_id)),
+    assignedName: isTest ? "unassigned" : assignedName(firstValue(body.assignedTo, body.assigned_to, body.owner, body.salesId, body.sales_id)),
     notes,
     note: notes.length ? notes[notes.length - 1].text : "",
     pageUrl: sourceUrl,
@@ -212,6 +215,9 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
     converted: body.converted === true || clean(body.converted).toLowerCase() === "true",
     convertedLeadId: firstValue(body.convertedLeadId, body.converted_lead_id),
     sourceSubmissionId: firstValue(body.sourceSubmissionId, body.netlifySubmissionId, body.netlify_submission_id),
+    is_test: isTest,
+    test_type: testType,
+    test_id: testId,
     raw: body.raw && typeof body.raw === "object" ? body.raw : body
   };
 };
@@ -281,6 +287,10 @@ const readLeads = async (options = {}) => {
 const createLead = async (body, event = {}, options = {}) => {
   const lead = normalizeLead(body, event, options);
   const existing = await readLeadsRaw();
+  if (lead.is_test && lead.test_id) {
+    const duplicate = existing.find((item) => item.is_test && item.test_id === lead.test_id);
+    if (duplicate) return { lead: duplicate, duplicate: true, storage: "existing" };
+  }
   const merged = mergeLeads(existing, [lead]);
   const result = await writeLeads(merged);
   return { lead, ...result };
@@ -343,7 +353,10 @@ const filterLeads = (items = [], params = new URLSearchParams()) => {
   const q = firstValue(params.get("q"), params.get("keyword"));
   const range = firstValue(params.get("range"), params.get("dateRange"));
   const leadType = clean(params.get("leadType"));
+  const testFilter = firstValue(params.get("is_test"), params.get("isTest")).toLowerCase();
   return items.filter((item) => {
+    if (testFilter === "true" && !item.is_test) return false;
+    if (testFilter === "false" && item.is_test) return false;
     const type = sourceTypeOf(item);
     if (leadType === "website" && type !== "website_form") return false;
     if (leadType === "manual" && type !== "manual") return false;
@@ -365,17 +378,18 @@ const isWhatsappButtonForm = (item) => isWebsiteForm(item) && /whatsapp/i.test([
 const isAssigned = (item) => Boolean(normalizeAssignedTo(item.assignedTo));
 
 const buildStats = (items = []) => {
-  const customer = items.filter((item) => !isWhatsappClick(item));
+  const businessItems = items.filter((item) => !item.is_test);
+  const customer = businessItems.filter((item) => !isWhatsappClick(item));
   const today = startOfDay();
   const tomorrow = startOfDay(1);
   const yesterday = startOfDay(-1);
   const last7 = startOfDay(-6);
   const month = startOfMonth();
   const countStatus = (status) => customer.filter((item) => normalizeStatus(item.status) === status).length;
-  const websiteForm = items.filter(isWebsiteForm).length;
-  const manual = items.filter(isManual).length;
-  const whatsappClicks = items.filter(isWhatsappClick).length;
-  const whatsappForms = items.filter(isWhatsappButtonForm).length;
+  const websiteForm = businessItems.filter(isWebsiteForm).length;
+  const manual = businessItems.filter(isManual).length;
+  const whatsappClicks = businessItems.filter(isWhatsappClick).length;
+  const whatsappForms = businessItems.filter(isWhatsappButtonForm).length;
   const stats = {
     total: customer.length,
     today: customer.filter((item) => inRange(item.createdAt, today, tomorrow)).length,
@@ -393,7 +407,7 @@ const buildStats = (items = []) => {
     website: websiteForm,
     manual,
     whatsapp: whatsappClicks,
-    whatsappToday: items.filter((item) => isWhatsappClick(item) && inRange(item.createdAt, today, tomorrow)).length,
+    whatsappToday: businessItems.filter((item) => isWhatsappClick(item) && inRange(item.createdAt, today, tomorrow)).length,
     unassigned: customer.filter((item) => !isAssigned(item)).length
   };
   return {
@@ -406,8 +420,8 @@ const buildStats = (items = []) => {
       manual,
       whatsappClickLeads: whatsappClicks,
       whatsappRawClicks: whatsappClicks,
-      whatsappConvertedClicks: items.filter((item) => isWhatsappClick(item) && item.converted).length,
-      whatsappClickConversionRate: whatsappClicks ? `${Math.round((items.filter((item) => isWhatsappClick(item) && item.converted).length / whatsappClicks) * 100)}%` : "0%"
+      whatsappConvertedClicks: businessItems.filter((item) => isWhatsappClick(item) && item.converted).length,
+      whatsappClickConversionRate: whatsappClicks ? `${Math.round((businessItems.filter((item) => isWhatsappClick(item) && item.converted).length / whatsappClicks) * 100)}%` : "0%"
     },
     assignment: {
       unassigned: stats.unassigned,
@@ -416,7 +430,8 @@ const buildStats = (items = []) => {
       sales_zheng: customer.filter((item) => normalizeAssignedTo(item.assignedTo) === "sales_zheng").length
     },
     status: { new: countStatus("new") + countStatus("assigned"), contacted: stats.contacted, quoted: stats.quoted, waiting: stats.waiting, won: stats.won, lost: stats.lost, closed: stats.closed },
-    tabs: { websiteForm, manual, whatsappClick: whatsappClicks, all: customer.length }
+    tabs: { websiteForm, manual, whatsappClick: whatsappClicks, all: customer.length },
+    synthetic: { total: items.filter((item) => item.is_test).length }
   };
 };
 
@@ -424,8 +439,9 @@ const buildDailyReport = (items = [], options = {}) => {
   const now = options.now ? new Date(options.now) : new Date();
   const since24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
   const since7d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-  const customer = items.filter((item) => !isWhatsappClick(item));
-  const clicks = items.filter(isWhatsappClick);
+  const businessItems = items.filter((item) => !item.is_test);
+  const customer = businessItems.filter((item) => !isWhatsappClick(item));
+  const clicks = businessItems.filter(isWhatsappClick);
   const within = (item, since) => {
     const created = new Date(item.createdAt || 0);
     return Number.isFinite(created.getTime()) && created >= since && created <= now;
