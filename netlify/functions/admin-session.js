@@ -46,6 +46,16 @@ const createSessionToken = () => {
 const createSessionCookie = () => `${COOKIE_NAME}=${encodeURIComponent(createSessionToken())}; Path=/; Max-Age=${MAX_AGE_SECONDS}; HttpOnly; SameSite=Lax; Secure`;
 const clearSessionCookie = () => `${COOKIE_NAME}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure`;
 
+const authExpiredResponse = () => json(401, {
+  ok: false,
+  success: false,
+  code: "CRM_AUTH_EXPIRED",
+  message: "CRM authentication expired or is missing",
+  reauthenticationRequired: true,
+  writeAllowed: false,
+  sessionMaxAgeSeconds: MAX_AGE_SECONDS
+});
+
 const verifySessionToken = (token = "") => {
   const secret = process.env.ZHONGGU_ADMIN_PASSWORD || "";
   if (!secret) return false;
@@ -66,17 +76,19 @@ const getAdminUser = (event = {}) => {
 
 const requireAdmin = (event = {}) => {
   const user = getAdminUser(event);
-  return user || json(401, { ok: false, success: false, message: "Unauthorized" });
+  return user || authExpiredResponse();
 };
 
 const handler = async (event) => {
   const user = getAdminUser(event);
-  if (!user) return json(401, { ok: false, success: false, message: "Unauthorized" });
+  if (!user) return authExpiredResponse();
   return json(200, { ok: true, success: true, user });
 };
 
 module.exports = {
   ADMIN_USER,
+  MAX_AGE_SECONDS,
+  authExpiredResponse,
   clearSessionCookie,
   createSessionCookie,
   getAdminUser,

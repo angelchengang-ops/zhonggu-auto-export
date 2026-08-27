@@ -176,7 +176,7 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
   if (noteText && !notes.some((note) => clean(note.text) === noteText)) notes.push({ id: leadId("NOTE"), createdAt: nowIso(), authorName: "admin", text: noteText });
 
   return {
-    id: firstValue(body.id, body.leadId, body.lead_id) || leadId(idPrefix),
+    id: firstValue(body.id, body.leadId, body.lead_id) || (isTest && testId ? testId : leadId(idPrefix)),
     createdAt,
     updatedAt,
     source,
@@ -328,11 +328,19 @@ const updateLead = async (id, patch = {}, user = {}) => {
 const textMatch = (item, keyword) => {
   const q = clean(keyword).toLowerCase();
   if (!q) return true;
-  return [item.id, item.name, item.country, item.market, item.whatsapp, item.rawWhatsapp, item.email, item.vehicle, item.interestedModel, item.message, item.sourcePage, item.sourceUrl, item.assignedTo, item.assignedName].join(" ").toLowerCase().includes(q);
+  return [item.id, item.test_id, item.name, item.country, item.market, item.whatsapp, item.rawWhatsapp, item.email, item.vehicle, item.interestedModel, item.message, item.sourcePage, item.sourceUrl, item.assignedTo, item.assignedName].join(" ").toLowerCase().includes(q);
 };
 
-const startOfDay = (offset = 0) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + offset); return d; };
-const startOfMonth = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(1); return d; };
+const SHANGHAI_OFFSET_MS = 8 * 60 * 60 * 1000;
+const shanghaiStartOfDay = (value = new Date(), offset = 0) => {
+  const shifted = new Date(new Date(value).getTime() + SHANGHAI_OFFSET_MS);
+  return new Date(Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth(), shifted.getUTCDate() + offset) - SHANGHAI_OFFSET_MS);
+};
+const startOfDay = (offset = 0) => shanghaiStartOfDay(new Date(), offset);
+const startOfMonth = () => {
+  const shifted = new Date(Date.now() + SHANGHAI_OFFSET_MS);
+  return new Date(Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth(), 1) - SHANGHAI_OFFSET_MS);
+};
 const inRange = (value, start, end) => { const time = new Date(value || 0).getTime(); return time >= start.getTime() && (!end || time < end.getTime()); };
 
 const datePass = (item, range) => {
@@ -354,9 +362,11 @@ const filterLeads = (items = [], params = new URLSearchParams()) => {
   const range = firstValue(params.get("range"), params.get("dateRange"));
   const leadType = clean(params.get("leadType"));
   const testFilter = firstValue(params.get("is_test"), params.get("isTest")).toLowerCase();
+  const testId = firstValue(params.get("test_id"), params.get("testId"));
   return items.filter((item) => {
     if (testFilter === "true" && !item.is_test) return false;
     if (testFilter === "false" && item.is_test) return false;
+    if (testId && item.test_id !== testId) return false;
     const type = sourceTypeOf(item);
     if (leadType === "website" && type !== "website_form") return false;
     if (leadType === "manual" && type !== "manual") return false;
@@ -561,6 +571,7 @@ module.exports = {
   normalizeLead,
   readLeads,
   readWhatsappSettings,
+  shanghaiStartOfDay,
   sourceTypeOf,
   toCsv,
   updateLead,

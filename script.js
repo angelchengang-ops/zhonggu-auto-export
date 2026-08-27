@@ -834,6 +834,39 @@ const initVehicleGalleries = () => {
 
 const encodeFormData = (formData) => new URLSearchParams(formData).toString();
 const INQUIRY_API = "/api/public/inquiries";
+const DAILY_TEST_ID_PATTERN = /^AUTO-TEST-\d{8}$/;
+const dailyTestId = () => {
+  const value = new URLSearchParams(window.location.search).get("daily_test_id") || "";
+  return DAILY_TEST_ID_PATTERN.test(value) ? value : "";
+};
+const prepareDailyTestPayload = async (payload) => {
+  const testId = dailyTestId();
+  if (!testId) return payload;
+  const auth = await fetch("/api/admin/me", { credentials: "same-origin", cache: "no-store", headers: { Accept: "application/json" } });
+  if (auth.status === 401) throw new Error("CRM_AUTH_EXPIRED");
+  if (!auth.ok) throw new Error(`CRM authentication preflight failed with status ${auth.status}`);
+  return {
+    ...payload,
+    id: testId,
+    name: "[AUTO TEST] Daily Inquiry Check",
+    country: "Automation Test",
+    whatsapp: "0000000000",
+    email: "",
+    vehicle: "[AUTO TEST]",
+    interestedModel: "[AUTO TEST]",
+    message: `Daily CRM delivery verification ${testId}`,
+    source: "website_form",
+    leadSource: "website_form",
+    sourceDetail: "Website Inquiry Form - Daily Check",
+    sourceChannel: "inquiry_form",
+    sourceEntry: "daily_morning_check",
+    assignedTo: "",
+    status: "new",
+    is_test: true,
+    test_type: "daily_morning_check",
+    test_id: testId
+  };
+};
 const formDataValue = (formData, ...names) => names.map((name) => String(formData.get(name) || "").trim()).find(Boolean) || "";
 const callingCodeChoices = [
   ["+213", "Algeria (+213)"],
@@ -1113,10 +1146,21 @@ const bindInquiryForms = () => {
       }
 
       try {
-        const crmPayload = buildInquiryPayload(form, formData);
+        const crmPayload = await prepareDailyTestPayload(buildInquiryPayload(form, formData));
         try {
-          await submitInquiryToCrm(crmPayload);
+          const crmResult = await submitInquiryToCrm(crmPayload);
+          if (crmPayload.is_test) {
+            if (crmResult.results?.externalActionsSuppressed !== true) throw new Error("Synthetic inquiry external-action suppression was not confirmed");
+            const success = form.parentElement?.querySelector(".inquiry-success");
+            if (success) success.hidden = false;
+            if (submitButton) {
+              submitButton.disabled = true;
+              submitButton.textContent = crmResult.results?.duplicate ? "Already verified" : "Test inquiry verified";
+            }
+            return;
+          }
         } catch (crmError) {
+          if (crmPayload.is_test) throw crmError;
           console.warn("Zhonggu inquiry save failed; continuing with Netlify form fallback", { error: crmError.message });
         }
         const response = await fetch("/", {

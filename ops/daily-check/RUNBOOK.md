@@ -4,7 +4,7 @@
 
 ## 数据源预检与总体成功条件
 
-正式执行前必须分别预检 GSC、Yandex、CRM 和 Umami 的首选只读 API/服务账号通道，并记录检查时间、统计窗口、口径和错误原因。单个平台失败不得中止其他阶段；浏览器既有登录会话只能作为备用通道，不得成为长期唯一通道。缺少 API、服务账号或管理员只读凭证时写“后台数据暂缺”，值保存为 `null`，不得写 0，也不得把公开搜索结果冒充后台数据。
+正式执行前必须分别预检 GSC、Yandex、CRM 和 Umami 的首选只读 API/服务账号通道，并记录检查时间、统计窗口、口径和错误原因。单个平台失败不得中止其他阶段；浏览器既有登录会话只能作为备用通道，不得成为长期唯一通道。任何浏览器操作只允许复用本机桌面 Chrome 的用户配置和既有会话，禁止云端浏览器、桌面内置浏览器及临时浏览器配置。缺少 API、服务账号或管理员只读凭证时写“后台数据暂缺”，值保存为 `null`，不得写 0，也不得把公开搜索结果冒充后台数据。
 
 整轮状态只允许：`success`（全部项目完成且数据完整）、`success_with_blocks`（公开检查完成但一个或多个后台源不可读）、`failed`（网站、核心接口、构建、隔离测试询盘或关键流程失败）。
 
@@ -14,12 +14,12 @@
 
 1. A：读取 `ops/daily-check/baselines/` 中已有基线与最近部署信息。
 2. B：检查公开网站与技术文件。固定样本：首页、公司介绍、新车列表和一个重点新车详情、二手车列表和一个二手车详情、一个 Algeria 页面、法语/阿拉伯语/俄语各一页，以及 sitemap、robots、canonical、重定向链。仅检测到新部署时执行完整部署后冒烟。
-3. C：通过已连接 Chrome 或桌面内置浏览器读取 Google Search Console。
+3. C：通过已连接的本机桌面 Chrome 读取 Google Search Console。
 4. D：读取 Yandex Webmaster。
 5. E：两个平台均尝试读取后再统一判断根因；缺一方时标注待核实。
 6. F：读取 Umami 过去 24 小时与近 7 日。
-7. G：先在 CRM 以 `is_test=true&test_id=AUTO-TEST-YYYYMMDD` 查询。存在则不提交，验证已有记录并记 `skipped_existing`；不存在时，也只有生产端已配置 `ZHONGGU_SYNTHETIC_LEAD_SECRET`、API 返回外部动作全部抑制且隔离测试通过后，才允许提交一次。
-8. H：读取 `https://zhongguauto.com/admin/`、`https://zhongguauto.com/admin/daily-report.html` 和 `/api/admin/daily-report`。严禁访问 `/crm/`。
+7. G：先按“CRM 认证预检与恢复”检查 `/api/admin/me`。认证成功后，以 `is_test=true&test_id=AUTO-TEST-YYYYMMDD` 精确查询；必须逐条确认返回记录的 `test_id` 完全一致，不能只凭姓名、手机号或模糊搜索判断。存在则不提交，验证已有记录并记 `skipped_existing`；不存在时，也只有隔离测试通过、API 返回外部动作全部抑制，且使用服务端 secret 或已认证的同源管理员 Chrome 会话时，才允许提交一次。
+8. H：认证仍有效时读取 `https://zhongguauto.com/admin/`、`https://zhongguauto.com/admin/daily-report.html` 和 `/api/admin/daily-report`。严禁访问 `/crm/`。
 9. I：只使用真实保存的基线计算昨日、7 日、30 日趋势；数据不足显示“基线待建立”。
 10. J：无论单个平台是否阻塞，都保存当日基线并生成中文晨报。
 
@@ -27,7 +27,9 @@
 
 ## 浏览器和认证
 
-优先使用用户已连接、已登录的 Chrome；也可使用桌面内置浏览器的既有会话。禁止输入、猜测或索取密码，不保存 Cookie、令牌或浏览器会话。出现登录页、验证码、二次验证、会话失效或权限不足时，写“登录状态失效/需要人工恢复”，跳过该数据源并继续。
+只允许使用用户已连接、已登录的本机桌面 Chrome，并复用用户固定的 Chrome 配置；禁止切换云端/内置浏览器，禁止创建临时配置或复制浏览器数据。禁止输入、猜测或索取密码，不读取或保存 Cookie、令牌、密码及浏览器会话。出现登录页、验证码、二次验证、会话失效或权限不足时，写“登录状态失效/需要人工恢复”，跳过该数据源并继续。
+
+CRM 当前后台会话由 `zg_admin_session` HttpOnly Cookie 表示，服务端固定有效期为 12 小时且不自动续期。每日 08:00 任务若要依赖该浏览器会话，用户必须在前一日 20:00 以后完成一次人工登录；超过 12 小时必须再次人工登录。不得通过延长、伪造或导出 Cookie 绕过这一安全机制。只有未来增加经批准的只读服务账号/API 后，CRM 统计读取才可真正长期无人值守。
 
 发布、搜索平台后台写入、点击“验证修复”、请求索引、提交 sitemap、客户沟通、邮件、CRM 改派/删除以及每日一条测试询盘以外的 CRM 写入均禁止。需要批准的事项统一列入报告末尾，不暂停任务。
 
@@ -36,6 +38,22 @@
 测试记录必须携带顶层字段 `is_test=true`、`test_type=daily_morning_check`、`test_id=AUTO-TEST-YYYYMMDD`。姓名 `[AUTO TEST] Daily Inquiry Check`；邮箱和电话/WhatsApp 只能使用项目已配置的固定测试身份；国家 `Automation Test`；车型 `[AUTO TEST]`。测试调用必须使用服务端 secret header，公开表单伪造 `is_test=true` 必须被拒绝。
 
 若无法先确认当天记录是否存在，阶段记 `blocked` 或 `unavailable`，绝不提交。验证前端提示、HTTP/API、CRM 编号、来源、时间和字段，但基线与报告不得保存完整电话、客户邮箱、密码、Cookie 或令牌。测试数据不得进入真实询盘、转化率、国家/车型、销售绩效和优先客户统计；不得触发 Netlify Forms fallback、Webhook、邮件、WhatsApp 或销售分配。晨报单列 synthetic 链路成功/重复跳过/失败，管理员可用 `is_test=true` 单独查询；不得联系或删除测试记录。
+
+## CRM 认证预检、恢复与仅补跑
+
+CRM 的任何查询或写入之前，必须先在同一个本机桌面 Chrome 配置中打开后台并验证 `/api/admin/me`。只记录北京时间请求时间、HTTP 状态和非敏感错误码；不得检查、导出或打印 Cookie/令牌。判定规则：
+
+- HTTP 200 且确认管理员身份：认证预检 `success`，才允许继续精确查重。
+- HTTP 401 或后台跳转登录页：记录 `CRM_AUTH_EXPIRED`、认证方式 `desktop_chrome_http_only_cookie`、`write_allowed=false`，立即停止全部 CRM 写入。自动化应在本机桌面 Chrome 打开 `https://zhongguauto.com/admin/login.html` 并输出唯一人工动作“完成登录后仅补跑 CRM 阶段”；定时运行不等待、不重跑 A-F。
+- 其他 HTTP/网络错误：记 `unavailable` 和非敏感错误信息，`write_allowed=false`。
+
+用户在桌面 Chrome 完成人工登录后，只执行 CRM 补跑模式：保留当天基线和晨报中 A-F 已验证的网站、Google、Yandex、Umami 数据，仅重跑 G、H，并重新计算与 CRM 相关的 I、J 字段。补跑顺序固定为：认证预检 → 精确查重 → 核验已有记录或单次提交 → 再次精确查询 → 获取 CRM 当日实际统计 → 原位更新当天基线和晨报。不得从头执行公开网站或搜索平台检查。
+
+精确查重同时使用当天 `test_id` 和既定测试身份作为交叉核验，但只有返回记录的顶层 `test_id` 与 `AUTO-TEST-YYYYMMDD` 完全一致才算当天记录。查询失败、响应结构不明或结果不能确认时禁止提交。查询结果为 1 条时记 `skipped_existing` 并读取非敏感的 CRM ID、创建时间、来源、状态；为 0 条且认证与隔离测试全部成功时最多提交 1 条；超过 1 条记重复异常并禁止写入。提交后必须再次精确查询并确认记录真实进入 CRM，否则阶段记 `failed`。
+
+需要提交隔离询盘时，打开生产网站正常询盘表单并在 URL 增加 `daily_test_id=AUTO-TEST-YYYYMMDD`。该模式必须先由同源 `/api/admin/me` 验证管理员会话，然后强制使用固定测试身份并走 `/api/public/inquiries`；响应必须确认 `externalActionsSuppressed=true`。隔离模式不得执行 Netlify Forms fallback、Webhook、邮件、WhatsApp 或销售分配。未登录、标识格式错误或抑制状态未确认时提交失败且不得降级为普通询盘。
+
+CRM 补跑结果至少保存：查询时间、统计窗口、今日新增总数、网站表单数、WhatsApp 点击/线索数、手动录入数、未分配数、重复/异常数、测试询盘是否提交、`test_id`、CRM ID、创建时间、来源和状态。所有数字必须来自本次 CRM 实际响应；未知值保存为 `null`，不得沿用昨日数值或估算。
 
 ## Google 与 Yandex 规则
 

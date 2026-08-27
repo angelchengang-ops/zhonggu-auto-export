@@ -1,4 +1,5 @@
 const { blobDebug, createLead, firstValue, normalizeLead } = require("./crm-store");
+const { getAdminUser } = require("./admin-session");
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -60,10 +61,13 @@ const authorizeSynthetic = (event, body = {}) => {
   if (!syntheticRequested(body)) return false;
   const expected = process.env.ZHONGGU_SYNTHETIC_LEAD_SECRET;
   const supplied = getHeader(event.headers, "x-zhonggu-synthetic-secret");
-  if (!expected || !safeEqual(supplied, expected)) throw Object.assign(new Error("Synthetic lead authorization failed"), { statusCode: 403 });
+  const secretAuthorized = Boolean(expected) && safeEqual(supplied, expected);
+  const adminAuthorized = Boolean(getAdminUser(event));
+  if (!secretAuthorized && !adminAuthorized) throw Object.assign(new Error("Synthetic lead authorization failed"), { statusCode: 403 });
   const testType = String(body.test_type || body.testType || "");
   const testId = String(body.test_id || body.testId || "");
   if (testType !== "daily_morning_check" || !/^AUTO-TEST-\d{8}$/.test(testId)) throw Object.assign(new Error("Invalid synthetic lead metadata"), { statusCode: 400 });
+  if (body.id && String(body.id) !== testId) throw Object.assign(new Error("Synthetic lead ID must match test_id"), { statusCode: 400 });
   return true;
 };
 
