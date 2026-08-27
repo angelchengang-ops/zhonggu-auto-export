@@ -1,4 +1,4 @@
-const { blobDebug, createLead, firstValue, normalizeLead } = require("./crm-store");
+const { blobDebug, createLead, firstValue, normalizeLead, recoverSyntheticFormAttempts } = require("./crm-store");
 const { getAdminUser } = require("./admin-session");
 
 const json = (statusCode, body) => ({
@@ -52,6 +52,9 @@ const isWhatsappClickRequest = (event, body = {}) => {
 };
 
 const syntheticRequested = (body = {}) => body.is_test === true || String(body.is_test ?? body.isTest ?? "").toLowerCase() === "true";
+const APPROVED_SYNTHETIC_RECOVERY = Object.freeze({
+  "AUTO-TEST-20260827": ["INQ-20260827023014-B00CF8", "NF-6a8fa138bd480f6fcad7a8ac"]
+});
 const safeEqual = (left, right) => {
   const a = Buffer.from(String(left || ""));
   const b = Buffer.from(String(right || ""));
@@ -134,6 +137,9 @@ exports.handler = async (event) => {
   try {
     body = parseBody(event);
     const isTest = authorizeSynthetic(event, body);
+    if (isTest && APPROVED_SYNTHETIC_RECOVERY[body.test_id]) {
+      results.recovery = await recoverSyntheticFormAttempts(body.test_id, APPROVED_SYNTHETIC_RECOVERY[body.test_id]);
+    }
     isClickEvent = isWhatsappClickRequest(event, body);
     if (isClickEvent && !Object.keys(body).length) body = clickFallbackBody(event);
     lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website", isTest });

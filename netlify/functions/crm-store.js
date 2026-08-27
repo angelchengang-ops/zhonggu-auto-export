@@ -296,6 +296,38 @@ const createLead = async (body, event = {}, options = {}) => {
   return { lead, ...result };
 };
 
+const recoverSyntheticFormAttempts = async (testId = "", approvedIds = []) => {
+  const marker = clean(testId);
+  const ids = [...new Set((approvedIds || []).map(clean).filter(Boolean))];
+  if (!/^AUTO-TEST-\d{8}$/.test(marker) || !ids.length) return { recovered: 0, canonicalId: "", duplicateIds: [] };
+  const items = await readLeadsRaw();
+  const candidates = ids.map((id) => items.find((item) => item.id === id)).filter(Boolean);
+  const allApprovedRecordsMatch = candidates.length === ids.length && candidates.every((item) => !item.is_test
+    && item.name === "[AUTO TEST] Daily Inquiry Check"
+    && item.country === "Automation Test"
+    && (item.vehicle === "[AUTO TEST]" || item.interestedModel === "[AUTO TEST]")
+    && clean(item.message).includes(marker));
+  if (!allApprovedRecordsMatch) throw new Error("Approved synthetic recovery records did not match the fixed test identity");
+
+  candidates.sort((left, right) => {
+    const leftRank = String(left.id || "").startsWith("INQ-") ? 0 : 1;
+    const rightRank = String(right.id || "").startsWith("INQ-") ? 0 : 1;
+    return leftRank - rightRank || new Date(left.createdAt || 0) - new Date(right.createdAt || 0);
+  });
+  const duplicateIds = [];
+  candidates.forEach((candidate, index) => {
+    candidate.is_test = true;
+    candidate.test_type = index === 0 ? "daily_morning_check" : "daily_morning_check_recovered_duplicate";
+    candidate.test_id = index === 0 ? marker : `${marker}-RECOVERED-${index}`;
+    candidate.assignedTo = "";
+    candidate.assignedName = "unassigned";
+    candidate.updatedAt = nowIso();
+    if (index > 0) duplicateIds.push(candidate.id);
+  });
+  await writeLeads(items);
+  return { recovered: candidates.length, canonicalId: candidates[0].id, duplicateIds };
+};
+
 const updateLead = async (id, patch = {}, user = {}) => {
   const existing = await readLeadsRaw();
   const index = existing.findIndex((item) => item.id === id);
@@ -571,6 +603,7 @@ module.exports = {
   normalizeLead,
   readLeads,
   readWhatsappSettings,
+  recoverSyntheticFormAttempts,
   shanghaiStartOfDay,
   sourceTypeOf,
   toCsv,

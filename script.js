@@ -839,6 +839,16 @@ const dailyTestId = () => {
   const value = new URLSearchParams(window.location.search).get("daily_test_id") || "";
   return DAILY_TEST_ID_PATTERN.test(value) ? value : "";
 };
+const showDailyTestMode = () => {
+  const testId = dailyTestId();
+  if (!testId || document.getElementById("daily-test-mode-banner")) return;
+  const banner = document.createElement("div");
+  banner.id = "daily-test-mode-banner";
+  banner.setAttribute("role", "status");
+  banner.style.cssText = "position:relative;z-index:9999;padding:12px 18px;background:#fff3cd;color:#664d03;border-bottom:1px solid #ffecb5;font-weight:700;text-align:center";
+  banner.textContent = `Daily CRM isolated test mode: ${testId}. Admin authentication is required and checked on submit.`;
+  document.body.prepend(banner);
+};
 const prepareDailyTestPayload = async (payload) => {
   const testId = dailyTestId();
   if (!testId) return payload;
@@ -1186,6 +1196,7 @@ if (year) year.textContent = new Date().getFullYear();
 if (!document.body.classList.contains("localized-market-page")) applyLanguage();
 loadVehicles().catch((error) => console.error("Vehicle data engine failed", error));
 bindWhatsappButtons();
+showDailyTestMode();
 updateCompanyMedia();
 bindVideoStages();
 initLazyVideos();

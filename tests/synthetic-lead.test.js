@@ -9,7 +9,7 @@ globalThis.__ZHONGGU_CRM_MEMORY__ = { leads: [], settings: null };
 
 const { handler } = require('../netlify/functions/inquiries');
 const { createSessionCookie } = require('../netlify/functions/admin-session');
-const { buildStats, filterLeads, readLeads } = require('../netlify/functions/crm-store');
+const { buildStats, createLead, filterLeads, readLeads, recoverSyntheticFormAttempts } = require('../netlify/functions/crm-store');
 
 const event = (body, secret = '', cookie = '') => ({ httpMethod: 'POST', path: '/api/inquiries', headers: { 'content-type': 'application/json', 'x-zhonggu-synthetic-secret': secret, cookie }, body: JSON.stringify(body) });
 const valid = { name: '[AUTO TEST] Daily Inquiry Check', country: 'Automation Test', whatsapp: '0000000000', vehicle: '[AUTO TEST]', is_test: true, test_type: 'daily_morning_check', test_id: 'AUTO-TEST-20260824' };
@@ -29,6 +29,22 @@ test('an authenticated admin browser session may submit one isolated daily test 
   assert.equal(body.results.externalActionsSuppressed, true);
   assert.equal(body.results.netlifyFormFallback, false);
   assert.equal(body.results.webhook, false);
+});
+
+test('approved cached-form records are narrowly reclassified without deletion', async () => {
+  globalThis.__ZHONGGU_CRM_MEMORY__.leads = [];
+  const marker = 'AUTO-TEST-20260827';
+  const ids = ['INQ-20260827023014-B00CF8', 'NF-6a8fa138bd480f6fcad7a8ac'];
+  for (const id of ids) await createLead({ id, name: '[AUTO TEST] Daily Inquiry Check', country: 'Automation Test', whatsapp: '0000000000', vehicle: '[AUTO TEST]', message: `Daily CRM delivery verification ${marker}` });
+  const recovery = await recoverSyntheticFormAttempts(marker, ids);
+  const { items } = await readLeads();
+  const approvedItems = items.filter((item) => ids.includes(item.id));
+  assert.equal(recovery.recovered, 2);
+  assert.equal(recovery.canonicalId, ids[0]);
+  assert.equal(approvedItems.length, 2);
+  assert.equal(approvedItems.filter((item) => item.is_test).length, 2);
+  assert.equal(approvedItems.filter((item) => item.test_id === marker).length, 1);
+  assert.equal(buildStats(approvedItems).total, 0);
 });
 
 test('synthetic lead is idempotent, unassigned, suppresses external actions, and is excluded from stats', async () => {
