@@ -834,7 +834,7 @@ const initVehicleGalleries = () => {
 
 const encodeFormData = (formData) => new URLSearchParams(formData).toString();
 const INQUIRY_API = "/api/public/inquiries";
-const DAILY_TEST_ID_PATTERN = /^AUTO-TEST-\d{8}$/;
+const DAILY_TEST_ID_PATTERN = /^AUTO-TEST-\d{8}(?:-[A-Z0-9_]{2,32})?$/;
 const dailyTestId = () => {
   const value = new URLSearchParams(window.location.search).get("daily_test_id") || "";
   return DAILY_TEST_ID_PATTERN.test(value) ? value : "";

@@ -69,7 +69,7 @@ const authorizeSynthetic = (event, body = {}) => {
   if (!secretAuthorized && !adminAuthorized) throw Object.assign(new Error("Synthetic lead authorization failed"), { statusCode: 403 });
   const testType = String(body.test_type || body.testType || "");
   const testId = String(body.test_id || body.testId || "");
-  if (testType !== "daily_morning_check" || !/^AUTO-TEST-\d{8}$/.test(testId)) throw Object.assign(new Error("Invalid synthetic lead metadata"), { statusCode: 400 });
+  if (testType !== "daily_morning_check" || !/^AUTO-TEST-\d{8}(?:-[A-Z0-9_]{2,32})?$/.test(testId)) throw Object.assign(new Error("Invalid synthetic lead metadata"), { statusCode: 400 });
   if (body.id && String(body.id) !== testId) throw Object.assign(new Error("Synthetic lead ID must match test_id"), { statusCode: 400 });
   return true;
 };

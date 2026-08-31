@@ -31,6 +31,20 @@ test('an authenticated admin browser session may submit one isolated daily test 
   assert.equal(body.results.webhook, false);
 });
 
+test('isolated daily tests may use one id per monitored entry point', async () => {
+  globalThis.__ZHONGGU_CRM_MEMORY__.leads = [];
+  const cases = ['HOME', 'NEW_CAR', 'USED_CAR', 'LANDING'];
+  for (const suffix of cases) {
+    const testId = `AUTO-TEST-20260825-${suffix}`;
+    const response = await handler(event({ ...valid, id: testId, test_id: testId, sourceEntry: suffix.toLowerCase() }, 'test-only-secret'));
+    assert.equal(response.statusCode, 200);
+    assert.equal(JSON.parse(response.body).results.externalActionsSuppressed, true);
+  }
+  const { items } = await readLeads();
+  assert.equal(items.filter((item) => cases.some((suffix) => item.test_id === `AUTO-TEST-20260825-${suffix}`)).length, cases.length);
+  assert.equal(buildStats(items).total, 0);
+});
+
 test('approved cached-form records are narrowly reclassified without deletion', async () => {
   globalThis.__ZHONGGU_CRM_MEMORY__.leads = [];
   const marker = 'AUTO-TEST-20260827';
