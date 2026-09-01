@@ -147,6 +147,7 @@ https://www.zhongguauto.com/* https://zhongguauto.com/:splat 301!
 /api/public/whatsapp-lead /.netlify/functions/inquiries 200
 /api/public/whatsapp-lead/ /.netlify/functions/inquiries 200
 /api/public/daily-check-summary /.netlify/functions/daily-check-summary 200
+/daily-check-summary.html /.netlify/functions/daily-check-summary 200
 /api/inquiries /.netlify/functions/inquiries 200
 /api/whatsapp-clicks /.netlify/functions/inquiries 200
 
