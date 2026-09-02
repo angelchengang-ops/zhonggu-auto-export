@@ -1,8 +1,10 @@
 const crypto = require("crypto");
+const legacyRecovery = require('../../scripts/lib/approved-test-recovery');
 
 const STORE_NAME = process.env.ZHONGGU_CRM_BLOBS_STORE || "zhonggu-crm";
 const LEADS_KEY = "leads.json";
 const SETTINGS_KEY = "whatsapp-settings.json";
+const RECOVERY_KEY = "approved-test-isolation-20260903.json";
 const MAX_FORM_IMPORT = Number(process.env.ZHONGGU_FORMS_IMPORT_LIMIT || 200);
 
 const memory = globalThis.__ZHONGGU_CRM_MEMORY__ || (globalThis.__ZHONGGU_CRM_MEMORY__ = { leads: [], settings: null });
@@ -77,7 +79,7 @@ const getBlobStore = async () => {
 
 const readJson = async (key, fallback) => {
   const store = await getBlobStore();
-  if (!store) return clone(key === LEADS_KEY ? memory.leads : (memory.settings || fallback));
+  if (!store) return clone(key === LEADS_KEY ? memory.leads : (key === RECOVERY_KEY ? memory.legacyTestIsolation || fallback : memory.settings || fallback));
   try {
     const value = await store.get(key, { type: "json", consistency: "strong" });
     return value ?? clone(fallback);
@@ -91,6 +93,7 @@ const writeJson = async (key, value) => {
   if (!store) {
     if (key === LEADS_KEY) memory.leads = clone(value);
     if (key === SETTINGS_KEY) memory.settings = clone(value);
+    if (key === RECOVERY_KEY) memory.legacyTestIsolation = clone(value);
     return { ok: true, storage: "memory" };
   }
   try {
@@ -227,8 +230,26 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
 };
 
 const readLeadsRaw = async () => {
-  const value = await readJson(LEADS_KEY, []);
-  return Array.isArray(value) ? value.map((item) => normalizeLead(item)) : [];
+  const [value, registry] = await Promise.all([readJson(LEADS_KEY, []), readJson(RECOVERY_KEY, {})]);
+  return Array.isArray(value) ? value.map((item) => legacyRecovery.applyIsolation(normalizeLead(item), registry)) : [];
+};
+
+// Separate, narrowly scoped registry: recovery never rewrites leads.json or
+// triggers Forms import. Re-imported legacy rows retain their isolation on read.
+const inspectApprovedTestRecovery = async () => legacyRecovery.planRecovery(
+  await readJson(LEADS_KEY, []), await readJson(RECOVERY_KEY, {})
+);
+const restoreApprovedTestIsolation = async (fingerprint) => {
+  const records = await readJson(LEADS_KEY, []);
+  const current = await readJson(RECOVERY_KEY, {});
+  const plan = legacyRecovery.planRecovery(records, current);
+  if (!plan.eligible) throw Object.assign(new Error('Fixed identity or record metadata did not match; no writes'), { statusCode: 409 });
+  if (plan.complete) return { ...plan, changed: 0, externalActionsSuppressed: true };
+  if (!fingerprint || fingerprint !== plan.fingerprint) throw Object.assign(new Error('Recovery preview is stale; refresh before restoring'), { statusCode: 409 });
+  await writeJson(RECOVERY_KEY, legacyRecovery.makeRegistry(plan, current));
+  const verified = await inspectApprovedTestRecovery();
+  if (!verified.complete) throw Object.assign(new Error('Recovery verification failed; inspect before retrying'), { statusCode: 409 });
+  return { ...verified, changed: plan.records.filter(item => !item.applied).length, externalActionsSuppressed: true };
 };
 
 const writeLeads = async (items) => writeJson(LEADS_KEY, items.map((item) => normalizeLead(item)));
@@ -611,6 +632,8 @@ module.exports = {
   normalizeAssignedTo,
   normalizeLead,
   readLeads,
+  inspectApprovedTestRecovery,
+  restoreApprovedTestIsolation,
   readWhatsappSettings,
   recoverSyntheticFormAttempts,
   shanghaiStartOfDay,

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>两条历史测试记录隔离恢复</title>
+<style>body{font:16px/1.6 system-ui;margin:24px;background:#f5f7fb;color:#172033}main{max-width:900px;margin:auto}article{padding:16px;margin:12px 0;background:white;border:1px solid #ddd;border-radius:8px;overflow-wrap:anywhere}button{padding:12px;font:inherit;cursor:pointer}button:disabled{cursor:default;opacity:.5}pre{white-space:pre-wrap;overflow-wrap:anywhere}a{color:#153f75}</style></head>
+<body><main><h1>两条历史测试记录隔离恢复</h1><p>仅限 2026-09-03 获准的两个编号。先认证和只读核对，再执行一次恢复。保留原始记录，不新增询盘，不删除、不联系、不分配。</p>
+<p id="status" role="status">正在验证管理员登录…</p><section id="records"></section><button id="restore" disabled>仅恢复上述两条记录的测试隔离</button><p><a href="/admin/test-inquiries.html">查看隔离测试记录（只读）</a> · <a href="/admin/inquiries.html">返回客户列表</a></p></main>
+<script>
+(()=>{
+  const status=document.getElementById('status'), records=document.getElementById('records'), button=document.getElementById('restore');
+  const endpoint='/.netlify/functions/admin-test-recovery'; let preview=null;
+  async function auth(){const response=await fetch('/api/admin/me',{cache:'no-store',credentials:'same-origin'});if(response.status===401){location.replace('/admin/login.html');throw new Error('登录已失效');}const data=await response.json();if(!response.ok||data.user?.role!=='admin')throw new Error('管理员认证未通过');}
+  function render(data){records.replaceChildren();for(const item of data.records){const card=document.createElement('article');card.dataset.id=item.id;const title=document.createElement('h2');title.textContent=item.id;const detail=document.createElement('pre');detail.textContent=JSON.stringify(item,null,2);card.append(title,detail);records.append(card);}button.disabled=!data.eligible||data.complete;status.textContent=data.complete?'两条记录均已恢复隔离；原记录保留。':data.eligible?'管理员认证成功；两条精确记录的固定身份核对通过，尚未执行恢复。':'核对未通过，禁止恢复；未执行写入。';}
+  async function load(){await auth();const response=await fetch(endpoint,{cache:'no-store',credentials:'same-origin'});const data=await response.json();if(!response.ok||!data.ok)throw new Error(data.error||'只读核对失败');preview=data;render(data);}
+  button.addEventListener('click',async()=>{button.disabled=true;try{await auth();const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({batch:preview.batch,fingerprint:preview.fingerprint,confirm:'restore-only-approved-two'})});const data=await response.json();if(!response.ok||!data.ok||data.externalActionsSuppressed!==true||data.leadCollectionWritten!==false)throw new Error(data.error||'恢复结果未确认');await load();}catch(error){status.textContent=error.message+'；请重新只读核对，不自动重试。';button.disabled=true;}});
+  load().catch(error=>{status.textContent=error.message;button.disabled=true;});
+})();
+</script></body></html>
