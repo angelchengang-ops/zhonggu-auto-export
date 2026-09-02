@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { productSku } = require('./lib/product-sku');
 
 const SITE = 'https://zhongguauto.com';
 const DETAIL_STYLE_VERSION = '20260716-used-detail-compact-phone';
@@ -346,7 +347,7 @@ const render = (car) => {
     : `Please send current availability, FOB quotation, colors and export timing for ${name}.`);
   const styleVersion = hasDetailGallery(car) ? GALLERY_STYLE_VERSION : DETAIL_STYLE_VERSION;
   const scriptVersion = hasDetailGallery(car) ? GALLERY_SCRIPT_VERSION : DETAIL_SCRIPT_VERSION;
-  const productJsonLd = { '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: `ZG-${id.toUpperCase()}`, brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' } };
+  const productJsonLd = { '@type': 'Product', name, description, image: galleryImages.map((image) => absoluteUrl(image)), sku: productSku(id), brand: { '@type': 'Brand', name: englishValue(car.brand) || 'Zhonggu Auto Export' } };
   const usdPrice = getUsdPrice(car);
   if (usdPrice) {
     productJsonLd.offers = { '@type': 'Offer', url, priceCurrency: 'USD', availability: `https://schema.org/${sold ? 'OutOfStock' : 'InStock'}`, itemCondition: `https://schema.org/${isUsed(car) ? 'UsedCondition' : 'NewCondition'}`, price: usdPrice };

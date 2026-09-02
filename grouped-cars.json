@@ -7,7 +7,7 @@
     "modelYear": "2026",
     "image": "images/new-cars/suv-04.png",
     "priceRange": "RMB 66,800 - 97,800",
-    "fobRange": "USD 7,900 - 11,800",
+    "fobRange": "USD 7,900 - 11,500",
     "colors": [
       "White",
       "Grey"
@@ -132,8 +132,8 @@
         "trimNameZh": "缤越L星耀版顶配加包加全景天窗",
         "guidePriceRmb": 96800,
         "guidePriceDisplay": "96,800 RMB",
-        "fobPriceUsd": 11800,
-        "fobPriceDisplay": "11,800 USD",
+        "fobPriceUsd": 11500,
+        "fobPriceDisplay": "11,500 USD",
         "transmission": "Automatic",
         "fuel": "Petrol",
         "availableColor": [

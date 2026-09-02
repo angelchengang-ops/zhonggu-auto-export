@@ -5,6 +5,8 @@ const { isoDate, latestLastmod, resolveLastmod: resolveEntryLastmod } = require(
 
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://zhongguauto.com';
+// Explicit dates record substantive editorial updates before their first commit.
+const contentUpdates = require('../seo-content-updates.json');
 const EXCLUDED_LANDING_DIRS = new Set(['export-cars-to-africa']);
 const skippedWrites = [];
 
@@ -92,6 +94,8 @@ const deadAliases = new Map([
 ]);
 const explicitAliases = new Map([
   ['/index.html', '/'],
+  ['/used-bestune-b70-wholesale', '/used-bestune-b70-wholesale.html'],
+  ['/used-bestune-b70-wholesale/', '/used-bestune-b70-wholesale.html'],
   ['/export-to-algeria', '/export-cars-from-china-to-algeria.html'],
   ['/process.html', '/export-process.html'],
   ['/export-to-algeria/', '/export-cars-from-china-to-algeria.html'],
@@ -242,7 +246,7 @@ const pageRecords = [
     .filter(({ relative, canonical }) => isSitemapCandidate(relative, canonical)),
   ...importerSeoPagePaths.filter((relative) => fs.existsSync(path.join(ROOT, relative))).map((relative) => ({ relative, canonical: htmlCanonical(relative) || siteUrl(relative) }))
 ];
-const pageEntries = [...new Map(pageRecords.map(({ relative, canonical }) => [canonical, { url: canonical, lastmod: resolveLastmod({ sourceFile: relative, outputFile: relative }) }])).values()]
+const pageEntries = [...new Map(pageRecords.map(({ relative, canonical }) => [canonical, { url: canonical, lastmod: latestLastmod([{ lastmod: contentUpdates[relative] }, { lastmod: resolveLastmod({ sourceFile: relative, outputFile: relative }) }]) }])).values()]
   .sort((a, b) => a.url.localeCompare(b.url));
 const pageUrls = pageEntries.map((entry) => entry.url);
 

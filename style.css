@@ -1734,3 +1734,15 @@ body[data-vehicle-id="2024-bmw-x1-xdrive25li-awd-horgos"] .vehicle-main-image im
 @media (max-width: 680px) {
   .vehicle-hero-highlights span { min-height: 28px; font-size: .72rem; }
 }
+
+/* Long country-specific quote labels must not widen the mobile form grid. */
+.regional-market-page .contact-layout > * { min-width: 0; }
+.regional-market-page .whatsapp-btn { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.regional-market-page .inquiry-fields > label { min-width: 0; }
+html[lang="fa"] .iran-market-page { font-family: Tahoma, Arial, sans-serif; line-height: 1.9; }
+.iran-market-page .seo-card, .iran-market-page .contact-layout > * { min-width: 0; overflow-wrap: anywhere; }
+.iran-market-page .btn { max-width: 100%; white-space: normal; }
+.iran-market-page .seo-hero .btn-primary { color: #fff; }
+.iran-market-page #contact { scroll-margin-top: 90px; }
+.iran-market-page .language-switcher { display: flex; flex-wrap: wrap; gap: 1rem; }
+.iran-market-page bdi { direction: ltr; unicode-bidi: isolate; }

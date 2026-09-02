@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/generate-vehicle-pages.js && node scripts/generate-seo-upgrade-pages.js && node scripts/sync-central-asia-faq.js && node scripts/normalize-whatsapp-contact.js && node scripts/maintain-seo.js && node scripts/fix-published-seo.js && node scripts/inject-webmaster-verification.js && node scripts/inject-umami-analytics.js && node scripts/inject-favicon.js",
+    "build": "node scripts/generate-vehicle-pages.js && node scripts/generate-seo-upgrade-pages.js && node scripts/sync-central-asia-faq.js && node scripts/normalize-whatsapp-contact.js && node scripts/maintain-seo.js && node scripts/fix-published-seo.js && node scripts/inject-webmaster-verification.js && node scripts/inject-umami-analytics.js && node scripts/inject-favicon.js && node scripts/version-public-assets.js",
     "test": "node scripts/test-daily-report.js && node --test --test-isolation=none tests/*.test.js",
     "check:site": "node scripts/check-site-integrity.js",
     "start": "node server.js",

@@ -1,4 +1,21 @@
 # Canonical host and URL cleanup redirects
+# Explicit canonical URLs for the B70 hub and targeted market guides.
+https://www.zhongguauto.com/used-bestune-b70-wholesale https://zhongguauto.com/used-bestune-b70-wholesale.html 301!
+https://www.zhongguauto.com/used-bestune-b70-wholesale/ https://zhongguauto.com/used-bestune-b70-wholesale.html 301!
+/used-bestune-b70-wholesale /used-bestune-b70-wholesale.html 301!
+/used-bestune-b70-wholesale/ /used-bestune-b70-wholesale.html 301!
+/export-cars-from-china-to-iraq /export-cars-from-china-to-iraq.html 301!
+/export-cars-from-china-to-iraq/ /export-cars-from-china-to-iraq.html 301!
+/ar/export-cars-from-china-to-iraq /ar/export-cars-from-china-to-iraq.html 301!
+/ar/export-cars-from-china-to-iraq/ /ar/export-cars-from-china-to-iraq.html 301!
+/export-cars-from-china-to-egypt /export-cars-from-china-to-egypt.html 301!
+/export-cars-from-china-to-egypt/ /export-cars-from-china-to-egypt.html 301!
+/ar/export-cars-from-china-to-egypt /ar/export-cars-from-china-to-egypt.html 301!
+/ar/export-cars-from-china-to-egypt/ /ar/export-cars-from-china-to-egypt.html 301!
+/export-cars-from-china-to-iran /export-cars-from-china-to-iran.html 301!
+/export-cars-from-china-to-iran/ /export-cars-from-china-to-iran.html 301!
+/fa/export-cars-from-china-to-iran /fa/export-cars-from-china-to-iran.html 301!
+/fa/export-cars-from-china-to-iran/ /fa/export-cars-from-china-to-iran.html 301!
 https://www.zhongguauto.com/index.html https://zhongguauto.com/ 301!
 https://www.zhongguauto.com/export-to-algeria https://zhongguauto.com/export-cars-from-china-to-algeria.html 301!
 https://www.zhongguauto.com/process.html https://zhongguauto.com/export-process.html 301!

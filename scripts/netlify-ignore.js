@@ -16,7 +16,7 @@ const buildPatterns = [
   /^manual-image-map\.json$/i,
   /^[^/]+\.html$/i,
   /^landing\/.*\.html$/i,
-  /^(?:ar|fr|ru)\/.*\.html$/i,
+  /^(?:ar|fa|fr|ru)\/.*\.html$/i,
   /^new-cars\/.*\.html$/i,
   /^assets\//i,
   /^images\//i,

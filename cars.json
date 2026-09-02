@@ -1051,17 +1051,42 @@
     "pageTitle": "Geely Coolray Battle Edition",
     "seoTitle": "Geely Coolray Battle Edition | Export from China",
     "metaTitle": "Geely Coolray Battle Edition | Export from China",
-    "metaDescription": "Geely Coolray Battle Edition export from China for dealers. Check configuration, 1.5T/7DCT details, FOB inquiry support and trim comparison.",
-    "heroDescription": "The Geely Coolray Battle Edition is a compact SUV option for overseas dealers and importers comparing Coolray trims from China. Zhonggu Auto Export can confirm the current configuration, engine and transmission details, available colors, vehicle location and FOB quotation before order. This page is focused on the Battle Edition query, with links to other Coolray trims so buyers can compare specification, sunroof/package options and export availability without opening duplicate pages.",
-    "overviewText": "Geely Coolray Battle Edition is listed for export inquiry from China. Final configuration, available colors, current stock and FOB quotation are confirmed before order according to the buyer destination and quantity.",
+    "metaDescription": "Geely Coolray Battle Edition specs: 1.5T, 7DCT, 133 kW and 290 Nm China-market reference. Compare trim details and request current export stock and FOB pricing.",
+    "heroDescription": "Compare the Geely Coolray Battle Edition for export from China using the 2025 Binyue L 1.5TD DCT Battle as the China-market reference: a 1.5T four-cylinder petrol engine, 7-speed wet dual-clutch transmission and five-seat SUV body. Check the specifications below, then confirm the exact export vehicle, equipment, colors and quotation before ordering.",
+    "overviewText": "The reference model is the 2025 China-market Binyue L 1.5TD DCT Battle listed by Autohome at the same RMB 97,800 guide price as our Battle listing. This reference does not certify the configuration of a particular export unit. Match the VIN and equipment list before confirming an order; do not substitute the 1.5L CVT Super Power or another Coolray trim.",
+    "contentUpdatedAt": "2026-09-02",
+    "specificationSource": {
+      "name": "Autohome",
+      "url": "https://www.autohome.com.cn/config/spec/75683.html",
+      "model": "2025款 缤越L 1.5TD DCT Battle",
+      "checkedAt": "2026-09-02",
+      "scope": "China-market reference matched by Battle name and RMB 97,800 guide price; export unit requires VIN confirmation"
+    },
+    "detailSpecs": [
+      ["Reference model", "2025 Binyue L 1.5TD DCT Battle (China market)"],
+      ["Engine", "1.5T turbocharged inline-four petrol, 1499 cc"],
+      ["Engine code", "BHE15-EFZ"],
+      ["Transmission", "7-speed wet dual-clutch automatic (7DCT)"],
+      ["Maximum power", "133 kW (181 PS)"],
+      ["Maximum torque", "290 Nm"],
+      ["Body style", "5-door, 5-seat SUV"],
+      ["Length x width x height", "4380 x 1800 x 1609 mm"],
+      ["Wheelbase", "2600 mm"],
+      ["Fuel tank", "45 L"],
+      ["WLTC combined fuel consumption", "6.35 L/100 km (reference test figure)"]
+    ],
     "ctaLabel": "Request Coolray FOB Quote",
     "contactHeading": "Request Geely Coolray Battle Edition Quote",
     "contactText": "Send your destination country, target quantity and preferred Coolray trim. We will confirm current availability, configuration, FOB quote and shipping options from China.",
     "detailSections": [
       {
-        "title": "Battle Edition Configuration Focus",
+        "title": "Specification Source and Export-Unit Checks",
         "paragraphs": [
-          "Buyers searching for Geely Coolray Battle Edition usually need more than a model name. Confirm the exact trim, engine, transmission, exterior color, interior specification, sunroof or package option, and whether the vehicle is available for export at the time of inquiry."
+          "Reference specifications were checked against Autohome model 75683 on 2 September 2026. They describe the China-market reference model, not a guarantee for every vehicle offered for export. Real fuel use varies with load, road conditions and driving style.",
+          "Before order, request the VIN or exact vehicle reference, production date, engine and gearbox identification, equipment list and current photos. Confirm sunroof, tailgate package, infotainment language and destination-market requirements separately. China-market warranty terms are not an overseas warranty commitment."
+        ],
+        "links": [
+          {"href": "https://www.autohome.com.cn/config/spec/75683.html", "label": "Autohome reference: 2025 Binyue L 1.5TD DCT Battle"}
         ],
         "specs": [
           [
@@ -1141,13 +1166,13 @@
     "model": "Geely Coolray Full Option with Package and Panoramic Sunroof",
     "type": "New Car",
     "guidePriceRmb": "96,800 RMB",
-    "fobNanShaUsd": "US$11,800",
+    "fobNanShaUsd": "US$11,500",
     "configuration": "Full Option with Package and Panoramic Sunroof",
     "availableColor": "Current colors confirmed during inquiry.",
     "image": "images/new-cars/geely-coolray-full-option-nansha/optimized/01-front-three-quarter-right.webp",
     "sitemapImage": "images/new-cars/geely-coolray-full-option-nansha/01-front-three-quarter-right.jpg",
     "guidePriceDisplay": "96,800 RMB",
-    "fobPriceDisplay": "US$11,800",
+    "fobPriceDisplay": "US$11,500",
     "title": {
       "en": "Geely Coolray Full Option with Package and Panoramic Sunroof",
       "fr": "Geely Coolray Full Option with Package and Panoramic Sunroof",
@@ -1156,7 +1181,7 @@
       "es": "Geely Coolray Full Option with Package and Panoramic Sunroof"
     },
     "description": {
-      "en": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800. VIN information, available colors and current quantity can be provided on request.",
+      "en": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,500. VIN information, available colors and current quantity can be provided on request.",
       "fr": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "ar": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
       "ru": "Geely Coolray Full Option with Package and Panoramic Sunroof available for export from China with FOB inquiry support.",
@@ -1182,7 +1207,7 @@
     "isBatchInventory": true,
     "location": "Nansha Port, China",
     "locationDisplay": "Nansha Port, China",
-    "price": "US$11,800",
+    "price": "US$11,500",
     "priceCurrency": "USD",
     "color": "Current colors confirmed during inquiry.",
     "mileage": "New vehicle; delivery mileage may vary",
@@ -1241,10 +1266,12 @@
         "duration": "PT5.824S"
       }
     ],
-    "seoTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",
-    "metaTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,800",
-    "metaDescription": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800.",
-    "descriptionEn": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,800. VIN information, available colors and current quantity can be provided on request.",
+    "contentUpdatedAt": "2026-09-02",
+    "priceConfirmedAt": "2026-09-02",
+    "seoTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,500",
+    "metaTitle": "Geely Coolray Full Option Ready Stock at Nansha Port | FOB US$11,500",
+    "metaDescription": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,500.",
+    "descriptionEn": "Brand-new Geely Coolray Full Option with Package and Panoramic Sunroof ready stock at Nansha Port, China. FOB reference price is US$11,500. VIN information, available colors and current quantity can be provided on request.",
     "detailSpecs": [
       {
         "label": "Vehicle type",
@@ -1260,7 +1287,7 @@
       },
       {
         "label": "FOB reference price",
-        "value": "US$11,800 per unit"
+        "value": "US$11,500 per unit"
       },
       {
         "label": "VIN information",

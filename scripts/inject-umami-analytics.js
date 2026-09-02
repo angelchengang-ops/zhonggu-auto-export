@@ -20,7 +20,9 @@ let changed = 0;
 for (const file of htmlFiles) {
   let html = fs.readFileSync(file, 'utf8');
   if (html.includes(`data-website-id="${WEBSITE_ID}"`) || !html.includes('</head>')) continue;
-  html = html.replace('</head>', `  ${TRACKING_TAG}\n</head>`);
+  // Optional analytics must never delay first-party scripts on lightweight pages.
+  const tag = html.includes('data-lightweight-page="true"') ? TRACKING_TAG.replace(' defer ', ' async ') : TRACKING_TAG;
+  html = html.replace('</head>', `  ${tag}\n</head>`);
   fs.writeFileSync(file, html, 'utf8');
   changed += 1;
 }

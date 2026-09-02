@@ -886,6 +886,8 @@ const callingCodeChoices = [
   ["+226", "Burkina Faso (+226)"],
   ["+86", "China (+86)"],
   ["+20", "Egypt (+20)"],
+  ["+964", "Iraq (+964)"],
+  ["+98", "Iran (+98)"],
   ["+234", "Nigeria (+234)"],
   ["+254", "Kenya (+254)"],
   ["+255", "Tanzania (+255)"],
@@ -897,12 +899,15 @@ const normalizeCallingCode = (value = "") => {
   if (!cleaned) return "";
   return cleaned.startsWith("+") ? cleaned : "+" + cleaned;
 };
-const normalizePhoneNumber = (value = "") => String(value || "").replace(/[^\d]/g, "");
+const normalizePhoneNumber = (value = "") => String(value || "")
+  .replace(/[۰-۹]/g, digit => String(digit.charCodeAt(0) - 0x06F0))
+  .replace(/[٠-٩]/g, digit => String(digit.charCodeAt(0) - 0x0660))
+  .replace(/[^\d]/g, "");
 const buildInternationalWhatsapp = (formData) => {
   const direct = formDataValue(formData, "whatsapp", "phone", "mobile", "tel");
   const callingCode = normalizeCallingCode(formDataValue(formData, "calling_code", "country_code", "dial_code"));
   const phoneNumber = normalizePhoneNumber(formDataValue(formData, "phone_number", "national_phone", "whatsapp_number"));
-  if (callingCode && phoneNumber) return callingCode + phoneNumber;
+  if (callingCode && phoneNumber) return callingCode + (callingCode === "+98" ? phoneNumber.replace(/^0/, "") : phoneNumber);
   if (direct && /^\+/.test(direct)) return "+" + normalizePhoneNumber(direct);
   return normalizePhoneNumber(direct);
 };
@@ -1049,6 +1054,10 @@ const ensureWhatsappPhoneFields = (form, fields) => {
   }
   const hiddenWhatsapp = ensureHiddenField(form, "whatsapp");
   hiddenWhatsapp.autocomplete = "tel";
+  const callingSelect = form.querySelector('select[name="calling_code"]');
+  for (const [value, label] of [["+964", "Iraq (+964)"], ["+98", "Iran (+98)"]]) {
+    if (callingSelect && !Array.from(callingSelect.options).some(option => option.value === value)) callingSelect.append(new Option(label, value));
+  }
 };
 
 const insertInquiryField = (fields, node) => {
@@ -1097,6 +1106,42 @@ const ensureInquiryFormFields = () => {
     ensureHiddenField(form, "inventory_type");
     ensureHiddenField(form, "createdAt");
     ensureWhatsappPhoneFields(form, fields);
+    if (document.body.classList.contains("regional-market-page") && document.documentElement.lang === "ar") {
+      const labels = { calling_code: "رمز الدولة لواتساب", phone_number: "رقم واتساب", email: "البريد الإلكتروني (اختياري)", destinationPort: "ميناء الوصول (اختياري)", budget: "الميزانية (اختياري)" };
+      Object.entries(labels).forEach(([name, text]) => {
+        const input = form.querySelector(`[name="${name}"]`);
+        const span = input?.closest("label")?.querySelector("span");
+        if (span) span.textContent = text;
+      });
+      const select = form.querySelector('select[name="calling_code"]');
+      if (select?.options[0]?.value === "") select.options[0].textContent = "اختر رمز الدولة";
+      const phone = form.querySelector('[name="phone_number"]');
+      if (phone) { phone.placeholder = "الرقم بدون رمز الدولة"; phone.dir = "ltr"; }
+    }
+    if (document.body.classList.contains("iran-market-page")) {
+      const fa = document.documentElement.lang === "fa";
+      const labels = fa
+        ? { calling_code: "کد کشور", phone_number: "شماره تماس", email: "ایمیل (اختیاری)", destinationPort: "بندر یا مرز ورودی (اختیاری)", budget: "بودجه و واحد پول (اختیاری)" }
+        : { calling_code: "Phone country code", phone_number: "Contact phone number" };
+      Object.entries(labels).forEach(([name, text]) => {
+        const input = form.querySelector(`[name="${name}"]`);
+        const span = input?.closest("label")?.querySelector("span");
+        if (span) span.textContent = text;
+      });
+      const select = form.querySelector('[name="calling_code"]');
+      if (select && !select.value) select.value = "+98";
+      const phone = form.querySelector('[name="phone_number"]');
+      if (phone) {
+        phone.dir = "ltr";
+        phone.pattern = "[0-9۰-۹٠-٩ ]{5,20}";
+        phone.placeholder = fa ? "شماره بدون کد کشور" : "Number without country code";
+      }
+      if (fa) {
+        const budget = form.querySelector('[name="budget"]');
+        if (budget) { budget.placeholder = "مبلغ و واحد پول"; budget.inputMode = "text"; }
+        if (select?.options[0]?.value === "") select.options[0].textContent = "انتخاب کد کشور";
+      }
+    }
     syncVehicleAliasFields(form);
   });
 };
@@ -1152,7 +1197,7 @@ const bindInquiryForms = () => {
 
       if (submitButton) {
         submitButton.disabled = true;
-        submitButton.textContent = "Submitting...";
+        submitButton.textContent = document.documentElement.lang === "fa" ? "در حال ارسال..." : "Submitting...";
       }
 
       try {
@@ -1182,7 +1227,7 @@ const bindInquiryForms = () => {
         window.location.assign("/thank-you.html");
       } catch (error) {
         console.error("Inquiry submission failed", error);
-        window.alert("Submission failed. Please try again or contact our sales team.");
+        window.alert(document.documentElement.lang === "fa" ? "ارسال انجام نشد. لطفاً دوباره تلاش کنید یا با فروش تماس بگیرید." : "Submission failed. Please try again or contact our sales team.");
         if (submitButton) {
           submitButton.disabled = false;
           submitButton.textContent = originalLabel;
@@ -1194,8 +1239,10 @@ const bindInquiryForms = () => {
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 if (!document.body.classList.contains("localized-market-page")) applyLanguage();
-loadVehicles().catch((error) => console.error("Vehicle data engine failed", error));
-bindWhatsappButtons();
+if (!document.body.hasAttribute("data-lightweight-page")) {
+  loadVehicles().catch((error) => console.error("Vehicle data engine failed", error));
+  bindWhatsappButtons();
+}
 showDailyTestMode();
 updateCompanyMedia();
 bindVideoStages();
