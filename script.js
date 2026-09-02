@@ -1128,7 +1128,10 @@ const ensureWhatsappPhoneFields = (form, fields) => {
         if (option) option.selected = true;
         else callingSelect.value = parsed.callingCode;
       }
-      phone.setCustomValidity(!phone.value || parsed ? "" : (window.ZhongguPhone?.errorMessage(document.documentElement.lang) || "Phone validation unavailable. Please reload the page."));
+      // The fixed synthetic identity is only usable in marked mode; server
+      // authentication and exact daily lookup still gate every test write.
+      const fixedTestIdentity = dailyTestId() && phone.value === "0000000000";
+      phone.setCustomValidity(!phone.value || parsed || fixedTestIdentity ? "" : (window.ZhongguPhone?.errorMessage(document.documentElement.lang) || "Phone validation unavailable. Please reload the page."));
     };
     phone.addEventListener("input", validate);
     phone.addEventListener("change", validate);

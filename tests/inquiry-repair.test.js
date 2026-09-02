@@ -131,3 +131,16 @@ test('both WhatsApp trackers and lead-session creation are silent on any marked 
     assert.equal(vm.runInNewContext(session+'\ngetLeadSessionId();',context),'');
   }
 });
+
+test('only the fixed morning-test identity is exempt from client number validation, and only in valid marked mode',()=>{
+  const source=fs.readFileSync(require.resolve('../script.js'),'utf8');
+  const block=source.slice(source.indexOf('const ensureWhatsappPhoneFields ='),source.indexOf('const insertInquiryField ='));
+  const rules=require('../scripts/lib/phone');
+  for(const [marker,value,accepted] of [['AUTO-TEST-20990101-HOME','0000000000',true],['','0000000000',false],['AUTO-TEST-20990101-HOME','123',false]]){
+    const listeners={};const phone={value,addEventListener:(name,fn)=>listeners[name]=fn,setCustomValidity:message=>phone.error=message};
+    const form={querySelector:selector=>selector.includes('select')?null:selector.includes('phone_number')?phone:{},addEventListener(){}};
+    const context=vm.createContext({window:{ZhongguPhone:rules},document:{documentElement:{lang:'en'}},ensureHiddenField:()=>({}),dailyTestId:()=>marker});
+    const ensure=vm.runInContext(block+'\nensureWhatsappPhoneFields;',context);
+    ensure(form,{});assert.equal(phone.error==='',accepted,marker+':'+value);
+  }
+});
