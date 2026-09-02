@@ -50,6 +50,14 @@ test('test-marked ordinary form and WhatsApp click are rejected without writes',
   assert.equal((await store.readLeads()).items.length,before);
 });
 
+test('conflicting synthetic flag aliases cannot bypass authentication', async()=>{
+  const before=(await store.readLeads()).items.length;
+  for(const flags of [{is_test:false,isTest:true},{is_test:'false',isTest:'true'},{is_test:'true',isTest:false},{is_test:' TRUE '},{isTest:' true '}]){
+    assert.equal((await handler(event({...real,...flags}))).statusCode,403);
+  }
+  assert.equal((await store.readLeads()).items.length,before);
+});
+
 test('synthetic records are opt-in read-only, excluded from default listing and exports; all mutation routes fail closed', async () => {
   process.env.ZHONGGU_ADMIN_PASSWORD='test-only-admin-secret';
   const testId='AUTO-TEST-20990101-HOME';

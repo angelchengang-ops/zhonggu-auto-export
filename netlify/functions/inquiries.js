@@ -52,7 +52,7 @@ const isWhatsappClickRequest = (event, body = {}) => {
   return path.includes("whatsapp-clicks") || eventType.includes("click") || eventType === "whatsapp_form_open";
 };
 
-const syntheticRequested = (body = {}) => body.is_test === true || String(body.is_test ?? body.isTest ?? "").toLowerCase() === "true";
+const syntheticRequested = (body = {}) => [body.is_test, body.isTest].some(value => String(value ?? "").trim().toLowerCase() === "true");
 const APPROVED_SYNTHETIC_RECOVERY = Object.freeze({
   "AUTO-TEST-20260827": ["INQ-20260827023014-B00CF8", "NF-6a8fa138bd480f6fcad7a8ac"]
 });
