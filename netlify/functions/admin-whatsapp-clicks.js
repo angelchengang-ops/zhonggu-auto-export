@@ -6,6 +6,6 @@ exports.handler = async (event) => {
   const user = requireAdmin(event);
   if (user.statusCode) return user;
   const { items } = await readLeads({ syncForms: true });
-  const clicks = items.filter((item) => sourceTypeOf(item) === "whatsapp_click");
+  const clicks = items.filter((item) => !item.is_test && sourceTypeOf(item) === "whatsapp_click");
   return json(200, { ok: true, success: true, clicks });
 };

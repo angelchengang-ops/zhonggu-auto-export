@@ -1,5 +1,5 @@
 ﻿(() => {
-  const MODAL_SCRIPT = "/assets/js/whatsapp-lead-modal.js";
+  const MODAL_SCRIPT = "/assets/js/whatsapp-lead-modal.js?v=6a12df942927";
   const MODAL_STYLE = "/assets/css/whatsapp-lead-modal.css";
   const loadStyle = () => {
     if (document.querySelector(`link[href="${MODAL_STYLE}"]`)) return;

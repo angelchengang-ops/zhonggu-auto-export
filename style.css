@@ -208,6 +208,7 @@ img { display: block; max-width: 100%; }
 .inquiry-panel > h3, .reply-draft h3 { margin: 0 0 20px; color: var(--navy); font-size: 1.25rem; }
 .inquiry-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .inquiry-fields label { display: grid; gap: 6px; color: var(--navy); font-size: .72rem; font-weight: 800; }
+.phone-country-hint { display:block; font-size:12px; line-height:1.5; font-weight:400; color:#58677b; overflow-wrap:anywhere; }
 .inquiry-fields .field-wide { grid-column: 1 / -1; }
 .inquiry-fields input, .inquiry-fields textarea { width: 100%; padding: 12px 13px; border: 1px solid #d7e0ea; border-radius: 6px; color: var(--text); font: inherit; font-size: .8rem; background: #fbfcfe; outline: none; transition: border-color .2s, box-shadow .2s; }
 .inquiry-fields textarea { min-height: 105px; resize: vertical; }

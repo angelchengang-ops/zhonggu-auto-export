@@ -237,6 +237,27 @@ const i18n = {
 };
 
 
+Object.assign(i18n.ar, {
+  "hero.eyebrow": "توريد مباشر · شحن عالمي · خدمة موثوقة",
+  "hero.title": "مصدّر موثوق للسيارات الجديدة والمستعملة من الصين",
+  "hero.subtitle": "سيارات عالية الجودة وأسعار تنافسية ودعم تصدير موثوق للتجار والمشترين حول العالم.",
+  "hero.explore": "تصفح السيارات", "hero.quote": "اطلب عرض سعر FOB",
+  "hero.statsBrands": "علامات تجارية رائدة", "hero.statsSupport": "دعم التصدير", "hero.statsNetwork": "شبكة الشحن", "hero.statsNetworkValue": "عالمية",
+  "brands.eyebrow": "شركاؤنا", "brands.title": "علامات سيارات صينية معروفة", "brands.subtitle": "تشكيلة واسعة من الشركات المصنّعة الموثوقة.",
+  "new.eyebrow": "أحدث المخزون", "new.title": "سيارات جديدة مميزة", "new.subtitle": "سيارات جديدة جاهزة للشحن الدولي.",
+  "used.eyebrow": "فحص وتحقق", "used.title": "سيارات مستعملة مميزة", "used.subtitle": "سيارات مختارة بعناية مع تفاصيل واضحة عن حالتها.", "used.viewAll": "عرض جميع السيارات المستعملة",
+  "process.eyebrow": "خطوات واضحة", "process.title": "عملية التصدير", "process.subtitle": "من استفسارك الأول إلى التسليم في ميناء الوجهة.",
+  "process.choose": "اختر السيارة", "process.chooseText": "أخبرنا بالطراز والكمية والوجهة المطلوبة.",
+  "process.confirm": "التأكيد والفحص", "process.confirmText": "نؤكد المواصفات ونقدم تفاصيل حالة السيارة.",
+  "process.payment": "الدفع والمستندات", "process.paymentText": "إتمام الدفع ومستندات التصدير.",
+  "process.shipping": "الشحن والتسليم", "process.shippingText": "شحن سيارتك مع تحديثات منتظمة.",
+  "contact.eyebrow": "ابدأ طلبك", "contact.title": "هل تبحث عن سيارة محددة؟", "contact.subtitle": "أرسل متطلباتك للحصول على عرض سعر للتصدير.", "contact.whatsapp": "تواصل عبر واتساب",
+  "form.title": "نموذج الاستفسار", "form.name": "الاسم", "form.country": "بلد العميل", "form.whatsapp": "واتساب", "form.vehicle": "الطراز المطلوب", "form.message": "الرسالة", "form.submit": "اطلب عرض سعر FOB",
+  "form.success": "شكراً، تم استلام استفسارك. سيتواصل معك فريق المبيعات عبر واتساب أو البريد الإلكتروني.",
+  "footer.tagline": "سيارات موثوقة من الصين إلى مختلف أنحاء العالم.", "footer.rights": "Zhonggu Auto Export. جميع الحقوق محفوظة.",
+  "car.new": "سيارة جديدة", "car.used": "سيارة مستعملة", "car.fob_price": "سعر FOB", "car.ask_fob": "اطلب عرض سعر FOB", "car.year": "السنة"
+});
+
 class DataEngine {
   constructor(source = "/cars.json") {
     this.source = source;
@@ -409,6 +430,7 @@ const applyLanguage = () => {
     node.textContent = node.classList.contains("inquiry-submit") ? t("form.submit") : t("hero.quote");
   });
   document.querySelectorAll("a.whatsapp-btn, .hero-actions a[href*='wa.me']").forEach((node) => { node.textContent = t("contact.whatsapp"); });
+  localizePhoneFields();
 };
 const setLanguage = (language) => {
   if (!languageOptions.some((item) => item.value === language)) return;
@@ -430,6 +452,19 @@ menuToggle?.addEventListener("click", () => {
   const expanded = menuToggle.getAttribute("aria-expanded") === "true";
   menuToggle.setAttribute("aria-expanded", String(!expanded));
   mainNav?.classList.toggle("open", !expanded);
+});
+const closeMobileMenu = () => {
+  menuToggle?.setAttribute("aria-expanded", "false");
+  mainNav?.classList.remove("open");
+};
+mainNav?.addEventListener("click", event => {
+  if (event.target.closest("a")) closeMobileMenu();
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && menuToggle?.getAttribute("aria-expanded") === "true") {
+    closeMobileMenu();
+    menuToggle.focus();
+  }
 });
 
 const brandLogos = [["BYD", "images/brand-logos/byd.svg"], ["Geely", "images/brand-logos/geely.svg"], ["SAIC", "images/brand-logos/saic.svg"], ["FAW", "images/brand-logos/faw.png"], ["GAC", "images/brand-logos/gac.png"], ["Volkswagen", "images/brand-logos/volkswagen.svg"]];
@@ -642,7 +677,7 @@ const loadVehicles = async () => {
 };
 
 const trackWhatsappClickToCrm = (target) => {
-  if (!target) return;
+  if (!target || new URLSearchParams(window.location.search).has("daily_test_id")) return;
   const payload = {
     eventType: "whatsapp_click",
     source: "whatsapp_click",
@@ -688,6 +723,10 @@ const bindWhatsappButtons = () => {
   });
   document.addEventListener("click", (event) => {
     const whatsappTarget = event.target.closest("a[href='#contact-whatsapp'], [data-whatsapp-button='true'], .whatsapp-btn");
+    if (whatsappTarget && new URLSearchParams(window.location.search).has("daily_test_id")) {
+      event.preventDefault();
+      return;
+    }
     if (whatsappTarget) {
       window.trackEvent("whatsapp_click", { link_url: whatsappTarget.href || waUrl(whatsappTarget.dataset.message || "Website inquiry") });
       trackWhatsappClickToCrm(whatsappTarget);
@@ -705,7 +744,7 @@ const bindWhatsappButtons = () => {
         sourceUrl: window.location.href
       });
     } else {
-      window.location.href = waUrl(message);
+      if (!new URLSearchParams(window.location.search).has("daily_test_id")) window.location.href = waUrl(message);
     }
   });
 };
@@ -851,10 +890,13 @@ const showDailyTestMode = () => {
 };
 const prepareDailyTestPayload = async (payload) => {
   const testId = dailyTestId();
+  if (new URLSearchParams(window.location.search).has("daily_test_id") && !testId) throw new Error("Invalid daily test marker; ordinary submission is disabled");
   if (!testId) return payload;
   const auth = await fetch("/api/admin/me", { credentials: "same-origin", cache: "no-store", headers: { Accept: "application/json" } });
   if (auth.status === 401) throw new Error("CRM_AUTH_EXPIRED");
   if (!auth.ok) throw new Error(`CRM authentication preflight failed with status ${auth.status}`);
+  const identity = await auth.json();
+  if (identity.ok !== true || identity.user?.role !== "admin") throw new Error("CRM administrator identity was not confirmed");
   return {
     ...payload,
     id: testId,
@@ -906,10 +948,8 @@ const normalizePhoneNumber = (value = "") => String(value || "")
 const buildInternationalWhatsapp = (formData) => {
   const direct = formDataValue(formData, "whatsapp", "phone", "mobile", "tel");
   const callingCode = normalizeCallingCode(formDataValue(formData, "calling_code", "country_code", "dial_code"));
-  const phoneNumber = normalizePhoneNumber(formDataValue(formData, "phone_number", "national_phone", "whatsapp_number"));
-  if (callingCode && phoneNumber) return callingCode + (callingCode === "+98" ? phoneNumber.replace(/^0/, "") : phoneNumber);
-  if (direct && /^\+/.test(direct)) return "+" + normalizePhoneNumber(direct);
-  return normalizePhoneNumber(direct);
+  const phoneNumber = formDataValue(formData, "phone_number", "national_phone", "whatsapp_number");
+  return window.ZhongguPhone?.normalize(phoneNumber || direct, callingCode)?.number || "";
 };
 const buildInquiryPayload = (form, formData) => {
   const sourceUrl = formDataValue(formData, "source_url", "pageUrl") || window.location.href;
@@ -955,6 +995,16 @@ const buildInquiryPayload = (form, formData) => {
   };
 };
 const submitInquiryToCrm = async (payload) => {
+  if (payload.is_test) {
+    const query = new URLSearchParams({ is_test: "true", test_id: payload.test_id });
+    const check = await fetch(`/api/admin/inquiries?${query}`, { credentials: "same-origin", cache: "no-store" });
+    if (check.status === 401) throw new Error("CRM_AUTH_EXPIRED");
+    if (!check.ok) throw new Error("Test duplicate check failed; submission is disabled");
+    const existing = await check.json();
+    if (!Array.isArray(existing.items) || existing.items.some(item => item.is_test !== true || item.test_id !== payload.test_id)) throw new Error("Exact test lookup was not confirmed; submission is disabled");
+    if (existing.items.length > 1) throw new Error("Duplicate test records detected; submission is disabled");
+    if (existing.items.length === 1) return { stored: true, id: existing.items[0].id, results: { duplicate: true, externalActionsSuppressed: true } };
+  }
   const summary = {
     api: INQUIRY_API,
     source: payload.source || "website_form",
@@ -1031,8 +1081,8 @@ const createPhoneNumberField = () => {
   input.name = "phone_number";
   input.autocomplete = "tel-national";
   input.inputMode = "tel";
-  input.pattern = "[0-9 ()-]{5,20}";
-  input.placeholder = "Number without +";
+  input.pattern = window.ZhongguPhone?.pattern || "[0-9]{5,15}";
+  input.placeholder = "Local number or +international number";
   input.required = true;
   label.append(span, input);
   return label;
@@ -1055,8 +1105,36 @@ const ensureWhatsappPhoneFields = (form, fields) => {
   const hiddenWhatsapp = ensureHiddenField(form, "whatsapp");
   hiddenWhatsapp.autocomplete = "tel";
   const callingSelect = form.querySelector('select[name="calling_code"]');
-  for (const [value, label] of [["+964", "Iraq (+964)"], ["+98", "Iran (+98)"]]) {
-    if (callingSelect && !Array.from(callingSelect.options).some(option => option.value === value)) callingSelect.append(new Option(label, value));
+  if (callingSelect && window.ZhongguPhone) {
+    const previous = callingSelect.value;
+    callingSelect.replaceChildren(new Option("Select country code", ""));
+    window.ZhongguPhone.countries(document.documentElement.lang || "en").forEach(item => {
+      const option = new Option(item.label, item.callingCode);
+      option.dataset.country = item.country;
+      callingSelect.append(option);
+    });
+    const market = document.body.dataset.marketCountry || form.querySelector('[name="country"]')?.value || "";
+    callingSelect.value = previous || ({ Egypt: "+20", Iraq: "+964", Iran: "+98" }[market] || "");
+  }
+  const phone = form.querySelector('[name="phone_number"]');
+  if (phone) {
+    phone.pattern = window.ZhongguPhone?.pattern || "[0-9]{5,15}";
+    phone.dir = "ltr";
+    const validate = (event) => {
+      const parsed = window.ZhongguPhone?.normalize(phone.value, callingSelect?.value);
+      const full = /^\+|^00/.test(window.ZhongguPhone?.digits(phone.value).trim() || "");
+      if (full && parsed && callingSelect && event?.target !== callingSelect) {
+        const option = Array.from(callingSelect.options).find(item => item.dataset.country === parsed.country);
+        if (option) option.selected = true;
+        else callingSelect.value = parsed.callingCode;
+      }
+      phone.setCustomValidity(!phone.value || parsed ? "" : (window.ZhongguPhone?.errorMessage(document.documentElement.lang) || "Phone validation unavailable. Please reload the page."));
+    };
+    phone.addEventListener("input", validate);
+    phone.addEventListener("change", validate);
+    callingSelect?.addEventListener("change", validate);
+    form.addEventListener("reset", () => phone.setCustomValidity(""));
+    validate();
   }
 };
 
@@ -1133,7 +1211,7 @@ const ensureInquiryFormFields = () => {
       const phone = form.querySelector('[name="phone_number"]');
       if (phone) {
         phone.dir = "ltr";
-        phone.pattern = "[0-9۰-۹٠-٩ ]{5,20}";
+        phone.pattern = window.ZhongguPhone?.pattern || "[0-9]{5,15}";
         phone.placeholder = fa ? "شماره بدون کد کشور" : "Number without country code";
       }
       if (fa) {
@@ -1144,7 +1222,28 @@ const ensureInquiryFormFields = () => {
     }
     syncVehicleAliasFields(form);
   });
+  localizePhoneFields();
 };
+
+function localizePhoneFields() {
+  const language = document.documentElement.lang || "en";
+  const labels = language === "ar" ? {calling_code:"رمز دولة رقم واتساب",phone_number:"رقم واتساب",email:"البريد الإلكتروني (اختياري)",destinationPort:"ميناء الوصول (اختياري)",budget:"الميزانية (اختياري)"}
+    : language === "fa" ? {calling_code:"کد کشور شماره تماس",phone_number:"شماره تماس",email:"ایمیل (اختیاری)",destinationPort:"بندر یا مرز ورودی (اختیاری)",budget:"بودجه و واحد پول (اختیاری)"}
+    : {calling_code:"Phone / WhatsApp country code",phone_number:"Phone / WhatsApp number",email:"Email (optional)",destinationPort:"Destination port (optional)",budget:"Budget (optional)"};
+  const hint = {ar:"استخدم رقم واتساب الذي تتواصل به. يمكن أن يختلف رمز الرقم عن بلدك أو وجهة الشحن.",fa:"شماره‌ای را وارد کنید که با آن در تماس هستید. کد شماره می‌تواند با کشور شما یا مقصد حمل متفاوت باشد.",fr:"Le pays du numéro peut être différent de votre pays ou de la destination.",ru:"Код номера может отличаться от страны клиента и страны доставки.",es:"El prefijo del número puede ser distinto de su país o del destino."}[language] || "Use the number where we can reach you. Its country code can differ from your country or shipping destination.";
+  document.querySelectorAll('form.inquiry-form').forEach((form, index) => {
+    for (const [name, text] of Object.entries(labels)) {
+      const span = form.querySelector(`[name="${name}"]`)?.closest('label')?.querySelector('span');
+      if (span) span.textContent = text;
+    }
+    const phone = form.querySelector('[name="phone_number"]');
+    if (!phone) return;
+    phone.placeholder = language === 'ar' ? 'رقم محلي أو دولي يبدأ بـ +' : language === 'fa' ? 'شماره محلی یا بین‌المللی با +' : 'Local number or +international number';
+    let note = form.querySelector('.phone-country-hint');
+    if (!note) { note=document.createElement('small');note.className='phone-country-hint';note.id=`phone-country-hint-${index}`;phone.closest('label')?.append(note); }
+    note.textContent=hint;phone.setAttribute('aria-describedby',note.id);
+  });
+}
 
 const applyInquiryFieldMappings = (formData) => {
   const vehicle = formDataValue(formData, "vehicle", "car_type", "interestedModel", "model", "car");
@@ -1161,7 +1260,7 @@ const applyInquiryFieldMappings = (formData) => {
   formData.set("email", formDataValue(formData, "email", "mail", "customerEmail"));
   formData.set("budget", formDataValue(formData, "budget", "budgetPerUnit", "budget_per_unit", "totalBudget", "total_budget"));
   const callingCode = normalizeCallingCode(formDataValue(formData, "calling_code", "country_code", "dial_code"));
-  const phoneNumber = normalizePhoneNumber(formDataValue(formData, "phone_number", "national_phone", "whatsapp_number"));
+  const phoneNumber = formDataValue(formData, "phone_number", "national_phone", "whatsapp_number");
   if (callingCode) formData.set("calling_code", callingCode);
   if (phoneNumber) formData.set("phone_number", phoneNumber);
   const whatsapp = buildInternationalWhatsapp(formData);
@@ -1186,10 +1285,15 @@ const bindInquiryForms = () => {
   document.querySelectorAll("form.inquiry-form").forEach((form) => {
     if (form.dataset.submitBound === "true") return;
     form.dataset.submitBound = "true";
+    const clearRetry = () => { if (form.dataset.submitting !== "true") delete form.dataset.submissionId; };
+    form.addEventListener("input", clearRetry);
+    form.addEventListener("reset", clearRetry);
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (form.dataset.submitting === "true" || !form.reportValidity()) return;
+      form.dataset.submitting = "true";
 
-      const submitButton = form.querySelector('[type="submit"]');
+      const submitButton = form.querySelector('button[type="submit"], button:not([type]), input[type="submit"]');
       const originalLabel = submitButton?.textContent;
       const formData = new FormData(form);
       formData.set("form-name", "inquiry");
@@ -1197,37 +1301,31 @@ const bindInquiryForms = () => {
 
       if (submitButton) {
         submitButton.disabled = true;
-        submitButton.textContent = document.documentElement.lang === "fa" ? "در حال ارسال..." : "Submitting...";
+        submitButton.textContent = document.documentElement.lang === "fa" ? "در حال ارسال..." : document.documentElement.lang === "ar" ? "جارٍ الإرسال..." : "Submitting...";
       }
 
       try {
         const crmPayload = await prepareDailyTestPayload(buildInquiryPayload(form, formData));
-        try {
-          const crmResult = await submitInquiryToCrm(crmPayload);
-          if (crmPayload.is_test) {
-            if (crmResult.results?.externalActionsSuppressed !== true) throw new Error("Synthetic inquiry external-action suppression was not confirmed");
-            const success = form.parentElement?.querySelector(".inquiry-success");
-            if (success) success.hidden = false;
-            if (submitButton) {
-              submitButton.disabled = true;
-              submitButton.textContent = crmResult.results?.duplicate ? "Already verified" : "Test inquiry verified";
-            }
-            return;
-          }
-        } catch (crmError) {
-          if (crmPayload.is_test) throw crmError;
-          console.warn("Zhonggu inquiry save failed; continuing with Netlify form fallback", { error: crmError.message });
+        if (!crmPayload.is_test) {
+          form.dataset.submissionId ||= crypto.randomUUID();
+          crmPayload.submissionId = form.dataset.submissionId;
         }
-        const response = await fetch("/", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: encodeFormData(formData)
-        });
-        if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
+        const crmResult = await submitInquiryToCrm(crmPayload);
+        if (crmPayload.is_test) {
+          if (crmResult.results?.externalActionsSuppressed !== true) throw new Error("Synthetic inquiry external-action suppression was not confirmed");
+          const success = form.parentElement?.querySelector(".inquiry-success");
+          if (success) success.hidden = false;
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = crmResult.results?.duplicate ? "Already verified" : "Test inquiry verified";
+          }
+          return;
+        }
         window.location.assign("/thank-you.html");
       } catch (error) {
+        form.dataset.submitting = "false";
         console.error("Inquiry submission failed", error);
-        window.alert(document.documentElement.lang === "fa" ? "ارسال انجام نشد. لطفاً دوباره تلاش کنید یا با فروش تماس بگیرید." : "Submission failed. Please try again or contact our sales team.");
+        window.alert(document.documentElement.lang === "fa" ? "ارسال انجام نشد. لطفاً دوباره تلاش کنید یا با فروش تماس بگیرید." : document.documentElement.lang === "ar" ? "تعذر الإرسال. حاول مرة أخرى أو تواصل مع فريق المبيعات." : "Submission failed. Please try again or contact our sales team.");
         if (submitButton) {
           submitButton.disabled = false;
           submitButton.textContent = originalLabel;

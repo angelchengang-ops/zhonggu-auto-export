@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>隔离测试记录（只读）</title>
+<style>body{font:16px/1.6 system-ui;margin:24px;background:#f5f7fb;color:#172033}main{max-width:1100px;margin:auto}article{padding:16px;margin:12px 0;background:white;border:1px solid #ddd;border-radius:8px;overflow-wrap:anywhere}a{color:#153f75}</style></head>
+<body><main><a href="/admin/inquiries.html">返回真实客户列表</a><h1>隔离测试记录（只读）</h1><p>这些记录不计入客户统计、导出和分配；不能联系客户、修改或删除。本页面只读取既有测试记录，不提交测试。</p><p id="status" role="status">正在验证登录状态…</p><section id="records"></section></main>
+<script>
+(async()=>{
+  const status=document.getElementById('status');
+  try {
+    const auth=await fetch('/api/admin/me',{cache:'no-store',credentials:'same-origin'});
+    if(auth.status===401){location.replace('/admin/login.html');return;}
+    if(!auth.ok)throw new Error('登录验证失败');
+    const response=await fetch('/api/admin/inquiries?is_test=true',{cache:'no-store',credentials:'same-origin'});
+    if(!response.ok)throw new Error('测试记录暂时不可读');
+    const data=await response.json();
+    if(!Array.isArray(data.items)||data.items.some(item=>item.is_test!==true))throw new Error('记录隔离状态异常');
+    status.textContent=`共 ${data.items.length} 条隔离测试记录（非真实客户）`;
+    for(const item of data.items){
+      const card=document.createElement('article');
+      const title=document.createElement('h2'); title.textContent=item.test_id;
+      const detail=document.createElement('p');detail.textContent=`创建时间：${item.createdAt}；入口：${item.sourceEntry||item.sourceDetail||'—'}；分配状态：${item.assignedTo?'异常：已分配':'未分配'}；只读`;
+      card.append(title,detail);document.getElementById('records').append(card);
+    }
+  }catch(error){status.textContent=error.message;}
+})();
+</script></body></html>

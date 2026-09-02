@@ -5,7 +5,7 @@ process.env.ZHONGGU_SYNTHETIC_LEAD_SECRET = 'test-only-secret';
 process.env.ZHONGGU_ADMIN_PASSWORD = 'test-only-admin-secret';
 delete process.env.NETLIFY;
 delete process.env.AWS_LAMBDA_FUNCTION_NAME;
-globalThis.__ZHONGGU_CRM_MEMORY__ = { leads: [], settings: null };
+globalThis.__ZHONGGU_CRM_MEMORY__ ||= { leads: [], settings: null };
 
 const { handler } = require('../netlify/functions/inquiries');
 const { createSessionCookie } = require('../netlify/functions/admin-session');
@@ -89,7 +89,7 @@ test('ordinary inquiry keeps the normal workflow', async () => {
   let fetchCalls = 0;
   process.env.ZHONGGU_LEAD_WEBHOOK_URL = 'https://example.invalid/hook';
   global.fetch = async () => { fetchCalls += 1; return { ok: true, status: 200 }; };
-  const response = await handler(event({ name: 'Real Customer', country: 'Ghana', whatsapp: '233000000000', vehicle: 'SUV' }));
+  const response = await handler(event({ name: 'Real Customer', country: 'Ghana', whatsapp: '233241234567', vehicle: 'SUV' }));
   assert.equal(response.statusCode, 200);
   assert.equal(JSON.parse(response.body).lead.is_test, false);
   assert.equal(fetchCalls, 1);

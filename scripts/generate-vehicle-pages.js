@@ -282,7 +282,7 @@ const callingCodeOptions = [
   ['+998', 'Uzbekistan (+998)']
 ];
 const renderCallingCodeOptions = () => callingCodeOptions.map(([value, label]) => `<option value="${escapeAttr(value)}">${escapeHtml(label)}</option>`).join('');
-const inquiryPhoneFields = () => `<label><span>WhatsApp Country Code</span><select name="calling_code" autocomplete="tel-country-code" required><option value="" selected>Select code</option>${renderCallingCodeOptions()}</select></label><label><span>WhatsApp Number</span><input type="tel" name="phone_number" autocomplete="tel-national" inputmode="tel" pattern="[0-9 ()-]{5,20}" placeholder="Number without +" required></label><input type="hidden" name="whatsapp" value="">`;
+const inquiryPhoneFields = () => `<label><span>WhatsApp Country Code</span><select name="calling_code" autocomplete="tel-country-code" required><option value="" selected>Select code</option>${renderCallingCodeOptions()}</select></label><label><span>WhatsApp Number</span><input type="tel" name="phone_number" autocomplete="tel-national" inputmode="tel" pattern="${require('./lib/phone').pattern}" placeholder="Local number or +international number" required></label><input type="hidden" name="whatsapp" value="">`;
 const inquiryHiddenFields = (car, name, url) => {
   const leadSource = leadSourceFor(car);
   return [hiddenInput('vehicle_id', car.id), hiddenInput('vehicle_name', name), hiddenInput('model_year', englishValue(car.modelYear || car.year)), hiddenInput('page_url', url), hiddenInput('source_url', url), hiddenInput('lead_source', leadSource), hiddenInput('source', leadSource), hiddenInput('sale_price', getPrice(car)), hiddenInput('inventory_type', inventoryTypeFor(car))].join('');

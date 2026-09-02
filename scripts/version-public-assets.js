@@ -2,7 +2,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { createHash } = require('node:crypto');
 const ROOT = path.resolve(__dirname, '..');
-const hashes = Object.fromEntries(['style.css', 'script.js'].map(file => [`/${file}`, createHash('sha256').update(fs.readFileSync(path.join(ROOT,file))).digest('hex').slice(0,12)]));
+const hash = file => createHash('sha256').update(fs.readFileSync(path.join(ROOT, file))).digest('hex').slice(0,12);
+const modalFile = 'assets/js/whatsapp-lead-modal.js';
+const configFile = path.join(ROOT, 'assets/js/whatsapp-config.js');
+const config = fs.readFileSync(configFile, 'utf8');
+const nextConfig = config.replace(/const MODAL_SCRIPT = "[^"]+";/, `const MODAL_SCRIPT = "/${modalFile}?v=${hash(modalFile)}";`);
+if (config !== nextConfig) fs.writeFileSync(configFile, nextConfig);
+const hashes = Object.fromEntries(['style.css', 'script.js', 'assets/js/phone-input.js', 'assets/js/whatsapp-config.js', modalFile].map(file => [`/${file}`, hash(file)]));
 const ignored = new Set(['node_modules','tmp','admin','ops','data','media-inbox','media-processed','media-trash']);
 let changed = 0;
 function walk(dir) {

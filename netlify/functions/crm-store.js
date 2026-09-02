@@ -190,6 +190,9 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
     market: firstValue(body.market, body.market_region, body.market_country) || "Other",
     whatsapp: whatsapp.whatsapp,
     rawWhatsapp: whatsapp.rawWhatsapp,
+    countryCode: firstValue(body.countryCode, body.callingCode, body.calling_code),
+    whatsappLocal: firstValue(body.whatsappLocal, body.phoneNumber, body.phone_number),
+    phoneCountry: firstValue(body.phoneCountry),
     email: firstValue(body.email, body.mail, body.emailAddress, body.customerEmail),
     vehicle,
     car_type: vehicle,
@@ -215,6 +218,7 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
     converted: body.converted === true || clean(body.converted).toLowerCase() === "true",
     convertedLeadId: firstValue(body.convertedLeadId, body.converted_lead_id),
     sourceSubmissionId: firstValue(body.sourceSubmissionId, body.netlifySubmissionId, body.netlify_submission_id),
+    submissionId: /^[a-f0-9-]{36}$/i.test(clean(body.submissionId)) ? clean(body.submissionId) : "",
     is_test: isTest,
     test_type: testType,
     test_id: testId,
@@ -291,6 +295,10 @@ const createLead = async (body, event = {}, options = {}) => {
     const duplicate = existing.find((item) => item.is_test && item.test_id === lead.test_id);
     if (duplicate) return { lead: duplicate, duplicate: true, storage: "existing" };
   }
+  if (!lead.is_test && lead.submissionId) {
+    const duplicate = existing.find(item => !item.is_test && item.submissionId === lead.submissionId && item.whatsapp === lead.whatsapp && item.name === lead.name);
+    if (duplicate) return { lead: duplicate, duplicate: true, storage: "existing" };
+  }
   const merged = mergeLeads(existing, [lead]);
   const result = await writeLeads(merged);
   return { lead, ...result };
@@ -333,6 +341,7 @@ const updateLead = async (id, patch = {}, user = {}) => {
   const index = existing.findIndex((item) => item.id === id);
   if (index < 0) return null;
   const current = existing[index];
+  if (current.is_test) throw Object.assign(new Error("Synthetic records are read-only; contact, assignment and changes are disabled"), { statusCode: 403 });
   const next = { ...current, updatedAt: nowIso() };
   ["status", "market", "destinationPort", "budget", "vehicle", "interestedModel", "quantity", "fobOrCif", "quoteType", "message", "email", "whatsapp", "name", "country"].forEach((field) => {
     if (Object.prototype.hasOwnProperty.call(patch, field)) next[field] = clean(patch[field]);
@@ -397,7 +406,7 @@ const filterLeads = (items = [], params = new URLSearchParams()) => {
   const testId = firstValue(params.get("test_id"), params.get("testId"));
   return items.filter((item) => {
     if (testFilter === "true" && !item.is_test) return false;
-    if (testFilter === "false" && item.is_test) return false;
+    if (testFilter !== "true" && item.is_test) return false;
     if (testId && item.test_id !== testId) return false;
     const type = sourceTypeOf(item);
     if (leadType === "website" && type !== "website_form") return false;

@@ -33,6 +33,7 @@ const whatsappUrl = (lead) => {
 };
 
 exports.handler = async (event) => {
+  try {
   const user = requireAdmin(event);
   if (user.statusCode) return user;
 
@@ -41,9 +42,9 @@ exports.handler = async (event) => {
   const parts = partsAfterInquiries(path);
 
   if (event.httpMethod === "GET") {
-    const { items, formsImport } = await readLeads({ syncForms: true });
+    const { items, formsImport } = await readLeads({ syncForms: url.searchParams.get("is_test") !== "true" });
     const filtered = filterLeads(items, url.searchParams);
-    if (path.endsWith("/export.csv")) return csvResponse(toCsv(filtered));
+    if (path.endsWith("/export.csv")) return csvResponse(toCsv(filtered.filter(item => !item.is_test)));
     if (parts.length && parts[0] !== "export.csv") {
       const inquiry = items.find((item) => item.id === parts[0]) || null;
       return inquiry
@@ -55,6 +56,7 @@ exports.handler = async (event) => {
 
   if (event.httpMethod === "POST" && parts.length === 0) {
     const body = parseBody(event);
+    if (body.is_test || body.isTest || body.test_id || body.testId) return json(403, { ok: false, error: "Use the authenticated isolated test channel" });
     const saved = await createLead({ ...body, source: "manual", sourceType: "manual", assignedTo: body.assignedTo || "" }, event, { kind: "manual" });
     return json(200, { ok: true, success: true, inquiry: saved.lead, item: saved.lead });
   }
@@ -87,4 +89,7 @@ exports.handler = async (event) => {
   }
 
   return json(405, { ok: false, success: false, message: "Method not allowed" });
+  } catch (error) {
+    return json(error.statusCode || 500, { ok: false, success: false, message: error.message });
+  }
 };

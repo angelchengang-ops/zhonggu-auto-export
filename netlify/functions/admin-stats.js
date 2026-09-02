@@ -6,5 +6,5 @@ exports.handler = async (event) => {
   const user = requireAdmin(event);
   if (user.statusCode) return user;
   const { items, formsImport } = await readLeads({ syncForms: true });
-  return json(200, { ok: true, success: true, stats: buildStats(items), items, formsImport });
+  return json(200, { ok: true, success: true, stats: buildStats(items), items: items.filter(item => !item.is_test), formsImport });
 };

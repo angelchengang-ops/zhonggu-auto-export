@@ -1,5 +1,6 @@
 const { blobDebug, createLead, firstValue, normalizeLead, recoverSyntheticFormAttempts } = require("./crm-store");
 const { getAdminUser } = require("./admin-session");
+const phoneRules = require("../../scripts/lib/phone");
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -87,34 +88,6 @@ const clickFallbackBody = (event = {}) => ({
   createdAt: new Date().toISOString()
 });
 
-const submitToNetlifyForm = async (lead, event) => {
-  const siteUrl = (process.env.URL || process.env.DEPLOY_PRIME_URL || getHeader(event.headers, "origin") || "https://zhongguauto.com").replace(/\/$/, "");
-  const params = new URLSearchParams();
-  params.set("form-name", process.env.NETLIFY_FORM_NAME || "inquiry");
-  params.set("name", lead.name);
-  params.set("country", lead.country);
-  params.set("whatsapp", lead.rawWhatsapp || lead.whatsapp);
-  params.set("email", lead.email);
-  params.set("model", lead.vehicle);
-  params.set("vehicle", lead.vehicle);
-  params.set("car_type", lead.vehicle);
-  params.set("destinationPort", lead.destinationPort);
-  params.set("port", lead.destinationPort);
-  params.set("budget", lead.budget);
-  params.set("message", lead.message);
-  params.set("source_page", lead.sourcePage);
-  params.set("source_url", lead.sourceUrl);
-  params.set("source", lead.source);
-  params.set("createdAt", lead.createdAt);
-  const response = await fetch(siteUrl + "/", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString()
-  });
-  if (!response.ok) throw new Error("Netlify Forms fallback failed with HTTP " + response.status);
-  return true;
-};
-
 const forwardWebhook = async (lead) => {
   const url = process.env.ZHONGGU_LEAD_WEBHOOK_URL;
   if (!url) return false;
@@ -137,11 +110,27 @@ exports.handler = async (event) => {
   try {
     body = parseBody(event);
     const isTest = authorizeSynthetic(event, body);
+    const markedTestUrl = [getHeader(event.headers, "referer"), body.sourceUrl, body.source_url, body.pageUrl, body.page_url]
+      .some(value => { try { return new URL(value).searchParams.has("daily_test_id"); } catch { return false; } });
+    if (!isTest && (markedTestUrl || body.test_id || body.testId || body.test_type || body.testType)) {
+      throw Object.assign(new Error("Test-marked requests cannot enter the ordinary inquiry channel"), { statusCode: 403 });
+    }
     if (isTest && APPROVED_SYNTHETIC_RECOVERY[body.test_id]) {
       results.recovery = await recoverSyntheticFormAttempts(body.test_id, APPROVED_SYNTHETIC_RECOVERY[body.test_id]);
     }
     isClickEvent = isWhatsappClickRequest(event, body);
     if (isClickEvent && !Object.keys(body).length) body = clickFallbackBody(event);
+    if (!isClickEvent && !isTest) {
+      const code = firstValue(body.callingCode, body.calling_code, body.countryCode, body.country_code, body.dial_code);
+      const direct = firstValue(body.whatsapp, body.rawWhatsapp, body.raw_whatsapp, body.phone, body.mobile, body.tel);
+      const national = firstValue(body.phoneNumber, body.phone_number, body.whatsappLocal, body.national_phone);
+      const value = direct || national;
+      const phone = phoneRules.normalize(value, code) || (!code && /^\d+$/.test(value) ? phoneRules.normalize('+' + value) : null);
+      if (!phone) throw Object.assign(new Error("Enter a valid phone number with its country calling code"), { statusCode: 400 });
+      body = { ...body, whatsapp: phone.number, rawWhatsapp: phone.formatted, countryCode: phone.callingCode,
+        whatsappLocal: phone.nationalNumber, phoneCountry: phone.country };
+      // Destination/customer country is deliberately independent of phoneCountry.
+    }
     lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website", isTest });
     assertLead(lead, isClickEvent);
 
@@ -158,10 +147,8 @@ exports.handler = async (event) => {
     } catch (error) {
       results.blobsError = error.message;
       console.error("[inquiries] blobs write failed", { source: lead.source, sourceType: lead.sourceType, error: error.message });
-      if (!isClickEvent && !lead?.is_test) {
-        try { results.netlifyFormFallback = await submitToNetlifyForm(lead, event); }
-        catch (fallbackError) { results.netlifyFormError = fallbackError.message; }
-      }
+      // A failed/uncertain primary write must not create a second ordinary lead
+      // through a separate Forms channel. The client can retry the same request.
       return json(500, {
         ok: false,
         success: false,
@@ -177,7 +164,7 @@ exports.handler = async (event) => {
     }
 
     if (lead.is_test) results.externalActionsSuppressed = true;
-    else try { results.webhook = await forwardWebhook(lead); } catch (error) { results.webhookError = error.message; }
+    else if (!results.duplicate) try { results.webhook = await forwardWebhook(lead); } catch (error) { results.webhookError = error.message; }
 
     return json(200, {
       ok: true,

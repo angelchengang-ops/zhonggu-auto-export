@@ -78,27 +78,17 @@
   };
   const phoneDigits = (value) => normalize(value).replace(/^00/, "").replace(/\D/g, "");
   const normalizeCountryCodeInput = (value) => {
-    const raw = normalize(value).replace(/[\s\-()]/g, "");
+    const raw = window.ZhongguPhone.digits(normalize(value)).replace(/[\s\-()]/g, "");
     const digits = raw.replace(/^\+/, "").replace(/^00/, "").replace(/\D/g, "");
     return digits ? "+" + digits : "";
   };
   const buildWhatsappParts = (countryCode, whatsappLocal) => {
-    const normalizedCode = normalizeCountryCodeInput(countryCode);
-    const codeDigits = phoneDigits(normalizedCode);
-    const localDigits = phoneDigits(whatsappLocal);
-    let localForSave = localDigits;
-    let whatsapp = "";
-    if (codeDigits && localDigits.startsWith(codeDigits) && localDigits.length > codeDigits.length + 4) {
-      whatsapp = localDigits;
-      localForSave = localDigits.slice(codeDigits.length);
-    } else {
-      whatsapp = codeDigits + localDigits;
-    }
+    const parsed = window.ZhongguPhone?.normalize(whatsappLocal, countryCode);
     return {
-      countryCode: normalizedCode,
-      whatsappLocal: localForSave,
-      rawWhatsapp: codeDigits && localForSave ? normalizedCode + " " + localForSave : "",
-      whatsapp
+      countryCode: parsed?.callingCode || "",
+      whatsappLocal: parsed?.nationalNumber || "",
+      rawWhatsapp: parsed?.formatted || "",
+      whatsapp: parsed?.number.replace(/^\+/, "") || ""
     };
   };
   let activeContext = null;
@@ -118,6 +108,7 @@
     return "ls_" + stamp + "_" + random;
   };
   const getLeadSessionId = () => {
+    if (new URLSearchParams(location.search).has("daily_test_id")) return "";
     try {
       const existing = sessionStorage.getItem(LEAD_SESSION_KEY);
       if (existing) return existing;
@@ -175,6 +166,7 @@
     marketFromPage: normalize(document.body.dataset.marketCountry || document.body.dataset.marketRegion || "")
   });
   const track = (eventType, context = {}, extra = {}) => {
+    if (new URLSearchParams(location.search).has("daily_test_id")) return;
     const payload = {
       eventType,
       leadSessionId: context.leadSessionId || getLeadSessionId(),
@@ -305,6 +297,12 @@
     modal.form.elements.country.addEventListener("input", () => syncCountryCodeFromCountry(false));
     modal.form.elements.leadCountryCode.addEventListener("input", () => { countryCodeTouchedByUser = true; });
     modal.form.elements.leadCountryCode.addEventListener("change", () => { countryCodeTouchedByUser = true; });
+    modal.form.elements.leadWhatsappLocal.addEventListener("input", () => {
+      const value = modal.form.elements.leadWhatsappLocal.value;
+      if (!/^\+|^00/.test(window.ZhongguPhone.digits(value).trim())) return;
+      const phone = window.ZhongguPhone.normalize(value);
+      if (phone) { modal.form.elements.leadCountryCode.value = phone.callingCode; countryCodeTouchedByUser = true; }
+    });
     modal.form.elements.leadCountryCode.addEventListener("blur", () => { modal.form.elements.leadCountryCode.value = normalizeCountryCodeInput(modal.form.elements.leadCountryCode.value); });
     overlay.querySelectorAll(".zg-wa-code-shortcut").forEach((button) => button.addEventListener("click", () => {
       modal.form.elements.leadCountryCode.value = button.dataset.code || "";
@@ -336,6 +334,18 @@
     ui.submit.textContent = "Submit Inquiry";
   };
   const open = (context = {}) => {
+    if (new URLSearchParams(location.search).has("daily_test_id")) {
+      const ui = createModal();
+      ui.overlay.classList.add("is-open");
+      ui.overlay.setAttribute("aria-hidden", "false");
+      ui.form.hidden = true;
+      ui.success.classList.add("is-open");
+      ui.success.querySelector("h3").textContent = "Isolated test mode — no submission";
+      const texts = ui.success.querySelectorAll("p");
+      texts[0].textContent = "WhatsApp tracking and submission are disabled. Use the daily-test inquiry form.";
+      texts[1].textContent = "No customer record or external message was created.";
+      return;
+    }
     activeContext = { ...context, leadSessionId: context.leadSessionId || getLeadSessionId() };
     const ui = createModal();
     resetUiState(ui);
@@ -369,6 +379,7 @@
   };
   async function submit(event) {
     event.preventDefault();
+    if (new URLSearchParams(location.search).has("daily_test_id")) return;
     if (isSubmitting) return;
     const ui = createModal();
     const form = ui.form;
@@ -376,7 +387,6 @@
     const required = [
       ["name", "Please enter your name."],
       ["country", "Please enter your country."],
-      ["leadCountryCode", "Please select country code and enter your WhatsApp number."],
       ["leadWhatsappLocal", "Please select country code and enter your WhatsApp number."],
       ["vehicle", "Please enter the vehicle model."]
     ];
@@ -395,6 +405,7 @@
     ui.submit.textContent = "Submitting...";
     const payload = {
       name: data.name,
+      submissionId: activeContext.submissionId || (activeContext.submissionId = crypto.randomUUID()),
       countryCode: whatsappParts.countryCode,
       whatsappLocal: whatsappParts.whatsappLocal,
       rawWhatsapp: whatsappParts.rawWhatsapp,

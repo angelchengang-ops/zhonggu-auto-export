@@ -55,7 +55,7 @@ test('Persian and Arabic phone digits normalize; Iranian national trunk zero is 
   const source=read('script.js');
   const valueFn=source.slice(source.indexOf('const formDataValue ='),source.indexOf('const callingCodeChoices ='));
   const helpers=source.slice(source.indexOf('const normalizeCallingCode ='),source.indexOf('const buildInquiryPayload ='));
-  const context=vm.runInNewContext(`${valueFn}\n${helpers}\n({normalizePhoneNumber,buildInternationalWhatsapp});`);
+  const context=vm.runInNewContext(`${valueFn}\n${helpers}\n({normalizePhoneNumber,buildInternationalWhatsapp});`, {window:{ZhongguPhone:require('../scripts/lib/phone')}});
   assert.equal(context.normalizePhoneNumber('۰۹۱۲ ٠٠٠ ۰۰۰۰'),'09120000000');
   assert.equal(context.buildInternationalWhatsapp(new Map([['calling_code','+98'],['phone_number','۰۹۱۲ ۰۰۰ ۰۰۰۰']])),'+989120000000');
   assert.equal(context.buildInternationalWhatsapp(new Map([['calling_code','+964'],['phone_number','7700000000']])),'+9647700000000');

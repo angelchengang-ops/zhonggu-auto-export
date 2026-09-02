@@ -14,6 +14,6 @@ exports.handler = async (event) => {
       "Cache-Control": "no-store",
       "Content-Disposition": "attachment; filename=\"inquiries.csv\""
     },
-    body: toCsv(filtered)
+    body: toCsv(filtered.filter(item => !item.is_test))
   };
 };
