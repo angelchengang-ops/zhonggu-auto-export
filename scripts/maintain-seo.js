@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { isoDate, latestLastmod, resolveLastmod: resolveEntryLastmod } = require('./lib/sitemap-lastmod');
+const { isoDate, latestLastmod, resolveLastmod: resolveEntryLastmod, sameEditorialHtml } = require('./lib/sitemap-lastmod');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://zhongguauto.com';
@@ -35,11 +35,20 @@ const gitLastModified = (relative) => {
   try {
     const history = execFileSync('git', ['log', '--format=%H%x09%cs', '-12', '--', relative], { cwd: ROOT, encoding: 'utf8', windowsHide: true }).trim().split(/\r?\n/).filter(Boolean);
     if (!history.length) return '';
+    let fallback = '';
     for (const line of history) {
       const [commit, date] = line.split('\t');
+      if (!fallback && relative.endsWith('.html')) {
+        try {
+          const current = execFileSync('git', ['show', commit + ':' + relative], { cwd: ROOT, encoding: 'utf8', windowsHide: true });
+          const previous = execFileSync('git', ['show', commit + '^:' + relative], { cwd: ROOT, encoding: 'utf8', windowsHide: true, stdio: ['ignore', 'pipe', 'ignore'] });
+          if (sameEditorialHtml(current, previous)) continue;
+        } catch (_) { /* New pages have no parent version. */ }
+      }
+      fallback ||= isoDate(date);
       if (!isBulkGeneratedCommit(commit)) return isoDate(date);
     }
-    return isoDate(history[0].split('\t')[1]);
+    return fallback;
   } catch (_) { return ''; }
 };
 const bulkCommitCache = new Map();
@@ -56,7 +65,7 @@ const fileLastModified = (relative) => {
   const file = path.join(ROOT, relative);
   return fs.existsSync(file) ? isoDate(fs.statSync(file).mtime.toISOString()) : '';
 };
-const resolveLastmod = (entry) => resolveEntryLastmod(entry, fileLastModified);
+const resolveLastmod = (entry) => latestLastmod([{ lastmod: contentUpdates[entry.sourceFile] }, { lastmod: resolveEntryLastmod(entry, fileLastModified) }]);
 const xml = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map((entry) => `  <url><loc>${xmlEscape(entry.url)}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
 const xmlWithImages = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.map((entry) => `  <url><loc>${xmlEscape(entry.url)}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>${frequency}</changefreq>${entry.image ? `<image:image><image:loc>${xmlEscape(entry.image)}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>\n`;
 
@@ -93,6 +102,8 @@ const deadAliases = new Map([
   ['/used-vw-tacqua-2023.html', '/used-vw-tacqua-2023-001.html']
 ]);
 const explicitAliases = new Map([
+  ['/used-electric-cars-from-china', '/used-electric-cars-from-china.html'],
+  ['/used-electric-cars-from-china/', '/used-electric-cars-from-china.html'],
   ['/index.html', '/'],
   ['/used-bestune-b70-wholesale', '/used-bestune-b70-wholesale.html'],
   ['/used-bestune-b70-wholesale/', '/used-bestune-b70-wholesale.html'],

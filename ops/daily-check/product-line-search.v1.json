@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "windowDays": 28,
+  "reportTimezone": "Asia/Shanghai",
+  "lagDays": 3,
+  "minImpressions": 100,
+  "ruleNote": "Internal monitoring rules, not a Google or Yandex standard. A window average in the top 10 is not stable ranking.",
+  "searchType": "web",
+  "productLines": [
+    {
+      "id": "coolray",
+      "targetPage": "/landing/geely-coolray-exporter-china/",
+      "targetCountry": null,
+      "candidates": [
+        {
+          "query": "Geely Coolray price in China",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "Geely Coolray export from China",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "Geely Coolray full option price",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        }
+      ]
+    },
+    {
+      "id": "b70",
+      "targetPage": "/used-bestune-b70-wholesale.html",
+      "targetCountry": null,
+      "candidates": [
+        {
+          "query": "used Bestune B70 for sale",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "used Bestune B70 price",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "Bestune B70 wholesale China",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        }
+      ]
+    },
+    {
+      "id": "yueyi03",
+      "targetPage": "/bestune-yueyi-03-wholesale.html",
+      "targetCountry": null,
+      "candidates": [
+        {
+          "query": "Bestune Yueyi 03 price",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "Bestune Joyee 03 price",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "official_brand_name_verified"
+        },
+        {
+          "query": "Bestune Yueyi 03 export",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        }
+      ]
+    },
+    {
+      "id": "xiaoma",
+      "targetPage": "/bestune-xiaoma-2026-222km-shanyaoma-edition.html",
+      "targetCountry": null,
+      "candidates": [
+        {
+          "query": "Bestune Pony price in China",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "brand_uses_pony_exact_alias_mapping_pending"
+        },
+        {
+          "query": "Bestune Xiaoma for sale",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "Bestune Pony export",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "brand_uses_pony_exact_alias_mapping_pending"
+        }
+      ]
+    },
+    {
+      "id": "yueyi07",
+      "targetPage": "/used-bestune-yueyi-07-phev-export.html",
+      "targetCountry": null,
+      "candidates": [
+        {
+          "query": "Bestune Yueyi 07 price",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "used Bestune Yueyi 07",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "Bestune Yueyi 07 PHEV export",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        }
+      ]
+    },
+    {
+      "id": "usedBev",
+      "targetPage": "/used-electric-cars-from-china.html",
+      "targetCountry": null,
+      "candidates": [
+        {
+          "query": "used electric cars from China",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "used EV exporter China",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        },
+        {
+          "query": "used electric cars wholesale China",
+          "status": "candidate_not_volume_validated",
+          "nameVerification": "existing_catalogue_name"
+        }
+      ]
+    }
+  ]
+}

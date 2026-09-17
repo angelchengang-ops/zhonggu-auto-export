@@ -6,4 +6,10 @@ const isoDate = (value) => {
 const resolveLastmod = ({ metadataDate, sourceFile, outputFile }, fileDate) => isoDate(metadataDate) || fileDate(sourceFile) || fileDate(outputFile);
 const latestLastmod = (entries) => entries.map((entry) => isoDate(entry.lastmod)).filter(Boolean).sort().at(-1) || '';
 
-module.exports = { isoDate, latestLastmod, resolveLastmod };
+// Asset cache keys and line endings do not constitute an editorial update.
+const sameEditorialHtml = (left, right) => {
+  const normalize = (html) => String(html).replace(/\r\n/g, '\n').replace(/(\.(?:css|js)\?v=)[a-f0-9]+/gi, '$1VERSION').trim();
+  return normalize(left) === normalize(right);
+};
+
+module.exports = { isoDate, latestLastmod, resolveLastmod, sameEditorialHtml };

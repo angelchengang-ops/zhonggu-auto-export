@@ -1747,3 +1747,9 @@ html[lang="fa"] .iran-market-page { font-family: Tahoma, Arial, sans-serif; line
 .iran-market-page #contact { scroll-margin-top: 90px; }
 .iran-market-page .language-switcher { display: flex; flex-wrap: wrap; gap: 1rem; }
 .iran-market-page bdi { direction: ltr; unicode-bidi: isolate; }
+
+/* Six product sourcing entries */
+.priority-vehicles-section .priority-vehicle-links{grid-template-columns:repeat(3,minmax(0,1fr))}
+.priority-vehicles-section .priority-vehicle-links small{display:block;margin-top:8px;font-size:.875rem;line-height:1.5;font-weight:400;color:#526577}
+@media(max-width:900px){.priority-vehicles-section .priority-vehicle-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.priority-vehicles-section .priority-vehicle-links{grid-template-columns:1fr}}

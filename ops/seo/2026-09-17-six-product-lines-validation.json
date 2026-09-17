@@ -1,0 +1,850 @@
+{
+  "status": "local_verified_not_deployed",
+  "checkedAt": "2026-09-17T07:57:35.968Z",
+  "environment": {
+    "os": "Windows",
+    "node": "v24.18.0",
+    "browser": "Microsoft Edge via existing local Playwright runtime",
+    "widths": [
+      1440,
+      390
+    ],
+    "realPhoneTested": false
+  },
+  "build": {
+    "passed": true,
+    "repeatBuild": {
+      "filesCompared": 180,
+      "byteIdentical": true,
+      "changed": []
+    }
+  },
+  "tests": {
+    "passed": 73,
+    "failed": 0,
+    "command": "npm test",
+    "externalStorage": "mocked"
+  },
+  "site": {
+    "htmlFiles": 153,
+    "sitemapUrls": 124,
+    "issues": []
+  },
+  "browser": {
+    "pageCount": 20,
+    "combinations": 40,
+    "passed": 40,
+    "failed": 0,
+    "runs": [
+      {
+        "checkedAt": "2026-09-17T07:50:15.932Z",
+        "combinations": 38,
+        "blockedExternalRequests": 39,
+        "blockedWrites": 20
+      },
+      {
+        "checkedAt": "2026-09-17T07:55:08.736Z",
+        "combinations": 4,
+        "blockedExternalRequests": 5,
+        "blockedWrites": 4
+      },
+      {
+        "checkedAt": "2026-09-17T07:56:22.315Z",
+        "combinations": 2,
+        "blockedExternalRequests": 2,
+        "blockedWrites": 2
+      }
+    ],
+    "results": [
+      {
+        "file": "bestune-car-exporter-china.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-car-exporter-china.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-xiaoma-2026-222km-shanyaoma-edition.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-xiaoma-2026-222km-shanyaoma-edition.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-yueyi-03-2026-445km-zhixuan-edition.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-yueyi-03-2026-445km-zhixuan-edition.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-yueyi-03-2026-565km-xinxiang-edition.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-yueyi-03-2026-565km-xinxiang-edition.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-yueyi-03-wholesale.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "bestune-yueyi-03-wholesale.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "geely-coolray-full-option.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "videoClickToLoad": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "geely-coolray-full-option.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "videoClickToLoad": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "geely-coolray-ready-stock-nansha-port.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "geely-coolray-ready-stock-nansha-port.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "index.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "index.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "landing/geely-binyue-export-algeria/index.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "landing/geely-binyue-export-algeria/index.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "landing/geely-car-exporter-china/index.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:56:22.315Z"
+      },
+      {
+        "file": "landing/geely-car-exporter-china/index.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:56:22.315Z"
+      },
+      {
+        "file": "landing/geely-coolray-exporter-china/index.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:55:08.736Z"
+      },
+      {
+        "file": "landing/geely-coolray-exporter-china/index.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:55:08.736Z"
+      },
+      {
+        "file": "new-cars.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "new-cars.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-2021.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-2021.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-2022.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-2022.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-2023.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-2023.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-wholesale.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-b70-wholesale.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-yueyi-07-2025.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-yueyi-07-2025.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "gallery": true,
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-yueyi-07-phev-export.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-bestune-yueyi-07-phev-export.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-cars.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-cars.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:50:15.932Z"
+      },
+      {
+        "file": "used-electric-cars-from-china.html",
+        "width": 1440,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:55:08.736Z"
+      },
+      {
+        "file": "used-electric-cars-from-china.html",
+        "width": 390,
+        "checks": {
+          "formBound": true,
+          "h1Count": 1,
+          "overflow": false,
+          "prefixAndDigitExamples": true,
+          "validation": "required, short, letters, local, international, independent-country, email",
+          "codeOptions": 246,
+          "brokenImages": [],
+          "quoteEntry": true,
+          "mobileMenu": true,
+          "modalOverflow": false,
+          "whatsappOpenClose": true,
+          "mockedFailureRetrySuccess": true,
+          "mockedSingleChannel": true
+        },
+        "errors": [],
+        "passed": true,
+        "checkedAt": "2026-09-17T07:55:08.736Z"
+      }
+    ]
+  },
+  "mainWorktree": {
+    "statusUnchanged": true,
+    "filesChecked": 62,
+    "changedFiles": [],
+    "backup": {
+      "backupPath": "D:\\GitHub\\codex临时文件\\2026-09-17\\zhonggu-seo-six-product-lines\\work\\main-uncommitted-backup",
+      "verifiedBackups": 63,
+      "initialHashesMatched": 62,
+      "additionalUnicodePaths": 1
+    }
+  },
+  "production": {
+    "deployed": false,
+    "merged": false,
+    "formSubmissions": 0,
+    "gscConnected": false,
+    "yandexConnected": false,
+    "nasChanged": false
+  },
+  "limits": [
+    "390px is browser emulation, not a physical phone.",
+    "Form success/retry uses intercepted local fixtures, not backend delivery.",
+    "Search rankings and search volume were not obtained."
+  ],
+  "implementationCommit": "e49c82a4daedb709768955ef6a4b30e3c3b71696"
+}
