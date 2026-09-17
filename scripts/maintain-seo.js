@@ -56,7 +56,7 @@ const fileLastModified = (relative) => {
   const file = path.join(ROOT, relative);
   return fs.existsSync(file) ? isoDate(fs.statSync(file).mtime.toISOString()) : '';
 };
-const resolveLastmod = (entry) => resolveEntryLastmod(entry, fileLastModified);
+const resolveLastmod = (entry) => latestLastmod([{ lastmod: contentUpdates[entry.sourceFile] }, { lastmod: resolveEntryLastmod(entry, fileLastModified) }]);
 const xml = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map((entry) => `  <url><loc>${xmlEscape(entry.url)}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>${frequency}</changefreq></url>`).join('\n')}\n</urlset>\n`;
 const xmlWithImages = (entries, frequency = 'monthly') => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${entries.map((entry) => `  <url><loc>${xmlEscape(entry.url)}</loc><lastmod>${entry.lastmod}</lastmod><changefreq>${frequency}</changefreq>${entry.image ? `<image:image><image:loc>${xmlEscape(entry.image)}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>\n`;
 
@@ -93,6 +93,8 @@ const deadAliases = new Map([
   ['/used-vw-tacqua-2023.html', '/used-vw-tacqua-2023-001.html']
 ]);
 const explicitAliases = new Map([
+  ['/used-electric-cars-from-china', '/used-electric-cars-from-china.html'],
+  ['/used-electric-cars-from-china/', '/used-electric-cars-from-china.html'],
   ['/index.html', '/'],
   ['/used-bestune-b70-wholesale', '/used-bestune-b70-wholesale.html'],
   ['/used-bestune-b70-wholesale/', '/used-bestune-b70-wholesale.html'],
