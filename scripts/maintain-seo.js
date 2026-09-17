@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { isoDate, latestLastmod, resolveLastmod: resolveEntryLastmod } = require('./lib/sitemap-lastmod');
+const { isoDate, latestLastmod, resolveLastmod: resolveEntryLastmod, sameEditorialHtml } = require('./lib/sitemap-lastmod');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://zhongguauto.com';
@@ -35,11 +35,20 @@ const gitLastModified = (relative) => {
   try {
     const history = execFileSync('git', ['log', '--format=%H%x09%cs', '-12', '--', relative], { cwd: ROOT, encoding: 'utf8', windowsHide: true }).trim().split(/\r?\n/).filter(Boolean);
     if (!history.length) return '';
+    let fallback = '';
     for (const line of history) {
       const [commit, date] = line.split('\t');
+      if (!fallback && relative.endsWith('.html')) {
+        try {
+          const current = execFileSync('git', ['show', commit + ':' + relative], { cwd: ROOT, encoding: 'utf8', windowsHide: true });
+          const previous = execFileSync('git', ['show', commit + '^:' + relative], { cwd: ROOT, encoding: 'utf8', windowsHide: true, stdio: ['ignore', 'pipe', 'ignore'] });
+          if (sameEditorialHtml(current, previous)) continue;
+        } catch (_) { /* New pages have no parent version. */ }
+      }
+      fallback ||= isoDate(date);
       if (!isBulkGeneratedCommit(commit)) return isoDate(date);
     }
-    return isoDate(history[0].split('\t')[1]);
+    return fallback;
   } catch (_) { return ''; }
 };
 const bulkCommitCache = new Map();
