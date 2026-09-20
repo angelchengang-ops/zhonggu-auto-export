@@ -362,6 +362,7 @@
     ui.overlay.classList.add("is-open");
     document.documentElement.classList.add("zg-wa-modal-lock");
     window.setTimeout(() => ui.form.elements.name.focus(), 60);
+    window.ZhongguTracking?.openForm("whatsapp_modal");
     track("whatsapp_form_open", activeContext);
   };
   function close() {
@@ -432,7 +433,8 @@
       market: activeContext?.market || activeContext?.marketFromPage || "",
       marketFromPage: activeContext?.marketFromPage || "",
       type: activeContext?.type || "",
-      createdFrom: "website_whatsapp_button"
+      createdFrom: "website_whatsapp_button",
+      attribution: window.ZhongguTracking?.getAttribution() || null
     };
     try {
       console.info("Zhonggu WhatsApp lead submit start", { api: API_LEAD, vehicle: payload.vehicle, page: payload.sourceUrl });
@@ -451,6 +453,7 @@
         submitError.logged = true;
         throw submitError;
       }
+      try { await window.ZhongguTracking?.success(result, "whatsapp_modal"); } catch (_) { /* Analytics cannot fail a saved inquiry. */ }
       const successTitle = ui.success.querySelector("h3");
       const successText = ui.success.querySelectorAll("p");
       if (result.id) console.info("Zhonggu WhatsApp lead saved ok", { id: result.id, source: result.source, stored: result.stored });

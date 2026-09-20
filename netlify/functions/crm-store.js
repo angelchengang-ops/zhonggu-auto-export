@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const { normalizeAttribution } = require("../../scripts/lib/lead-attribution");
 const legacyRecovery = require('../../scripts/lib/approved-test-recovery');
 
 const STORE_NAME = process.env.ZHONGGU_CRM_BLOBS_STORE || "zhonggu-crm";
@@ -214,6 +215,7 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
     pageUrl: sourceUrl,
     sourcePage: firstValue(body.sourcePage, body.source_page, body.page) || sourceUrl,
     sourceUrl,
+    attribution: normalizeAttribution(body.attribution),
     userAgent: firstValue(body.userAgent, body.user_agent, getHeader(event.headers, "user-agent")),
     ipHash: firstValue(body.ipHash, body.ip_hash) || clientIpHash(event),
     eventType: firstValue(body.eventType, body.event_type),

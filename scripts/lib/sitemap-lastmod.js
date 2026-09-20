@@ -8,7 +8,7 @@ const latestLastmod = (entries) => entries.map((entry) => isoDate(entry.lastmod)
 
 // Asset cache keys and line endings do not constitute an editorial update.
 const sameEditorialHtml = (left, right) => {
-  const normalize = (html) => String(html).replace(/\r\n/g, '\n').replace(/(\.(?:css|js)\?v=)[a-f0-9]+/gi, '$1VERSION').trim();
+  const normalize = (html) => String(html).replace(/\r\n/g, '\n').replace(/\n?\s*<!-- Zhonggu lead tracking -->[\s\S]*?<!-- \/Zhonggu lead tracking -->/g, '').replace(/(\.(?:css|js)\?v=)[a-f0-9]+/gi, '$1VERSION').trim();
   return normalize(left) === normalize(right);
 };
 

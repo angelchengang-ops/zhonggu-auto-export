@@ -175,6 +175,10 @@ exports.handler = async (event) => {
       storedSource: lead.source,
       sourceType: lead.sourceType,
       storage: results.storage || "netlify-blobs",
+      conversion: !isClickEvent && !lead.is_test ? {
+        event: "lead_submit_success",
+        transaction_id: "zg-" + require("crypto").createHash("sha256").update(lead.submissionId || lead.id).digest("hex").slice(0, 40)
+      } : null,
       lead,
       inquiry: lead,
       results

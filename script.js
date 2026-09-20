@@ -991,7 +991,8 @@ const buildInquiryPayload = (form, formData) => {
     createdAt: new Date().toISOString(),
     language: formDataValue(formData, "language") || document.documentElement.lang || "en",
     market: formDataValue(formData, "market", "market_region", "market_country"),
-    referrer: document.referrer || ""
+    referrer: document.referrer || "",
+    attribution: window.ZhongguTracking?.getAttribution() || null
   };
 };
 const submitInquiryToCrm = async (payload) => {
@@ -1324,6 +1325,7 @@ const bindInquiryForms = () => {
           }
           return;
         }
+        try { await window.ZhongguTracking?.success(crmResult, "inquiry_form"); } catch (_) { /* Analytics cannot fail a saved inquiry. */ }
         window.location.assign("/thank-you.html");
       } catch (error) {
         form.dataset.submitting = "false";
