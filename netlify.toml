@@ -44,3 +44,8 @@
     X-Content-Type-Options = "nosniff"
 
 # Production redeploy trigger: 2026-07-27
+
+# Google tracking enabled only for the verified production Web container.
+[context.production.environment]
+  ZHONGGU_GTM_ENABLED = "true"
+  ZHONGGU_GTM_CONTAINER_ID = "GTM-TW4CPKSM"
