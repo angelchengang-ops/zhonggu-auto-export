@@ -16,8 +16,8 @@
   "new-cars.html": "2026-09-17",
   "used-cars.html": "2026-09-17",
   "bestune-car-exporter-china.html": "2026-09-17",
-  "landing/geely-coolray-exporter-china/index.html": "2026-09-17",
-  "landing/geely-binyue-export-algeria/index.html": "2026-09-17",
+  "landing/geely-coolray-exporter-china/index.html": "2026-11-18",
+  "landing/geely-binyue-export-algeria/index.html": "2026-11-18",
   "bestune-yueyi-03-wholesale.html": "2026-09-17",
   "used-bestune-yueyi-07-phev-export.html": "2026-09-17",
   "bestune-xiaoma-2026-222km-shanyaoma-edition.html": "2026-09-17",
@@ -28,5 +28,9 @@
   "used-bestune-b70-2023.html": "2026-09-17",
   "used-bestune-yueyi-07-2025.html": "2026-09-17",
   "used-electric-cars-from-china.html": "2026-09-17",
-  "landing/geely-car-exporter-china/index.html": "2026-09-17"
+  "landing/geely-car-exporter-china/index.html": "2026-09-17",
+  "fr/landing/geely-binyue-export-algeria/index.html": "2026-11-18",
+  "ar/landing/geely-binyue-export-algeria/index.html": "2026-11-18",
+  "fr/export-cars-from-china-to-algeria.html": "2026-11-18",
+  "ar/export-cars-from-china-to-algeria.html": "2026-11-18"
 }
