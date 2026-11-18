@@ -5,34 +5,28 @@
       "active": "/images/company/vehicle-preparation.jpg",
       "items": [
         "/images/company/vehicle-preparation.jpg",
-        "/images/company/warehouse-overview.jpg",
-        "/images/company/office1.jpg"
+        "/images/company/warehouse-overview.jpg"
       ]
     },
     "preShipmentInspection": {
       "title": "Pre-shipment Inspection",
       "active": "/images/company/pre-shipment-inspection.jpg",
       "items": [
-        "/images/company/pre-shipment-inspection.jpg",
-        "/images/company/delivery1.jpg"
+        "/images/company/pre-shipment-inspection.jpg"
       ]
     },
     "customerDelivery": {
-      "title": "Customer Delivery",
-      "active": "/images/company/customer-delivery-real.jpg",
+      "title": "Vehicle Transport",
+      "active": "/images/company/customer-delivery.jpg",
       "items": [
-        "/images/company/customer-delivery-real.jpg",
-        "/images/company/customer-delivery.jpg",
-        "/images/company/delivery2.jpg"
+        "/images/company/customer-delivery.jpg"
       ]
     },
     "exportLoading": {
-      "title": "Export Loading",
-      "active": "/images/company/export-loading-real.jpg",
+      "title": "Stockyard Overview",
+      "active": "/images/company/warehouse-overview.jpg",
       "items": [
-        "/images/company/export-loading-real.jpg",
-        "/images/company/export-loading.jpg",
-        "/images/company/loading1.jpg"
+        "/images/company/warehouse-overview.jpg"
       ]
     }
   },

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10243e"/><stop offset="1" stop-color="#174b78"/></linearGradient></defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<path d="M875 0H1200V630H625Z" fill="#1e6492" opacity=".32"/>
+<path d="M1030 0H1200V630H780Z" fill="#348bb6" opacity=".14"/>
+<rect x="76" y="68" width="74" height="74" rx="15" fill="#fff"/>
+<text x="113" y="122" fill="#153a67" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="54">Z</text>
+<text x="174" y="112" fill="#c9e0ef" font-family="Arial,sans-serif" font-size="24" letter-spacing="3">ZHONGGU AUTO EXPORT</text>
+<text x="76" y="268" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="700">Vehicles from China.</text>
+<text x="76" y="356" fill="#fff" font-family="Arial,sans-serif" font-size="72" font-weight="700">Export support.</text>
+<rect x="78" y="405" width="92" height="5" fill="#76c4ed"/>
+<text x="76" y="465" fill="#d2e5f1" font-family="Arial,sans-serif" font-size="28">New &amp; used vehicles · Sourcing · Shipping coordination</text>
+<text x="76" y="562" fill="#fff" font-family="Arial,sans-serif" font-size="25">zhongguauto.com</text>
+</svg>

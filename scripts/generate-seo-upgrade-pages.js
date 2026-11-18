@@ -41,7 +41,7 @@ const priceNumber = (value = '') => {
 };
 const vehicleTitle = (car = {}) => pickText(car.cardTitle || car.title || car.model || car.id);
 const vehiclePrice = (car = {}) => pickText(car.salePriceDisplay || car.fobPriceDisplay || car.fobNanShaUsd || car.price || 'Contact for price');
-const vehicleImage = (car = {}) => cleanPath(car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : '') || 'images/og-image.jpg');
+const vehicleImage = (car = {}) => cleanPath(car.mainImage || car.image || (Array.isArray(car.images) ? car.images[0] : '') || 'images/brand/zhonggu-share-20261118.jpg');
 const vehicleHref = (car = {}) => {
   const detailUrl = pickText(car.detailUrl || car.canonicalPath || car.urlPath, '');
   if (detailUrl) return /^https?:\/\//i.test(detailUrl) || detailUrl.startsWith('/') ? detailUrl : `/${cleanPath(detailUrl)}`;
@@ -71,7 +71,7 @@ const pageShell = ({ lang = 'en', title, description, path: pagePath, canonicalP
       '@id': `${SITE}/#organization`,
       name: 'Zhonggu Auto Export',
       url: SITE,
-      logo: `${SITE}/images/og-image.jpg`,
+      logo: `${SITE}/images/brand/zhonggu-mark-20261118.png`,
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: WA_DISPLAY,
@@ -104,7 +104,7 @@ ${alternateLinks ? `${alternateLinks}\n` : ''}  <meta property="og:type" content
   <meta property="og:title" content="${escapeAttr(title)}">
   <meta property="og:description" content="${escapeAttr(description)}">
   <meta property="og:url" content="${url}">
-  <meta property="og:image" content="${SITE}/images/og-image.jpg">
+  <meta property="og:image" content="${SITE}/images/brand/zhonggu-share-20261118.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/style.css?v=${STYLE_VERSION}">
 ${lightweight ? '' : '  <link rel="stylesheet" href="/assets/css/whatsapp-lead-modal.css">'}
@@ -189,7 +189,7 @@ const aggregateOfferProduct = ({ name, description, image, url, lowPrice, highPr
   }
 });
 
-const marketProductSchema = ({ name, description, url, image = 'images/og-image.jpg' }) => ({
+const marketProductSchema = ({ name, description, url, image = 'images/brand/zhonggu-share-20261118.jpg' }) => ({
   '@type': 'Product',
   name,
   description,

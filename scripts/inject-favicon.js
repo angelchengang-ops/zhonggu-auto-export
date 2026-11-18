@@ -3,7 +3,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const ignored = new Set(['.git', 'node_modules', '.npm-cache', 'tmp', 'admin', 'media-inbox', 'media-processed', 'media-trash']);
-const declaration = '<link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/images/og-image.jpg">';
+const declaration = '<link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/images/brand/zhonggu-mark-20261118.png">';
 
 const visit = (directory) => {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {

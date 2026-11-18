@@ -5,6 +5,8 @@ const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'
 const {lines,isUsedBev,availableUsedBevs}=require('../scripts/lib/seo-product-lines');
 const baseline=require('../ops/seo/2026-09-17-six-product-lines-baseline.json');
 const cars=JSON.parse(read('cars.json'));
+const priceApproval=require('../ops/seo/2026-11-18-coolray-price-adjustment.json');
+const approvedPriceChanges=priceApproval.changes.filter(c=>c.file==='cars.json');
 const fileFor=p=>p.endsWith('/')?p.slice(1)+'index.html':p.replace(/^\//,'');
 const graph=h=>[...h.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].flatMap(m=>{const j=JSON.parse(m[1]);return j['@graph']||[j]});
 
@@ -49,25 +51,41 @@ test('used BEV empty state has useful sourcing form and no invented Product or O
   assert.ok(read('sitemap-pages-current.xml').includes('<loc>https://zhongguauto.com/used-electric-cars-from-china.html</loc>'));
   for(const alias of ['/used-electric-cars-from-china','/used-electric-cars-from-china/']) assert.ok(read('_redirects').includes(alias+' /used-electric-cars-from-china.html 301!'));
 });
-test('catalogue, prices, year, inventory, images and videos are byte-equivalent to task baseline',()=>{
+test('catalogue and vehicle media preserve the baseline; approved landing placeholders use exact replacements',()=>{
   assert.equal(cars.length,baseline.vehicleCount);
-  assert.equal(crypto.createHash('sha256').update(read('cars.json').replace(/\r\n/g,'\n')).digest('hex'),baseline.carsSha256);
+  const restored=cars.map(car=>{const change=approvedPriceChanges.find(c=>c.id===car.id);if(!change)return car;assert.deepEqual(car,change.after);return change.before;});
+  assert.equal(priceApproval.originalCarsSha256,baseline.carsSha256);
+  assert.equal(crypto.createHash('sha256').update(JSON.stringify(restored)).digest('hex'),priceApproval.originalNormalizedCarsSha256);
   for(const before of baseline.pages){
     const h=read(before.file);
     assert.ok(h.includes('rel="canonical" href="'+before.canonical+'"'),before.file);
     for(const lang of before.languages)assert.ok(h.includes('hreflang="'+lang+'"'),before.file+': '+lang);
-    for(const media of before.media)assert.ok(h.includes(media),before.file+': '+media);
+    const approvedLandingPages = new Set([
+      'landing/geely-coolray-exporter-china/index.html',
+      'landing/geely-binyue-export-algeria/index.html'
+    ]);
+    const placeholderReplacements = {
+      '/images/new-cars/geely-coolray-01.jpg': '/images/new-cars/geely-coolray-full-option-nansha/optimized/01-front-three-quarter-right.webp',
+      '/images/cars/geely-coolray-2022-01.jpg': '/images/company/warehouse-overview.jpg'
+    };
+    for(const media of before.media) {
+      const replacement = approvedLandingPages.has(before.file) && placeholderReplacements[media];
+      const expected = replacement || media;
+      assert.ok(h.includes(expected),before.file+': '+expected);
+      assert.ok(fs.existsSync(path.join(root,expected.replace(/^\//,''))),expected);
+      if(replacement) assert.ok(!h.includes(media),before.file+': obsolete placeholder '+media);
+    }
   }
   const full=read('geely-coolray-full-option.html');
   assert.match(full,/data-src="[^"]+\.mp4"/);
-  assert.match(full,/US\$11,500/);
+  assert.match(full,/US\$10,500/);
 });
 test('procurement content survives generation and hub data matches actual catalogue values',()=>{
   assert.doesNotMatch(read('geely-coolray-ready-stock-nansha-port.html'),/Priority Africa Keywords|stock disponible Algerie/);
   for(const before of baseline.vehicles) {
     const h=read(before.id+'.html');
     assert.match(h,/product-buying-guide/,before.id);
-    assert.ok(h.includes(before.price),before.id);
+    assert.ok(h.includes(approvedPriceChanges.find(c=>c.id===before.id)?.after.fobPriceDisplay||before.price),before.id);
   }
   for(const id of ['used-bestune-b70-2021','used-bestune-b70-2022','used-bestune-b70-2023']){
     const c=cars.find(c=>c.id===id),h=read('used-bestune-b70-wholesale.html');

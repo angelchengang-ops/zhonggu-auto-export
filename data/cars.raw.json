@@ -5,13 +5,13 @@
     "model": "Geely Coolray Super Power Edition Manual",
     "type": "New Car",
     "guidePriceRmb": "66,800 RMB",
-    "fobNanShaUsd": "7,900 USD",
+    "fobNanShaUsd": "6,900 USD",
     "configuration": "Super Power Edition Manual",
     "availableColor": "White, Grey",
     "specialNote": "Optional Sunroof: +1,500 RMB",
     "image": "images/new-cars/suv-04.png",
     "guidePriceDisplay": "66,800 RMB",
-    "fobPriceDisplay": "7,900 USD",
+    "fobPriceDisplay": "6,900 USD",
     "title": {
       "en": "Geely Coolray Super Power Edition Manual",
       "fr": "Geely Coolray Super Power Edition Manual",
@@ -33,7 +33,9 @@
       "ru": "Available for export from China with FOB support",
       "es": "Available for export from China with FOB support"
     },
-    "category": "new"
+    "category": "new",
+    "priceConfirmedAt": "2026-11-18",
+    "contentUpdatedAt": "2026-11-18"
   },
   {
     "id": "geely-coolray-automatic-super-power-edition-with-sunroof",
@@ -41,12 +43,12 @@
     "model": "Geely Coolray Super Power Edition Automatic with Sunroof",
     "type": "New Car",
     "guidePriceRmb": "75,800 RMB",
-    "fobNanShaUsd": "9,000 USD",
+    "fobNanShaUsd": "8,000 USD",
     "configuration": "Super Power Edition Automatic with Sunroof",
     "availableColor": "White, Grey",
     "image": "images/new-cars/suv-04.png",
     "guidePriceDisplay": "75,800 RMB",
-    "fobPriceDisplay": "9,000 USD",
+    "fobPriceDisplay": "8,000 USD",
     "title": {
       "en": "Geely Coolray Super Power Edition Automatic with Sunroof",
       "fr": "Geely Coolray Super Power Edition Automatic with Sunroof",
@@ -68,7 +70,9 @@
       "ru": "Available for export from China with FOB support",
       "es": "Available for export from China with FOB support"
     },
-    "category": "new"
+    "category": "new",
+    "priceConfirmedAt": "2026-11-18",
+    "contentUpdatedAt": "2026-11-18"
   },
   {
     "id": "geely-coolray-automatic-super-power-edition-without-sunroof",
@@ -76,12 +80,12 @@
     "model": "Geely Coolray Super Power Edition Automatic without Sunroof",
     "type": "New Car",
     "guidePriceRmb": "73,800 RMB",
-    "fobNanShaUsd": "8,700 USD",
+    "fobNanShaUsd": "7,700 USD",
     "configuration": "Super Power Edition Automatic without Sunroof",
     "availableColor": "White, Grey",
     "image": "images/new-cars/suv-04.png",
     "guidePriceDisplay": "73,800 RMB",
-    "fobPriceDisplay": "8,700 USD",
+    "fobPriceDisplay": "7,700 USD",
     "title": {
       "en": "Geely Coolray Super Power Edition Automatic without Sunroof",
       "fr": "Geely Coolray Super Power Edition Automatic without Sunroof",
@@ -103,7 +107,9 @@
       "ru": "Available for export from China with FOB support",
       "es": "Available for export from China with FOB support"
     },
-    "category": "new"
+    "category": "new",
+    "priceConfirmedAt": "2026-11-18",
+    "contentUpdatedAt": "2026-11-18"
   },
   {
     "id": "geely-coolray-super-max",
@@ -111,12 +117,12 @@
     "model": "Geely Coolray Super MAX",
     "type": "New Car",
     "guidePriceRmb": "78,800 RMB",
-    "fobNanShaUsd": "9,300 USD",
+    "fobNanShaUsd": "8,300 USD",
     "configuration": "Super MAX",
     "availableColor": "White, Grey",
     "image": "images/new-cars/suv-04.png",
     "guidePriceDisplay": "78,800 RMB",
-    "fobPriceDisplay": "9,300 USD",
+    "fobPriceDisplay": "8,300 USD",
     "title": {
       "en": "Geely Coolray Super MAX",
       "fr": "Geely Coolray Super MAX",
@@ -138,7 +144,9 @@
       "ru": "Available for export from China with FOB support",
       "es": "Available for export from China with FOB support"
     },
-    "category": "new"
+    "category": "new",
+    "priceConfirmedAt": "2026-11-18",
+    "contentUpdatedAt": "2026-11-18"
   },
   {
     "id": "geely-coolray-battle-edition",
@@ -146,13 +154,13 @@
     "model": "Geely Coolray BATTLE Edition",
     "type": "New Car",
     "guidePriceRmb": "97,800 RMB",
-    "fobNanShaUsd": "11,400 USD",
-    "configuration": "BATTLE Edition. Electric tailgate version FOB USD 11,600.",
+    "fobNanShaUsd": "10,400 USD",
+    "configuration": "BATTLE Edition. Electric tailgate version FOB USD 10,600.",
     "availableColor": "White, Grey",
-    "specialNote": "Electric tailgate version: FOB USD 11,600",
+    "specialNote": "Electric tailgate version: FOB USD 10,600",
     "image": "images/new-cars/suv-04.png",
     "guidePriceDisplay": "97,800 RMB",
-    "fobPriceDisplay": "11,400 USD",
+    "fobPriceDisplay": "10,400 USD",
     "title": {
       "en": "Geely Coolray BATTLE Edition",
       "fr": "Geely Coolray BATTLE Edition",
@@ -174,7 +182,9 @@
       "ru": "Available for export from China with FOB support",
       "es": "Available for export from China with FOB support"
     },
-    "category": "new"
+    "category": "new",
+    "priceConfirmedAt": "2026-11-18",
+    "contentUpdatedAt": "2026-11-18"
   },
   {
     "id": "geely-coolray-full-option",
@@ -306,7 +316,9 @@
         "label": "Geely Coolray Nansha Ready Stock",
         "description": "Full Option with Package and Panoramic Sunroof ready stock at Nansha Port."
       }
-    ]
+    ],
+    "priceConfirmedAt": "2026-11-18",
+    "contentUpdatedAt": "2026-11-18"
   },
   {
     "id": "jetta-vs5-2026-280tsi-automatic-flagship-high-gloss-edition",
