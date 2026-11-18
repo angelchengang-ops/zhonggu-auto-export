@@ -22,8 +22,19 @@
     const metric=(label,value)=>`<article class="card"><small>${esc(label)}</small><strong>${esc(value)}</strong></article>`;
     const breakdown=(obj)=>{const rows=Object.entries(obj||{});return rows.length?`<table><tbody>${rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join("")}</tbody></table>`:'<p class="empty">暂无数据</p>'};
     const leads=(items)=>items?.length?`<table><thead><tr><th>时间</th><th>客户</th><th>国家</th><th>车型</th><th>报价</th><th>负责人</th><th>状态</th></tr></thead><tbody>${items.map((x)=>`<tr><td>${esc(x.createdAt)}</td><td><code>${esc(x.id)}</code> ${esc(x.name)}</td><td>${esc(x.country)}</td><td>${esc(x.vehicle)}</td><td>${esc(x.quoteType)}</td><td>${esc(x.assignedTo)}</td><td>${esc(x.status)}</td></tr>`).join("")}</tbody></table>`:'<p class="empty">暂无数据</p>';
-    async function requireLogin(){const cached=sessionStorage.getItem("zhonggu_admin_user");if(!cached){location.href="/admin/login.html";return false}const res=await fetch("/api/admin/me",{cache:"no-store"});if(res.status===401){sessionStorage.removeItem("zhonggu_admin_user");location.href="/admin/login.html";return false}return res.ok}
-    (async()=>{try{if(!await requireLogin())return;const res=await fetch("/api/admin/daily-report",{cache:"no-store"});const data=await res.json();if(!res.ok||!data.report)throw new Error(data.message||"日报读取失败");const r=data.report,s=r.summary;document.getElementById("range").textContent=`统计区间：${r.window.from} 至 ${r.window.to}`;document.getElementById("stats").innerHTML=[metric("新增线索",s.newLeads24h),metric("WhatsApp点击",s.whatsappClicks24h),metric("未分配",s.unassigned24h),metric("超时未跟进",s.overdueFirstFollowUp),metric("近7日线索",s.last7Days),metric("7日日均",s.sevenDayDailyAverage),metric("疑似重复组",s.duplicateContactGroups)].join("");document.getElementById("sources").innerHTML=breakdown(r.sources24h);document.getElementById("countries").innerHTML=breakdown(r.countries24h);document.getElementById("vehicles").innerHTML=breakdown(r.vehicles24h);document.getElementById("priority").innerHTML=leads(r.priorityLeads);document.getElementById("unassigned").innerHTML=leads(r.unassignedLeads);document.getElementById("overdue").innerHTML=leads(r.overdueLeads)}catch(e){document.getElementById("status").textContent=e.message}})();
+    async function requireLogin(){
+      const res=await fetch("/api/admin/me",{cache:"no-store",credentials:"same-origin"});
+      if(res.status===401){
+        try{sessionStorage.removeItem("zhonggu_admin_user");}catch{}
+        location.replace("/admin/login.html");
+        return false;
+      }
+      if(!res.ok)throw new Error(res.status===403?"当前账号无权查看日报":"登录状态暂时无法验证，请刷新重试");
+      const data=await res.json();
+      if(data.ok!==true||data.user?.role!=="admin")throw new Error("管理员身份未确认，无法读取日报");
+      return true;
+    }
+    (async()=>{try{if(!await requireLogin())return;const res=await fetch("/api/admin/daily-report",{cache:"no-store"});if(res.status===401){location.replace("/admin/login.html");return}const data=await res.json();if(!res.ok||!data.report)throw new Error(data.message||"日报读取失败");const r=data.report,s=r.summary;document.getElementById("range").textContent=`统计区间：${r.window.from} 至 ${r.window.to}`;document.getElementById("stats").innerHTML=[metric("新增线索",s.newLeads24h),metric("WhatsApp点击",s.whatsappClicks24h),metric("未分配",s.unassigned24h),metric("超时未跟进",s.overdueFirstFollowUp),metric("近7日线索",s.last7Days),metric("7日日均",s.sevenDayDailyAverage),metric("疑似重复组",s.duplicateContactGroups)].join("");document.getElementById("sources").innerHTML=breakdown(r.sources24h);document.getElementById("countries").innerHTML=breakdown(r.countries24h);document.getElementById("vehicles").innerHTML=breakdown(r.vehicles24h);document.getElementById("priority").innerHTML=leads(r.priorityLeads);document.getElementById("unassigned").innerHTML=leads(r.unassignedLeads);document.getElementById("overdue").innerHTML=leads(r.overdueLeads)}catch(e){document.getElementById("status").textContent=e.message}})();
   </script>
 </body>
 </html>
