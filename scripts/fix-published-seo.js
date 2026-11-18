@@ -108,6 +108,37 @@ const fixMgLanding = (html, relativePath) => {
   return html;
 };
 
+const fixSaicLanding = (html, relativePath) => {
+  const roewe = relativePath === 'landing/roewe-car-exporter-china/index.html';
+  const saic = relativePath === 'landing/saic-car-exporter-china/index.html';
+  if (!roewe && !saic) return html;
+  const brand = roewe ? 'Roewe' : 'MG and Roewe';
+  html = replaceAll(html, 'seo-hero algeria-priority-hero', 'seo-hero');
+  html = replaceAll(html, 'Algeria Vehicle Export Support', `${brand} Vehicle Sourcing`);
+  html = replaceAll(html, 'Get Latest Geely Stock List', `Request ${brand} Availability`);
+  html = replaceAll(html, 'Ask for Algeria Shipping Quote', 'Request Shipping Quote');
+  html = html.replace(/rather than broad claims or keyword-stuffed promises/g, 'for your selected vehicle and destination');
+  const sections = {
+    'Buyer Demand and Market Fit': roewe
+      ? 'For a Roewe sourcing request, specify the model, preferred year, powertrain and new or used condition. We confirm available units and their specification sheets before preparing a quotation. A brand-level enquiry is not confirmation that a particular Roewe model is in stock.'
+      : 'Start a SAIC vehicle enquiry by choosing MG or Roewe and naming the model. Brand names alone do not identify equivalent configurations. We compare each requested listing by its documented equipment, condition, quotation and availability so that the buyer can evaluate specific vehicles.',
+    'Ready Stock and Vehicle Sourcing': roewe
+      ? 'Roewe sourcing is handled against your requested model and configuration. Ask for vehicle-specific exterior and interior photos, stock location, equipment details and documents. For used vehicles, include the acceptable mileage and condition range. Zhonggu Auto Export provides independent sourcing and export coordination.'
+      : 'Our SAIC-related sourcing enquiries cover MG and Roewe vehicles. The catalogue includes two MG5 quotations at FOB US$7,500 and US$9,000; their configurations remain to be confirmed. These are separate quotation references, not verified trim levels. Ask for the specification sheet and current availability of the chosen vehicle.',
+    'Shipping and China Port Delivery': 'The loading port and preparation schedule depend on vehicle location, document readiness and the carrier. Send your destination country and port with the vehicle reference. We can then confirm port delivery arrangements and prepare an FOB quotation or a separate CIF enquiry.',
+    'What Buyers Should Send': `Send the target ${brand} model, quantity, preferred year and equipment, new or used condition, budget and destination port. For a used vehicle, add your mileage limit. Specify whether you need FOB pricing or a CIF enquiry including sea freight and insurance.`
+  };
+  for (const [heading, content] of Object.entries(sections)) {
+    html = replaceSimpleSection(html, heading, `<section class="seo-section"><div class="container"><h2>${heading}</h2><p>${content}</p>${heading === 'Ready Stock and Vehicle Sourcing' && saic ? '<div class="link-cloud"><a href="/mg5-67900-rmb.html">MG5 listing 67900 — FOB US$7,500</a><a href="/mg5-85900-rmb.html">MG5 listing 85900 — FOB US$9,000</a></div>' : ''}</div></section>`);
+  }
+  html = replaceAll(html, 'Do you have Geely Binyue ready stock for Algeria?', `How can I confirm ${brand} availability?`);
+  html = replaceAll(html, 'For Algeria inquiries, Geely Binyue is a priority model. Availability changes, so we confirm current stock, colors and configuration before quotation.', `Send the required ${brand} model, quantity and configuration. We will check current availability and vehicle-specific documents before confirming a quotation.`);
+  html = replaceAll(html, 'For ready stock vehicles, shipping preparation usually takes 7-15 days after order confirmation, depending on documents, stock handover and carrier schedule.', 'Preparation timing is confirmed for the selected vehicle after checking stock handover, documents and carrier availability.');
+  html = replaceAll(html, 'name="market_country" value="Algeria"', 'name="market_country" value="Global"');
+  html = replaceAll(html, 'name="market_region" value="Africa"', 'name="market_region" value="Global"');
+  return html;
+};
+
 const inferOfferCount = (product) => {
   const name = String(product.name || '').toLowerCase();
   if (name.includes('bestune b70')) return 3;
@@ -179,6 +210,7 @@ const fixHtml = (file, relativePath) => {
   for (const [from, to] of textFixes) after = replaceAll(after, from, to);
   after = removeInternalVehicleSections(after, relativePath);
   after = fixMgLanding(after, relativePath);
+  after = fixSaicLanding(after, relativePath);
   after = normalizeJsonLd(after);
   if (after !== before) write(file, after);
 };

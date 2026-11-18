@@ -751,9 +751,9 @@
     "type": "New Car",
     "guidePriceRmb": "67,900 RMB",
     "fobNanShaUsd": "7,500 USD",
-    "configuration": "Contact for details",
+    "configuration": "Configuration to be confirmed",
     "availableColor": "White, Grey",
-    "dataCheck": "Configuration needs confirmation.",
+    "dataCheck": "Configuration, model year and transmission to be confirmed.",
     "image": "images/new-cars/mg5-01.png",
     "guidePriceDisplay": "67,900 RMB",
     "fobPriceDisplay": "7,500 USD",
@@ -778,7 +778,56 @@
       "ru": "Available for export from China with FOB support",
       "es": "Available for export from China with FOB support"
     },
-    "category": "new"
+    "category": "new",
+    "seoTitle": "MG5 FOB US$7,500 | Listing 67900 | China Export",
+    "pageTitle": "MG5 — FOB US$7,500",
+    "metaDescription": "MG5 export listing 67900: FOB US$7,500 from China. Configuration, model year and transmission to be confirmed. Request current stock and shipping details.",
+    "heroDescription": "MG5 listing 67900 is offered at FOB US$7,500. Configuration to be confirmed; model year and transmission have not been verified for this listing.",
+    "contentUpdatedAt": "2026-11-18",
+    "detailSections": [
+      {
+        "title": "MG5 listing 67900: quotation details",
+        "paragraphs": [
+          "This quotation refers to vehicle listing mg5-67900-rmb at FOB US$7,500. Quote this reference when requesting stock confirmation, vehicle photos and export documents.",
+          "Configuration to be confirmed. The listing reference is an identifier, not a verified trim name or model year. Confirm the specification sheet before ordering.",
+          "FOB pricing does not include destination import duties or inland delivery. Request freight and insurance separately if you need a CIF quotation."
+        ],
+        "specs": [
+          [
+            "Listing reference",
+            "mg5-67900-rmb"
+          ],
+          [
+            "FOB quotation",
+            "US$7,500"
+          ],
+          [
+            "Configuration",
+            "To be confirmed"
+          ],
+          [
+            "Model year",
+            "To be confirmed"
+          ],
+          [
+            "Transmission",
+            "To be confirmed"
+          ]
+        ]
+      },
+      {
+        "title": "Compare the other MG5 quotation",
+        "paragraphs": [
+          "A separate MG5 listing is quoted at FOB US$9,000. Its configuration is also pending confirmation; the price difference alone does not establish a trim or equipment difference."
+        ],
+        "links": [
+          {
+            "href": "/mg5-85900-rmb.html",
+            "label": "MG5 listing 85900 — FOB US$9,000"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "mg5-85900-rmb",
@@ -787,9 +836,9 @@
     "type": "New Car",
     "guidePriceRmb": "85,900 RMB",
     "fobNanShaUsd": "9,000 USD",
-    "configuration": "Contact for details",
+    "configuration": "Configuration to be confirmed",
     "availableColor": "White, Grey",
-    "dataCheck": "Configuration needs confirmation.",
+    "dataCheck": "Configuration, model year and transmission to be confirmed.",
     "image": "images/new-cars/mg5-01.png",
     "guidePriceDisplay": "85,900 RMB",
     "fobPriceDisplay": "9,000 USD",
@@ -814,7 +863,56 @@
       "ru": "Available for export from China with FOB support",
       "es": "Available for export from China with FOB support"
     },
-    "category": "new"
+    "category": "new",
+    "seoTitle": "MG5 FOB US$9,000 | Listing 85900 | China Export",
+    "pageTitle": "MG5 — FOB US$9,000",
+    "metaDescription": "MG5 export listing 85900: FOB US$9,000 from China. Configuration, model year and transmission to be confirmed. Request current stock and shipping details.",
+    "heroDescription": "MG5 listing 85900 is offered at FOB US$9,000. Configuration to be confirmed; model year and transmission have not been verified for this listing.",
+    "contentUpdatedAt": "2026-11-18",
+    "detailSections": [
+      {
+        "title": "MG5 listing 85900: quotation details",
+        "paragraphs": [
+          "This quotation refers to vehicle listing mg5-85900-rmb at FOB US$9,000. Quote this reference when requesting stock confirmation, vehicle photos and export documents.",
+          "Configuration to be confirmed. The listing reference is an identifier, not a verified trim name or model year. Confirm the specification sheet before ordering.",
+          "FOB pricing does not include destination import duties or inland delivery. Request freight and insurance separately if you need a CIF quotation."
+        ],
+        "specs": [
+          [
+            "Listing reference",
+            "mg5-85900-rmb"
+          ],
+          [
+            "FOB quotation",
+            "US$9,000"
+          ],
+          [
+            "Configuration",
+            "To be confirmed"
+          ],
+          [
+            "Model year",
+            "To be confirmed"
+          ],
+          [
+            "Transmission",
+            "To be confirmed"
+          ]
+        ]
+      },
+      {
+        "title": "Compare the other MG5 quotation",
+        "paragraphs": [
+          "A separate MG5 listing is quoted at FOB US$7,500. Its configuration is also pending confirmation; the price difference alone does not establish a trim or equipment difference."
+        ],
+        "links": [
+          {
+            "href": "/mg5-67900-rmb.html",
+            "label": "MG5 listing 67900 — FOB US$7,500"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "toyota-corolla-hybrid-2026-1-8l-elite-edition",

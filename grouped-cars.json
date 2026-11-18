@@ -760,7 +760,7 @@
     "brand": "MG",
     "model": "MG5",
     "chineseSeriesName": "名爵MG5",
-    "modelYear": "2026",
+    "modelYear": "",
     "image": "images/new-cars/mg5-01.png",
     "priceRange": "RMB 67,900 - 85,900",
     "fobRange": "USD 7,500 - 9,000",
@@ -770,13 +770,13 @@
     ],
     "trims": [
       {
-        "trimName": "67,900 RMB Configuration",
-        "trimNameZh": "67,900元配置",
+        "trimName": "Listing 67900 — configuration to be confirmed",
+        "trimNameZh": "车辆编号 67900 — 配置待确认",
         "guidePriceRmb": 67900,
         "guidePriceDisplay": "67,900 RMB",
         "fobPriceUsd": 7500,
         "fobPriceDisplay": "7,500 USD",
-        "transmission": "Contact for details",
+        "transmission": "To be confirmed",
         "fuel": "Petrol",
         "availableColor": [
           "White",
@@ -786,16 +786,16 @@
           "Configuration needs confirmation"
         ],
         "options": [],
-        "specialNote": "Configuration needs confirmation."
+        "specialNote": "Configuration, model year and transmission to be confirmed."
       },
       {
-        "trimName": "85,900 RMB Configuration",
-        "trimNameZh": "85,900元配置",
+        "trimName": "Listing 85900 — configuration to be confirmed",
+        "trimNameZh": "车辆编号 85900 — 配置待确认",
         "guidePriceRmb": 85900,
         "guidePriceDisplay": "85,900 RMB",
         "fobPriceUsd": 9000,
         "fobPriceDisplay": "9,000 USD",
-        "transmission": "Contact for details",
+        "transmission": "To be confirmed",
         "fuel": "Petrol",
         "availableColor": [
           "White",
@@ -805,22 +805,22 @@
           "Configuration needs confirmation"
         ],
         "options": [],
-        "specialNote": "Configuration needs confirmation."
+        "specialNote": "Configuration, model year and transmission to be confirmed."
       }
     ],
     "title": {
-      "en": "MG MG5 2026",
-      "fr": "MG MG5 2026",
-      "ar": "MG MG5 2026",
-      "ru": "MG MG5 2026",
-      "es": "MG MG5 2026"
+      "en": "MG5",
+      "fr": "MG5",
+      "ar": "MG5",
+      "ru": "MG5",
+      "es": "MG5"
     },
     "description": {
-      "en": "MG MG5 2026 available for export from China with FOB inquiry support.",
-      "fr": "MG MG5 2026 available for export from China with FOB inquiry support.",
-      "ar": "MG MG5 2026 available for export from China with FOB inquiry support.",
-      "ru": "MG MG5 2026 available for export from China with FOB inquiry support.",
-      "es": "MG MG5 2026 available for export from China with FOB inquiry support."
+      "en": "MG5 available for export from China with FOB inquiry support.",
+      "fr": "MG5 available for export from China with FOB inquiry support.",
+      "ar": "MG5 available for export from China with FOB inquiry support.",
+      "ru": "MG5 available for export from China with FOB inquiry support.",
+      "es": "MG5 available for export from China with FOB inquiry support."
     },
     "shortDescription": {
       "en": "Available for export from China with FOB support",

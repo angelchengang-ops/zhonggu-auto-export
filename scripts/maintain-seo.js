@@ -216,7 +216,7 @@ const vehicleImage = (car = {}) => cleanPath(car.sitemapImage || car.mainImage |
 const vehicleCanonicalPath = (car = {}) => cleanPath(car.canonicalPath || car.urlPath || `${car.id}.html`);
 const vehicleCanonicalUrlsAll = new Set(cars.filter((car) => car.id).map((car) => siteUrl(vehicleCanonicalPath(car))));
 const vehicleEntries = cars
-  .filter((car) => car.id && car.id !== 'mg5-85900-rmb')
+  .filter((car) => car.id)
   .map((car) => {
     const outputFile = cleanPath(car.outputPath || `${car.id}.html`);
     return { url: siteUrl(vehicleCanonicalPath(car)), image: vehicleImage(car) ? assetUrl(vehicleImage(car)) : '', lastmod: resolveLastmod({ metadataDate: car.updatedAt || car.lastmod || car.contentUpdatedAt, sourceFile: outputFile, outputFile: 'cars.json' }) };
