@@ -42,9 +42,9 @@ test('all priced USD product SKUs agree with catalogue; unpriced listings do not
 test('Battle reference specifications retain provenance and do not change quoted variants',()=>{
   const car=cars.find(c=>c.id==='geely-coolray-battle-edition'),html=read(`${car.id}.html`);
   assert.equal(car.specificationSource.url,'https://www.autohome.com.cn/config/spec/75683.html');
-  assert.equal(car.fobPriceDisplay,'10,400 USD');
+  assert.equal(car.fobPriceDisplay,'9,600 USD');
   assert.equal(car.guidePriceRmb,'97,800 RMB');
-  assert.match(car.configuration,/Electric tailgate.*10,600/);
+  assert.match(car.configuration,/Electric tailgate.*9,600/);
   for(const [,value] of car.detailSpecs) assert.ok(html.includes(escaped(value)),value);
   assert.equal(car.detailSpecs.length,11);
   assert.match(html,/not a guarantee for every vehicle offered for export/);
@@ -97,14 +97,14 @@ test('Egypt and Iraq have reciprocal English/Arabic alternates and correct count
   assert.match(read('export-cars-from-china-to-iraq.html'),/COSQC/);
 });
 
-test('confirmed Full Option quote is USD 10500 in data, grouped catalogue and Nansha schema',()=>{
+test('confirmed Full Option quote is USD 9800 in data, grouped catalogue and Nansha schema',()=>{
   const car=cars.find(c=>c.id==='geely-coolray-full-option');
-  assert.equal(car.fobPriceDisplay,'US$10,500');
+  assert.equal(car.fobPriceDisplay,'US$9,800');
   assert.equal(car.priceConfirmedAt,'2026-11-18');
   const grouped=read('grouped-cars.json');
   assert.ok(!/11,800|11800/.test(grouped));
   const nansha=read('geely-coolray-ready-stock-nansha-port.html');
-  assert.equal(graph(nansha).find(n=>n['@type']==='Product').offers.price,10500);
+  assert.equal(graph(nansha).find(n=>n['@type']==='Product').offers.price,9800);
   for(const file of ['index.html','new-cars.html','geely-coolray-full-option.html','geely-coolray-ready-stock-nansha-port.html','export-cars-from-china-to-algeria.html','export-cars-from-china-to-ghana.html','export-cars-from-china-to-ivory-coast.html']) assert.ok(!/11,800|11800/.test(read(file)),file);
 });
 

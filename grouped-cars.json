@@ -7,7 +7,7 @@
     "modelYear": "2026",
     "image": "images/new-cars/suv-04.png",
     "priceRange": "RMB 66,800 - 97,800",
-    "fobRange": "USD 6,900 - 10,500",
+    "fobRange": "USD 7,500 - 9,800",
     "colors": [
       "White",
       "Grey"
@@ -18,8 +18,8 @@
         "trimNameZh": "手动超能版",
         "guidePriceRmb": 66800,
         "guidePriceDisplay": "66,800 RMB",
-        "fobPriceUsd": 6900,
-        "fobPriceDisplay": "6,900 USD",
+        "fobPriceUsd": 7500,
+        "fobPriceDisplay": "7,500 USD",
         "transmission": "Manual",
         "fuel": "Petrol",
         "availableColor": [
@@ -46,8 +46,8 @@
         "trimNameZh": "自动超能版（不带天窗）",
         "guidePriceRmb": 73800,
         "guidePriceDisplay": "73,800 RMB",
-        "fobPriceUsd": 7700,
-        "fobPriceDisplay": "7,700 USD",
+        "fobPriceUsd": 9600,
+        "fobPriceDisplay": "9,600 USD",
         "transmission": "Automatic",
         "fuel": "Petrol",
         "availableColor": [
@@ -66,8 +66,8 @@
         "trimNameZh": "自动超能版（带天窗）",
         "guidePriceRmb": 75800,
         "guidePriceDisplay": "75,800 RMB",
-        "fobPriceUsd": 8000,
-        "fobPriceDisplay": "8,000 USD",
+        "fobPriceUsd": 9600,
+        "fobPriceDisplay": "9,600 USD",
         "transmission": "Automatic",
         "fuel": "Petrol",
         "availableColor": [
@@ -86,8 +86,8 @@
         "trimNameZh": "超能MAX版",
         "guidePriceRmb": 78800,
         "guidePriceDisplay": "78,800 RMB",
-        "fobPriceUsd": 8300,
-        "fobPriceDisplay": "8,300 USD",
+        "fobPriceUsd": 9600,
+        "fobPriceDisplay": "9,600 USD",
         "transmission": "Automatic",
         "fuel": "Petrol",
         "availableColor": [
@@ -105,8 +105,8 @@
         "trimNameZh": "BATTLE版",
         "guidePriceRmb": 97800,
         "guidePriceDisplay": "97,800 RMB",
-        "fobPriceUsd": 10400,
-        "fobPriceDisplay": "10,400 USD",
+        "fobPriceUsd": 9600,
+        "fobPriceDisplay": "9,600 USD",
         "transmission": "Automatic",
         "fuel": "Petrol",
         "availableColor": [
@@ -122,18 +122,18 @@
             "nameZh": "电尾门版本",
             "extraPriceRmb": null,
             "extraPriceDisplay": "Please confirm",
-            "note": "Existing data only confirms FOB USD 10,600, not an RMB option price"
+            "note": "Existing data only confirms FOB USD 9,600, not an RMB option price"
           }
         ],
-        "specialNote": "Electric tailgate version: FOB USD 10,600"
+        "specialNote": "Electric tailgate version: FOB USD 9,600"
       },
       {
         "trimName": "Full Option with Package and Panoramic Sunroof",
         "trimNameZh": "缤越L星耀版顶配加包加全景天窗",
         "guidePriceRmb": 96800,
         "guidePriceDisplay": "96,800 RMB",
-        "fobPriceUsd": 10500,
-        "fobPriceDisplay": "10,500 USD",
+        "fobPriceUsd": 9800,
+        "fobPriceDisplay": "9,800 USD",
         "transmission": "Automatic",
         "fuel": "Petrol",
         "availableColor": [

@@ -6,6 +6,8 @@ const {lines,isUsedBev,availableUsedBevs}=require('../scripts/lib/seo-product-li
 const baseline=require('../ops/seo/2026-09-17-six-product-lines-baseline.json');
 const cars=JSON.parse(read('cars.json'));
 const priceApproval=require('../ops/seo/2026-11-18-coolray-price-adjustment.json');
+const correctedPrices=require('../ops/seo/2026-11-18-coolray-price-correction.json').changes.filter(c=>c.file==='cars.json');
+const correctedBaseline=cars.map(car=>{const c=correctedPrices.find(c=>c.id===car.id);if(!c)return car;assert.deepEqual(car,c.after);return c.before;});
 const approvedPriceChanges=priceApproval.changes.filter(c=>c.file==='cars.json');
 const fileFor=p=>p.endsWith('/')?p.slice(1)+'index.html':p.replace(/^\//,'');
 const graph=h=>[...h.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].flatMap(m=>{const j=JSON.parse(m[1]);return j['@graph']||[j]});
@@ -53,7 +55,7 @@ test('used BEV empty state has useful sourcing form and no invented Product or O
 });
 test('catalogue and vehicle media preserve the baseline; approved landing placeholders use exact replacements',()=>{
   assert.equal(cars.length,baseline.vehicleCount);
-  const restored=cars.map(car=>{const change=approvedPriceChanges.find(c=>c.id===car.id);if(!change)return car;assert.deepEqual(car,change.after);return change.before;});
+  const restored=correctedBaseline.map(car=>{const change=approvedPriceChanges.find(c=>c.id===car.id);if(!change)return car;assert.deepEqual(car,change.after);return change.before;});
   assert.equal(priceApproval.originalCarsSha256,baseline.carsSha256);
   assert.equal(crypto.createHash('sha256').update(JSON.stringify(restored)).digest('hex'),priceApproval.originalNormalizedCarsSha256);
   for(const before of baseline.pages){
@@ -78,14 +80,14 @@ test('catalogue and vehicle media preserve the baseline; approved landing placeh
   }
   const full=read('geely-coolray-full-option.html');
   assert.match(full,/data-src="[^"]+\.mp4"/);
-  assert.match(full,/US\$10,500/);
+  assert.match(full,/US\$9,800/);
 });
 test('procurement content survives generation and hub data matches actual catalogue values',()=>{
   assert.doesNotMatch(read('geely-coolray-ready-stock-nansha-port.html'),/Priority Africa Keywords|stock disponible Algerie/);
   for(const before of baseline.vehicles) {
     const h=read(before.id+'.html');
     assert.match(h,/product-buying-guide/,before.id);
-    assert.ok(h.includes(approvedPriceChanges.find(c=>c.id===before.id)?.after.fobPriceDisplay||before.price),before.id);
+    assert.ok(h.includes(correctedPrices.find(c=>c.id===before.id)?.after.fobPriceDisplay||approvedPriceChanges.find(c=>c.id===before.id)?.after.fobPriceDisplay||before.price),before.id);
   }
   for(const id of ['used-bestune-b70-2021','used-bestune-b70-2022','used-bestune-b70-2023']){
     const c=cars.find(c=>c.id===id),h=read('used-bestune-b70-wholesale.html');
