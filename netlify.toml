@@ -8,6 +8,9 @@
 [functions]
   node_bundler = "esbuild"
 
+[functions."dingtalk-inquiry-retry"]
+  schedule = "*/5 * * * *"
+
 [build.environment]
   NODE_VERSION = "20"
 

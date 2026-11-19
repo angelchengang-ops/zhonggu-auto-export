@@ -1,6 +1,6 @@
 const { blobDebug, createLead, firstValue, normalizeLead, recoverSyntheticFormAttempts } = require("./crm-store");
 const { getAdminUser } = require("./admin-session");
-const { notifyInquiry } = require("../lib/dingtalk-inquiry");
+const { queueInquiry } = require("../lib/dingtalk-outbox");
 const phoneRules = require("../../scripts/lib/phone");
 
 const json = (statusCode, body) => ({
@@ -167,10 +167,7 @@ exports.handler = async (event) => {
     if (lead.is_test) results.externalActionsSuppressed = true;
     else if (!results.duplicate) {
       const dingTalk = !isClickEvent && lead.sourceType === "website"
-        ? notifyInquiry(lead).then(
-          taskId => console.info("[inquiries] DingTalk accepted", { taskId }),
-          () => console.error("[inquiries] DingTalk notification failed", { id: String(lead.id).slice(0, 100) })
-        )
+        ? queueInquiry(lead, event).catch(() => console.error("[inquiries] DingTalk queue unavailable", { id: String(lead.id).slice(0, 100) }))
         : null;
       try { results.webhook = await forwardWebhook(lead); } catch (error) { results.webhookError = error.message; }
       await dingTalk;

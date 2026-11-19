@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@netlify/blobs": "^9.1.2",
-    "libphonenumber-js": "1.13.12"
+    "libphonenumber-js": "1.13.12",
+    "netlify-notification-blobs": "npm:@netlify/blobs@10.7.13"
   }
 }
