@@ -519,6 +519,7 @@ writeAlgeriaPage();
 require('./lib/regional-market-pages')({ pageShell, contactSection, faqSchema, write, read, escapeHtml });
 require('./lib/iran-market-pages')({ pageShell, contactSection, faqSchema, write, read, escapeHtml });
 updateHomeAndListPages();
+require('./lib/xiaoma-five-door-pages')({ cars, read, write, pageShell, contactSection, escapeHtml, vehicleCard, faqSchema });
 require('./lib/six-product-pages')({ cars, read, write, pageShell, contactSection, escapeHtml, vehicleCard, vehiclePrice, vehicleImage });
 
 console.log('Generated SEO market upgrade pages and static vehicle cards.');

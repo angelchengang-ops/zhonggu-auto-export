@@ -1,0 +1,30 @@
+.xiaoma-five-door-hub .xiaoma-hero-layout { display:grid; grid-template-columns:1.15fr .85fr; gap:40px; align-items:center; }
+.xiaoma-five-door-hub .seo-hero { padding:112px 0 48px; }
+.xiaoma-five-door-hub .seo-hero h1 { font-size:clamp(2rem,3.6vw,3.3rem); }
+.xiaoma-five-door-hub .xiaoma-hero-photo { margin:0; }
+.xiaoma-five-door-hub .xiaoma-hero-photo img { display:block; width:100%; max-height:520px; object-fit:contain; border-radius:18px; background:#e8eef2; }
+.xiaoma-five-door-hub .xiaoma-hero-photo figcaption { font-size:.875rem; margin-top:8px; color:#46576b; }
+.xiaoma-five-door-hub .seo-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.xiaoma-five-door-hub .seo-card img { width:100%; height:280px; object-fit:contain; background:#edf1f4; border-radius:10px; }
+.xiaoma-five-door-hub .seo-card p { margin:8px 0; font-size:1rem; }
+.xiaoma-five-door-hub .seo-card h3 { font-size:1.25rem; }
+.xiaoma-five-door-hub .seo-section { padding:40px 0; }
+.xiaoma-five-door-hub .table-scroll { overflow-x:auto; }
+.xiaoma-five-door-hub table { width:100%; border-collapse:collapse; }
+.xiaoma-five-door-hub th,.xiaoma-five-door-hub td { text-align:left; padding:14px; border-bottom:1px solid #d8e1e9; min-width:120px; }
+.xiaoma-five-door-hub th { background:#edf3f9; }
+.xiaoma-five-door-hub .table-scroll + .table-scroll { margin-top:24px; }
+.xiaoma-five-door-hub .faq-item { margin-bottom:12px; }
+.xiaoma-five-door-hub .faq-item summary { cursor:pointer; font-weight:600; }
+body[data-vehicle-id^="bestune-xiaoma-five-door-"] .vehicle-main-image img { object-fit:contain; max-height:600px; aspect-ratio:4 / 3; background:#edf1f4; }
+body[data-vehicle-id^="bestune-xiaoma-five-door-"] video { max-height:560px; object-fit:contain; }
+.vehicle-card[data-vehicle-id^="bestune-xiaoma-five-door-"] .vehicle-image img { object-fit:contain; background:#edf1f4; }
+@media(max-width:700px) {
+ .xiaoma-five-door-hub .xiaoma-hero-layout,.xiaoma-five-door-hub .seo-card-grid { grid-template-columns:1fr; }
+ .xiaoma-five-door-hub .xiaoma-hero-layout { gap:24px; }
+ .xiaoma-five-door-hub .seo-hero { padding:100px 0 28px; }
+ .xiaoma-five-door-hub .xiaoma-hero-photo img { max-height:420px; }
+ .xiaoma-five-door-hub th,.xiaoma-five-door-hub td { font-size:.9rem; padding:10px; }
+ .xiaoma-five-door-hub .hero-actions { display:flex; flex-wrap:wrap; gap:12px; }
+ body[data-vehicle-id^="bestune-xiaoma-five-door-"] .vehicle-main-image img { aspect-ratio:3 / 4; max-height:460px; }
+}

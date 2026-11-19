@@ -1700,5 +1700,1041 @@
       "es": "Available for export from China with FOB support"
     },
     "category": "used"
+  },
+  {
+    "id": "bestune-xiaoma-five-door-222km-kuaile",
+    "slug": "bestune-xiaoma-five-door-222km-kuaile",
+    "brand": "Bestune",
+    "model": "Bestune Xiaoma 5-Door",
+    "type": "New Car",
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "inventoryType": "brand_new_inventory",
+    "inventoryBadge": "New Model",
+    "inventoryStatus": "Confirm availability",
+    "inventoryStatusLabel": "Confirm availability",
+    "inventoryStatusDisplay": "Confirm current availability",
+    "availabilityNote": "Ask for current production, colors and delivery timing for this trim.",
+    "year": "2027",
+    "modelYear": "2027",
+    "cardTitle": "Bestune Xiaoma 5-Door 222 km Kuaile Ma",
+    "title": {
+      "en": "Bestune Xiaoma 5-Door 222 km Kuaile Ma"
+    },
+    "cardSubtitle": "CATL LFP 16.97 kWh | 222 km CLTC | 5-door",
+    "trimEn": "Kuaile Ma",
+    "configuration": "222 km Kuaile Ma 5-Door",
+    "cltcRange": "222 km",
+    "range": "222 km CLTC",
+    "price": "Price on request",
+    "fobPriceDisplay": "Price on request",
+    "priceLabel": "Export quotation",
+    "ctaLabel": "Request a Quote",
+    "location": "China",
+    "locationDisplay": "China",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "color": "Green showroom vehicle pictured; request current colors",
+    "availableColor": "Confirm colors for the selected trim",
+    "energyType": "Pure electric",
+    "fuel": "Electric",
+    "transmission": "Single-speed EV gearbox",
+    "bodyStyle": "5-door, 4-seat hatchback",
+    "seats": "4",
+    "image": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "mainImage": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "images": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+      "images/new-cars/xiaoma-five-door/rear-right.webp",
+      "images/new-cars/xiaoma-five-door/dashboard.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats.webp",
+      "images/new-cars/xiaoma-five-door/rear-left.webp"
+    ],
+    "galleryThumbnails": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-right-thumb.webp",
+      "images/new-cars/xiaoma-five-door/dashboard-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-left-thumb.webp"
+    ],
+    "galleryAltTexts": [
+      "Bestune Xiaoma five-door showroom car, front three-quarter view",
+      "Bestune Xiaoma five-door rear-right view with separate passenger doors",
+      "Bestune Xiaoma showroom dashboard and steering wheel; equipment varies by trim",
+      "Bestune Xiaoma rear seats and independent rear passenger door",
+      "Bestune Xiaoma five-door rear-left view and tailgate"
+    ],
+    "seoTitle": "Xiaoma 5-Door 222 km Kuaile Ma | CATL LFP Battery",
+    "metaDescription": "Bestune Xiaoma 5-Door 222 km Kuaile Ma: CATL LFP 16.97 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "descriptionEn": "Bestune Xiaoma 5-Door 222 km Kuaile Ma: CATL LFP 16.97 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "description": {
+      "en": "Bestune Xiaoma 5-Door 222 km Kuaile Ma: CATL LFP 16.97 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote."
+    },
+    "shortDescription": {
+      "en": "16.97 kWh CATL LFP battery. Start with the smaller battery and essential city-car equipment. The 10.1-inch center screen is optional, and ESC is not equipped on this trim."
+    },
+    "heroDescription": "CATL lithium iron phosphate battery, 16.97 kWh capacity and 222 km CLTC range. Four passenger doors make access to the rear seats straightforward. Start with the smaller battery and essential city-car equipment. The 10.1-inch center screen is optional, and ESC is not equipped on this trim.",
+    "heroHighlights": [
+      "CATL LFP battery",
+      "16.97 kWh",
+      "222 km CLTC",
+      "5 doors / 4 seats"
+    ],
+    "overviewText": "The Kuaile Ma is a five-door Xiaoma city EV. Start with the smaller battery and essential city-car equipment. The 10.1-inch center screen is optional, and ESC is not equipped on this trim. Its 3350 mm length and 2215 mm wheelbase combine a compact footprint with separate rear passenger doors. The listing covers the China-market version; confirm charging equipment and destination requirements for the actual vehicles offered.",
+    "detailSpecs": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "16.97 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "222 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      },
+      {
+        "label": "Drive",
+        "value": "Rear-wheel drive"
+      },
+      {
+        "label": "Motor power",
+        "value": "30 kW"
+      },
+      {
+        "label": "Motor torque",
+        "value": "92 Nm"
+      },
+      {
+        "label": "DC fast charging (30-80%)",
+        "value": "30 minutes (reference)"
+      },
+      {
+        "label": "AC charging (5-95%)",
+        "value": "5.1 hours (reference)"
+      },
+      {
+        "label": "Front airbags",
+        "value": "Driver and front passenger"
+      },
+      {
+        "label": "Reversing camera",
+        "value": "Standard"
+      },
+      {
+        "label": "ESC stability control",
+        "value": "Not equipped"
+      },
+      {
+        "label": "Parking brake",
+        "value": "Manual"
+      },
+      {
+        "label": "Auto Hold",
+        "value": "Not equipped"
+      },
+      {
+        "label": "Center touchscreen",
+        "value": "10.1-inch, optional"
+      },
+      {
+        "label": "Seat upholstery",
+        "value": "Fabric"
+      },
+      {
+        "label": "Tyres",
+        "value": "155/70 R13"
+      }
+    ],
+    "structuredProperties": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "16.97 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "222 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      }
+    ],
+    "detailSections": [
+      {
+        "title": "Know the Battery You Are Buying",
+        "paragraphs": [
+          "This version lists CATL cells with LFP chemistry and 16.97 kWh pack capacity. Brand, chemistry and capacity describe different aspects of the battery; they are not a cell or pack model code.",
+          "For an order requiring a specific battery model, request the battery label and vehicle configuration record for the offered unit. No unverified cell or pack code is stated here."
+        ]
+      },
+      {
+        "title": "Range and Charging in Everyday Use",
+        "paragraphs": [
+          "CLTC range is a laboratory test figure. Actual range depends on speed, load, terrain, weather and air-conditioning use. Charging times are reference figures and depend on charger output, battery temperature and state of charge.",
+          "Confirm the charging connector, AC supply requirements and included charger before ordering. Do not assume charging hardware or domestic warranty terms transfer unchanged to your destination."
+        ]
+      },
+      {
+        "title": "Real Showroom Photos",
+        "paragraphs": [
+          "The gallery shows the five-door model family, not a verified example of every trim. Equipment, colors and accessories may differ. Cushions, decorations and other display items are not included unless agreed."
+        ]
+      },
+      {
+        "title": "Buying for Ethiopia or Another Destination",
+        "paragraphs": [
+          "Send the trim, quantity, preferred colors, destination country and delivery target. Request an itemized quotation with its named port and shipping scope. For Ethiopia inquiries via Djibouti, confirm inland transport and local charges separately.",
+          "Registration and import suitability must be checked for the exact vehicle and destination before ordering."
+        ]
+      }
+    ],
+    "relatedPages": [
+      {
+        "href": "/bestune-xiaoma-five-door.html",
+        "label": "Compare All Four Five-Door Trims",
+        "description": "Compare CATL battery capacity, range and standard or optional equipment."
+      },
+      {
+        "href": "/electric-cars-from-china-to-ethiopia.html",
+        "label": "Electric Cars for Ethiopia",
+        "description": "Plan a vehicle and shipping inquiry via Djibouti."
+      },
+      {
+        "href": "/bestune-xiaoma-2026-222km-shanyaoma-edition.html",
+        "label": "Original Three-Door Xiaoma",
+        "description": "A separate model version with its own specifications and price."
+      }
+    ],
+    "contactHeading": "Request This Trim and Battery Version",
+    "contactText": "Send quantity, destination and delivery timing. We will confirm the selected specification, current availability and an itemized quotation.",
+    "contactEyebrow": "Price on request",
+    "inquiryMessage": "Please quote Bestune Xiaoma 5-Door 222 km Kuaile Ma with the 16.97 kWh CATL LFP battery. Quantity: __. Destination: __. Please confirm charging equipment, available colors and delivery timing.",
+    "specificationSource": "https://car.autohome.com.cn/config/spec/79429.html",
+    "specificationCheckedAt": "2026-11-19",
+    "videos": [
+      {
+        "src": "videos/xiaoma-five-door/showroom-walkaround.mp4",
+        "title": "Xiaoma Five-Door Showroom Walkaround",
+        "description": "Exterior and cabin of the pictured five-door showroom vehicle. Model-family reference; trim equipment and display accessories may differ. Silent video.",
+        "poster": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+        "duration": "PT38S",
+        "uploadDate": "2026-11-19T14:50:00+08:00"
+      }
+    ],
+    "detailStylesheet": "assets/css/xiaoma-five-door.css"
+  },
+  {
+    "id": "bestune-xiaoma-five-door-222km-pingan",
+    "slug": "bestune-xiaoma-five-door-222km-pingan",
+    "brand": "Bestune",
+    "model": "Bestune Xiaoma 5-Door",
+    "type": "New Car",
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "inventoryType": "brand_new_inventory",
+    "inventoryBadge": "New Model",
+    "inventoryStatus": "Confirm availability",
+    "inventoryStatusLabel": "Confirm availability",
+    "inventoryStatusDisplay": "Confirm current availability",
+    "availabilityNote": "Ask for current production, colors and delivery timing for this trim.",
+    "year": "2027",
+    "modelYear": "2027",
+    "cardTitle": "Bestune Xiaoma 5-Door 222 km Pingan Ma",
+    "title": {
+      "en": "Bestune Xiaoma 5-Door 222 km Pingan Ma"
+    },
+    "cardSubtitle": "CATL LFP 16.97 kWh | 222 km CLTC | 5-door",
+    "trimEn": "Pingan Ma",
+    "configuration": "222 km Pingan Ma 5-Door",
+    "cltcRange": "222 km",
+    "range": "222 km CLTC",
+    "price": "Price on request",
+    "fobPriceDisplay": "Price on request",
+    "priceLabel": "Export quotation",
+    "ctaLabel": "Request a Quote",
+    "location": "China",
+    "locationDisplay": "China",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "color": "Green showroom vehicle pictured; request current colors",
+    "availableColor": "Confirm colors for the selected trim",
+    "energyType": "Pure electric",
+    "fuel": "Electric",
+    "transmission": "Single-speed EV gearbox",
+    "bodyStyle": "5-door, 4-seat hatchback",
+    "seats": "4",
+    "image": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "mainImage": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "images": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+      "images/new-cars/xiaoma-five-door/rear-right.webp",
+      "images/new-cars/xiaoma-five-door/dashboard.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats.webp",
+      "images/new-cars/xiaoma-five-door/rear-left.webp"
+    ],
+    "galleryThumbnails": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-right-thumb.webp",
+      "images/new-cars/xiaoma-five-door/dashboard-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-left-thumb.webp"
+    ],
+    "galleryAltTexts": [
+      "Bestune Xiaoma five-door showroom car, front three-quarter view",
+      "Bestune Xiaoma five-door rear-right view with separate passenger doors",
+      "Bestune Xiaoma showroom dashboard and steering wheel; equipment varies by trim",
+      "Bestune Xiaoma rear seats and independent rear passenger door",
+      "Bestune Xiaoma five-door rear-left view and tailgate"
+    ],
+    "seoTitle": "Xiaoma 5-Door 222 km Pingan Ma | CATL LFP Battery",
+    "metaDescription": "Bestune Xiaoma 5-Door 222 km Pingan Ma: CATL LFP 16.97 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "descriptionEn": "Bestune Xiaoma 5-Door 222 km Pingan Ma: CATL LFP 16.97 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "description": {
+      "en": "Bestune Xiaoma 5-Door 222 km Pingan Ma: CATL LFP 16.97 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote."
+    },
+    "shortDescription": {
+      "en": "16.97 kWh CATL LFP battery. Choose the 222 km CLTC battery with standard ESC, electronic parking brake, Auto Hold and a 10.1-inch center screen."
+    },
+    "heroDescription": "CATL lithium iron phosphate battery, 16.97 kWh capacity and 222 km CLTC range. Four passenger doors make access to the rear seats straightforward. Choose the 222 km CLTC battery with standard ESC, electronic parking brake, Auto Hold and a 10.1-inch center screen.",
+    "heroHighlights": [
+      "CATL LFP battery",
+      "16.97 kWh",
+      "222 km CLTC",
+      "5 doors / 4 seats"
+    ],
+    "overviewText": "The Pingan Ma is a five-door Xiaoma city EV. Choose the 222 km CLTC battery with standard ESC, electronic parking brake, Auto Hold and a 10.1-inch center screen. Its 3350 mm length and 2215 mm wheelbase combine a compact footprint with separate rear passenger doors. The listing covers the China-market version; confirm charging equipment and destination requirements for the actual vehicles offered.",
+    "detailSpecs": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "16.97 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "222 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      },
+      {
+        "label": "Drive",
+        "value": "Rear-wheel drive"
+      },
+      {
+        "label": "Motor power",
+        "value": "30 kW"
+      },
+      {
+        "label": "Motor torque",
+        "value": "92 Nm"
+      },
+      {
+        "label": "DC fast charging (30-80%)",
+        "value": "30 minutes (reference)"
+      },
+      {
+        "label": "AC charging (5-95%)",
+        "value": "5.1 hours (reference)"
+      },
+      {
+        "label": "Front airbags",
+        "value": "Driver and front passenger"
+      },
+      {
+        "label": "Reversing camera",
+        "value": "Standard"
+      },
+      {
+        "label": "ESC stability control",
+        "value": "Standard"
+      },
+      {
+        "label": "Parking brake",
+        "value": "Electronic"
+      },
+      {
+        "label": "Auto Hold",
+        "value": "Standard"
+      },
+      {
+        "label": "Center touchscreen",
+        "value": "10.1-inch, standard"
+      },
+      {
+        "label": "Seat upholstery",
+        "value": "Fabric standard; imitation leather optional"
+      },
+      {
+        "label": "Tyres",
+        "value": "155/65 R14"
+      }
+    ],
+    "structuredProperties": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "16.97 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "222 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      }
+    ],
+    "detailSections": [
+      {
+        "title": "Know the Battery You Are Buying",
+        "paragraphs": [
+          "This version lists CATL cells with LFP chemistry and 16.97 kWh pack capacity. Brand, chemistry and capacity describe different aspects of the battery; they are not a cell or pack model code.",
+          "For an order requiring a specific battery model, request the battery label and vehicle configuration record for the offered unit. No unverified cell or pack code is stated here."
+        ]
+      },
+      {
+        "title": "Range and Charging in Everyday Use",
+        "paragraphs": [
+          "CLTC range is a laboratory test figure. Actual range depends on speed, load, terrain, weather and air-conditioning use. Charging times are reference figures and depend on charger output, battery temperature and state of charge.",
+          "Confirm the charging connector, AC supply requirements and included charger before ordering. Do not assume charging hardware or domestic warranty terms transfer unchanged to your destination."
+        ]
+      },
+      {
+        "title": "Real Showroom Photos",
+        "paragraphs": [
+          "The gallery shows the five-door model family, not a verified example of every trim. Equipment, colors and accessories may differ. Cushions, decorations and other display items are not included unless agreed."
+        ]
+      },
+      {
+        "title": "Buying for Ethiopia or Another Destination",
+        "paragraphs": [
+          "Send the trim, quantity, preferred colors, destination country and delivery target. Request an itemized quotation with its named port and shipping scope. For Ethiopia inquiries via Djibouti, confirm inland transport and local charges separately.",
+          "Registration and import suitability must be checked for the exact vehicle and destination before ordering."
+        ]
+      }
+    ],
+    "relatedPages": [
+      {
+        "href": "/bestune-xiaoma-five-door.html",
+        "label": "Compare All Four Five-Door Trims",
+        "description": "Compare CATL battery capacity, range and standard or optional equipment."
+      },
+      {
+        "href": "/electric-cars-from-china-to-ethiopia.html",
+        "label": "Electric Cars for Ethiopia",
+        "description": "Plan a vehicle and shipping inquiry via Djibouti."
+      },
+      {
+        "href": "/bestune-xiaoma-2026-222km-shanyaoma-edition.html",
+        "label": "Original Three-Door Xiaoma",
+        "description": "A separate model version with its own specifications and price."
+      }
+    ],
+    "contactHeading": "Request This Trim and Battery Version",
+    "contactText": "Send quantity, destination and delivery timing. We will confirm the selected specification, current availability and an itemized quotation.",
+    "contactEyebrow": "Price on request",
+    "inquiryMessage": "Please quote Bestune Xiaoma 5-Door 222 km Pingan Ma with the 16.97 kWh CATL LFP battery. Quantity: __. Destination: __. Please confirm charging equipment, available colors and delivery timing.",
+    "specificationSource": "https://car.autohome.com.cn/config/spec/79622.html",
+    "specificationCheckedAt": "2026-11-19",
+    "videos": [
+      {
+        "src": "videos/xiaoma-five-door/showroom-walkaround.mp4",
+        "title": "Xiaoma Five-Door Showroom Walkaround",
+        "description": "Exterior and cabin of the pictured five-door showroom vehicle. Model-family reference; trim equipment and display accessories may differ. Silent video.",
+        "poster": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+        "duration": "PT38S",
+        "uploadDate": "2026-11-19T14:50:00+08:00"
+      }
+    ],
+    "detailStylesheet": "assets/css/xiaoma-five-door.css"
+  },
+  {
+    "id": "bestune-xiaoma-five-door-328km-chengyi",
+    "slug": "bestune-xiaoma-five-door-328km-chengyi",
+    "brand": "Bestune",
+    "model": "Bestune Xiaoma 5-Door",
+    "type": "New Car",
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "inventoryType": "brand_new_inventory",
+    "inventoryBadge": "New Model",
+    "inventoryStatus": "Confirm availability",
+    "inventoryStatusLabel": "Confirm availability",
+    "inventoryStatusDisplay": "Confirm current availability",
+    "availabilityNote": "Ask for current production, colors and delivery timing for this trim.",
+    "year": "2027",
+    "modelYear": "2027",
+    "cardTitle": "Bestune Xiaoma 5-Door 328 km Chengyi Ma",
+    "title": {
+      "en": "Bestune Xiaoma 5-Door 328 km Chengyi Ma"
+    },
+    "cardSubtitle": "CATL LFP 27.19 kWh | 328 km CLTC | 5-door",
+    "trimEn": "Chengyi Ma",
+    "configuration": "328 km Chengyi Ma 5-Door",
+    "cltcRange": "328 km",
+    "range": "328 km CLTC",
+    "price": "Price on request",
+    "fobPriceDisplay": "Price on request",
+    "priceLabel": "Export quotation",
+    "ctaLabel": "Request a Quote",
+    "location": "China",
+    "locationDisplay": "China",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "color": "Green showroom vehicle pictured; request current colors",
+    "availableColor": "Confirm colors for the selected trim",
+    "energyType": "Pure electric",
+    "fuel": "Electric",
+    "transmission": "Single-speed EV gearbox",
+    "bodyStyle": "5-door, 4-seat hatchback",
+    "seats": "4",
+    "image": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "mainImage": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "images": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+      "images/new-cars/xiaoma-five-door/rear-right.webp",
+      "images/new-cars/xiaoma-five-door/dashboard.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats.webp",
+      "images/new-cars/xiaoma-five-door/rear-left.webp"
+    ],
+    "galleryThumbnails": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-right-thumb.webp",
+      "images/new-cars/xiaoma-five-door/dashboard-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-left-thumb.webp"
+    ],
+    "galleryAltTexts": [
+      "Bestune Xiaoma five-door showroom car, front three-quarter view",
+      "Bestune Xiaoma five-door rear-right view with separate passenger doors",
+      "Bestune Xiaoma showroom dashboard and steering wheel; equipment varies by trim",
+      "Bestune Xiaoma rear seats and independent rear passenger door",
+      "Bestune Xiaoma five-door rear-left view and tailgate"
+    ],
+    "seoTitle": "Xiaoma 5-Door 328 km Chengyi Ma | CATL LFP Battery",
+    "metaDescription": "Bestune Xiaoma 5-Door 328 km Chengyi Ma: CATL LFP 27.19 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "descriptionEn": "Bestune Xiaoma 5-Door 328 km Chengyi Ma: CATL LFP 27.19 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "description": {
+      "en": "Bestune Xiaoma 5-Door 328 km Chengyi Ma: CATL LFP 27.19 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote."
+    },
+    "shortDescription": {
+      "en": "27.19 kWh CATL LFP battery. Choose the larger battery with a simpler equipment specification. ESC and the center screen are optional; confirm package compatibility and pricing before ordering."
+    },
+    "heroDescription": "CATL lithium iron phosphate battery, 27.19 kWh capacity and 328 km CLTC range. Four passenger doors make access to the rear seats straightforward. Choose the larger battery with a simpler equipment specification. ESC and the center screen are optional; confirm package compatibility and pricing before ordering.",
+    "heroHighlights": [
+      "CATL LFP battery",
+      "27.19 kWh",
+      "328 km CLTC",
+      "5 doors / 4 seats"
+    ],
+    "overviewText": "The Chengyi Ma is a five-door Xiaoma city EV. Choose the larger battery with a simpler equipment specification. ESC and the center screen are optional; confirm package compatibility and pricing before ordering. Its 3350 mm length and 2215 mm wheelbase combine a compact footprint with separate rear passenger doors. The listing covers the China-market version; confirm charging equipment and destination requirements for the actual vehicles offered.",
+    "detailSpecs": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "27.19 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "328 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      },
+      {
+        "label": "Drive",
+        "value": "Rear-wheel drive"
+      },
+      {
+        "label": "Motor power",
+        "value": "30 kW"
+      },
+      {
+        "label": "Motor torque",
+        "value": "92 Nm"
+      },
+      {
+        "label": "DC fast charging (30-80%)",
+        "value": "35 minutes (reference)"
+      },
+      {
+        "label": "AC charging (5-95%)",
+        "value": "7.7 hours (reference)"
+      },
+      {
+        "label": "Front airbags",
+        "value": "Driver and front passenger"
+      },
+      {
+        "label": "Reversing camera",
+        "value": "Standard"
+      },
+      {
+        "label": "ESC stability control",
+        "value": "Optional; confirm package"
+      },
+      {
+        "label": "Parking brake",
+        "value": "Manual; electronic optional"
+      },
+      {
+        "label": "Auto Hold",
+        "value": "Optional; confirm package"
+      },
+      {
+        "label": "Center touchscreen",
+        "value": "10.1-inch, optional"
+      },
+      {
+        "label": "Seat upholstery",
+        "value": "Fabric"
+      },
+      {
+        "label": "Tyres",
+        "value": "155/70 R13"
+      }
+    ],
+    "structuredProperties": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "27.19 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "328 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      }
+    ],
+    "detailSections": [
+      {
+        "title": "Know the Battery You Are Buying",
+        "paragraphs": [
+          "This version lists CATL cells with LFP chemistry and 27.19 kWh pack capacity. Brand, chemistry and capacity describe different aspects of the battery; they are not a cell or pack model code.",
+          "For an order requiring a specific battery model, request the battery label and vehicle configuration record for the offered unit. No unverified cell or pack code is stated here."
+        ]
+      },
+      {
+        "title": "Range and Charging in Everyday Use",
+        "paragraphs": [
+          "CLTC range is a laboratory test figure. Actual range depends on speed, load, terrain, weather and air-conditioning use. Charging times are reference figures and depend on charger output, battery temperature and state of charge.",
+          "Confirm the charging connector, AC supply requirements and included charger before ordering. Do not assume charging hardware or domestic warranty terms transfer unchanged to your destination."
+        ]
+      },
+      {
+        "title": "Real Showroom Photos",
+        "paragraphs": [
+          "The gallery shows the five-door model family, not a verified example of every trim. Equipment, colors and accessories may differ. Cushions, decorations and other display items are not included unless agreed."
+        ]
+      },
+      {
+        "title": "Buying for Ethiopia or Another Destination",
+        "paragraphs": [
+          "Send the trim, quantity, preferred colors, destination country and delivery target. Request an itemized quotation with its named port and shipping scope. For Ethiopia inquiries via Djibouti, confirm inland transport and local charges separately.",
+          "Registration and import suitability must be checked for the exact vehicle and destination before ordering."
+        ]
+      }
+    ],
+    "relatedPages": [
+      {
+        "href": "/bestune-xiaoma-five-door.html",
+        "label": "Compare All Four Five-Door Trims",
+        "description": "Compare CATL battery capacity, range and standard or optional equipment."
+      },
+      {
+        "href": "/electric-cars-from-china-to-ethiopia.html",
+        "label": "Electric Cars for Ethiopia",
+        "description": "Plan a vehicle and shipping inquiry via Djibouti."
+      },
+      {
+        "href": "/bestune-xiaoma-2026-222km-shanyaoma-edition.html",
+        "label": "Original Three-Door Xiaoma",
+        "description": "A separate model version with its own specifications and price."
+      }
+    ],
+    "contactHeading": "Request This Trim and Battery Version",
+    "contactText": "Send quantity, destination and delivery timing. We will confirm the selected specification, current availability and an itemized quotation.",
+    "contactEyebrow": "Price on request",
+    "inquiryMessage": "Please quote Bestune Xiaoma 5-Door 328 km Chengyi Ma with the 27.19 kWh CATL LFP battery. Quantity: __. Destination: __. Please confirm charging equipment, available colors and delivery timing.",
+    "specificationSource": "https://car.autohome.com.cn/config/spec/79623.html",
+    "specificationCheckedAt": "2026-11-19",
+    "videos": [
+      {
+        "src": "videos/xiaoma-five-door/showroom-walkaround.mp4",
+        "title": "Xiaoma Five-Door Showroom Walkaround",
+        "description": "Exterior and cabin of the pictured five-door showroom vehicle. Model-family reference; trim equipment and display accessories may differ. Silent video.",
+        "poster": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+        "duration": "PT38S",
+        "uploadDate": "2026-11-19T14:50:00+08:00"
+      }
+    ],
+    "detailStylesheet": "assets/css/xiaoma-five-door.css"
+  },
+  {
+    "id": "bestune-xiaoma-five-door-328km-ruyi",
+    "slug": "bestune-xiaoma-five-door-328km-ruyi",
+    "brand": "Bestune",
+    "model": "Bestune Xiaoma 5-Door",
+    "type": "New Car",
+    "category": "new",
+    "condition": "new",
+    "isUsed": false,
+    "detailPageVariant": "new_car_gallery",
+    "multiImageGallery": true,
+    "vehicleType": "Brand New Car",
+    "inventoryType": "brand_new_inventory",
+    "inventoryBadge": "New Model",
+    "inventoryStatus": "Confirm availability",
+    "inventoryStatusLabel": "Confirm availability",
+    "inventoryStatusDisplay": "Confirm current availability",
+    "availabilityNote": "Ask for current production, colors and delivery timing for this trim.",
+    "year": "2027",
+    "modelYear": "2027",
+    "cardTitle": "Bestune Xiaoma 5-Door 328 km Ruyi Ma",
+    "title": {
+      "en": "Bestune Xiaoma 5-Door 328 km Ruyi Ma"
+    },
+    "cardSubtitle": "CATL LFP 27.19 kWh | 328 km CLTC | 5-door",
+    "trimEn": "Ruyi Ma",
+    "configuration": "328 km Ruyi Ma 5-Door",
+    "cltcRange": "328 km",
+    "range": "328 km CLTC",
+    "price": "Price on request",
+    "fobPriceDisplay": "Price on request",
+    "priceLabel": "Export quotation",
+    "ctaLabel": "Request a Quote",
+    "location": "China",
+    "locationDisplay": "China",
+    "mileage": "New vehicle; delivery mileage may vary",
+    "color": "Green showroom vehicle pictured; request current colors",
+    "availableColor": "Confirm colors for the selected trim",
+    "energyType": "Pure electric",
+    "fuel": "Electric",
+    "transmission": "Single-speed EV gearbox",
+    "bodyStyle": "5-door, 4-seat hatchback",
+    "seats": "4",
+    "image": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "mainImage": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "images": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+      "images/new-cars/xiaoma-five-door/rear-right.webp",
+      "images/new-cars/xiaoma-five-door/dashboard.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats.webp",
+      "images/new-cars/xiaoma-five-door/rear-left.webp"
+    ],
+    "galleryThumbnails": [
+      "images/new-cars/xiaoma-five-door/front-three-quarter-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-right-thumb.webp",
+      "images/new-cars/xiaoma-five-door/dashboard-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-seats-thumb.webp",
+      "images/new-cars/xiaoma-five-door/rear-left-thumb.webp"
+    ],
+    "galleryAltTexts": [
+      "Bestune Xiaoma five-door showroom car, front three-quarter view",
+      "Bestune Xiaoma five-door rear-right view with separate passenger doors",
+      "Bestune Xiaoma showroom dashboard and steering wheel; equipment varies by trim",
+      "Bestune Xiaoma rear seats and independent rear passenger door",
+      "Bestune Xiaoma five-door rear-left view and tailgate"
+    ],
+    "seoTitle": "Xiaoma 5-Door 328 km Ruyi Ma | CATL LFP Battery",
+    "metaDescription": "Bestune Xiaoma 5-Door 328 km Ruyi Ma: CATL LFP 27.19 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "descriptionEn": "Bestune Xiaoma 5-Door 328 km Ruyi Ma: CATL LFP 27.19 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote.",
+    "description": {
+      "en": "Bestune Xiaoma 5-Door 328 km Ruyi Ma: CATL LFP 27.19 kWh battery, four seats and independent rear doors. Compare equipment and request an export quote."
+    },
+    "shortDescription": {
+      "en": "27.19 kWh CATL LFP battery. Pair the larger battery with standard ESC, electronic parking brake, Auto Hold and a 10.1-inch center screen. Imitation-leather upholstery remains optional."
+    },
+    "heroDescription": "CATL lithium iron phosphate battery, 27.19 kWh capacity and 328 km CLTC range. Four passenger doors make access to the rear seats straightforward. Pair the larger battery with standard ESC, electronic parking brake, Auto Hold and a 10.1-inch center screen. Imitation-leather upholstery remains optional.",
+    "heroHighlights": [
+      "CATL LFP battery",
+      "27.19 kWh",
+      "328 km CLTC",
+      "5 doors / 4 seats"
+    ],
+    "overviewText": "The Ruyi Ma is a five-door Xiaoma city EV. Pair the larger battery with standard ESC, electronic parking brake, Auto Hold and a 10.1-inch center screen. Imitation-leather upholstery remains optional. Its 3350 mm length and 2215 mm wheelbase combine a compact footprint with separate rear passenger doors. The listing covers the China-market version; confirm charging equipment and destination requirements for the actual vehicles offered.",
+    "detailSpecs": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "27.19 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "328 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      },
+      {
+        "label": "Drive",
+        "value": "Rear-wheel drive"
+      },
+      {
+        "label": "Motor power",
+        "value": "30 kW"
+      },
+      {
+        "label": "Motor torque",
+        "value": "92 Nm"
+      },
+      {
+        "label": "DC fast charging (30-80%)",
+        "value": "35 minutes (reference)"
+      },
+      {
+        "label": "AC charging (5-95%)",
+        "value": "7.7 hours (reference)"
+      },
+      {
+        "label": "Front airbags",
+        "value": "Driver and front passenger"
+      },
+      {
+        "label": "Reversing camera",
+        "value": "Standard"
+      },
+      {
+        "label": "ESC stability control",
+        "value": "Standard"
+      },
+      {
+        "label": "Parking brake",
+        "value": "Electronic"
+      },
+      {
+        "label": "Auto Hold",
+        "value": "Standard"
+      },
+      {
+        "label": "Center touchscreen",
+        "value": "10.1-inch, standard"
+      },
+      {
+        "label": "Seat upholstery",
+        "value": "Fabric standard; imitation leather optional"
+      },
+      {
+        "label": "Tyres",
+        "value": "155/65 R14"
+      }
+    ],
+    "structuredProperties": [
+      {
+        "label": "Battery cell brand",
+        "value": "CATL (Contemporary Amperex Technology)"
+      },
+      {
+        "label": "Battery chemistry",
+        "value": "Lithium iron phosphate (LFP)"
+      },
+      {
+        "label": "Battery capacity",
+        "value": "27.19 kWh"
+      },
+      {
+        "label": "CLTC electric range",
+        "value": "328 km"
+      },
+      {
+        "label": "Dimensions (L x W x H)",
+        "value": "3350 x 1540 x 1600 mm"
+      },
+      {
+        "label": "Wheelbase",
+        "value": "2215 mm"
+      },
+      {
+        "label": "Body structure",
+        "value": "5-door, 4-seat hatchback"
+      }
+    ],
+    "detailSections": [
+      {
+        "title": "Know the Battery You Are Buying",
+        "paragraphs": [
+          "This version lists CATL cells with LFP chemistry and 27.19 kWh pack capacity. Brand, chemistry and capacity describe different aspects of the battery; they are not a cell or pack model code.",
+          "For an order requiring a specific battery model, request the battery label and vehicle configuration record for the offered unit. No unverified cell or pack code is stated here."
+        ]
+      },
+      {
+        "title": "Range and Charging in Everyday Use",
+        "paragraphs": [
+          "CLTC range is a laboratory test figure. Actual range depends on speed, load, terrain, weather and air-conditioning use. Charging times are reference figures and depend on charger output, battery temperature and state of charge.",
+          "Confirm the charging connector, AC supply requirements and included charger before ordering. Do not assume charging hardware or domestic warranty terms transfer unchanged to your destination."
+        ]
+      },
+      {
+        "title": "Real Showroom Photos",
+        "paragraphs": [
+          "The gallery shows the five-door model family, not a verified example of every trim. Equipment, colors and accessories may differ. Cushions, decorations and other display items are not included unless agreed."
+        ]
+      },
+      {
+        "title": "Buying for Ethiopia or Another Destination",
+        "paragraphs": [
+          "Send the trim, quantity, preferred colors, destination country and delivery target. Request an itemized quotation with its named port and shipping scope. For Ethiopia inquiries via Djibouti, confirm inland transport and local charges separately.",
+          "Registration and import suitability must be checked for the exact vehicle and destination before ordering."
+        ]
+      }
+    ],
+    "relatedPages": [
+      {
+        "href": "/bestune-xiaoma-five-door.html",
+        "label": "Compare All Four Five-Door Trims",
+        "description": "Compare CATL battery capacity, range and standard or optional equipment."
+      },
+      {
+        "href": "/electric-cars-from-china-to-ethiopia.html",
+        "label": "Electric Cars for Ethiopia",
+        "description": "Plan a vehicle and shipping inquiry via Djibouti."
+      },
+      {
+        "href": "/bestune-xiaoma-2026-222km-shanyaoma-edition.html",
+        "label": "Original Three-Door Xiaoma",
+        "description": "A separate model version with its own specifications and price."
+      }
+    ],
+    "contactHeading": "Request This Trim and Battery Version",
+    "contactText": "Send quantity, destination and delivery timing. We will confirm the selected specification, current availability and an itemized quotation.",
+    "contactEyebrow": "Price on request",
+    "inquiryMessage": "Please quote Bestune Xiaoma 5-Door 328 km Ruyi Ma with the 27.19 kWh CATL LFP battery. Quantity: __. Destination: __. Please confirm charging equipment, available colors and delivery timing.",
+    "specificationSource": "https://car.autohome.com.cn/config/spec/79464.html",
+    "specificationCheckedAt": "2026-11-19",
+    "videos": [
+      {
+        "src": "videos/xiaoma-five-door/showroom-walkaround.mp4",
+        "title": "Xiaoma Five-Door Showroom Walkaround",
+        "description": "Exterior and cabin of the pictured five-door showroom vehicle. Model-family reference; trim equipment and display accessories may differ. Silent video.",
+        "poster": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+        "duration": "PT38S",
+        "uploadDate": "2026-11-19T14:50:00+08:00"
+      }
+    ],
+    "detailStylesheet": "assets/css/xiaoma-five-door.css"
   }
 ]

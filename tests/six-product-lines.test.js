@@ -8,7 +8,13 @@ const cars=JSON.parse(read('cars.json'));
 const priceApproval=require('../ops/seo/2026-11-18-coolray-price-adjustment.json');
 const correctedPrices=require('../ops/seo/2026-11-18-coolray-price-correction.json').changes.filter(c=>c.file==='cars.json');
 const listingChanges=require('../ops/seo/2026-11-18-mg5-listing-clarification.json').changes.filter(c=>c.file==='cars.json');
-const listingBaseline=cars.map(car=>{const c=listingChanges.find(c=>c.id===car.id);if(!c)return car;assert.deepEqual(car,c.after);return c.before;});
+const xiaomaChange=require('../ops/seo/2026-11-19-xiaoma-five-door-data.json');
+const beforeXiaoma=cars.filter(car=>!xiaomaChange.addedIds.includes(car.id)).map(car=>{
+  if(car.id!==xiaomaChange.existingChange.after.id)return car;
+  assert.deepEqual(car,xiaomaChange.existingChange.after);
+  return xiaomaChange.existingChange.before;
+});
+const listingBaseline=beforeXiaoma.map(car=>{const c=listingChanges.find(c=>c.id===car.id);if(!c)return car;assert.deepEqual(car,c.after);return c.before;});
 const correctedBaseline=listingBaseline.map(car=>{const c=correctedPrices.find(c=>c.id===car.id);if(!c)return car;assert.deepEqual(car,c.after);return c.before;});
 const approvedPriceChanges=priceApproval.changes.filter(c=>c.file==='cars.json');
 const fileFor=p=>p.endsWith('/')?p.slice(1)+'index.html':p.replace(/^\//,'');
@@ -56,7 +62,9 @@ test('used BEV empty state has useful sourcing form and no invented Product or O
   for(const alias of ['/used-electric-cars-from-china','/used-electric-cars-from-china/']) assert.ok(read('_redirects').includes(alias+' /used-electric-cars-from-china.html 301!'));
 });
 test('catalogue and vehicle media preserve the baseline; approved landing placeholders use exact replacements',()=>{
-  assert.equal(cars.length,baseline.vehicleCount);
+  assert.equal(beforeXiaoma.length,baseline.vehicleCount);
+  assert.deepEqual(cars.filter(c=>xiaomaChange.addedIds.includes(c.id)),xiaomaChange.addedCars);
+  assert.equal(cars.length,baseline.vehicleCount+4);
   const restored=correctedBaseline.map(car=>{const change=approvedPriceChanges.find(c=>c.id===car.id);if(!change)return car;assert.deepEqual(car,change.after);return change.before;});
   assert.equal(priceApproval.originalCarsSha256,baseline.carsSha256);
   assert.equal(crypto.createHash('sha256').update(JSON.stringify(restored)).digest('hex'),priceApproval.originalNormalizedCarsSha256);

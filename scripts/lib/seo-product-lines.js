@@ -4,7 +4,7 @@ const lines = [
   { id: 'coolray', label: 'Geely Coolray / Binyue', path: '/landing/geely-coolray-exporter-china/', note: 'Compare trims, prices and Nansha stock checks.' },
   { id: 'b70', label: 'Used Bestune B70', path: '/used-bestune-b70-wholesale.html', note: 'Compare 2021–2023 petrol batch listings.' },
   { id: 'yueyi03', label: 'Bestune Yueyi 03 / JoyEE 03', path: '/bestune-yueyi-03-wholesale.html', note: 'Compare the listed 445 km and 565 km CLTC EVs.' },
-  { id: 'xiaoma', label: 'Bestune Xiaoma', path: '/bestune-xiaoma-2026-222km-shanyaoma-edition.html', note: 'Review the 2026 222 km CLTC city EV.' },
+  { id: 'xiaoma', label: 'Bestune Xiaoma 5-Door', path: '/bestune-xiaoma-five-door.html', note: 'Compare four trims, CATL LFP batteries and 222 / 328 km CLTC range.' },
   { id: 'yueyi07', label: 'Used Bestune Yueyi 07 PHEV', path: '/used-bestune-yueyi-07-phev-export.html', note: 'Review the 2025 plug-in hybrid listing.' },
   { id: 'usedBev', label: 'Used Electric Cars', path: '/used-electric-cars-from-china.html', note: 'Submit a BEV sourcing request; no verified public stock currently listed.' }
 ];

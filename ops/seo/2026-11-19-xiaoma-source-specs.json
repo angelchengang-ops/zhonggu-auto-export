@@ -1,0 +1,365 @@
+{
+  "url": "https://car.autohome.com.cn/config/spec/79622.html",
+  "checkedAt": "2026-11-19",
+  "method": "Normal desktop Chrome rendered configuration table, including standard/optional markers",
+  "modelYear": "2027",
+  "columnOrder": [
+    "Pingan Ma",
+    "Kuaile Ma",
+    "Chengyi Ma",
+    "Ruyi Ma"
+  ],
+  "rows": [
+    [
+      {
+        "text": "CLTC纯电续航里程(km)",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "222",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "222",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "328",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "328",
+        "standard": 0,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "长*宽*高(mm)",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "3350*1540*1600",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "3350*1540*1600",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "3350*1540*1600",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "3350*1540*1600",
+        "standard": 0,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "轴距(mm)",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "2215",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "2215",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "2215",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "2215",
+        "standard": 0,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "电池类型",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "磷酸铁锂电池",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "磷酸铁锂电池",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "磷酸铁锂电池",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "磷酸铁锂电池",
+        "standard": 1,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "电芯品牌",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "宁德时代",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "宁德时代",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "宁德时代",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "宁德时代",
+        "standard": 1,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "CLTC纯电续航里程(km)",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "222",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "222",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "328",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "328",
+        "standard": 0,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "电池能量(kWh)",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "16.97",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "16.97",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "27.19",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "27.19",
+        "standard": 0,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "电池快充时间(分钟)",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "30",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "30",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "35",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "35",
+        "standard": 0,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "驻车制动类型",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "电子驻车",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "手刹",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "手刹电子驻车",
+        "standard": 1,
+        "optional": 1
+      },
+      {
+        "text": "电子驻车",
+        "standard": 1,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "车身稳定控制(ESC/ESP/DSC等)",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "-",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "",
+        "standard": 0,
+        "optional": 1
+      },
+      {
+        "text": "",
+        "standard": 1,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "自动驻车",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "-",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "",
+        "standard": 0,
+        "optional": 1
+      },
+      {
+        "text": "",
+        "standard": 1,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "中控屏幕尺寸",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "10.1英寸",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "10.1英寸",
+        "standard": 0,
+        "optional": 1
+      },
+      {
+        "text": "10.1英寸",
+        "standard": 0,
+        "optional": 1
+      },
+      {
+        "text": "10.1英寸",
+        "standard": 1,
+        "optional": 0
+      }
+    ],
+    [
+      {
+        "text": "座椅材质",
+        "standard": 0,
+        "optional": 0
+      },
+      {
+        "text": "织物仿皮",
+        "standard": 1,
+        "optional": 1
+      },
+      {
+        "text": "织物",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "织物",
+        "standard": 1,
+        "optional": 0
+      },
+      {
+        "text": "织物仿皮",
+        "standard": 1,
+        "optional": 1
+      }
+    ]
+  ]
+}

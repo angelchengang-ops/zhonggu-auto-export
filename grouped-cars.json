@@ -1220,5 +1220,77 @@
       "es": "Available for export from China with FOB support"
     },
     "category": "new"
+  },
+  {
+    "id": "bestune-xiaoma-five-door",
+    "brand": "Bestune",
+    "model": "Bestune Xiaoma 5-Door",
+    "chineseSeriesName": "奔腾小马五门版",
+    "modelYear": "2027",
+    "image": "images/new-cars/xiaoma-five-door/front-three-quarter.webp",
+    "detailUrl": "/bestune-xiaoma-five-door.html",
+    "fobRange": "Price on request",
+    "trims": [
+      {
+        "trimName": "222 km Kuaile Ma 5-Door",
+        "fobPriceDisplay": "Price on request",
+        "fuel": "Electric",
+        "transmission": "Single-speed EV gearbox",
+        "keyFeatures": [
+          "CATL LFP battery",
+          "16.97 kWh",
+          "222 km CLTC",
+          "5 doors / 4 seats"
+        ],
+        "vehicleId": "bestune-xiaoma-five-door-222km-kuaile",
+        "detailUrl": "/bestune-xiaoma-five-door-222km-kuaile.html",
+        "options": []
+      },
+      {
+        "trimName": "222 km Pingan Ma 5-Door",
+        "fobPriceDisplay": "Price on request",
+        "fuel": "Electric",
+        "transmission": "Single-speed EV gearbox",
+        "keyFeatures": [
+          "CATL LFP battery",
+          "16.97 kWh",
+          "222 km CLTC",
+          "5 doors / 4 seats"
+        ],
+        "vehicleId": "bestune-xiaoma-five-door-222km-pingan",
+        "detailUrl": "/bestune-xiaoma-five-door-222km-pingan.html",
+        "options": []
+      },
+      {
+        "trimName": "328 km Chengyi Ma 5-Door",
+        "fobPriceDisplay": "Price on request",
+        "fuel": "Electric",
+        "transmission": "Single-speed EV gearbox",
+        "keyFeatures": [
+          "CATL LFP battery",
+          "27.19 kWh",
+          "328 km CLTC",
+          "5 doors / 4 seats"
+        ],
+        "vehicleId": "bestune-xiaoma-five-door-328km-chengyi",
+        "detailUrl": "/bestune-xiaoma-five-door-328km-chengyi.html",
+        "options": []
+      },
+      {
+        "trimName": "328 km Ruyi Ma 5-Door",
+        "fobPriceDisplay": "Price on request",
+        "fuel": "Electric",
+        "transmission": "Single-speed EV gearbox",
+        "keyFeatures": [
+          "CATL LFP battery",
+          "27.19 kWh",
+          "328 km CLTC",
+          "5 doors / 4 seats"
+        ],
+        "vehicleId": "bestune-xiaoma-five-door-328km-ruyi",
+        "detailUrl": "/bestune-xiaoma-five-door-328km-ruyi.html",
+        "options": []
+      }
+    ]
   }
 ]
