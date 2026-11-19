@@ -7,8 +7,9 @@ const terminal = new Set(["delivered", "failed", "uncertain"]);
 
 async function openStore(event) {
   const { getStore, connectLambda } = await import("netlify-notification-blobs");
-  if (event?.blobs) connectLambda(event);
-  return getStore({ name: "zhonggu-dingtalk-outbox", consistency: "strong" });
+  if (event?.blobs && !process.env.NETLIFY_BLOBS_CONTEXT && !globalThis.netlifyBlobsContext) connectLambda(event);
+  // Atomic conditional writes arbitrate claims even if a cached read sees an old version.
+  return getStore("zhonggu-dingtalk-outbox");
 }
 
 function createOutbox(store, transport = ding, now = Date.now) {
@@ -25,9 +26,9 @@ function createOutbox(store, transport = ding, now = Date.now) {
     return { ...job, state: "queued", taskId: null, due: now() + backoff[job.attempts - 1] * minute };
   }
 
-  async function process(key) {
+  async function process(key, fresh) {
     const name = "jobs/" + key;
-    const current = await get(name);
+    const current = fresh ?? await get(name);
     if (!current) return;
     const job = current.data;
     if (terminal.has(job.state)) {
@@ -95,14 +96,15 @@ function createOutbox(store, transport = ding, now = Date.now) {
     const name = "jobs/" + key;
     // Write the index first so an interrupted invocation cannot leave an unindexed job.
     await store.setJSON("pending/" + key, { createdAt: now() }, { onlyIfNew: true });
-    await store.setJSON(name, {
+    const job = {
       state: "queued", attempts: 0, due: now(), lead: {
         id: lead.id, name: String(lead.name || "").slice(0, 100), country: String(lead.country || "").slice(0, 80),
         vehicle: String(lead.vehicle || "").slice(0, 150), message: String(lead.message || "").slice(0, 500),
         whatsapp: lead.whatsapp
       }
-    }, { onlyIfNew: true });
-    await process(key);
+    };
+    const written = await store.setJSON(name, job, { onlyIfNew: true });
+    await process(key, written.modified && written.etag ? { data: job, etag: written.etag } : undefined);
   }
 
   async function sweep() {
@@ -113,9 +115,10 @@ function createOutbox(store, transport = ding, now = Date.now) {
       for (let start = 0; start < page.blobs.length && now() < deadline; start += 4) {
         const results = await Promise.allSettled(page.blobs.slice(start, start + 4).map(async ({ key }) => {
           const id = key.slice("pending/".length);
-          if (await get("jobs/" + id)) return process(id);
+          const current = await get("jobs/" + id);
+          if (current) return process(id, current);
           const marker = await get(key);
-          if (marker && now() - marker.data.createdAt >= 60 * minute && !await get("jobs/" + id)) await store.delete(key);
+          if (marker && now() - marker.data.createdAt >= 24 * 60 * minute && !await get("jobs/" + id)) await store.delete(key);
         }));
         checked += results.length;
         errors += results.filter(result => result.status === "rejected").length;
