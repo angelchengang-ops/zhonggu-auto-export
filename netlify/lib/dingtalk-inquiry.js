@@ -28,6 +28,9 @@ async function notifyInquiry(lead) {
   const auth = await post("https://api.dingtalk.com/v1.0/oauth2/accessToken", { appKey, appSecret }, signal);
   if (!auth.accessToken) throw new Error("DingTalk authentication failed");
 
+  const phone = String(lead.whatsapp || "");
+  if (!/^[1-9][0-9]{6,14}$/.test(phone)) throw new Error("Invalid WhatsApp number");
+
   const heading = "中谷网站新询盘";
   const id = cardText(lead.id, 100);
   const summary = [
@@ -35,10 +38,9 @@ async function notifyInquiry(lead) {
     "国家：" + (cardText(lead.country, 60) || "未填写"),
     "车型：" + (cardText(lead.vehicle, 120) || "未填写"),
     "留言：" + (cardText(lead.message, 320) || "未填写"),
+    "WhatsApp：+" + phone,
     "编号：" + id
   ];
-  const crmUrl = new URL("https://zhongguauto.com/admin/inquiries.html");
-  crmUrl.searchParams.set("q", lead.id);
   const endpoint = new URL("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
   endpoint.searchParams.set("access_token", auth.accessToken);
   const result = await post(endpoint, {
@@ -50,8 +52,8 @@ async function notifyInquiry(lead) {
       action_card: {
         title: heading + " · " + id.slice(0, 40),
         markdown: "### " + heading + "\n\n" + summary.join("\n\n"),
-        single_title: "查看 CRM 询盘",
-        single_url: crmUrl.href
+        single_title: "打开客户 WhatsApp",
+        single_url: "https://wa.me/" + phone
       }
     }
   }, signal);
