@@ -37,15 +37,38 @@
   }
 
   chatLinks.forEach(link => {
-    // Update before the delegated WhatsApp click logger and native navigation.
     link.addEventListener('pointerdown', prepare);
     link.addEventListener('focus', prepare);
-    link.addEventListener('keydown', prepare);
-    link.addEventListener('click', event => { if (isolated) event.preventDefault(); });
+    link.addEventListener('click', event => {
+      // The legacy page handler logs other WhatsApp buttons at document level.
+      event.stopPropagation();
+      if (isolated) {
+        event.preventDefault();
+        return;
+      }
+      const attribution = prepare();
+      const body = JSON.stringify({
+        eventType: 'whatsapp_click',
+        source: 'whatsapp_click',
+        sourceType: 'whatsapp_click',
+        sourceButton: link.dataset.source,
+        sourcePage: location.pathname,
+        sourceUrl: location.href,
+        pageUrl: location.href,
+        vehicle: modelFor(link),
+        market: link.dataset.market,
+        attribution
+      });
+      const queued = navigator.sendBeacon?.('/api/whatsapp-clicks', new Blob([body], {type: 'application/json'}));
+      if (!queued) {
+        fetch('/api/whatsapp-clicks', {method: 'POST', headers: {'Content-Type': 'application/json'}, body, keepalive: true}).catch(() => {});
+      }
+    });
     function prepare() {
-      const attribution = window.ZhongguTracking?.getAttribution();
+      const attribution = window.ZhongguTracking?.getAttribution() || null;
       const touches = [attribution?.first_ad_touch, attribution?.last_touch, attribution?.first_touch];
       updateChat(link, touches.some(touch => touch?.gclid || touch?.gbraid || touch?.wbraid));
+      return attribution;
     }
   });
   refresh();

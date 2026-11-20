@@ -482,17 +482,7 @@
   const handleClick = (event) => {
     const target = isTarget(event.target);
     if (!target || target.closest(".zg-wa-dialog")) return;
-    if (target.hasAttribute("data-whatsapp-direct")) {
-      event.stopImmediatePropagation();
-      if (new URLSearchParams(location.search).has("daily_test_id")) {
-        event.preventDefault();
-        return;
-      }
-      track("whatsapp_click", contextFromElement(target), {
-        attribution: window.ZhongguTracking?.getAttribution() || null
-      });
-      return;
-    }
+    if (target.hasAttribute("data-whatsapp-direct")) return;
     event.preventDefault();
     event.stopPropagation();
     if (event.stopImmediatePropagation) event.stopImmediatePropagation();
