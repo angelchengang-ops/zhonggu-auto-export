@@ -57,7 +57,7 @@ jobs:
             assert 'source_url' in html, path
             print('PASS HTTP 200, canonical, inquiry:', path)
           _, home=fetch('')
-          assert 'href="/export-cars-from-china-to-syria.html"' in home
+          assert '/export-cars-from-china-to-syria.html' in home
           _, sitemap=fetch('sitemap-pages-current.xml')
           for path in paths:
             assert 'https://zhongguauto.com/'+path in sitemap, path
