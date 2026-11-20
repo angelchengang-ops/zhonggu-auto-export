@@ -151,13 +151,6 @@
         document.getElementById('detail-image').alt = `${car.brand || ''} ${car.model || ''}`.trim();
         document.getElementById('detail-cta').dataset.title = `${car.brand || ''} ${car.model || ''} ${car.year || ''}`.trim();
         document.getElementById('detail-cta').setAttribute('data-title', `${car.brand || ''} ${car.model || ''} ${car.year || ''}`.trim());
-        const whatsappText = `I am interested in ${car.brand || ''} ${car.model || ''} ${car.year || ''}. Please send me the latest FOB price and stock list.`;
-        ['detail-whatsapp', 'detail-contact-whatsapp'].forEach((id) => {
-          const link = document.getElementById(id);
-          link.href = '#contact-whatsapp';
-          link.dataset.whatsappButton = 'true';
-          link.dataset.whatsappMessage = encodeURIComponent(whatsappText);
-        });
         document.getElementById('detail-specs').innerHTML = [
           ['Year', car.year || 'Contact for details'],
           ['Trim', car.trimEn || car.trim || 'Contact for details'],

@@ -482,6 +482,17 @@
   const handleClick = (event) => {
     const target = isTarget(event.target);
     if (!target || target.closest(".zg-wa-dialog")) return;
+    if (target.hasAttribute("data-whatsapp-direct")) {
+      event.stopImmediatePropagation();
+      if (new URLSearchParams(location.search).has("daily_test_id")) {
+        event.preventDefault();
+        return;
+      }
+      track("whatsapp_click", contextFromElement(target), {
+        attribution: window.ZhongguTracking?.getAttribution() || null
+      });
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
     if (event.stopImmediatePropagation) event.stopImmediatePropagation();
@@ -490,6 +501,7 @@
   const attach = (root = document) => {
     ensureStyle();
     root.querySelectorAll?.(SELECTOR).forEach((element) => {
+      if (element.hasAttribute("data-whatsapp-direct")) return;
       element.dataset.whatsappButton = "true";
       if (element.tagName === "A" && !element.dataset.originalWhatsappHref) element.dataset.originalWhatsappHref = element.getAttribute("href") || "";
       if (element.tagName === "A") element.setAttribute("href", "#contact-whatsapp");
