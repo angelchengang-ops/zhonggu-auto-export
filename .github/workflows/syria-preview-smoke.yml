@@ -1,0 +1,66 @@
+name: Syria SEO Netlify Preview Smoke
+on:
+  push:
+    branches:
+      - seo/syria-market-2026-11-20
+    paths:
+      - '.github/workflows/syria-preview-smoke.yml'
+      - 'export-cars-from-china-to-syria.html'
+      - 'ar/*syria*.html'
+      - '_redirects'
+      - 'sitemap*.xml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check six preview pages, canonical URLs and sitemap
+        env:
+          SITE: https://deploy-preview-6--zhonggu-auto-export.netlify.app
+        run: |
+          python3 - <<'PY'
+          import os, time, urllib.request, urllib.error, re
+          site = os.environ['SITE']
+          paths = [
+            'export-cars-from-china-to-syria.html',
+            'ar/export-cars-from-china-to-syria.html',
+            'ar/geely-coolray-syria.html',
+            'ar/mg5-syria.html',
+            'ar/chinese-cars-wholesale-syria.html',
+            'ar/shipping-cars-china-syria.html',
+          ]
+          def fetch(path):
+            url = site + '/' + path
+            last = None
+            for i in range(10):
+              try:
+                req=urllib.request.Request(url, headers={'User-Agent':'Zhonggu-Syria-SEO-Preview-Smoke/1.0'})
+                with urllib.request.urlopen(req, timeout=20) as res:
+                  data=res.read().decode('utf-8')
+                  return res.status, data
+              except Exception as exc:
+                last=exc
+                if i<9: time.sleep(6)
+            raise RuntimeError(f'Preview fetch failed for {path}: {last}')
+          for path in paths:
+            code, html=fetch(path)
+            canonical=f'https://zhongguauto.com/{path}'
+            assert code==200, (path, code)
+            assert f'<link rel="canonical" href="{canonical}">' in html, path
+            assert 'name="market_country" value="Syria"' in html, path
+            assert 'class="inquiry-form"' in html, path
+            print('PASS HTTP 200, canonical, inquiry:', path)
+          _, home=fetch('')
+          assert 'href="/export-cars-from-china-to-syria.html"' in home
+          _, sitemap=fetch('sitemap-pages-current.xml')
+          for path in paths:
+            assert 'https://zhongguauto.com/'+path in sitemap, path
+          _, index=fetch('sitemap-index.xml')
+          assert 'sitemap-pages-current.xml' in index
+          print('PASS homepage link, XML sitemap and sitemap index')
+          PY
