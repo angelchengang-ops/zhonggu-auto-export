@@ -10,6 +10,7 @@ on:
       - '_redirects'
       - 'sitemap*.xml'
       - 'tests/syria-pages.test.js'
+      - 'scripts/generate-seo-upgrade-pages.js'
       - '.github/workflows/syria-seo-ci.yml'
   workflow_dispatch:
 
