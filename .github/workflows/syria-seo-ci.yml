@@ -1,0 +1,39 @@
+name: Syria SEO Release Gate
+on:
+  push:
+    branches:
+      - seo/syria-market-2026-11-20
+    paths:
+      - 'ar/*syria*.html'
+      - 'export-cars-from-china-to-syria.html'
+      - 'index.html'
+      - '_redirects'
+      - 'sitemap*.xml'
+      - 'tests/syria-pages.test.js'
+      - 'scripts/generate-seo-upgrade-pages.js'
+      - '.github/workflows/syria-seo-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Build SEO pages and shared assets
+        run: npm run build
+      - name: Run regression tests
+        run: npm test
+      - name: Check site integrity
+        run: npm run check:site
+      - name: Show generated-file differences for release review
+        run: git status --short
