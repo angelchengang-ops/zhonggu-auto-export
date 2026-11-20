@@ -57,6 +57,7 @@ jobs:
             assert 'source_url' in html, path
             print('PASS HTTP 200, canonical, inquiry:', path)
           _, home=fetch('')
+          print('HOMEPAGE DIAG', 'length', len(home), 'syria-present', 'syria' in home.lower(), 'iraq-index', home.find('Iraq'), 'syria-index', home.find('Syria'), 'home-prefix', home[:100])
           assert '/export-cars-from-china-to-syria.html' in home
           _, sitemap=fetch('sitemap-pages-current.xml')
           for path in paths:
