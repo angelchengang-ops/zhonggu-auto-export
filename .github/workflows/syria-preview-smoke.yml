@@ -53,6 +53,7 @@ jobs:
             assert code==200, (path, code)
             assert f'<link rel="canonical" href="{canonical}">' in html, path
             assert 'name="market_country" value="Syria"' in html, path
+            print('FORM DEBUG', path, 'form-tags', re.findall(r'<form[^>]*>', html, flags=re.I)[:2], 'inquiry-class-present', 'inquiry-form' in html)
             assert re.search(r'<form[^>]*name="inquiry"|<form[^>]*class="[^"]*inquiry-form', html), path
             assert 'name="source_url"' in html, path
             print('PASS HTTP 200, canonical, inquiry:', path)
