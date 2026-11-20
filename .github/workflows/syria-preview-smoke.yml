@@ -58,6 +58,7 @@ jobs:
             print('PASS HTTP 200, canonical, inquiry:', path)
           _, home=fetch('')
           print('HOMEPAGE DIAG', 'length', len(home), 'syria-present', 'syria' in home.lower(), 'iraq-index', home.find('Iraq'), 'syria-index', home.find('Syria'), 'home-prefix', home[:100])
+          print('HOMEPAGE MARKET BLOCK', home[60600:62500])
           assert '/export-cars-from-china-to-syria.html' in home
           _, sitemap=fetch('sitemap-pages-current.xml')
           for path in paths:
