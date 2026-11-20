@@ -40,3 +40,9 @@
 
 ## Rollback
 - PR branch can be closed without production effect. After release, revert the merge commit if a verified regression occurs. No customer records are altered by this branch.
+
+## Subsequent automated verification (2026-11-20)
+- GitHub Actions release gate [run 44671405667](https://github.com/angelchengang-ops/zhonggu-auto-export/actions/runs/44671405667): **success**. `npm ci`, `npm run build`, `npm test` (118 passed, 0 failed), `npm run check:site` all completed. Build generated 66 page URLs including the six Syria canonicals. The workflow uses Node 24 because the repository's test invocation uses `--test-isolation=none`, unsupported by Node 20. Netlify's own configured Node 20 build is a separate environment.
+- A build-time issue was caught and repaired: `scripts/generate-seo-upgrade-pages.js` previously regenerated the homepage market section without Syria; now its source also includes the Syria market card and the regression test passed.
+- Netlify reported deploy-preview **success** for an earlier PR commit at `https://deploy-preview-6--zhonggu-auto-export.netlify.app`. In a subsequent live preview check, all six URLs returned HTTP 200 with expected canonical and enquiry form markers. A newer preview build had not yet become current when the homepage check ran, so its market link and sitemap check require a fresh recheck. Do not mistake a successful preview for the production deployment.
+- Browser-based 390px RTL visual inspection and isolated CRM delivery have **not** been performed. Google Search Console access is not available in this session, so its sitemap acceptance, URL inspection and indexed status remain **unverified**.
