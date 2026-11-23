@@ -8,6 +8,7 @@ for(const file of files){
  let html=fs.readFileSync(path.join(root,file),'utf8');
  if(!/<form[^>]+inquiry-form|data-sales-quote|#contact-whatsapp|class="quote-link"|wa\.me/.test(html))continue;
  const lang=html.match(/<html[^>]+lang="([^"]+)/)?.[1].split('-')[0]||'en';const [quote,chat]=labels[lang]||labels.en;
+ if(lang!=='en'&&!/<body[^>]*localized-market-page/.test(html))html=html.replace(/<body([^>]*)class="([^"]*)"/, '<body$1class="$2 localized-market-page"');
  if(!/<form[^>]+inquiry-form/.test(html)){
   const template=fs.readFileSync(path.join(root,(lang==='ar'||lang==='fr'?lang+'/':'')+'export-cars-from-china-to-algeria.html'),'utf8');
   let form=template.match(/<form[^>]+class="inquiry-form[^>]*>[\s\S]*?<\/form>/)?.[0];

@@ -98,10 +98,12 @@
   },true);
   function localize(){
     const w=copy();document.querySelectorAll('form.inquiry-form').forEach(f=>{
+      const submit=f.querySelector('button[type="submit"]');if(submit&&!submit.disabled)submit.textContent=w[0];
       for(const [name,title] of [['replyChannel',w[2]],['email',w[3]],['quantity',w[5]],['fobOrCif',w[6]]]){const span=f.querySelector(`[name="${name}"]`)?.closest('label')?.querySelector('span');if(span&&span.textContent!==title)span.textContent=title;}
       const options=f.querySelector('[name="replyChannel"]')?.options;if(options){options[0].textContent=w[3];options[1].textContent=w[4];}
       const lang=document.documentElement.lang.split('-')[0];
       const phoneWords={fr:['Indicatif WhatsApp','Numéro WhatsApp'],ar:['رمز دولة واتساب','رقم واتساب'],ru:['Код страны WhatsApp','Номер WhatsApp'],es:['Prefijo de WhatsApp','Número de WhatsApp'],fa:['کد کشور واتساپ','شماره واتساپ']}[lang];
+      const codeSelect=f.querySelector('[name="calling_code"]');if(codeSelect?.options[0])codeSelect.options[0].textContent=({ar:'اختر رمز الدولة',fr:'Choisir un indicatif',ru:'Выберите код страны',es:'Seleccione el prefijo',fa:'کد کشور را انتخاب کنید'})[lang]||'Select country code';
       if(phoneWords)for(const [i,name] of ['calling_code','phone_number'].entries()){const span=f.querySelector(`[name="${name}"]`)?.closest('label')?.querySelector('span');if(span)span.textContent=phoneWords[i];}
     });
     document.querySelectorAll('[data-whatsapp-direct]').forEach(a=>{if(a.textContent!==w[1])a.textContent=w[1];a.setAttribute('aria-label',w[1]);});

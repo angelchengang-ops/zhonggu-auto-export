@@ -12,6 +12,7 @@ test('email-only persists without phone, rejects invalid channel/contact, and ke
   const b=JSON.parse((await handler(request({...base,email:'qa-b@example.invalid',submissionId:token}))).body);assert.notEqual(a.id,b.id);
   const retry=JSON.parse((await handler(request({...base,submissionId:token}))).body);assert.equal(retry.id,a.id);assert.equal(retry.results.duplicate,true);
   const assigned=await store.updateLead(a.id,{assignedTo:'isolated_qa_sales'}, {name:'QA'});assert.equal(assigned.assignedTo,'isolated_qa_sales');assert.equal(assigned.email,base.email);
+  const wa=JSON.parse((await handler(request({...base,replyChannel:'whatsapp',email:'',whatsapp:'+34 612 345 678'}))).body);assert.equal(wa.lead.replyChannel,'whatsapp');assert.equal((await store.updateLead(wa.id,{assignedTo:'isolated_qa_sales'})).assignedTo,'isolated_qa_sales');
   const filtered=store.filterLeads((await store.readLeads()).items,new URLSearchParams('replyChannel=email'));assert.ok(filtered.some(x=>x.id===a.id));
  }finally{global.fetch=fetch;}
 });
