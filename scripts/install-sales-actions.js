@@ -46,7 +46,7 @@ for (const file of new Set(paths)) {
   const localizedLanding = (lang === 'fr' || lang === 'ar') && file.includes('geely-binyue-export-algeria');
   if (localizedLanding) {
     const template = read(`${lang}/export-cars-from-china-to-algeria.html`);
-    const panel = template.match(/<form class="inquiry-form[^"]*"[\s\S]*?<\/form>/)?.[0];
+    const panel = template.match(/<form\b[^>]*class="inquiry-form[^"]*"[\s\S]*?<\/form>/)?.[0];
     const contactUrl = 'https://zhongguauto.com/' + file.replace(/index\.html$/, '');
     if (!panel || !html.includes('id="quote"')) throw Error(`Missing localized quote template: ${file}`);
     const form = panel

@@ -17,7 +17,7 @@
     for(const item of data.items){
       const card=document.createElement('article');
       const title=document.createElement('h2'); title.textContent=item.test_id;
-      const detail=document.createElement('p');detail.textContent=`创建时间：${item.createdAt}；入口：${item.sourceEntry||item.sourceDetail||'—'}；分配状态：${item.assignedTo?'异常：已分配':'未分配'}；只读`;
+      const detail=document.createElement('p');detail.textContent=`创建时间：${item.createdAt}；入口：${item.sourceEntry||item.sourceDetail||'—'}；分配状态：${item.assignedTo?'异常：已分配':'未分配'}；回复渠道：${item.replyChannel||"whatsapp"}；邮箱：${item.email||"—"}；WhatsApp：${item.whatsapp||"—"}；车型：${item.vehicle||"—"}；来源：${item.sourcePage||"—"}；语言：${item.language||"—"}；只读`;
       card.append(title,detail);document.getElementById('records').append(card);
     }
   }catch(error){status.textContent=error.message;}

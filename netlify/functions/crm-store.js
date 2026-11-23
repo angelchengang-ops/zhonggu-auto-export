@@ -198,6 +198,8 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
     whatsappLocal: firstValue(body.whatsappLocal, body.phoneNumber, body.phone_number),
     phoneCountry: firstValue(body.phoneCountry),
     email: firstValue(body.email, body.mail, body.emailAddress, body.customerEmail),
+    replyChannel: firstValue(body.replyChannel, body.reply_channel) || (whatsapp.whatsapp ? "whatsapp" : firstValue(body.email, body.mail, body.emailAddress, body.customerEmail) ? "email" : ""),
+    language: firstValue(body.language, body.lang),
     vehicle,
     car_type: vehicle,
     interestedModel: firstValue(body.interestedModel, body.interested_model) || vehicle,
@@ -319,7 +321,7 @@ const createLead = async (body, event = {}, options = {}) => {
     if (duplicate) return { lead: duplicate, duplicate: true, storage: "existing" };
   }
   if (!lead.is_test && lead.submissionId) {
-    const duplicate = existing.find(item => !item.is_test && item.submissionId === lead.submissionId && item.whatsapp === lead.whatsapp && item.name === lead.name);
+    const duplicate = existing.find(item => !item.is_test && item.submissionId === lead.submissionId && item.whatsapp === lead.whatsapp && item.email.toLowerCase() === lead.email.toLowerCase() && item.replyChannel === lead.replyChannel && item.name === lead.name);
     if (duplicate) return { lead: duplicate, duplicate: true, storage: "existing" };
   }
   const merged = mergeLeads(existing, [lead]);
@@ -420,6 +422,7 @@ const datePass = (item, range) => {
 const filterLeads = (items = [], params = new URLSearchParams()) => {
   const source = clean(params.get("source"));
   const status = clean(params.get("status"));
+  const replyChannel = clean(params.get("replyChannel"));
   const market = clean(params.get("market"));
   const assignedTo = normalizeAssignedTo(params.get("assignedTo"));
   const q = firstValue(params.get("q"), params.get("keyword"));
@@ -431,6 +434,7 @@ const filterLeads = (items = [], params = new URLSearchParams()) => {
     if (testFilter === "true" && !item.is_test) return false;
     if (testFilter !== "true" && item.is_test) return false;
     if (testId && item.test_id !== testId) return false;
+    if (replyChannel && item.replyChannel !== replyChannel) return false;
     const type = sourceTypeOf(item);
     if (leadType === "website" && type !== "website_form") return false;
     if (leadType === "manual" && type !== "manual") return false;

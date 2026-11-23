@@ -41,3 +41,5 @@
   }
   .sales-actions--mobile a { flex: 1; min-width: 0; padding-inline: .4rem; }
 }
+
+.inquiry-form [hidden]{display:none!important}.inquiry-form select{max-width:100%;min-width:0}.sales-actions{flex-wrap:wrap}
