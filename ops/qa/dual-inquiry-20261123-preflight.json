@@ -1,0 +1,46 @@
+{
+  "baseline": "6fbb2aa84a891f5fce62d057eaf53e3ddb7e3ed1",
+  "rollbackDeploy": "6b0107c8317438ca307f31a7",
+  "browserAudit": {
+    "pages": 137,
+    "viewports": [
+      1200,
+      390
+    ],
+    "checks": 274,
+    "failures": 0
+  },
+  "localCRM": {
+    "storage": "Netlify Blobs local server, separate disk store; process restart readback passed",
+    "emailOnly": {
+      "id": "AUTO-TEST-20261123-QA_EMAIL",
+      "createdAt": "2026-11-23T13:15:13.979Z",
+      "channel": "email",
+      "phoneEmpty": true,
+      "quantity": "2",
+      "quote": "CIF",
+      "language": "en",
+      "assignedTo": ""
+    },
+    "whatsappOnly": {
+      "id": "AUTO-TEST-20261123-QA_WHATSAPP",
+      "createdAt": "2026-11-23T13:16:47.841Z",
+      "channel": "whatsapp",
+      "emailEmpty": true,
+      "quantity": "3",
+      "quote": "CIF",
+      "language": "fr",
+      "assignedTo": ""
+    },
+    "ordinaryEmailAssignment": "A separate local-only normal form lead was assigned to local admin and included by email filter; production untouched",
+    "externalNetwork": "blocked in local server; production notifications not triggered"
+  },
+  "productionTestWrites": 0,
+  "published": false,
+  "tests": 121,
+  "directChat": {
+    "localBrowserClick": "opened official api.whatsapp.com/send for existing official number",
+    "modalOpened": false,
+    "messageSent": false
+  }
+}

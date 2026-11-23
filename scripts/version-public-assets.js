@@ -8,7 +8,7 @@ const configFile = path.join(ROOT, 'assets/js/whatsapp-config.js');
 const config = fs.readFileSync(configFile, 'utf8');
 const nextConfig = config.replace(/const MODAL_SCRIPT = "[^"]+";/, `const MODAL_SCRIPT = "/${modalFile}?v=${hash(modalFile)}";`);
 if (config !== nextConfig) fs.writeFileSync(configFile, nextConfig);
-const hashes = Object.fromEntries(['assets/js/tracking-config.js', 'assets/js/lead-tracking.js', 'style.css', 'assets/css/xiaoma-five-door.css', 'script.js', 'assets/js/phone-input.js', 'assets/js/whatsapp-config.js', modalFile].map(file => [`/${file}`, hash(file)]));
+const hashes = Object.fromEntries(['assets/js/tracking-config.js', 'assets/js/lead-tracking.js', 'style.css', 'lead-gen.js', 'assets/js/inquiry-channels.js', 'assets/js/sales-actions.js', 'assets/css/sales-actions.css', 'assets/css/xiaoma-five-door.css', 'script.js', 'assets/js/phone-input.js', 'assets/js/whatsapp-config.js', modalFile].map(file => [`/${file}`, hash(file)]));
 const ignored = new Set(['node_modules','tmp','admin','ops','data','media-inbox','media-processed','media-trash']);
 let changed = 0;
 function walk(dir) {

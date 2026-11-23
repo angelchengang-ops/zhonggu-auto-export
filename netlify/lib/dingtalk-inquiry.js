@@ -34,7 +34,9 @@ async function getAccessToken() {
 async function notifyInquiry(lead, token) {
   const signal = AbortSignal.timeout(5000);
   const phone = String(lead.whatsapp || "");
-  if (!/^[1-9][0-9]{6,14}$/.test(phone)) throw new Error("Invalid WhatsApp number");
+  const byEmail = lead.replyChannel === "email" || (!phone && lead.email);
+  if (byEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(lead.email || ""))) throw new Error("Invalid email");
+  if (!byEmail && !/^[1-9][0-9]{6,14}$/.test(phone)) throw new Error("Invalid WhatsApp number");
 
   const heading = "中谷网站新询盘";
   const id = cardText(lead.id, 100);
@@ -43,7 +45,7 @@ async function notifyInquiry(lead, token) {
     "国家：" + (cardText(lead.country, 60) || "未填写"),
     "车型：" + (cardText(lead.vehicle, 120) || "未填写"),
     "留言：" + (cardText(lead.message, 320) || "未填写"),
-    "WhatsApp：+" + phone,
+    byEmail ? "Email：" + cardText(lead.email, 254) : "WhatsApp：+" + phone,
     "编号：" + id
   ];
   const endpoint = new URL("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
@@ -57,8 +59,8 @@ async function notifyInquiry(lead, token) {
       action_card: {
         title: heading + " · " + id.slice(0, 40),
         markdown: "### " + heading + "\n\n" + summary.join("\n\n"),
-        single_title: "打开客户 WhatsApp",
-        single_url: "https://wa.me/" + phone
+        single_title: byEmail ? "打开 CRM 邮箱询盘" : "打开客户 WhatsApp",
+        single_url: byEmail ? "https://zhongguauto.com/admin/inquiries.html?q=" + encodeURIComponent(lead.id) : "https://wa.me/" + phone
       }
     }
   }, signal);

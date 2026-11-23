@@ -35,7 +35,8 @@ test('Iran content and basic inquiry remain usable without third-party scripts o
     const html=read(file);
     assert.ok(html.includes('data-lightweight-page="true"'));
     assert.ok(html.includes('localized-market-page'));
-    assert.ok(!/fonts\.googleapis|fonts\.gstatic|recaptcha|<iframe|<video|<img|lead-gen\.js|whatsapp-lead-modal|https:\/\/wa\.me/.test(html));
+    assert.ok(/data-whatsapp-direct/.test(html), 'optional chat is an ordinary direct link; the quote form remains first-party');
+    assert.ok(!/fonts\.googleapis|fonts\.gstatic|recaptcha|<iframe|<video|<img|lead-gen\.js|whatsapp-lead-modal/.test(html));
     const remoteScripts=[...html.matchAll(/<script[^>]*src="(https?:\/\/[^" ]+)"[^>]*>/g)];
     assert.equal(remoteScripts.length,1);
     assert.match(remoteScripts[0][0],/\basync\b/);

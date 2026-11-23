@@ -90,7 +90,7 @@ function createOutbox(store, transport = ding, now = Date.now) {
 
   async function enqueue(lead) {
     const identity = lead.submissionId
-      ? [lead.submissionId, lead.whatsapp, lead.name]
+      ? [lead.submissionId, lead.whatsapp, lead.email, lead.replyChannel, lead.name]
       : [lead.id];
     const key = createHash("sha256").update(JSON.stringify(identity)).digest("hex");
     const name = "jobs/" + key;
@@ -100,7 +100,7 @@ function createOutbox(store, transport = ding, now = Date.now) {
       state: "queued", attempts: 0, due: now(), lead: {
         id: lead.id, name: String(lead.name || "").slice(0, 100), country: String(lead.country || "").slice(0, 80),
         vehicle: String(lead.vehicle || "").slice(0, 150), message: String(lead.message || "").slice(0, 500),
-        whatsapp: lead.whatsapp
+        whatsapp: lead.whatsapp, email: lead.email, replyChannel: lead.replyChannel
       }
     };
     const written = await store.setJSON(name, job, { onlyIfNew: true });

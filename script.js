@@ -512,6 +512,7 @@ const setHiddenFieldValue = (form, name, value = "") => {
 };
 const prefillInventoryInquiry = (form, data = {}) => {
   if (!form) return;
+  if (form.dataset.draftStarted === "true") { form.scrollIntoView({behavior:"smooth"}); return; }
   const title = data.title || data.model || "Vehicle inquiry";
   const modelField = form.elements.namedItem("model");
   const messageField = form.elements.namedItem("message");
@@ -902,10 +903,10 @@ const prepareDailyTestPayload = async (payload) => {
     id: testId,
     name: "[AUTO TEST] Daily Inquiry Check",
     country: "Automation Test",
-    whatsapp: "0000000000",
-    email: "",
-    vehicle: "[AUTO TEST]",
-    interestedModel: "[AUTO TEST]",
+    whatsapp: payload.replyChannel === "email" ? "" : "0000000000",
+    email: payload.replyChannel === "email" ? "auto-test@zhonggu.example.invalid" : "",
+    vehicle: "[AUTO TEST] " + payload.vehicle,
+    interestedModel: "[AUTO TEST] " + payload.vehicle,
     message: `Daily CRM delivery verification ${testId}`,
     source: "website_form",
     leadSource: "website_form",
@@ -969,6 +970,9 @@ const buildInquiryPayload = (form, formData) => {
     interestedModel: vehicle,
     budget,
     whatsapp,
+    replyChannel: formDataValue(formData, "replyChannel"),
+    quantity: formDataValue(formData, "quantity", "qty"),
+    fobOrCif: formDataValue(formData, "fobOrCif", "quoteType", "fob_cif", "fob_or_cif"),
     callingCode,
     phoneNumber,
     email: formDataValue(formData, "email", "mail", "customerEmail"),
@@ -1122,6 +1126,7 @@ const ensureWhatsappPhoneFields = (form, fields) => {
     phone.pattern = window.ZhongguPhone?.pattern || "[0-9]{5,15}";
     phone.dir = "ltr";
     const validate = (event) => {
+      if (phone.disabled) { phone.setCustomValidity(""); return; }
       const parsed = window.ZhongguPhone?.normalize(phone.value, callingSelect?.value);
       const full = /^\+|^00/.test(window.ZhongguPhone?.digits(phone.value).trim() || "");
       if (full && parsed && callingSelect && event?.target !== callingSelect) {
@@ -1292,6 +1297,7 @@ const bindInquiryForms = () => {
     const clearRetry = () => { if (form.dataset.submitting !== "true") delete form.dataset.submissionId; };
     form.addEventListener("input", clearRetry);
     form.addEventListener("reset", clearRetry);
+    form.addEventListener("change", clearRetry);
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (form.dataset.submitting === "true" || !form.reportValidity()) return;

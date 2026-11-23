@@ -36,7 +36,7 @@ const assertLead = (lead, isClickEvent) => {
   if (isClickEvent) return;
   if (!lead.name) throw Object.assign(new Error("Name is required"), { statusCode: 400 });
   if (!lead.country) throw Object.assign(new Error("Country is required"), { statusCode: 400 });
-  if (!lead.whatsapp) throw Object.assign(new Error("WhatsApp is required"), { statusCode: 400 });
+  if (lead.replyChannel === "email" ? !lead.email : !lead.whatsapp) throw Object.assign(new Error("Selected contact channel is required"), { statusCode: 400 });
   if (!lead.vehicle) throw Object.assign(new Error("Vehicle is required"), { statusCode: 400 });
 };
 
@@ -121,7 +121,16 @@ exports.handler = async (event) => {
     }
     isClickEvent = isWhatsappClickRequest(event, body);
     if (isClickEvent && !Object.keys(body).length) body = clickFallbackBody(event);
-    if (!isClickEvent && !isTest) {
+    if (!isClickEvent) {
+      const email = firstValue(body.email, body.mail, body.emailAddress, body.customerEmail);
+      const explicit = firstValue(body.replyChannel, body.reply_channel).toLowerCase();
+      if (explicit && !["email", "whatsapp"].includes(explicit)) throw Object.assign(new Error("Invalid reply channel"), { statusCode: 400 });
+      const suppliedPhone = firstValue(body.whatsapp, body.rawWhatsapp, body.raw_whatsapp, body.phone, body.mobile, body.tel, body.phoneNumber, body.phone_number, body.whatsappLocal, body.national_phone);
+      const replyChannel = explicit || (suppliedPhone ? "whatsapp" : "email");
+      if ((replyChannel === "email" || email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw Object.assign(new Error("Enter a valid email address"), { statusCode: 400 });
+      body = { ...body, email, replyChannel };
+    }
+    if (!isClickEvent && !isTest && body.replyChannel !== "email") {
       const code = firstValue(body.callingCode, body.calling_code, body.countryCode, body.country_code, body.dial_code);
       const direct = firstValue(body.whatsapp, body.rawWhatsapp, body.raw_whatsapp, body.phone, body.mobile, body.tel);
       const national = firstValue(body.phoneNumber, body.phone_number, body.whatsappLocal, body.national_phone);
@@ -131,6 +140,9 @@ exports.handler = async (event) => {
       body = { ...body, whatsapp: phone.number, rawWhatsapp: phone.formatted, countryCode: phone.callingCode,
         whatsappLocal: phone.nationalNumber, phoneCountry: phone.country };
       // Destination/customer country is deliberately independent of phoneCountry.
+    }
+    if (!isClickEvent && body.replyChannel === "email") {
+      body = { ...body, whatsapp: "", rawWhatsapp: "", raw_whatsapp: "", phone: "", mobile: "", tel: "", phoneNumber: "", phone_number: "", whatsappLocal: "", countryCode: "", callingCode: "", calling_code: "", phoneCountry: "" };
     }
     lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website", isTest });
     assertLead(lead, isClickEvent);

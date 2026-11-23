@@ -74,6 +74,12 @@ exports.handler = async (event) => {
     const id = parts[0];
     const action = parts[1] || "";
     const body = parseBody(event);
+    if (action === "contact-email") {
+      const current = (await readLeads()).items.find(item => item.id === id);
+      if (!current || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(current.email)) return json(400, {ok:false,message:"Valid email required"});
+      const updated = await updateLead(id, { note: "Opened email reply draft from CRM; sending is not confirmed." }, user);
+      return json(200, {ok:true,success:true,inquiry:updated,item:updated,url:"mailto:"+encodeURIComponent(updated.email)+"?subject="+encodeURIComponent("Zhonggu Auto Export — "+updated.vehicle)});
+    }
     if (action === "contact-whatsapp") {
       const updated = await updateLead(id, { status: "contacted", note: "Opened WhatsApp contact from CRM." }, user);
       if (!updated) return json(404, { ok: false, success: false, message: "Inquiry not found" });

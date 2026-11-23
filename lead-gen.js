@@ -149,6 +149,7 @@ const bindInquiryCtas = () => {
     button.addEventListener('click', () => {
       const form = document.querySelector('.inquiry-form');
       if (!form) return;
+      if (form.dataset.draftStarted === 'true') { form.scrollIntoView({behavior:'smooth'}); return; }
       const context = {
         title: button.dataset.title || currentTitle(),
         model: button.dataset.model || button.dataset.title || '',
