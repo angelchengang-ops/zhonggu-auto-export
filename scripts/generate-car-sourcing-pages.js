@@ -61,24 +61,31 @@ for (const [lang, translations] of Object.entries(copy)) {
     </div>
   </header>
   <main>
-    <section class="seo-hero"><div class="container">
+    <section class="seo-hero sourcing-hero"><div class="container">
       <p class="eyebrow">${t.name}</p>
       <h1>${t.headline}</h1>
       <p>${t.intro}</p>
       <div class="hero-actions"><a class="btn btn-primary" href="#sourcing-request" data-sales-quote>${t.inquiry}</a></div>
       <nav aria-label="${t.language}">${languageLinks}</nav>
     </div></section>
-    <section class="seo-section"><div class="container">
+    <section class="seo-section sourcing-browse"><div class="container">
       <h2>${t.browse}</h2>
       <p>${t.translate}</p>
       <div class="sourcing-marketplaces">
         <a class="sourcing-marketplace" href="https://www.guazi.com/" target="_blank" rel="noopener noreferrer">
-          <span><strong>Guazi</strong><small dir="ltr">guazi.com</small></span>
-          <span class="sourcing-marketplace-arrow" aria-hidden="true">↗</span>
+          <img src="/images/company/warehouse-overview.jpg" alt="" loading="lazy" decoding="async">
+          <span class="sourcing-marketplace-label">
+            <span><strong>Guazi</strong><small dir="ltr">guazi.com</small></span>
+            <span class="sourcing-marketplace-arrow" aria-hidden="true">↗</span>
+          </span>
         </a>
         <a class="sourcing-marketplace" href="https://www.che168.com/" target="_blank" rel="noopener noreferrer">
-          <span><strong>Autohome / Che168</strong><small dir="ltr">che168.com</small></span>
-          <span class="sourcing-marketplace-arrow" aria-hidden="true">↗</span>
+          <!-- Illustrative photograph by Artem Podrez, https://www.pexels.com/photo/8985618/ -->
+          <img src="/images/car-sourcing/underbody-inspection-pexels-8985618.webp" alt="" loading="lazy" decoding="async">
+          <span class="sourcing-marketplace-label">
+            <span><strong>Autohome / Che168</strong><small dir="ltr">che168.com</small></span>
+            <span class="sourcing-marketplace-arrow" aria-hidden="true">↗</span>
+          </span>
         </a>
       </div>
     </div></section>
