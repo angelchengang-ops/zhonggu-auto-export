@@ -1,18 +1,13 @@
 # Car sourcing canonical routes
 /car-sourcing.html /car-sourcing 301!
-/car-sourcing/ /car-sourcing 301!
 /car-sourcing /car-sourcing.html 200!
 /fr/car-sourcing.html /fr/car-sourcing 301!
-/fr/car-sourcing/ /fr/car-sourcing 301!
 /fr/car-sourcing /fr/car-sourcing.html 200!
 /ar/car-sourcing.html /ar/car-sourcing 301!
-/ar/car-sourcing/ /ar/car-sourcing 301!
 /ar/car-sourcing /ar/car-sourcing.html 200!
 /ru/car-sourcing.html /ru/car-sourcing 301!
-/ru/car-sourcing/ /ru/car-sourcing 301!
 /ru/car-sourcing /ru/car-sourcing.html 200!
 /es/car-sourcing.html /es/car-sourcing 301!
-/es/car-sourcing/ /es/car-sourcing 301!
 /es/car-sourcing /es/car-sourcing.html 200!
 
 # GSC alias found during 52-URL audit, 2026-11-20

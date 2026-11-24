@@ -78,7 +78,13 @@ for (const [lang, translations] of Object.entries(copy)) {
     <section class="seo-section"><div class="container">
       <h2>${t.fees}</h2>
       <p><strong>${t.rate}</strong></p>
-      <p>${t.inspection}</p><p>${t.included}</p><p>${t.extra}</p>
+      <div class="seo-card">
+        <h3>${t.basicTitle}</h3><p>${t.basicScope}</p>
+        <h3>${t.advancedTitle}</h3><p>${t.advancedScope}</p>
+        <p>${t.separateVisits}</p>
+        <p>${t.inspection}</p>
+      </div>
+      <p>${t.included}</p><p>${t.extra}</p>
       <div class="inquiry-panel">
         <div class="inquiry-fields"><label><span>${t.price}</span><input id="sourcing-price" type="number" min="0.01" step="0.01" inputmode="decimal" dir="ltr"></label></div>
         <p>${t.estimate} <output id="sourcing-fee" for="sourcing-price" aria-live="polite" dir="ltr">—</output></p>
