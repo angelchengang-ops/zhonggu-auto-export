@@ -1,28 +1,46 @@
+.seo-hero.sourcing-hero { padding-block-end: 2.75rem; }
+.seo-section.sourcing-browse { padding-block-start: clamp(1.75rem, 4vw, 3rem); }
+
 .sourcing-marketplaces {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.25rem;
   margin-block-start: 1.5rem;
 }
 
 .sourcing-marketplaces .sourcing-marketplace {
+  display: block;
+  overflow: hidden;
+  border: 1px solid #c5d9f3;
+  border-radius: 1rem;
+  background: #fff;
+  color: var(--navy);
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgb(17 46 83 / 8%);
+}
+
+.sourcing-marketplace > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.25;
+  object-fit: cover;
+  object-position: center 65%;
+  background: #e5effd;
+}
+
+.sourcing-marketplace-label {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  min-height: 6rem;
-  padding: 1.125rem 1.375rem;
-  border: 1px solid #c5d9f3;
-  border-radius: 1rem;
-  background: #f0f6ff;
-  color: var(--navy);
-  text-decoration: none;
+  min-height: 5.5rem;
+  padding: 0.875rem 1.125rem;
 }
 
 .sourcing-marketplaces .sourcing-marketplace:hover,
 .sourcing-marketplaces .sourcing-marketplace:focus-visible {
   border-color: var(--blue);
-  background: #e5effd;
+  background: #f0f6ff;
 }
 
 .sourcing-marketplaces .sourcing-marketplace:focus-visible {
@@ -37,9 +55,21 @@
 
 .sourcing-marketplace strong { font-size: 1.125rem; }
 .sourcing-marketplace small { color: #435c77; }
-.sourcing-marketplace-arrow { color: #1260bf; font-size: 1.5rem; }
+
+.sourcing-marketplace-arrow {
+  display: grid;
+  flex: 0 0 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf4ff;
+  color: #1260bf;
+  font-size: 1.25rem;
+}
 
 @media (max-width: 600px) {
   .sourcing-marketplaces { grid-template-columns: minmax(0, 1fr); }
-  .sourcing-marketplaces .sourcing-marketplace { min-height: 4.75rem; }
+  .sourcing-marketplace > img { aspect-ratio: 2.5; }
+  .sourcing-marketplace-label { min-height: 4.75rem; }
 }
