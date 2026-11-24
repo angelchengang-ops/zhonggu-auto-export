@@ -184,7 +184,8 @@ test("sourcing email and WhatsApp notification cards both open the exact inquiry
     await notifyInquiry({...base, replyChannel: "email", email: "test@example.invalid"}, "mock", ref);
     await notifyInquiry({...base, replyChannel: "whatsapp", whatsapp: "12133734253"}, "mock", ref);
     for (const card of cards) {
-      assert.match(card.title, /^二手车撮合｜Lavida/);
+      assert.equal(card.title, "二手车撮合 · INQ-SOURCING");
+      assert.match(card.markdown, /^### 二手车撮合｜Lavida/);
       assert.equal(card.single_title, "查看撮合详情");
       assert.equal(card.single_url, "eapp://pages/detail/index?ref=" + ref);
       assert.match(card.markdown, /Jebel Ali/);

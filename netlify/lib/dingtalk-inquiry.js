@@ -54,7 +54,8 @@ async function notifyInquiry(lead, token, jobKey) {
   if (openDetails && !/^[0-9a-f]{64}$/.test(jobKey || "")) throw new Error("Missing inquiry reference");
 
   const vehicle = cardText(String(lead.vehicle || "").replace(/^Car Sourcing(?: · |$)/, ""), 120);
-  const heading = sourcing ? "二手车撮合" + (vehicle ? "｜" + vehicle : "") : "中谷网站新询盘";
+  const heading = sourcing ? "二手车撮合" : "中谷网站新询盘";
+  const cardHeading = sourcing && vehicle ? heading + "｜" + vehicle : heading;
   const message = sourcing
     ? String(lead.message || "").replace(/^Listing: [^\r\n]*(?:\r?\n|$)/, "")
     : lead.message;
@@ -78,7 +79,7 @@ async function notifyInquiry(lead, token, jobKey) {
       msgtype: "action_card",
       action_card: {
         title: heading + " · " + id.slice(0, 40),
-        markdown: "### " + heading + "\n\n" + summary.join("\n\n"),
+        markdown: "### " + cardHeading + "\n\n" + summary.join("\n\n"),
         single_title: sourcing ? "查看撮合详情" : byEmail ? "查看询盘详情" : "打开客户 WhatsApp",
         single_url: openDetails ? "eapp://pages/detail/index?ref=" + encodeURIComponent(jobKey) : "https://wa.me/" + phone
       }
@@ -87,7 +88,12 @@ async function notifyInquiry(lead, token, jobKey) {
 
   if (result.errcode === 0 && result.task_id) return { taskId: result.task_id };
   if (!result.task_id && Number.isInteger(result.errcode) && result.errcode !== 0) {
-    console.warn("[inquiries] DingTalk send rejected", { id: String(lead.id || "").slice(0, 100), code: result.errcode });
+    const detail = typeof result.errmsg === "string" ? result.errmsg : "";
+    const field = detail.match(/(?:action_card\.(?:single_url|single_title|markdown|title)|voice\.message_url|userid_list|agent_id)/i)?.[0];
+    const issue = /长度|超长|length/i.test(detail) ? "length"
+      : /格式|invalid format/i.test(detail) ? "format"
+      : /不能为空|必填|required/i.test(detail) ? "required" : undefined;
+    console.warn("[inquiries] DingTalk send rejected", { id: String(lead.id || "").slice(0, 100), code: result.errcode, field, issue });
     return { rejected: true };
   }
   throw new Error("DingTalk send result unknown");
