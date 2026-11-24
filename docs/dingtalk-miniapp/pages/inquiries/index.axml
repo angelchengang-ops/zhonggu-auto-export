@@ -10,7 +10,7 @@
   <view a:for="{{items}}" a:key="id" class="card" data-id="{{item.id}}" onTap="open">
     <view class="row">
       <view class="name">{{item.name || '网站访客'}}</view>
-      <view class="badge">已推送</view>
+      <button class="details" size="mini" data-id="{{item.id}}" catchTap="showDetails">详情</button>
     </view>
     <view class="meta">{{item.country || '未填写国家'}} · {{item.vehicle || '未填写车型'}}</view>
     <view class="meta">{{item.time}}</view>

@@ -67,8 +67,8 @@ async function notifyInquiry(lead, token) {
       action_card: {
         title: heading + " · " + id.slice(0, 40),
         markdown: "### " + heading + "\n\n" + summary.join("\n\n"),
-        single_title: byEmail ? "打开 CRM 邮箱询盘" : "打开客户 WhatsApp",
-        single_url: byEmail ? "https://zhongguauto.com/admin/inquiries.html?q=" + encodeURIComponent(lead.id) : "https://wa.me/" + phone
+        single_title: byEmail ? "打开询盘收件箱" : "打开客户 WhatsApp",
+        single_url: byEmail ? "eapp://pages/inquiries/index" : "https://wa.me/" + phone
       }
     }
   }, signal);

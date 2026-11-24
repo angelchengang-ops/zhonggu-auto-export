@@ -23,9 +23,9 @@ test('authorized synthetic email is retained, notification suppressed, and canno
  await assert.rejects(()=>store.updateLead(r.id,{assignedTo:'isolated_qa_sales'}),/read-only/);
  }finally{if(old)process.env.ZHONGGU_SYNTHETIC_LEAD_SECRET=old;else delete process.env.ZHONGGU_SYNTHETIC_LEAD_SECRET;}
 });
-test('email notification uses CRM reply entry and preserves legacy WhatsApp notification',async()=>{
+test('email notification opens the DingTalk inbox and WhatsApp notification opens the chat',async()=>{
  const original=global.fetch,calls=[];global.fetch=async(url,options)=>{calls.push(JSON.parse(options.body));return {ok:true,json:async()=>({errcode:0,task_id:123})};};
  try{const transport=require('../netlify/lib/dingtalk-inquiry');await transport.notifyInquiry({...base,id:'QA-EMAIL'},'unit-only');await transport.notifyInquiry({id:'QA-WA',whatsapp:'12133734253'},'unit-only');
- assert.match(calls[0].msg.action_card.single_url,/zhongguauto.com\/admin\/inquiries.html/);assert.match(calls[0].msg.action_card.markdown,/qa-a@example.invalid/);assert.equal(calls[1].msg.action_card.single_url,'https://wa.me/12133734253');
+ assert.equal(calls[0].msg.action_card.single_url,'eapp://pages/inquiries/index');assert.match(calls[0].msg.action_card.markdown,/qa-a@example.invalid/);assert.equal(calls[1].msg.action_card.single_url,'https://wa.me/12133734253');
  }finally{global.fetch=original;}
 });

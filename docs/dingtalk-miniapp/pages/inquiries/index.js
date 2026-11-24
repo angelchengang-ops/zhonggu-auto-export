@@ -1,3 +1,5 @@
+const { whatsappLink } = require('../../whatsapp');
+
 function displayTime(value) {
   const shanghai = new Date(Date.parse(value) + 8 * 60 * 60 * 1000);
   return shanghai.toISOString().slice(0, 16).replace('T', ' ');
@@ -31,9 +33,16 @@ Page({
     }
   },
   open(event) {
+    this.openInquiry(event, true);
+  },
+  showDetails(event) {
+    this.openInquiry(event, false);
+  },
+  openInquiry(event, openChat) {
     const selected = this.data.items.find(item => item.id === event.currentTarget.dataset.id);
     if (!selected) return;
     getApp().selectedInquiry = selected;
-    dd.navigateTo({url: '/pages/detail/index'});
+    const chat = openChat && whatsappLink(selected);
+    dd.navigateTo({url: '/pages/detail/index' + (chat ? '?chat=1' : '')});
   }
 });

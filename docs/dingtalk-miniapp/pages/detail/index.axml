@@ -1,4 +1,5 @@
-<view class="screen">
+<web-view a:if="{{chatUrl}}" src="{{chatUrl}}" onError="showChatError" />
+<view a:else class="screen">
   <view a:if="{{item}}" class="card">
     <view class="name">{{item.name || '网站访客'}}</view>
     <view class="meta">{{item.time}} · {{item.id}}</view>
@@ -6,6 +7,8 @@
     <view class="meta">车型：{{item.vehicle || '未填写'}}</view>
     <view class="message">{{item.message || '暂无留言'}}</view>
     <view a:if="{{item.whatsapp}}" class="meta">WhatsApp：+{{item.whatsapp}}</view>
+    <view a:if="{{chatFailed}}" class="error">钉钉暂时无法打开 WhatsApp，可复制号码到 WhatsApp 搜索。</view>
+    <button a:if="{{canOpenChat}}" class="primary" onTap="openWhatsApp">打开 WhatsApp</button>
     <button a:if="{{item.whatsapp}}" size="mini" data-field="whatsapp" onTap="copyContact">复制号码</button>
     <view a:if="{{item.email}}" class="meta">邮箱：{{item.email}}</view>
     <button a:if="{{item.email}}" size="mini" data-field="email" onTap="copyContact">复制邮箱</button>
