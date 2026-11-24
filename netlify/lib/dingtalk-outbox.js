@@ -8,7 +8,8 @@ const terminal = new Set(["delivered", "failed", "uncertain"]);
 
 async function openStore(event) {
   const { getStore, connectLambda } = await import("netlify-notification-blobs");
-  if (event?.blobs && !process.env.NETLIFY_BLOBS_CONTEXT && !globalThis.netlifyBlobsContext) connectLambda(event);
+  // Lambda compatibility supplies a fresh context per invocation.
+  if (event?.blobs && !globalThis.netlifyBlobsContext) connectLambda(event);
   // Atomic conditional writes arbitrate claims even if a cached read sees an old version.
   return getStore("zhonggu-dingtalk-outbox");
 }
