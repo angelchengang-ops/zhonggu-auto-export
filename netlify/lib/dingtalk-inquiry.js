@@ -43,7 +43,6 @@ async function identifyInboxOwner(code) {
 }
 
 async function notifyInquiry(lead, token, jobKey) {
-  const signal = AbortSignal.timeout(5000);
   const phone = String(lead.whatsapp || "");
   const byEmail = lead.replyChannel === "email" || (!phone && lead.email);
   if (byEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(lead.email || ""))) throw new Error("Invalid email");
@@ -71,7 +70,14 @@ async function notifyInquiry(lead, token, jobKey) {
   ];
   const endpoint = new URL("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
   endpoint.searchParams.set("access_token", token);
-  const result = await post(endpoint, {
+  const chatUrl = "https://wa.me/" + phone;
+  const detailUrl = "eapp://pages/detail/index?ref=" + encodeURIComponent(jobKey);
+  const singleAction = {
+    single_title: sourcing ? "查看撮合详情" : byEmail ? "查看询盘详情" : "打开客户 WhatsApp",
+    single_url: openDetails ? detailUrl : chatUrl
+  };
+  const twoActions = sourcing && !byEmail;
+  const send = (actions, requestSignal) => post(endpoint, {
     agent_id: agentId,
     userid_list: recipient,
     to_all_user: false,
@@ -80,11 +86,22 @@ async function notifyInquiry(lead, token, jobKey) {
       action_card: {
         title: heading + " · " + id.slice(0, 40),
         markdown: "### " + cardHeading + "\n\n" + summary.join("\n\n"),
-        single_title: sourcing ? "查看撮合详情" : byEmail ? "查看询盘详情" : "打开客户 WhatsApp",
-        single_url: openDetails ? "eapp://pages/detail/index?ref=" + encodeURIComponent(jobKey) : "https://wa.me/" + phone
+        ...actions
       }
     }
-  }, signal);
+  }, requestSignal);
+  let result = await send(twoActions ? {
+    btn_orientation: "0",
+    btn_json_list: [
+      { title: "查看撮合详情", action_url: detailUrl },
+      { title: "打开 WhatsApp", action_url: chatUrl }
+    ]
+  } : singleAction, AbortSignal.timeout(twoActions ? 2500 : 5000));
+
+  // A parameter rejection without a task ID confirms that nothing was queued.
+  if (twoActions && result.errcode === 400002 && !result.task_id) {
+    result = await send(singleAction, AbortSignal.timeout(2500));
+  }
 
   if (result.errcode === 0 && result.task_id) return { taskId: result.task_id };
   if (!result.task_id && Number.isInteger(result.errcode) && result.errcode !== 0) {

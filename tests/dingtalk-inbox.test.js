@@ -173,9 +173,10 @@ test("owner-only legacy sourcing lookup uses exact CRM ID without importing form
 test("sourcing email and WhatsApp notification cards both open the exact inquiry", async () => {
   const original = global.fetch;
   const cards = [];
+  const responses = [];
   global.fetch = async (url, options) => {
     cards.push(JSON.parse(options.body).msg.action_card);
-    return {ok: true, json: async () => ({errcode: 0, task_id: 123})};
+    return {ok: true, json: async () => (responses.shift() || {errcode: 0, task_id: 123})};
   };
   try {
     const {notifyInquiry} = require("../netlify/lib/dingtalk-inquiry");
@@ -183,13 +184,24 @@ test("sourcing email and WhatsApp notification cards both open the exact inquiry
     const base = {id: "INQ-SOURCING", sourceEntry: "car_sourcing", vehicle: "Car Sourcing · Lavida", destinationPort: "Jebel Ali"};
     await notifyInquiry({...base, replyChannel: "email", email: "test@example.invalid"}, "mock", ref);
     await notifyInquiry({...base, replyChannel: "whatsapp", whatsapp: "12133734253"}, "mock", ref);
+    responses.push({errcode: 400002});
+    await notifyInquiry({...base, replyChannel: "whatsapp", whatsapp: "12133734253"}, "mock", ref);
+    assert.equal(cards.length, 4);
     for (const card of cards) {
       assert.equal(card.title, "二手车撮合 · INQ-SOURCING");
       assert.match(card.markdown, /^### 二手车撮合｜Lavida/);
-      assert.equal(card.single_title, "查看撮合详情");
-      assert.equal(card.single_url, "eapp://pages/detail/index?ref=" + ref);
       assert.match(card.markdown, /Jebel Ali/);
     }
+    assert.equal(cards[0].single_title, "查看撮合详情");
+    assert.equal(cards[0].single_url, "eapp://pages/detail/index?ref=" + ref);
+    assert.deepEqual(cards[1].btn_json_list, [
+      {title: "查看撮合详情", action_url: "eapp://pages/detail/index?ref=" + ref},
+      {title: "打开 WhatsApp", action_url: "https://wa.me/12133734253"}
+    ]);
+    assert.deepEqual(cards[2], cards[1]);
+    assert.equal(cards[3].single_url, cards[0].single_url);
+    assert.equal(cards[3].markdown, cards[1].markdown);
+    assert.equal(cards[3].btn_json_list, undefined);
   } finally {
     global.fetch = original;
   }
