@@ -5,6 +5,14 @@ const copy = require('../data/car-sourcing-copy.json');
 const root = path.resolve(__dirname, '..');
 const site = 'https://zhongguauto.com';
 const languageNames = {en: 'English', fr: 'Français', ar: 'العربية', ru: 'Русский', es: 'Español'};
+const chatLabels = {
+  en: 'Chat on WhatsApp',
+  fr: 'Discuter sur WhatsApp',
+  ar: 'تواصل عبر واتساب',
+  ru: 'Написать в WhatsApp',
+  es: 'Chatear por WhatsApp'
+};
+const chatUrl = 'https://wa.me/8618661888866?text=' + encodeURIComponent("Hello, I'm interested in your Car Sourcing service. [ZG-WEB]");
 const pagePath = (lang) => lang === 'en' ? '/car-sourcing' : '/' + lang + '/car-sourcing';
 const escape = (value) => value.replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
@@ -43,9 +51,11 @@ for (const [lang, translations] of Object.entries(copy)) {
   <script type="application/ld+json">${schema}</script>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/assets/css/car-sourcing.css">
+  <link rel="stylesheet" href="/assets/css/sales-actions.css">
   <script defer src="/assets/js/phone-input.js"></script>
   <script defer src="/script.js"></script>
   <script defer src="/assets/js/car-sourcing-v1.js"></script>
+  <script defer src="/assets/js/sales-actions.js"></script>
 </head>
 <body class="seo-page localized-market-page" data-lightweight-page>
   <header class="site-header scrolled">
@@ -65,7 +75,10 @@ for (const [lang, translations] of Object.entries(copy)) {
       <p class="eyebrow">${t.name}</p>
       <h1>${t.headline}</h1>
       <p>${t.intro}</p>
-      <div class="hero-actions"><a class="btn btn-primary" href="#sourcing-request" data-sales-quote>${t.inquiry}</a></div>
+      <div class="hero-actions sales-actions">
+        <a class="sales-actions__link sales-actions__quote" href="#sourcing-request" data-sales-quote>${t.inquiry}</a>
+        <a class="sales-actions__link sales-actions__chat" href="${escape(chatUrl)}" target="_blank" rel="noopener noreferrer" data-whatsapp-button="true" data-whatsapp-direct data-vehicle="${t.name}" data-source="direct_whatsapp_hero">${chatLabels[lang]}</a>
+      </div>
       <nav aria-label="${t.language}">${languageLinks}</nav>
     </div></section>
     <section class="seo-section sourcing-browse"><div class="container">
