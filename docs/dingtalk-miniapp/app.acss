@@ -3,3 +3,5 @@ page{background:#F3F6F7;color:#18383F;font-family:system-ui,sans-serif}.screen{p
 .details{margin:0 0 0 12rpx;flex-shrink:0}
 
 .section-title{font-size:29rpx;font-weight:700;margin:26rpx 0 8rpx}
+
+.listing{margin-top:22rpx;padding:20rpx;background:#F3F6F7;border-radius:14rpx}

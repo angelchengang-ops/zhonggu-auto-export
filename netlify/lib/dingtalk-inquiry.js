@@ -46,16 +46,23 @@ async function notifyInquiry(lead, token, jobKey) {
   if (byEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(lead.email || ""))) throw new Error("Invalid email");
   if (!byEmail && !/^[1-9][0-9]{6,14}$/.test(phone)) throw new Error("Invalid WhatsApp number");
 
-  if (byEmail && !/^[0-9a-f]{64}$/.test(jobKey || "")) throw new Error("Missing inquiry reference");
+  const sourcing = lead.sourceEntry === "car_sourcing";
+  const openDetails = byEmail || sourcing;
+  if (openDetails && !/^[0-9a-f]{64}$/.test(jobKey || "")) throw new Error("Missing inquiry reference");
 
-  const heading = "中谷网站新询盘";
+  const vehicle = cardText(String(lead.vehicle || "").replace(/^Car Sourcing(?: · |$)/, ""), 120);
+  const heading = sourcing ? "二手车撮合" + (vehicle ? "｜" + vehicle : "") : "中谷网站新询盘";
+  const message = sourcing
+    ? String(lead.message || "").replace(/^Listing: [^\r\n]*(?:\r?\n|$)/, "")
+    : lead.message;
   const id = cardText(lead.id, 100);
   const summary = [
     "客户：" + (cardText(lead.name, 80) || "未填写"),
     "国家：" + (cardText(lead.country, 60) || "未填写"),
     "车型：" + (cardText(lead.vehicle, 120) || "未填写"),
-    "留言：" + (cardText(lead.message, 320) || "未填写"),
-    byEmail ? "Email：" + cardText(lead.email, 254) : "WhatsApp：+" + phone,
+    ...(sourcing && lead.destinationPort ? ["目的港：" + cardText(lead.destinationPort, 80)] : []),
+    "留言：" + (cardText(message, 320) || "未填写"),
+    byEmail ? (sourcing ? "回复方式：邮箱 · " : "Email：") + cardText(lead.email, 254) : "WhatsApp：+" + phone,
     "编号：" + id
   ];
   const endpoint = new URL("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
@@ -69,8 +76,8 @@ async function notifyInquiry(lead, token, jobKey) {
       action_card: {
         title: heading + " · " + id.slice(0, 40),
         markdown: "### " + heading + "\n\n" + summary.join("\n\n"),
-        single_title: byEmail ? "查看询盘详情" : "打开客户 WhatsApp",
-        single_url: byEmail ? "eapp://pages/detail/index?ref=" + encodeURIComponent(jobKey) : "https://wa.me/" + phone
+        single_title: sourcing ? "查看撮合详情" : byEmail ? "查看询盘详情" : "打开客户 WhatsApp",
+        single_url: openDetails ? "eapp://pages/detail/index?ref=" + encodeURIComponent(jobKey) : "https://wa.me/" + phone
       }
     }
   }, signal);

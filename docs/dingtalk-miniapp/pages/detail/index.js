@@ -30,10 +30,15 @@ Page({
   },
   showInquiry(item, openChat) {
     this.contactUrl = whatsappLink(item);
+    const sourcing = item && item.sourceEntry === 'car_sourcing';
+    const listingUrl = sourcing && /^https?:\/\//i.test(item.listingUrl || '') ? item.listingUrl : '';
+    const listingLabel = /^https?:\/\/(?:[^/.]+\.)*guazi\.com(?:[/:?#]|$)/i.test(listingUrl) ? '瓜子车源'
+      : /^https?:\/\/(?:[^/.]+\.)*che168\.com(?:[/:?#]|$)/i.test(listingUrl) ? '汽车之家车源' : '车源链接';
+    const notes = listingUrl ? (item.message || '').replace(/^Listing: [^\r\n]*(?:\r?\n|$)/, '') : item && item.message;
     this.setData({
-      item,
+      item, sourcing, listingUrl, listingLabel, notes,
       canOpenChat: Boolean(this.contactUrl),
-      chatUrl: openChat ? this.contactUrl : ''
+      chatUrl: openChat && !sourcing ? this.contactUrl : ''
     });
   },
   openWhatsApp() {
@@ -41,6 +46,9 @@ Page({
   },
   showChatError() {
     this.setData({chatUrl: '', chatFailed: true});
+  },
+  copyListing() {
+    if (this.data.listingUrl) dd.setClipboard({text: this.data.listingUrl});
   },
   copyContact(event) {
     const item = this.data.item;
