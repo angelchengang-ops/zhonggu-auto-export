@@ -126,7 +126,8 @@ test("sourcing delivery retains the listing for email and WhatsApp inbox entries
     async deliveryResult() { return "delivered"; }
   }, () => now);
   const message = "Listing: https://www.che168.com/example";
-  const common = {name: "Synthetic", vehicle: "Car Sourcing", message};
+  const listingUrl = "https://www.che168.com/example?" + "a".repeat(800);
+  const common = {name: "Synthetic", vehicle: "Car Sourcing", message, listingUrl, sourceEntry: "car_sourcing", destinationPort: "Jebel Ali"};
   await outbox.enqueue({...common, id: "INQ-SOURCING-EMAIL", replyChannel: "email", email: "test@example.invalid"});
   await outbox.enqueue({...common, id: "INQ-SOURCING-WA", replyChannel: "whatsapp", whatsapp: "12133734253"});
   now += 60_000;
@@ -135,7 +136,93 @@ test("sourcing delivery retains the listing for email and WhatsApp inbox entries
   assert.equal(sent.length, 2);
   assert.ok(sent.every(item => /^[a-f\d]{64}$/.test(item.reference)));
   assert.equal(items.length, 2);
-  assert.ok(items.every(item => item.message === message && item.vehicle === "Car Sourcing"));
+  assert.ok(items.every(item => item.message === message && item.vehicle === "Car Sourcing" && item.listingUrl === listingUrl && item.sourceEntry === "car_sourcing" && item.destinationPort === "Jebel Ali"));
   assert.equal(items.find(item => item.id === "INQ-SOURCING-EMAIL").email, "test@example.invalid");
   assert.equal(items.find(item => item.id === "INQ-SOURCING-WA").whatsapp, "12133734253");
+});
+
+test("owner-only legacy sourcing lookup uses exact CRM ID without importing forms", async () => {
+  const store = memoryStore();
+  const ref = "c".repeat(64);
+  const old = {id: "INQ-LEGACY", vehicle: "Car Sourcing · Lavida", message: "Listing: historical snippet"};
+  const listingUrl = "https://www.guazi.com/car-detail/example.html";
+  const acceptedAt = Date.UTC(2026, 10, 24);
+  await store.setJSON("jobs/" + ref, {state: "delivered", archive: {lead: old, acceptedAt}});
+  await recordDelivery(store, ref, {lead: old, acceptedAt});
+  let calls = 0;
+  const handler = createHandler(async code => code === "owner", async () => store, async options => {
+    calls++;
+    assert.deepEqual(options, {syncForms: false});
+    return {items: [
+      {id: "INQ-UNRELATED", sourceEntry: "car_sourcing", listingUrl: "https://example.invalid/unrelated"},
+      {id: old.id, sourceEntry: "car_sourcing", listingUrl, destinationPort: "Jebel Ali"}
+    ]};
+  });
+  const request = body => handler({httpMethod: "POST", body: JSON.stringify(body)});
+  assert.equal((await request({code: "other", ref})).statusCode, 403);
+  assert.equal(calls, 0);
+  const detail = JSON.parse((await request({code: "owner", ref})).body).item;
+  assert.equal(detail.listingUrl, listingUrl);
+  assert.equal(detail.sourceEntry, "car_sourcing");
+  assert.equal(detail.destinationPort, "Jebel Ali");
+  const inbox = JSON.parse((await request({code: "owner"})).body);
+  assert.deepEqual(inbox.items, [detail]);
+  assert.equal(calls, 2);
+});
+
+test("sourcing email and WhatsApp notification cards both open the exact inquiry", async () => {
+  const original = global.fetch;
+  const cards = [];
+  global.fetch = async (url, options) => {
+    cards.push(JSON.parse(options.body).msg.action_card);
+    return {ok: true, json: async () => ({errcode: 0, task_id: 123})};
+  };
+  try {
+    const {notifyInquiry} = require("../netlify/lib/dingtalk-inquiry");
+    const ref = "d".repeat(64);
+    const base = {id: "INQ-SOURCING", sourceEntry: "car_sourcing", vehicle: "Car Sourcing · Lavida", destinationPort: "Jebel Ali"};
+    await notifyInquiry({...base, replyChannel: "email", email: "test@example.invalid"}, "mock", ref);
+    await notifyInquiry({...base, replyChannel: "whatsapp", whatsapp: "12133734253"}, "mock", ref);
+    for (const card of cards) {
+      assert.match(card.title, /^二手车撮合｜Lavida/);
+      assert.equal(card.single_title, "查看撮合详情");
+      assert.equal(card.single_url, "eapp://pages/detail/index?ref=" + ref);
+      assert.match(card.markdown, /Jebel Ali/);
+    }
+  } finally {
+    global.fetch = original;
+  }
+});
+
+test("miniapp sourcing detail copies the full URL and opens WhatsApp only on request", () => {
+  const detailFile = require.resolve("../docs/dingtalk-miniapp/pages/detail/index");
+  const originalPage = global.Page;
+  const originalDing = global.dd;
+  let definition;
+  const clipboard = [];
+  global.Page = page => { definition = page; };
+  global.dd = {setClipboard: ({text}) => clipboard.push(text)};
+  try {
+    delete require.cache[detailFile];
+    require(detailFile);
+    const page = {...definition, data: {}, setData(data) { Object.assign(this.data, data); }};
+    const listingUrl = "https://www.guazi.com/car-detail/example.html?x=" + "b".repeat(800);
+    page.showInquiry({sourceEntry: "car_sourcing", listingUrl, message: "Listing: shortened\nQuote please", email: "test@example.invalid"}, true);
+    assert.equal(page.data.listingLabel, "瓜子车源");
+    assert.equal(page.data.notes, "Quote please");
+    assert.equal(page.data.canOpenChat, false);
+    page.copyListing();
+    page.copyContact({currentTarget: {dataset: {field: "email"}}});
+    assert.deepEqual(clipboard, [listingUrl, "test@example.invalid"]);
+    page.showInquiry({sourceEntry: "car_sourcing", listingUrl, whatsapp: "12133734253"}, true);
+    assert.equal(page.data.chatUrl, "");
+    page.openWhatsApp();
+    assert.equal(page.data.chatUrl, "https://wa.me/12133734253");
+    page.showInquiry({whatsapp: "12133734253"}, true);
+    assert.equal(page.data.chatUrl, "https://wa.me/12133734253");
+  } finally {
+    global.Page = originalPage;
+    global.dd = originalDing;
+    delete require.cache[detailFile];
+  }
 });

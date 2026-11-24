@@ -1,3 +1,4 @@
+const { readLeads } = require("./crm-store");
 const { identifyInboxOwner } = require("../lib/dingtalk-inquiry");
 const { openStore } = require("../lib/dingtalk-outbox");
 const { keyPattern, listInbox, readInquiry } = require("../lib/dingtalk-inbox");
@@ -14,7 +15,27 @@ function respond(statusCode, data) {
   };
 }
 
-function createHandler(identify = identifyInboxOwner, getStore = openStore) {
+async function enrichLegacySourcing(items, readCrm) {
+  const legacyIds = new Set(items.filter(item =>
+    !item.sourceEntry && /^Car Sourcing(?: · |$)/.test(item.vehicle || "")
+  ).map(item => item.id));
+  if (!legacyIds.size) return items;
+  try {
+    const { items: leads } = await readCrm({ syncForms: false });
+    const matches = new Map(leads.filter(lead =>
+      legacyIds.has(lead.id) && lead.sourceEntry === "car_sourcing" && !lead.is_test
+    ).map(lead => [lead.id, lead]));
+    return items.map(item => {
+      const lead = matches.get(item.id);
+      return lead ? { ...item, sourceEntry: lead.sourceEntry, listingUrl: lead.listingUrl, destinationPort: lead.destinationPort } : item;
+    });
+  } catch {
+    console.warn("[dingtalk-inbox] Unable to enrich legacy sourcing inquiry");
+    return items;
+  }
+}
+
+function createHandler(identify = identifyInboxOwner, getStore = openStore, readCrm = readLeads) {
   return async event => {
     if (event.httpMethod !== "POST") return respond(405, { error: "METHOD_NOT_ALLOWED" });
     if (!event.body || event.body.length > 2048) return respond(400, { error: "INVALID_REQUEST" });
@@ -59,11 +80,13 @@ function createHandler(identify = identifyInboxOwner, getStore = openStore) {
       if (ref) {
         const item = await readInquiry(store, ref);
         console.info("[dingtalk-inbox] Owner inquiry detail", { found: Boolean(item) });
-        return item ? respond(200, { item }) : respond(404, { error: "INQUIRY_NOT_FOUND" });
+        if (!item) return respond(404, { error: "INQUIRY_NOT_FOUND" });
+        const [detail] = await enrichLegacySourcing([item], readCrm);
+        return respond(200, { item: detail });
       }
       const page = await listInbox(store, before);
       console.info("[dingtalk-inbox] Owner inbox read", { records: page.items.length });
-      return respond(200, page);
+      return respond(200, { ...page, items: await enrichLegacySourcing(page.items, readCrm) });
     } catch {
       console.error("[dingtalk-inbox] Inbox storage read failed");
       return respond(503, { error: "STORAGE_UNAVAILABLE" });

@@ -1,16 +1,23 @@
 <web-view a:if="{{chatUrl}}" src="{{chatUrl}}" onError="showChatError" />
 <view a:else class="screen">
   <view a:if="{{item}}" class="card">
+    <text a:if="{{sourcing}}" class="badge">二手车撮合</text>
     <view class="name">{{item.name || '网站访客'}}</view>
     <view class="meta">{{item.time}} · {{item.id}}</view>
     <view class="meta">国家：{{item.country || '未填写'}}</view>
     <view class="meta">车型：{{item.vehicle || '未填写'}}</view>
-    <view class="message">{{item.message || '暂无留言'}}</view>
+    <view a:if="{{sourcing && item.destinationPort}}" class="meta">目的港：{{item.destinationPort}}</view>
+    <view a:if="{{listingUrl}}" class="listing">
+      <view class="label">{{listingLabel}}</view>
+      <view class="value">{{listingUrl}}</view>
+      <button class="secondary" size="mini" onTap="copyListing">复制车源链接</button>
+    </view>
+    <view class="message">{{notes || '暂无留言'}}</view>
     <view a:if="{{item.whatsapp}}" class="meta">WhatsApp：+{{item.whatsapp}}</view>
     <view a:if="{{chatFailed}}" class="error">钉钉暂时无法打开 WhatsApp，可复制号码到 WhatsApp 搜索。</view>
     <button a:if="{{canOpenChat}}" class="primary" onTap="openWhatsApp">打开 WhatsApp</button>
     <button a:if="{{item.whatsapp}}" size="mini" data-field="whatsapp" onTap="copyContact">复制号码</button>
-    <view a:if="{{item.email}}" class="meta">邮箱：{{item.email}}</view>
+    <view a:if="{{item.email}}" class="meta">{{sourcing && item.replyChannel === 'email' ? '邮箱回复' : '邮箱'}}：{{item.email}}</view>
     <button a:if="{{item.email}}" size="mini" data-field="email" onTap="copyContact">复制邮箱</button>
   </view>
   <view a:elif="{{loading}}" class="empty">正在读取询盘详情…</view>

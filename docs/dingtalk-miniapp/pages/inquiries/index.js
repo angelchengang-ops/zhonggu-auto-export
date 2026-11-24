@@ -47,7 +47,7 @@ Page({
     const selected = this.data.items.find(item => item.id === event.currentTarget.dataset.id);
     if (!selected) return;
     getApp().selectedInquiry = selected;
-    const chat = openChat && whatsappLink(selected);
+    const chat = openChat && selected.sourceEntry !== "car_sourcing" && whatsappLink(selected);
     dd.navigateTo({url: '/pages/detail/index' + (chat ? '?chat=1' : '')});
   }
 });

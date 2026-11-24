@@ -109,7 +109,10 @@ function createOutbox(store, transport = ding, now = Date.now) {
       state: "queued", attempts: 0, due: now(), archiveDelivery: true, lead: {
         id: lead.id, name: String(lead.name || "").slice(0, 100), country: String(lead.country || "").slice(0, 80),
         vehicle: String(lead.vehicle || "").slice(0, 150), message: String(lead.message || "").slice(0, 500),
-        whatsapp: lead.whatsapp, email: lead.email, replyChannel: lead.replyChannel
+        whatsapp: lead.whatsapp, email: lead.email, replyChannel: lead.replyChannel,
+        ...(lead.sourceEntry === "car_sourcing" ? {
+          sourceEntry: lead.sourceEntry, listingUrl: lead.listingUrl, destinationPort: lead.destinationPort
+        } : {})
       }
     };
     const written = await store.setJSON(name, job, { onlyIfNew: true });
