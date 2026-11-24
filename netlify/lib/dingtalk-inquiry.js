@@ -39,12 +39,14 @@ async function identifyInboxOwner(code) {
   return result.errcode === 0 && result.result?.userid === recipient;
 }
 
-async function notifyInquiry(lead, token) {
+async function notifyInquiry(lead, token, jobKey) {
   const signal = AbortSignal.timeout(5000);
   const phone = String(lead.whatsapp || "");
   const byEmail = lead.replyChannel === "email" || (!phone && lead.email);
   if (byEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(lead.email || ""))) throw new Error("Invalid email");
   if (!byEmail && !/^[1-9][0-9]{6,14}$/.test(phone)) throw new Error("Invalid WhatsApp number");
+
+  if (byEmail && !/^[0-9a-f]{64}$/.test(jobKey || "")) throw new Error("Missing inquiry reference");
 
   const heading = "中谷网站新询盘";
   const id = cardText(lead.id, 100);
@@ -67,8 +69,8 @@ async function notifyInquiry(lead, token) {
       action_card: {
         title: heading + " · " + id.slice(0, 40),
         markdown: "### " + heading + "\n\n" + summary.join("\n\n"),
-        single_title: byEmail ? "打开询盘收件箱" : "打开客户 WhatsApp",
-        single_url: byEmail ? "eapp://pages/inquiries/index" : "https://wa.me/" + phone
+        single_title: byEmail ? "查看询盘详情" : "打开客户 WhatsApp",
+        single_url: byEmail ? "eapp://pages/detail/index?ref=" + encodeURIComponent(jobKey) : "https://wa.me/" + phone
       }
     }
   }, signal);

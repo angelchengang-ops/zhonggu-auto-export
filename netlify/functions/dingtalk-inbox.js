@@ -1,6 +1,6 @@
 const { identifyInboxOwner } = require("../lib/dingtalk-inquiry");
 const { openStore } = require("../lib/dingtalk-outbox");
-const { keyPattern, listInbox } = require("../lib/dingtalk-inbox");
+const { keyPattern, listInbox, readInquiry } = require("../lib/dingtalk-inbox");
 
 function respond(statusCode, data) {
   return {
@@ -30,12 +30,16 @@ function createHandler(identify = identifyInboxOwner, getStore = openStore) {
       return respond(400, { error: "INVALID_REQUEST" });
     }
 
-    const { code, before } = input || {};
+    const { code, before, ref } = input || {};
     if (typeof code !== "string" || !/^[!-~]{1,512}$/.test(code)) {
       return respond(401, { error: "AUTH_REQUIRED" });
     }
     if (before != null && (typeof before !== "string" || !keyPattern.test(before))) {
       return respond(400, { error: "INVALID_CURSOR" });
+    }
+
+    if (ref != null && (before != null || typeof ref !== "string" || !/^[0-9a-f]{64}$/.test(ref))) {
+      return respond(400, { error: "INVALID_REFERENCE" });
     }
 
     let owner;
@@ -51,7 +55,13 @@ function createHandler(identify = identifyInboxOwner, getStore = openStore) {
     }
 
     try {
-      const page = await listInbox(await getStore(event), before);
+      const store = await getStore(event);
+      if (ref) {
+        const item = await readInquiry(store, ref);
+        console.info("[dingtalk-inbox] Owner inquiry detail", { found: Boolean(item) });
+        return item ? respond(200, { item }) : respond(404, { error: "INQUIRY_NOT_FOUND" });
+      }
+      const page = await listInbox(store, before);
       console.info("[dingtalk-inbox] Owner inbox read", { records: page.items.length });
       return respond(200, page);
     } catch {

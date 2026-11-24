@@ -13,5 +13,7 @@
     <view a:if="{{item.email}}" class="meta">邮箱：{{item.email}}</view>
     <button a:if="{{item.email}}" size="mini" data-field="email" onTap="copyContact">复制邮箱</button>
   </view>
+  <view a:elif="{{loading}}" class="empty">正在读取询盘详情…</view>
+  <view a:elif="{{error}}" class="error">{{error}}<button size="mini" onTap="loadInquiry">重试</button></view>
   <view a:else class="empty">请返回收件箱选择询盘。</view>
 </view>

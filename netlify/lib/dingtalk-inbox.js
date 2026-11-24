@@ -10,6 +10,17 @@ async function recordDelivery(store, jobKey, job) {
   }, { onlyIfNew: true });
 }
 
+async function readInquiry(store, ref) {
+  const job = await store.get("jobs/" + ref, { type: "json" });
+  if (!job) return null;
+  const entry = job.archive || (["sending", "accepted"].includes(job.state) ? job : null);
+  if (!entry?.lead) return null;
+  return {
+    ...entry.lead,
+    pushedAt: entry.acceptedAt ? new Date(entry.acceptedAt).toISOString() : null
+  };
+}
+
 async function listInbox(store, before) {
   const { blobs } = await store.list({ prefix });
   const keys = blobs.map(blob => blob.key)
@@ -21,4 +32,4 @@ async function listInbox(store, before) {
   return { items, next: keys.length > pageSize ? page.at(-1) : null };
 }
 
-module.exports = { keyPattern, listInbox, recordDelivery };
+module.exports = { keyPattern, listInbox, readInquiry, recordDelivery };

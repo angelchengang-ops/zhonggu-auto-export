@@ -6,7 +6,7 @@ function displayTime(value) {
 }
 
 Page({
-  data: {items: [], next: null, loading: false, error: ''},
+  data: {items: [], groups: [], next: null, loading: false, error: ''},
   onShow() {
     if (!this.data.items.length) this.refresh();
   },
@@ -24,8 +24,13 @@ Page({
     this.setData({loading: true, error: ''});
     try {
       const result = await getApp().loadInbox(before);
-      const items = result.items.map(item => ({...item, time: displayTime(item.pushedAt)}));
-      this.setData({items: before ? this.data.items.concat(items) : items, next: result.next});
+      const page = result.items.map(item => ({...item, time: displayTime(item.pushedAt)}));
+      const items = before ? this.data.items.concat(page) : page;
+      const groups = [
+        {title: '有 WhatsApp', items: items.filter(item => whatsappLink(item))},
+        {title: '无 WhatsApp', items: items.filter(item => !whatsappLink(item))}
+      ].filter(group => group.items.length);
+      this.setData({items, groups, next: result.next});
     } catch (error) {
       this.setData({error: error.message});
     } finally {

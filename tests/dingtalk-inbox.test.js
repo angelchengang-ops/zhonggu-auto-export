@@ -91,3 +91,24 @@ test("owner authentication comes before storage and pages are stable and newest 
   assert.equal(second.next, null);
   assert.equal((await get("invalid")).statusCode, 400);
 });
+
+test("direct detail requires the owner and resolves before and after inbox archival", async () => {
+  const store = memoryStore();
+  const ref = "b".repeat(64);
+  const lead = { id: "QA-EMAIL-DETAIL", email: "qa@example.invalid" };
+  const handler = createHandler(async code => code === "owner", async () => store);
+  const request = (code, reference = ref) => handler({
+    httpMethod: "POST",
+    body: JSON.stringify({ code, ref: reference })
+  });
+  await store.setJSON("jobs/" + ref, { state: "sending", lead });
+  assert.equal((await request("other")).statusCode, 403);
+  assert.equal((await request("owner", "../jobs")).statusCode, 400);
+  assert.deepEqual(JSON.parse((await request("owner")).body).item, { ...lead, pushedAt: null });
+  const acceptedAt = Date.UTC(2026, 10, 24);
+  await store.setJSON("jobs/" + ref, { state: "delivered", archive: { lead, acceptedAt } });
+  assert.deepEqual(JSON.parse((await request("owner")).body).item, {
+    ...lead, pushedAt: "2026-11-24T00:00:00.000Z"
+  });
+  assert.equal((await request("owner", "c".repeat(64))).statusCode, 404);
+});

@@ -78,7 +78,7 @@ function createOutbox(store, transport = ding, now = Date.now) {
       }
       if (token) {
         try {
-          const outcome = await transport.notifyInquiry(sending.lead, token);
+          const outcome = await transport.notifyInquiry(sending.lead, token, key);
           next = outcome.rejected
             ? failedAttempt(sending, "rejected")
             : { ...sending, state: "accepted", taskId: outcome.taskId, acceptedAt: now(), due: now() + minute };
