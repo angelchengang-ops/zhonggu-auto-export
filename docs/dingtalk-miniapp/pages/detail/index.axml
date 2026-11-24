@@ -1,0 +1,14 @@
+<view class="screen">
+  <view a:if="{{item}}" class="card">
+    <view class="name">{{item.name || '网站访客'}}</view>
+    <view class="meta">{{item.time}} · {{item.id}}</view>
+    <view class="meta">国家：{{item.country || '未填写'}}</view>
+    <view class="meta">车型：{{item.vehicle || '未填写'}}</view>
+    <view class="message">{{item.message || '暂无留言'}}</view>
+    <view a:if="{{item.whatsapp}}" class="meta">WhatsApp：+{{item.whatsapp}}</view>
+    <button a:if="{{item.whatsapp}}" size="mini" data-field="whatsapp" onTap="copyContact">复制号码</button>
+    <view a:if="{{item.email}}" class="meta">邮箱：{{item.email}}</view>
+    <button a:if="{{item.email}}" size="mini" data-field="email" onTap="copyContact">复制邮箱</button>
+  </view>
+  <view a:else class="empty">请返回收件箱选择询盘。</view>
+</view>

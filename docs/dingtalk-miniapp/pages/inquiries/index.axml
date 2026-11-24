@@ -1,0 +1,19 @@
+<view class="screen">
+  <view class="hero">
+    <view class="title">询盘收件箱</view>
+    <view class="subtitle">已推送给你的询盘 · 北京时间</view>
+    <button size="mini" onTap="refresh" disabled="{{loading}}">刷新</button>
+  </view>
+  <view a:if="{{error}}" class="error">{{error}}</view>
+  <view a:if="{{loading && !items.length}}" class="empty">正在读取询盘…</view>
+  <view a:if="{{!loading && !error && !items.length}}" class="empty">暂无新询盘。成功推送后会显示在这里。</view>
+  <view a:for="{{items}}" a:key="id" class="card" data-id="{{item.id}}" onTap="open">
+    <view class="row">
+      <view class="name">{{item.name || '网站访客'}}</view>
+      <view class="badge">已推送</view>
+    </view>
+    <view class="meta">{{item.country || '未填写国家'}} · {{item.vehicle || '未填写车型'}}</view>
+    <view class="meta">{{item.time}}</view>
+  </view>
+  <button a:if="{{next}}" onTap="loadMore" loading="{{loading}}" disabled="{{loading}}">查看更多</button>
+</view>

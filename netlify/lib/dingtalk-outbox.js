@@ -1,5 +1,6 @@
 const { createHash } = require("node:crypto");
 const ding = require("./dingtalk-inquiry");
+const { recordDelivery } = require("./dingtalk-inbox");
 
 const minute = 60_000;
 const backoff = [5, 15, 60, 240];
@@ -19,11 +20,19 @@ function createOutbox(store, transport = ding, now = Date.now) {
     return store.setJSON(name, value, { onlyIfMatch: current.etag });
   };
   function finish(job, state, reason) {
-    return { state, reason, attempts: job.attempts, taskId: job.taskId ?? null, finishedAt: now() };
+    const archive = state === "delivered" && job.archiveDelivery
+      ? { lead: job.lead, acceptedAt: job.acceptedAt }
+      : null;
+    return { state, reason, attempts: job.attempts, taskId: job.taskId ?? null, finishedAt: now(), ...(archive && { archive }) };
   }
   function failedAttempt(job, reason) {
     if (job.attempts > backoff.length) return finish(job, "failed", reason);
     return { ...job, state: "queued", taskId: null, due: now() + backoff[job.attempts - 1] * minute };
+  }
+
+  async function clearPending(key, job) {
+    if (job.archive) await recordDelivery(store, key, job.archive);
+    await store.delete("pending/" + key);
   }
 
   async function process(key, fresh) {
@@ -32,7 +41,7 @@ function createOutbox(store, transport = ding, now = Date.now) {
     if (!current) return;
     const job = current.data;
     if (terminal.has(job.state)) {
-      await store.delete("pending/" + key);
+      await clearPending(key, job);
       return;
     }
     if (job.due > now()) return;
@@ -84,7 +93,7 @@ function createOutbox(store, transport = ding, now = Date.now) {
     if (next.state === "accepted") console.info("[inquiries] DingTalk accepted", { taskId: next.taskId });
     if (terminal.has(next.state)) {
       if (next.state !== "delivered") console.warn("[inquiries] DingTalk outbox stopped", { key, status: next.state, reason: next.reason, taskId: next.taskId });
-      await store.delete("pending/" + key);
+      await clearPending(key, next);
     }
   }
 
@@ -97,7 +106,7 @@ function createOutbox(store, transport = ding, now = Date.now) {
     // Write the index first so an interrupted invocation cannot leave an unindexed job.
     await store.setJSON("pending/" + key, { createdAt: now() }, { onlyIfNew: true });
     const job = {
-      state: "queued", attempts: 0, due: now(), lead: {
+      state: "queued", attempts: 0, due: now(), archiveDelivery: true, lead: {
         id: lead.id, name: String(lead.name || "").slice(0, 100), country: String(lead.country || "").slice(0, 80),
         vehicle: String(lead.vehicle || "").slice(0, 150), message: String(lead.message || "").slice(0, 500),
         whatsapp: lead.whatsapp, email: lead.email, replyChannel: lead.replyChannel
@@ -139,4 +148,4 @@ async function runOutbox(event) {
   return createOutbox(await openStore(event)).sweep();
 }
 
-module.exports = { createOutbox, queueInquiry, runOutbox };
+module.exports = { createOutbox, openStore, queueInquiry, runOutbox };

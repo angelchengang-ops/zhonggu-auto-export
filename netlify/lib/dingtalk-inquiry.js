@@ -31,6 +31,14 @@ async function getAccessToken() {
   return auth.accessToken;
 }
 
+async function identifyInboxOwner(code) {
+  const token = await getAccessToken();
+  const endpoint = new URL("https://oapi.dingtalk.com/topapi/v2/user/getuserinfo");
+  endpoint.searchParams.set("access_token", token);
+  const result = await post(endpoint, { code }, AbortSignal.timeout(5000));
+  return result.errcode === 0 && result.result?.userid === recipient;
+}
+
 async function notifyInquiry(lead, token) {
   const signal = AbortSignal.timeout(5000);
   const phone = String(lead.whatsapp || "");
@@ -87,4 +95,4 @@ async function deliveryResult(token, taskId) {
   return "pending";
 }
 
-module.exports = { deliveryResult, getAccessToken, notifyInquiry };
+module.exports = { deliveryResult, getAccessToken, identifyInboxOwner, notifyInquiry };

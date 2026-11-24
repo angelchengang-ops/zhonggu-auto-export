@@ -1,0 +1,4 @@
+{
+  "pages": ["pages/inquiries/index", "pages/detail/index"],
+  "window": {"defaultTitle": "中谷询盘提醒", "titleBarColor": "#123A46", "backgroundColor": "#F3F6F7"}
+}
