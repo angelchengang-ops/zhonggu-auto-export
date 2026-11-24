@@ -1,6 +1,6 @@
 const assert = require("node:assert/strict");
 const { test } = require("node:test");
-const { createOutbox } = require("../netlify/lib/dingtalk-outbox");
+const { createOutbox, openStore } = require("../netlify/lib/dingtalk-outbox");
 const { listInbox, recordDelivery } = require("../netlify/lib/dingtalk-inbox");
 const { createHandler } = require("../netlify/functions/dingtalk-inbox");
 
@@ -224,5 +224,27 @@ test("miniapp sourcing detail copies the full URL and opens WhatsApp only on req
     global.Page = originalPage;
     global.dd = originalDing;
     delete require.cache[detailFile];
+  }
+});
+
+test("warm Lambda invocations refresh the notification store token", async () => {
+  const old = process.env.NETLIFY_BLOBS_CONTEXT;
+  const oldGlobal = globalThis.netlifyBlobsContext;
+  delete globalThis.netlifyBlobsContext;
+  const connect = token => openStore({
+    blobs: Buffer.from(JSON.stringify({url: "https://blob.example.invalid", token})).toString("base64"),
+    headers: {"x-nf-site-id": "isolated-site", "x-nf-deploy-id": "isolated-deploy"}
+  });
+  const tokenInContext = () => JSON.parse(Buffer.from(process.env.NETLIFY_BLOBS_CONTEXT, "base64").toString()).token;
+  try {
+    await connect("isolated-first-token");
+    assert.equal(tokenInContext(), "isolated-first-token");
+    await connect("isolated-fresh-token");
+    assert.equal(tokenInContext(), "isolated-fresh-token");
+  } finally {
+    if (old === undefined) delete process.env.NETLIFY_BLOBS_CONTEXT;
+    else process.env.NETLIFY_BLOBS_CONTEXT = old;
+    if (oldGlobal === undefined) delete globalThis.netlifyBlobsContext;
+    else globalThis.netlifyBlobsContext = oldGlobal;
   }
 });
