@@ -112,3 +112,30 @@ test("direct detail requires the owner and resolves before and after inbox archi
   });
   assert.equal((await request("owner", "c".repeat(64))).statusCode, 404);
 });
+
+test("sourcing delivery retains the listing for email and WhatsApp inbox entries", async () => {
+  const store = memoryStore();
+  let now = Date.UTC(2026, 10, 24);
+  const sent = [];
+  const outbox = createOutbox(store, {
+    async getAccessToken() { return "mock"; },
+    async notifyInquiry(lead, token, reference) {
+      sent.push({ lead, reference });
+      return { taskId: sent.length };
+    },
+    async deliveryResult() { return "delivered"; }
+  }, () => now);
+  const message = "Listing: https://www.che168.com/example";
+  const common = {name: "Synthetic", vehicle: "Car Sourcing", message};
+  await outbox.enqueue({...common, id: "INQ-SOURCING-EMAIL", replyChannel: "email", email: "test@example.invalid"});
+  await outbox.enqueue({...common, id: "INQ-SOURCING-WA", replyChannel: "whatsapp", whatsapp: "12133734253"});
+  now += 60_000;
+  await outbox.sweep();
+  const {items} = await listInbox(store);
+  assert.equal(sent.length, 2);
+  assert.ok(sent.every(item => /^[a-f\d]{64}$/.test(item.reference)));
+  assert.equal(items.length, 2);
+  assert.ok(items.every(item => item.message === message && item.vehicle === "Car Sourcing"));
+  assert.equal(items.find(item => item.id === "INQ-SOURCING-EMAIL").email, "test@example.invalid");
+  assert.equal(items.find(item => item.id === "INQ-SOURCING-WA").whatsapp, "12133734253");
+});

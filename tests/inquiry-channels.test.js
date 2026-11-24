@@ -29,3 +29,56 @@ test('email notification opens its exact DingTalk detail and WhatsApp notificati
  assert.equal(calls[0].msg.action_card.single_url,'eapp://pages/detail/index?ref='+'a'.repeat(64));assert.match(calls[0].msg.action_card.markdown,/qa-a@example.invalid/);assert.equal(calls[1].msg.action_card.single_url,'https://wa.me/12133734253');
  }finally{global.fetch=original;}
 });
+
+test('sourcing inquiries stay on the website workflow and keep the listing and contact channel', async () => {
+  const previousFetch = global.fetch;
+  const previousWebhook = process.env.ZHONGGU_LEAD_WEBHOOK_URL;
+  const calls = [];
+  process.env.ZHONGGU_LEAD_WEBHOOK_URL = 'https://example.invalid/sourcing-webhook';
+  global.fetch = async (url, options) => {
+    assert.equal(url, process.env.ZHONGGU_LEAD_WEBHOOK_URL);
+    calls.push(JSON.parse(options.body).lead);
+    return {ok: true, status: 200};
+  };
+  try {
+    const sourcing = {
+      ...base, sourceEntry: 'car_sourcing', vehicle: 'Example model',
+      listingUrl: 'https://www.guazi.com/example', message: 'Check service history'
+    };
+    for (const listingUrl of ['', 'javascript:alert(1)', 'https://name:secret@example.invalid/']) {
+      assert.equal((await handler(request({...sourcing, listingUrl}))).statusCode, 400);
+    }
+    const email = JSON.parse((await handler(request({
+      ...sourcing, submissionId: '6268be80-6713-4545-822e-7acc42276d89'
+    }))).body);
+    const wa = JSON.parse((await handler(request({
+      ...sourcing, replyChannel: 'whatsapp', email: '', whatsapp: '+34 612 345 678'
+    }))).body);
+    assert.equal(email.lead.whatsapp, '');
+    assert.equal(wa.lead.whatsapp, '34612345678');
+    assert.equal(wa.lead.country, 'Algeria');
+    assert.equal(wa.lead.phoneCountry, 'ES');
+    for (const result of [email, wa]) {
+      assert.equal(result.stored, true);
+      assert.equal(result.lead.sourceType, 'website');
+      assert.equal(result.lead.sourceDetail, 'Car Sourcing');
+      assert.equal(result.lead.listingUrl, sourcing.listingUrl);
+      assert.equal(result.lead.vehicle, 'Car Sourcing · Example model');
+      assert.equal(result.lead.message, 'Listing: ' + sourcing.listingUrl + '\nCheck service history');
+      const assigned = await store.updateLead(result.id, {assignedTo: 'isolated_qa_sales'});
+      assert.equal(assigned.listingUrl, sourcing.listingUrl);
+    }
+    const retry = JSON.parse((await handler(request({
+      ...sourcing, submissionId: '6268be80-6713-4545-822e-7acc42276d89'
+    }))).body);
+    assert.equal(retry.id, email.id);
+    assert.equal(retry.results.duplicate, true);
+    assert.deepEqual(calls.map(lead => lead.id), [email.id, wa.id]);
+    const filtered = store.filterLeads((await store.readLeads()).items, new URLSearchParams('entry=car_sourcing'));
+    assert.deepEqual(new Set(filtered.map(lead => lead.id)), new Set([email.id, wa.id]));
+  } finally {
+    global.fetch = previousFetch;
+    if (previousWebhook) process.env.ZHONGGU_LEAD_WEBHOOK_URL = previousWebhook;
+    else delete process.env.ZHONGGU_LEAD_WEBHOOK_URL;
+  }
+});
