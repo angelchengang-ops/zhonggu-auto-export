@@ -1,0 +1,45 @@
+.sourcing-marketplaces {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block-start: 1.5rem;
+}
+
+.sourcing-marketplaces .sourcing-marketplace {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 6rem;
+  padding: 1.125rem 1.375rem;
+  border: 1px solid #c5d9f3;
+  border-radius: 1rem;
+  background: #f0f6ff;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.sourcing-marketplaces .sourcing-marketplace:hover,
+.sourcing-marketplaces .sourcing-marketplace:focus-visible {
+  border-color: var(--blue);
+  background: #e5effd;
+}
+
+.sourcing-marketplaces .sourcing-marketplace:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.sourcing-marketplace strong,
+.sourcing-marketplace small {
+  display: block;
+}
+
+.sourcing-marketplace strong { font-size: 1.125rem; }
+.sourcing-marketplace small { color: #435c77; }
+.sourcing-marketplace-arrow { color: #1260bf; font-size: 1.5rem; }
+
+@media (max-width: 600px) {
+  .sourcing-marketplaces { grid-template-columns: minmax(0, 1fr); }
+  .sourcing-marketplaces .sourcing-marketplace { min-height: 4.75rem; }
+}
