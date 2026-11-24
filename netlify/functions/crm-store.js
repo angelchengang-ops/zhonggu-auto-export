@@ -188,6 +188,7 @@ const normalizeLead = (input = {}, event = {}, options = {}) => {
     sourceDetail: firstValue(body.sourceDetail, body.source_detail) || (isClick ? "WhatsApp Click" : isManual ? "Manual CRM Entry" : "Website Inquiry Form"),
     sourceChannel: firstValue(body.sourceChannel, body.source_channel),
     sourceEntry: firstValue(body.sourceEntry, body.source_entry),
+    ...(firstValue(body.sourceEntry, body.source_entry) === "car_sourcing" && { listingUrl: firstValue(body.listingUrl, body.listing_url) }),
     sourceButton: firstValue(body.sourceButton, body.source_button, body.buttonText, body.button_text),
     name: firstValue(body.name, body.customerName, body.customer_name, body.contact_name, body.fullName, body.full_name) || (isClick ? "未知客户" : ""),
     country: firstValue(body.country, body.market_country),
@@ -428,6 +429,7 @@ const filterLeads = (items = [], params = new URLSearchParams()) => {
   const q = firstValue(params.get("q"), params.get("keyword"));
   const range = firstValue(params.get("range"), params.get("dateRange"));
   const leadType = clean(params.get("leadType"));
+  const entry = clean(params.get("entry"));
   const testFilter = firstValue(params.get("is_test"), params.get("isTest")).toLowerCase();
   const testId = firstValue(params.get("test_id"), params.get("testId"));
   return items.filter((item) => {
@@ -435,6 +437,7 @@ const filterLeads = (items = [], params = new URLSearchParams()) => {
     if (testFilter !== "true" && item.is_test) return false;
     if (testId && item.test_id !== testId) return false;
     if (replyChannel && item.replyChannel !== replyChannel) return false;
+    if (entry === "car_sourcing" && item.sourceEntry !== entry) return false;
     const type = sourceTypeOf(item);
     if (leadType === "website" && type !== "website_form") return false;
     if (leadType === "manual" && type !== "manual") return false;

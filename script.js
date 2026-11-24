@@ -392,8 +392,12 @@ const applyLanguage = () => {
     }));
     select.value = state.language;
   });
-  document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n) || node.textContent; });
+  document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = sourcingHomeCopy[state.language]?.[node.dataset.i18n] || t(node.dataset.i18n) || node.textContent; });
   document.querySelectorAll("[data-i18n-html]").forEach((node) => { node.innerHTML = t(node.dataset.i18nHtml) || node.innerHTML; });
+  document.querySelectorAll("[data-sourcing-link]").forEach((link) => {
+    const language = sourcingHomeCopy[state.language] ? state.language : "en";
+    link.href = (language === "en" ? "" : "/" + language) + "/car-sourcing";
+  });
   document.querySelectorAll(".main-nav a").forEach((link) => {
     const href = link.getAttribute("href") || "";
     const key = href.includes("new-cars") || href === "#new-cars" ? "nav.newCars"
@@ -432,6 +436,34 @@ const applyLanguage = () => {
   document.querySelectorAll("a.whatsapp-btn, .hero-actions a[href*='wa.me']").forEach((node) => { node.textContent = t("contact.whatsapp"); });
   localizePhoneFields();
 };
+const sourcingHomeCopy = {
+  "en": {
+    "nav.carSourcing": "Car Sourcing",
+    "sourcing.headline": "You Choose. We Inspect. We Export.",
+    "sourcing.intro": "Choose a used car in China and send us the listing. We check whether the vehicle can be exported and admitted to your destination before confirming a quote."
+  },
+  "fr": {
+    "nav.carSourcing": "Achat sur demande",
+    "sourcing.headline": "Vous choisissez. Nous inspectons. Nous exportons.",
+    "sourcing.intro": "Choisissez une voiture d’occasion en Chine et envoyez-nous l’annonce. Nous vérifions les conditions d’exportation et d’admission dans le pays de destination avant de confirmer le devis."
+  },
+  "ar": {
+    "nav.carSourcing": "شراء السيارات بالوكالة",
+    "sourcing.headline": "أنت تختار. نحن نفحص ونصدّر.",
+    "sourcing.intro": "اختر سيارة مستعملة في الصين وأرسل إلينا رابط الإعلان. نتحقق من أهلية السيارة للتصدير وإمكانية إدخالها إلى بلد الوجهة قبل تأكيد عرض السعر."
+  },
+  "ru": {
+    "nav.carSourcing": "Авто под заказ",
+    "sourcing.headline": "Вы выбираете. Мы проверяем и экспортируем.",
+    "sourcing.intro": "Выберите автомобиль с пробегом в Китае и пришлите ссылку. Мы проверим возможность экспорта и ввоза в страну назначения до подтверждения предложения."
+  },
+  "es": {
+    "nav.carSourcing": "Compra por encargo",
+    "sourcing.headline": "Tú eliges. Inspeccionamos. Exportamos.",
+    "sourcing.intro": "Elige un coche usado en China y envíanos el anuncio. Verificamos si el vehículo se puede exportar y admitir en el país de destino antes de confirmar la cotización."
+  }
+};
+
 const setLanguage = (language) => {
   if (!languageOptions.some((item) => item.value === language)) return;
   state.language = language;
@@ -912,7 +944,7 @@ const prepareDailyTestPayload = async (payload) => {
     leadSource: "website_form",
     sourceDetail: "Website Inquiry Form - Daily Check",
     sourceChannel: "inquiry_form",
-    sourceEntry: "daily_morning_check",
+    sourceEntry: payload.sourceEntry === "car_sourcing" ? payload.sourceEntry : "daily_morning_check",
     assignedTo: "",
     status: "new",
     is_test: true,
@@ -955,7 +987,8 @@ const buildInternationalWhatsapp = (formData) => {
 const buildInquiryPayload = (form, formData) => {
   const sourceUrl = formDataValue(formData, "source_url", "pageUrl") || window.location.href;
   const sourcePage = formDataValue(formData, "source_page", "sourcePage") || document.querySelector("h1")?.textContent || document.title || window.location.pathname;
-  const vehicle = formDataValue(formData, "vehicle", "car_type", "interestedModel", "model", "car") || sourcePage;
+  const isSourcing = form.dataset.sourceEntry === "car_sourcing";
+  const vehicle = formDataValue(formData, "vehicle", "car_type", "interestedModel", "model", "car") || (isSourcing ? "Car Sourcing" : sourcePage);
   const port = formDataValue(formData, "destinationPort", "port", "destination_port", "destination");
   const budget = formDataValue(formData, "budget", "budgetPerUnit", "budget_per_unit", "totalBudget", "total_budget");
   const callingCode = normalizeCallingCode(formDataValue(formData, "calling_code", "country_code", "dial_code"));
@@ -985,6 +1018,7 @@ const buildInquiryPayload = (form, formData) => {
     salePrice: formDataValue(formData, "sale_price"),
     inventoryType: formDataValue(formData, "inventory_type"),
     pageUrl: formDataValue(formData, "page_url") || sourceUrl,
+    ...(isSourcing && { listingUrl: formDataValue(formData, "listing_url") }),
     sourceDetail: "Website Inquiry Form",
     sourceChannel: "inquiry_form",
     sourceEntry: form.dataset.sourceEntry || formDataValue(formData, "source_entry") || "inquiry_form",
@@ -1243,11 +1277,11 @@ function localizePhoneFields() {
   document.querySelectorAll('form.inquiry-form').forEach((form, index) => {
     for (const [name, text] of Object.entries(labels)) {
       const span = form.querySelector(`[name="${name}"]`)?.closest('label')?.querySelector('span');
-      if (span) span.textContent = text;
+      if (span && form.dataset.sourceEntry !== "car_sourcing") span.textContent = text;
     }
     const phone = form.querySelector('[name="phone_number"]');
     if (!phone) return;
-    phone.placeholder = language === 'ar' ? 'رقم محلي أو دولي يبدأ بـ +' : language === 'fa' ? 'شماره محلی یا بین‌المللی با +' : 'Local number or +international number';
+    phone.placeholder = form.dataset.phonePlaceholder || (language === 'ar' ? 'رقم محلي أو دولي يبدأ بـ +' : language === 'fa' ? 'شماره محلی یا بین‌المللی با +' : 'Local number or +international number');
     let note = form.querySelector('.phone-country-hint');
     if (!note) { note=document.createElement('small');note.className='phone-country-hint';note.id=`phone-country-hint-${index}`;phone.closest('label')?.append(note); }
     note.textContent=hint;phone.setAttribute('aria-describedby',note.id);
@@ -1311,7 +1345,7 @@ const bindInquiryForms = () => {
 
       if (submitButton) {
         submitButton.disabled = true;
-        submitButton.textContent = document.documentElement.lang === "fa" ? "در حال ارسال..." : document.documentElement.lang === "ar" ? "جارٍ الإرسال..." : "Submitting...";
+        submitButton.textContent = form.dataset.submittingLabel || (document.documentElement.lang === "fa" ? "در حال ارسال..." : document.documentElement.lang === "ar" ? "جارٍ الإرسال..." : "Submitting...");
       }
 
       try {
@@ -1332,11 +1366,18 @@ const bindInquiryForms = () => {
           return;
         }
         try { await window.ZhongguTracking?.success(crmResult, "inquiry_form"); } catch (_) { /* Analytics cannot fail a saved inquiry. */ }
+        if (form.dataset.sourceEntry === "car_sourcing") {
+          const success = form.parentElement.querySelector(".inquiry-success");
+          form.remove();
+          success.hidden = false;
+          success.focus();
+          return;
+        }
         window.location.assign("/thank-you.html");
       } catch (error) {
         form.dataset.submitting = "false";
         console.error("Inquiry submission failed", error);
-        window.alert(document.documentElement.lang === "fa" ? "ارسال انجام نشد. لطفاً دوباره تلاش کنید یا با فروش تماس بگیرید." : document.documentElement.lang === "ar" ? "تعذر الإرسال. حاول مرة أخرى أو تواصل مع فريق المبيعات." : "Submission failed. Please try again or contact our sales team.");
+        window.alert(form.dataset.errorLabel || (document.documentElement.lang === "fa" ? "ارسال انجام نشد. لطفاً دوباره تلاش کنید یا با فروش تماس بگیرید." : document.documentElement.lang === "ar" ? "تعذر الإرسال. حاول مرة أخرى أو تواصل مع فريق المبيعات." : "Submission failed. Please try again or contact our sales team."));
         if (submitButton) {
           submitButton.disabled = false;
           submitButton.textContent = originalLabel;

@@ -27,13 +27,15 @@
     const w = copy(), email = field(form,'email',w[3],'email');
     const emailSpan=email.closest('label')?.querySelector('span');if(emailSpan)emailSpan.textContent=w[3];
     const phone = form.elements.namedItem('phone_number'), code = form.elements.namedItem('calling_code');
-    const quantity = field(form,'quantity',w[5],'number'); quantity.min = '1'; quantity.step = '1';
-    let quote = form.elements.namedItem('fobOrCif') || form.elements.namedItem('quoteType');
-    if (!quote) {
-      const label=document.createElement('label'), span=document.createElement('span');span.textContent=w[6];
-      quote=document.createElement('select');quote.name='fobOrCif';
-      for(const value of ['FOB','CIF']) quote.add(new Option(value,value));
-      quote.value = /cif/i.test(location.pathname) ? 'CIF':'FOB';label.append(span,quote);(form.querySelector('.inquiry-fields') || form).append(label);
+    if (form.dataset.sourceEntry !== "car_sourcing") {
+      const quantity = field(form,'quantity',w[5],'number'); quantity.min = '1'; quantity.step = '1';
+      let quote = form.elements.namedItem('fobOrCif') || form.elements.namedItem('quoteType');
+      if (!quote) {
+        const label=document.createElement('label'), span=document.createElement('span');span.textContent=w[6];
+        quote=document.createElement('select');quote.name='fobOrCif';
+        for(const value of ['FOB','CIF']) quote.add(new Option(value,value));
+        quote.value = /cif/i.test(location.pathname) ? 'CIF':'FOB';label.append(span,quote);(form.querySelector('.inquiry-fields') || form).append(label);
+      }
     }
     const label=document.createElement('label'), span=document.createElement('span'), select=document.createElement('select');
     span.textContent=w[2];select.name='replyChannel';select.required=true;

@@ -144,6 +144,27 @@ exports.handler = async (event) => {
     if (!isClickEvent && body.replyChannel === "email") {
       body = { ...body, whatsapp: "", rawWhatsapp: "", raw_whatsapp: "", phone: "", mobile: "", tel: "", phoneNumber: "", phone_number: "", whatsappLocal: "", countryCode: "", callingCode: "", calling_code: "", phoneCountry: "" };
     }
+    if (!isClickEvent && firstValue(body.sourceEntry, body.source_entry) === "car_sourcing") {
+      const listingUrl = firstValue(body.listingUrl, body.listing_url);
+      let listing;
+      try { listing = new URL(listingUrl); } catch { /* Report validation failure below. */ }
+      if (!listing || !["http:", "https:"].includes(listing.protocol) || listing.username || listing.password || listingUrl.length > 2000) {
+        throw Object.assign(new Error("Enter a valid vehicle listing URL"), { statusCode: 400 });
+      }
+      const model = firstValue(body.vehicle, body.model);
+      const vehicle = model && model.replace(/^\[AUTO TEST\] /, "") !== "Car Sourcing"
+        ? "Car Sourcing · " + model
+        : "Car Sourcing";
+      body = {
+        ...body,
+        sourceEntry: "car_sourcing",
+        sourceDetail: "Car Sourcing",
+        listingUrl: listing.href,
+        vehicle,
+        interestedModel: vehicle,
+        message: ["Listing: " + listing.href, firstValue(body.message)].filter(Boolean).join("\n")
+      };
+    }
     lead = normalizeLead(body, event, { kind: isClickEvent ? "whatsapp_click" : "website", isTest });
     assertLead(lead, isClickEvent);
 
