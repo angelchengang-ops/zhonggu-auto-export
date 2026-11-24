@@ -74,6 +74,7 @@ function createOutbox(store, transport = ding, now = Date.now) {
       try {
         token = await transport.getAccessToken();
       } catch {
+        console.warn("[inquiries] DingTalk token unavailable", { id: String(sending.lead.id || "").slice(0, 100), attempt: sending.attempts });
         next = failedAttempt(sending, "authentication");
       }
       if (token) {

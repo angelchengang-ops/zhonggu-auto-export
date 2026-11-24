@@ -26,7 +26,10 @@ async function getAccessToken() {
 
   const signal = AbortSignal.timeout(5000);
   const auth = await post("https://api.dingtalk.com/v1.0/oauth2/accessToken", { appKey, appSecret }, signal);
-  if (!auth.accessToken) throw new Error("DingTalk authentication failed");
+  if (!auth.accessToken) {
+    console.warn("[inquiries] DingTalk token rejected", { code: Number.isInteger(auth.errcode) ? auth.errcode : null });
+    throw new Error("DingTalk authentication failed");
+  }
 
   return auth.accessToken;
 }
@@ -83,7 +86,10 @@ async function notifyInquiry(lead, token, jobKey) {
   }, signal);
 
   if (result.errcode === 0 && result.task_id) return { taskId: result.task_id };
-  if (!result.task_id && Number.isInteger(result.errcode) && result.errcode !== 0) return { rejected: true };
+  if (!result.task_id && Number.isInteger(result.errcode) && result.errcode !== 0) {
+    console.warn("[inquiries] DingTalk send rejected", { id: String(lead.id || "").slice(0, 100), code: result.errcode });
+    return { rejected: true };
+  }
   throw new Error("DingTalk send result unknown");
 }
 
