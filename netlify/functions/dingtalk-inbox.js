@@ -21,25 +21,42 @@ function createHandler(identify = identifyInboxOwner, getStore = openStore) {
 
     let input;
     try {
-      input = JSON.parse(event.body);
+      const contentType = Object.entries(event.headers || {})
+        .find(([name]) => name.toLowerCase() === "content-type")?.[1] || "";
+      input = contentType.startsWith("application/x-www-form-urlencoded")
+        ? Object.fromEntries(new URLSearchParams(event.body))
+        : JSON.parse(event.body);
     } catch {
       return respond(400, { error: "INVALID_REQUEST" });
     }
 
     const { code, before } = input || {};
-    if (typeof code !== "string" || !/^[A-Za-z0-9._-]{1,256}$/.test(code)) {
+    if (typeof code !== "string" || !/^[!-~]{1,512}$/.test(code)) {
       return respond(401, { error: "AUTH_REQUIRED" });
     }
     if (before != null && (typeof before !== "string" || !keyPattern.test(before))) {
       return respond(400, { error: "INVALID_CURSOR" });
     }
 
+    let owner;
     try {
-      if (!await identify(code)) return respond(403, { error: "ACCESS_DENIED" });
-      return respond(200, await listInbox(await getStore(event), before));
+      owner = await identify(code);
     } catch {
-      console.error("[dingtalk-inbox] Request failed");
-      return respond(503, { error: "TEMPORARILY_UNAVAILABLE" });
+      console.error("[dingtalk-inbox] DingTalk identity service unavailable");
+      return respond(503, { error: "IDENTITY_UNAVAILABLE" });
+    }
+    if (!owner) {
+      console.info("[dingtalk-inbox] DingTalk identity rejected");
+      return respond(403, { error: "ACCESS_DENIED" });
+    }
+
+    try {
+      const page = await listInbox(await getStore(event), before);
+      console.info("[dingtalk-inbox] Owner inbox read", { records: page.items.length });
+      return respond(200, page);
+    } catch {
+      console.error("[dingtalk-inbox] Inbox storage read failed");
+      return respond(503, { error: "STORAGE_UNAVAILABLE" });
     }
   };
 }

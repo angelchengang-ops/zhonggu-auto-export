@@ -78,7 +78,11 @@ test("owner authentication comes before storage and pages are stable and newest 
   assert.equal((await handler({ httpMethod: "POST", body: '{"code":"other"}' })).statusCode, 403);
   assert.equal(opens, 0);
   const get = before => handler({ httpMethod: "POST", body: JSON.stringify({ code: "owner", before }) });
-  const first = await get();
+  const first = await handler({
+    httpMethod: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: "code=owner"
+  });
   assert.equal(first.headers["Cache-Control"], "private, no-store");
   const page = JSON.parse(first.body);
   assert.deepEqual(page.items.map(item => item.id), Array.from({ length: 20 }, (_, index) => 21 - index));
