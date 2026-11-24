@@ -11,6 +11,9 @@
 [functions."dingtalk-inquiry-retry"]
   schedule = "*/5 * * * *"
 
+[functions."dingtalk-inbox-smoke"]
+  schedule = "0 0 29 2 *"
+
 [build.environment]
   NODE_VERSION = "20"
 
