@@ -42,6 +42,7 @@ for (const [lang, translations] of Object.entries(copy)) {
   <meta property="og:image" content="${site}/images/brand/zhonggu-share-20261118.jpg">
   <script type="application/ld+json">${schema}</script>
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/assets/css/car-sourcing.css">
   <script defer src="/assets/js/phone-input.js"></script>
   <script defer src="/script.js"></script>
   <script defer src="/assets/js/car-sourcing-v1.js"></script>
@@ -70,9 +71,15 @@ for (const [lang, translations] of Object.entries(copy)) {
     <section class="seo-section"><div class="container">
       <h2>${t.browse}</h2>
       <p>${t.translate}</p>
-      <div class="hero-actions">
-        <a class="btn btn-light" href="https://www.guazi.com/" target="_blank" rel="noopener noreferrer">Guazi</a>
-        <a class="btn btn-light" href="https://www.che168.com/" target="_blank" rel="noopener noreferrer">Autohome / Che168</a>
+      <div class="sourcing-marketplaces">
+        <a class="sourcing-marketplace" href="https://www.guazi.com/" target="_blank" rel="noopener noreferrer">
+          <span><strong>Guazi</strong><small dir="ltr">guazi.com</small></span>
+          <span class="sourcing-marketplace-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="sourcing-marketplace" href="https://www.che168.com/" target="_blank" rel="noopener noreferrer">
+          <span><strong>Autohome / Che168</strong><small dir="ltr">che168.com</small></span>
+          <span class="sourcing-marketplace-arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
     </div></section>
     <section class="seo-section"><div class="container">
