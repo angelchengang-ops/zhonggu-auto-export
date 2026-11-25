@@ -1,3 +1,7 @@
+# Hong Kong company profile canonical route
+/hong-kong.html /hong-kong 301!
+/hong-kong /hong-kong.html 200!
+
 # Car sourcing canonical routes
 /car-sourcing.html /car-sourcing 301!
 /car-sourcing /car-sourcing.html 200!
