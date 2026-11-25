@@ -50,5 +50,5 @@ function scan(dir) {
 for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
   const fullPath = path.join(root, entry.name);
   if (entry.isFile() && entry.name.endsWith('.html')) updatePage(fullPath);
-  if (entry.isDirectory() && ['ar', 'fa', 'fr', 'ru', 'landing', 'new-cars'].includes(entry.name)) scan(fullPath);
+  if (entry.isDirectory() && ['ar', 'es', 'fa', 'fr', 'ru', 'landing', 'new-cars'].includes(entry.name)) scan(fullPath);
 }
