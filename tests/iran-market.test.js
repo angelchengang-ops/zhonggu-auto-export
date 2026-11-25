@@ -1,3 +1,4 @@
+const localSitePath = require('./local-site-path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -24,7 +25,7 @@ test('Iran English and Persian guides are indexable, linked, localized and carry
     assert.ok(read('car-importer-center.html').includes(`href="/${file}"`));
     assert.ok(read('sitemap-pages-current.xml').includes(`<loc>https://zhongguauto.com/${file}</loc>`));
     assert.equal(graph(html).find(n=>n['@type']==='Service').areaServed.name,'Iran');
-    for(const m of html.matchAll(/(?:href|src)="(\/[^"?#]*)/g)) assert.ok(fs.existsSync(path.join(root,m[1]==='/'?'index.html':m[1])),m[1]);
+    for(const m of html.matchAll(/(?:href|src)="(\/[^"?#]*)/g)) assert.ok(fs.existsSync(localSitePath(m[1])),m[1]);
     assert.match(html,/US\$9,800/);
     assert.ok(!/11,800|11800/.test(html));
   }

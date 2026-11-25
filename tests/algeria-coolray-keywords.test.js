@@ -1,3 +1,4 @@
+const localSitePath = require('./local-site-path');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8');
 const cars=JSON.parse(read('cars.json')).filter(c=>c.id.startsWith('geely-coolray-'));
@@ -24,8 +25,7 @@ for(const lang of ['fr','ar'])test(`Algeria ${lang} keywords preserve prices, la
  assert.match(h,/data-whatsapp-button="true"/);
  assert.ok(h.includes('/assets/js/phone-input.js'));
  for(const [,href] of h.matchAll(/href="(\/[^"#?]*)/g)){
-  const f=href==='/'?'index.html':href.endsWith('/')?href.slice(1)+'index.html':href.slice(1);
-  assert.ok(fs.existsSync(path.join(root,f)),href);
+  assert.ok(fs.existsSync(localSitePath(href)),href);
  }
  assert.doesNotMatch(h,/6,900|7,700|10,500|10,600|11,500|1,000 USD off/);
 });

@@ -137,7 +137,7 @@ for (const [lang, translations] of Object.entries(copy)) {
       <p class="inquiry-success" role="status" tabindex="-1" hidden>${t.success}</p>
     </div></section>
   </main>
-  <footer class="site-footer"><div class="container footer-wrap"><p>© <span id="year"></span> Zhonggu Auto Export</p></div><p><a href="/hong-kong" lang="en">Hong Kong Trading &amp; Services</a></p></footer>
+  <footer class="site-footer"><div class="container footer-wrap"><p>© <span id="year"></span> Zhonggu Auto Export</p></div></footer>
 </body>
 </html>
 `);

@@ -1,3 +1,4 @@
+const localSitePath = require('./local-site-path');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -67,7 +68,7 @@ test('market pages expose matching visible FAQs, canonical, working local links 
       assert.ok(visible.includes(escaped(faq.acceptedAnswer.text)),file);
     }
     for(const m of html.matchAll(/(?:href|src)="(\/[^"?#]*)/g)){
-      const target=path.join(root,m[1].endsWith('/')?`${m[1]}index.html`:m[1]);
+      const target=localSitePath(m[1]);
       assert.ok(fs.existsSync(target),`${file}: ${m[1]}`);
     }
   }
