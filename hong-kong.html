@@ -13,45 +13,67 @@
   <meta property="og:image" content="https://zhongguauto.com/images/brand/zhonggu-share-20261118.jpg">
   <link rel="stylesheet" href="/style.css">
   <script defer src="/script.js"></script>
+<style>
+
+.hk-page{--hk-navy:#132e46;--hk-ink:#142333;--hk-muted:#53616d;--hk-line:#e0e5ea;background:#fff;color:var(--hk-ink)}
+.hk-page .hk-shell{width:min(100% - 48px,1080px);margin-inline:auto}
+.hk-page .hk-main{padding:36px 0 64px}
+.hk-page .hk-hero{margin:0;overflow:hidden;border-radius:18px;background:var(--hk-navy);box-shadow:0 12px 36px #142d4510}
+.hk-page .hk-image{display:block;width:100%;height:clamp(220px,34vw,385px);object-fit:cover;object-position:center 42%;background:#c4d9e8}
+.hk-page .hk-hero-copy{padding:32px 42px 38px;color:white}
+.hk-page .hk-kicker{font-size:12px;letter-spacing:.15em;font-weight:650;color:#b7d0e3;margin:0 0 12px;text-transform:uppercase}
+.hk-page .hk-hero h1{font-size:clamp(34px,5.4vw,58px);line-height:1.13;letter-spacing:-.035em;color:white;font-weight:720;margin:0 0 13px;max-width:850px}
+.hk-page .hk-hero-copy>p:last-child{font-size:clamp(17px,2.2vw,22px);line-height:1.55;color:#e2eaf2;margin:0;max-width:750px}
+.hk-page .hk-identity{padding:32px 0 20px}
+.hk-page .hk-identity h2{font-size:clamp(25px,3.4vw,34px);line-height:1.3;margin:0 0 8px;color:var(--hk-ink);letter-spacing:0}
+.hk-page .hk-legal-name{font-size:15px;font-weight:600;color:#40566b;margin:0 0 8px;overflow-wrap:anywhere}
+.hk-page .hk-subtitle{font-size:16px;color:var(--hk-muted);margin:0}
+.hk-page .hk-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.hk-page .hk-service{border:1px solid var(--hk-line);border-radius:13px;padding:20px;min-width:0;background:#fff;box-shadow:0 2px 8px #142d4505}
+.hk-page .hk-service svg{display:block;color:#17344e;margin:0 0 13px}
+.hk-page .hk-service h3{font-size:clamp(17px,2vw,21px);line-height:1.3;letter-spacing:-.02em;margin:0 0 6px;color:var(--hk-ink)}
+.hk-page .hk-service .hk-zh{font-size:14px;color:var(--hk-muted);margin:0 0 9px}
+.hk-page .hk-service .hk-desc{font-size:14px;line-height:1.5;color:var(--hk-muted);margin:0}
+.hk-page .hk-section{margin-top:34px;padding-top:28px;border-top:1px solid var(--hk-line)}
+.hk-page .hk-section h2{font-size:25px;line-height:1.25;margin:0 0 20px;color:var(--hk-ink);letter-spacing:-.02em}
+.hk-page .hk-details{margin:0;border:1px solid var(--hk-line);border-radius:13px;overflow:hidden}
+.hk-page .hk-detail{display:grid;grid-template-columns: minmax(130px, .8fr) minmax(0,2fr);gap:16px;padding:16px 20px;align-items:start}
+.hk-page .hk-detail+.hk-detail{border-top:1px solid var(--hk-line)}
+.hk-page .hk-detail dt{font-size:14px;color:var(--hk-muted);font-weight:500}
+.hk-page .hk-detail dd{margin:0;font-size:15px;font-weight:600;line-height:1.5;color:var(--hk-ink);overflow-wrap:anywhere}
+.hk-page .hk-body{font-size:16px;color:var(--hk-muted);line-height:1.7;margin:0 0 14px}
+.hk-page .hk-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.hk-page .hk-button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 22px;border:1px solid var(--hk-navy);border-radius:8px;background:var(--hk-navy);color:white;font-size:15px;font-weight:650;text-decoration:none}
+.hk-page .hk-button.hk-secondary{background:white;color:var(--hk-navy)}
+.hk-page .hk-button:focus-visible,.hk-page a:focus-visible{outline:2px solid #2879b0;outline-offset:4px}
+.hk-page .hk-credit{font-size:11px;line-height:1.5;color:#687785;margin:28px 0 0}
+.hk-page .hk-credit a{color:inherit;text-decoration:underline}
+@media(max-width:760px){.hk-page .hk-shell{width:calc(100% - 32px)}.hk-page .hk-main{padding:20px 0 44px}.hk-page .hk-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.hk-page .hk-hero{border-radius:14px}.hk-page .hk-image{height:auto;aspect-ratio:2.05;object-position:center 43%}.hk-page .hk-hero-copy{padding:22px 20px 26px}.hk-page .hk-hero h1{font-size:clamp(30px,7.8vw,42px)}.hk-page .hk-kicker{font-size:11px;letter-spacing:.1em}.hk-page .hk-identity{padding:24px 0 17px}.hk-page .hk-service{padding:15px 13px}.hk-page .hk-service h3{font-size:18px}.hk-page .hk-service .hk-desc{display:none}.hk-page .hk-service .hk-zh{margin-bottom:0}.hk-page .hk-section{margin-top:28px;padding-top:23px}.hk-page .hk-detail{grid-template-columns:1fr;gap:5px;padding:13px 16px}.hk-page .hk-section h2{font-size:23px}.hk-page .hk-actions .hk-button{flex:1 1 140px}.hk-page .hk-legal-name{font-size:14px}}
+@media(max-width:360px){.hk-page .hk-shell{width:calc(100% - 24px)}.hk-page .hk-service h3{font-size:16px}.hk-page .hk-service{padding:13px 10px}}
+
+</style>
 </head>
-<body class="seo-page" data-lightweight-page>
+<body class="hk-page" data-lightweight-page>
   <header class="site-header scrolled"><div class="container nav-wrap">
     <a class="logo" href="/" aria-label="Zhonggu Auto Export home"><span class="logo-mark">Z</span><span>Zhonggu <strong>Auto Export</strong></span></a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span><span></span></button>
     <nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/company.html">Company</a><a href="/car-sourcing">Car Sourcing</a><a href="/hong-kong" aria-current="page">Hong Kong</a><a class="nav-cta" href="/contact.html">Contact Us</a></nav>
   </div></header>
-  <main>
-    <section class="seo-hero"><div class="container">
-      <p class="eyebrow">Our international business</p>
-      <h1>Hong Kong Trading &amp; Services</h1>
-      <p>Connecting China's automotive supply chain with international buyers.</p>
-      <a class="btn btn-primary" href="/car-sourcing">Explore Car Sourcing</a>
-    </div></section>
-    <section class="seo-section"><div class="container">
-      <h2>Two companies, complementary roles</h2>
-      <div class="export-market-grid">
-        <article class="seo-card"><p class="eyebrow">Hong Kong SAR</p><h3>ZHONGLU INTERNATIONAL TRADE CO., LIMITED</h3><p lang="zh-Hant">中陸國際貿易有限公司</p><p>Hong Kong registered trading company focused on international trade and cross-border settlement for its own transactions.</p><dl><dt>Business Registration No.</dt><dd>73066914</dd><dt>Registered business address</dt><dd>Room 602, 6/F, Kai Yue Commercial Building, No. 2C Argyle Street, Mongkok, Kowloon, Hong Kong</dd></dl></article>
-        <article class="seo-card"><p class="eyebrow">Qingdao, China</p><h3>Zhonggu International Trade (Qingdao) Co., Ltd.</h3><p>China-based vehicle sourcing, inspection coordination, export documentation and delivery arrangements.</p><a href="/company.html">Explore our company profile</a></article>
-      </div>
-      <p>The contracting entity, service scope, payee and payment instructions are confirmed in the written quotation or agreement for each order.</p>
-    </div></section>
-    <section class="seo-section"><div class="container">
-      <h2>Services for overseas buyers</h2>
-      <div class="export-market-grid">
-        <article class="seo-card"><h3>International trade</h3><p>Vehicle trade and order coordination for overseas dealers and importers.</p></article>
-        <article class="seo-card"><h3>Vehicle sourcing</h3><p>Send a vehicle listing for an export eligibility review and a tailored service quote.</p></article>
-        <article class="seo-card"><h3>Inspection services</h3><p>Basic and advanced inspection options, with scope and appointment details confirmed before payment.</p></article>
-        <article class="seo-card"><h3>Customer support</h3><p>Request help with quotations, service arrangements and payment instructions through our existing contact channels.</p></article>
-      </div>
-      <a href="/car-sourcing">See service descriptions and current pricing</a>
-    </div></section>
-    <section class="seo-section"><div class="container">
-      <h2>Payment and service information</h2>
-      <p>Please obtain a confirmed quote before making any payment. Vehicle purchase price, inspection charges, sourcing fees and transport charges are identified separately where applicable. Online card payments are not yet offered on this page.</p>
-      <p>Review the current inspection fee and service conditions on our <a href="/car-sourcing">Car Sourcing page</a>. The applicable cancellation, refund and delivery conditions are confirmed in the service agreement before payment.</p>
-      <a class="btn btn-primary" href="/contact.html">Contact customer support</a>
-    </div></section>
-  </main>
+  <main class="hk-main"><div class="hk-shell">
+<section class="hk-hero" aria-labelledby="hk-title">
+<img class="hk-image" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/View_of_Victoria_Harbour_from_Tsim_Sha_Tsui.jpg/1280px-View_of_Victoria_Harbour_from_Tsim_Sha_Tsui.jpg" alt="Hong Kong Island skyline across Victoria Harbour" width="1280" height="853" fetchpriority="high" decoding="async">
+<div class="hk-hero-copy"><p class="hk-kicker">Our International Business</p><h1 id="hk-title">Hong Kong Trading &amp; Services</h1><p>Connecting China's automotive supply chain with global buyers.</p></div>
+</section>
+<section class="hk-identity" aria-labelledby="hk-company"><h2 id="hk-company" lang="zh-Hant">中陸國際貿易有限公司</h2><p class="hk-legal-name">ZHONGLU INTERNATIONAL TRADE CO., LIMITED</p><p class="hk-subtitle">Hong Kong Registered Company</p></section>
+<section class="hk-grid" aria-label="Our services"><article class="hk-service"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg><h3>International Trade</h3><p class="hk-zh" lang="zh-Hant">國際貿易</p><p class="hk-desc">Cross-border trade for overseas dealers and importers.</p></article>
+<article class="hk-service"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 1.6-4h10.8L19 8M4 17v2m16-2v2M3 12l2-4h14l2 4v5H3zM7 13h1m8 0h1"/></svg><h3>Vehicle Sourcing</h3><p class="hk-zh" lang="zh-Hant">車輛採購服務</p><p class="hk-desc">Vehicle selection, availability and sourcing coordination.</p></article>
+<article class="hk-service"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="16" rx="2"/><rect x="9" y="3" width="6" height="4" rx="1" fill="white"/><path d="m9 13 2 2 4-4"/></svg><h3>Inspection Services</h3><p class="hk-zh" lang="zh-Hant">車輛檢測服務</p><p class="hk-desc">Basic and advanced vehicle condition checks.</p></article>
+<article class="hk-service"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13v-2a9 9 0 0 1 18 0v5a4 4 0 0 1-4 4h-3"/><rect x="3" y="11" width="4" height="6" rx="2"/><rect x="17" y="11" width="4" height="6" rx="2"/></svg><h3>Customer Support</h3><p class="hk-zh" lang="zh-Hant">海外客戶服務</p><p class="hk-desc">Quotation, order and payment coordination.</p></article></section>
+<section class="hk-section" aria-labelledby="hk-info"><h2 id="hk-info">Company Information</h2><dl class="hk-details"><div class="hk-detail"><dt>Legal company name</dt><dd>ZHONGLU INTERNATIONAL TRADE CO., LIMITED</dd></div><div class="hk-detail"><dt>Registered jurisdiction</dt><dd>Hong Kong SAR</dd></div><div class="hk-detail"><dt>Business Registration No.</dt><dd>73066914</dd></div><div class="hk-detail"><dt>Registered business address</dt><dd>Room 602, 6/F, Kai Yue Commercial Building, No. 2C Argyle Street, Mongkok, Kowloon, Hong Kong</dd></div><div class="hk-detail"><dt>Nature of business</dt><dd>Automotive parts sales, electronic products sales, import and export trade</dd></div><div class="hk-detail"><dt>Customer support</dt><dd><a href="/contact.html">Contact our international sales team</a></dd></div></dl></section>
+<section class="hk-section"><h2>Our China &amp; Hong Kong Operations</h2><p class="hk-body">Our Hong Kong trading company focuses on international trade and cross-border settlement for its own transactions. Zhonggu International Trade (Qingdao) Co., Ltd. supports vehicle sourcing, inspection coordination, export documentation and delivery arrangements in mainland China.</p><p class="hk-body">The contracting entity, service scope and payment beneficiary are confirmed in the written quotation or agreement for each order.</p><a href="/company.html">Explore our China operations</a></section>
+<section class="hk-section"><h2>Service &amp; Payment Information</h2><p class="hk-body">Current service descriptions and inspection fees are available on our Car Sourcing page. The applicable cancellation, refund and delivery conditions are confirmed before payment. Online card payments are not yet offered.</p><div class="hk-actions"><a class="hk-button" href="/car-sourcing">Explore Car Sourcing</a><a class="hk-button hk-secondary" href="/contact.html">Contact Us</a></div></section>
+<p class="hk-credit">Victoria Harbour photograph: <a href="https://commons.wikimedia.org/wiki/File:View_of_Victoria_Harbour_from_Tsim_Sha_Tsui.jpg">Benlisquare / Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Cropped for display.</p>
+</div></main>
   <footer class="site-footer"><div class="container footer-wrap"><p>© <span id="year"></span> Zhonggu Auto Export</p><p lang="zh-Hant">香港：中陸國際貿易有限公司</p><a href="/company.html">Company</a><a href="/contact.html">Contact Us</a></div></footer>
 </body>
 </html>
