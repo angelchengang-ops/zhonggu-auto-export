@@ -104,6 +104,7 @@ for (const [lang, translations] of Object.entries(copy)) {
     </div></section>
     <section class="seo-section"><div class="container">
       <h2>${t.fees}</h2>
+      <p><a href="/hong-kong" lang="${lang}">${({"en":"The contracting entity and payment beneficiary will be confirmed in your written service quote. Learn about our Hong Kong trading company.","fr":"L’entité contractante et le bénéficiaire du paiement seront confirmés dans votre devis écrit. Découvrez notre société commerciale à Hong Kong.","ar":"سيتم تحديد الجهة المتعاقدة والمستفيد من الدفع في عرض الخدمة المكتوب. تعرف على شركتنا التجارية في هونغ كونغ.","ru":"Сторона договора и получатель платежа будут указаны в письменном предложении. Узнайте о нашей торговой компании в Гонконге.","es":"La entidad contratante y el beneficiario del pago se confirmarán en el presupuesto escrito. Conozca nuestra empresa comercial en Hong Kong."})[lang]}</a></p>
       <p><strong>${t.rate}</strong></p>
       <div class="seo-card">
         <h3>${t.basicTitle}</h3><p>${t.basicScope}</p>
@@ -136,7 +137,7 @@ for (const [lang, translations] of Object.entries(copy)) {
       <p class="inquiry-success" role="status" tabindex="-1" hidden>${t.success}</p>
     </div></section>
   </main>
-  <footer class="site-footer"><div class="container footer-wrap"><p>© <span id="year"></span> Zhonggu Auto Export</p></div></footer>
+  <footer class="site-footer"><div class="container footer-wrap"><p>© <span id="year"></span> Zhonggu Auto Export</p></div><p><a href="/hong-kong" lang="en">Hong Kong Trading &amp; Services</a></p></footer>
 </body>
 </html>
 `);
