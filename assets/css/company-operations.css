@@ -1,0 +1,56 @@
+.operations-menu { position: relative; }
+.operations-menu summary {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  cursor: pointer;
+  list-style: none;
+}
+.operations-menu summary::-webkit-details-marker { display: none; }
+.operations-menu summary::after {
+  content: "";
+  width: .42rem;
+  height: .42rem;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: translateY(-2px) rotate(45deg);
+}
+.operations-menu[open] summary::after { transform: translateY(2px) rotate(225deg); }
+.operations-menu-links {
+  position: absolute;
+  inset-block-start: calc(100% + .65rem);
+  inset-inline-end: 0;
+  z-index: 2;
+  min-width: max-content;
+  padding: .4rem;
+  border: 1px solid #d8e3ee;
+  border-radius: .65rem;
+  background: #fff;
+  color: #102544;
+  box-shadow: 0 16px 36px #0c244526;
+}
+.main-nav .operations-menu-links a { display: block; padding: .65rem .85rem; border-radius: .4rem; color: #102544; }
+.main-nav .operations-menu-links a:is(:hover, :focus-visible) { background: #eaf3ff; color: #144c9f; }
+.operations-menu summary:focus-visible, .operations-footer a:focus-visible, .operations-card a:focus-visible {
+  outline: 2px solid #458afb;
+  outline-offset: 3px;
+}
+.operations-footer { display: flex; gap: .45rem 1.1rem; flex-wrap: wrap; }
+.operations-footer a { text-decoration: underline; text-underline-offset: .2em; }
+.operations-section { scroll-margin-block-start: 76px; padding-block: clamp(2.75rem, 6vw, 5rem); background: #eef4fa; color: #102544; }
+.operations-section h2 { margin: 0 0 1.5rem; font-size: clamp(1.75rem, 3.5vw, 2.7rem); }
+.operations-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2rem); }
+.operations-card { overflow: hidden; border-radius: 1rem; background: #102544; color: #f3f7fd; box-shadow: 0 12px 30px #0c24451a; }
+.operations-card img { display: block; width: 100%; height: auto; aspect-ratio: 2.45; object-fit: cover; }
+.operations-card > div { padding: clamp(1.2rem, 3vw, 2rem); }
+.operations-card h3 { margin-block: .3rem .6rem; color: white; font-size: clamp(1.3rem, 2.7vw, 1.85rem); }
+.operations-card p { margin: 0 0 .6rem; color: #cbd8e9; }
+.operations-card a { display: inline-block; color: #b6d8ff; text-decoration: underline; text-underline-offset: .2em; }
+.operations-card small { display: block; margin-block-start: .75rem; color: #cbd8e9; }
+@media (max-width: 960px) {
+  .operations-menu summary { min-height: 44px; padding: 11px 12px; }
+  .operations-menu-links { position: static; border: 0; box-shadow: none; background: #eef4fa; }
+}
+@media (max-width: 640px) {
+  .operations-grid { grid-template-columns: 1fr; }
+}

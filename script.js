@@ -392,13 +392,13 @@ const applyLanguage = () => {
     }));
     select.value = state.language;
   });
-  document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = sourcingHomeCopy[state.language]?.[node.dataset.i18n] || t(node.dataset.i18n) || node.textContent; });
+  document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = operationsCopy[state.language]?.[node.dataset.i18n] || sourcingHomeCopy[state.language]?.[node.dataset.i18n] || t(node.dataset.i18n) || node.textContent; });
   document.querySelectorAll("[data-i18n-html]").forEach((node) => { node.innerHTML = t(node.dataset.i18nHtml) || node.innerHTML; });
   document.querySelectorAll("[data-sourcing-link]").forEach((link) => {
     const language = sourcingHomeCopy[state.language] ? state.language : "en";
     link.href = (language === "en" ? "" : "/" + language) + "/car-sourcing";
   });
-  document.querySelectorAll(".main-nav a").forEach((link) => {
+  document.querySelectorAll(".main-nav a:not(.operations-menu a)").forEach((link) => {
     const href = link.getAttribute("href") || "";
     const key = href.includes("new-cars") || href === "#new-cars" ? "nav.newCars"
       : href.includes("used-cars") ? "nav.usedCars"
@@ -435,6 +435,63 @@ const applyLanguage = () => {
   });
   document.querySelectorAll("a.whatsapp-btn, .hero-actions a[href*='wa.me']").forEach((node) => { node.textContent = t("contact.whatsapp"); });
   localizePhoneFields();
+};
+const operationsCopy = {
+  "en": {
+    "operations.china": "China Operations",
+    "operations.hongKong": "Hong Kong Operations",
+    "operations.title": "Our International Operations",
+    "operations.qingdao": "Qingdao, China",
+    "operations.chinaDescription": "Vehicle sourcing, inspection coordination and export execution in mainland China.",
+    "operations.chinaLink": "Explore China Operations",
+    "operations.hongKongCity": "Hong Kong SAR",
+    "operations.hongKongDescription": "International trade, overseas customer support and settlement for its own transactions.",
+    "operations.hongKongLink": "Explore Hong Kong Operations"
+  },
+  "fr": {
+    "operations.title": "Nos activités internationales",
+    "operations.qingdao": "Qingdao, Chine",
+    "operations.china": "Activités en Chine",
+    "operations.chinaDescription": "Recherche de véhicules, coordination des inspections et exportation depuis la Chine continentale.",
+    "operations.chinaLink": "Découvrir les activités en Chine",
+    "operations.hongKongCity": "Hong Kong (RAS)",
+    "operations.hongKong": "Activités à Hong Kong",
+    "operations.hongKongDescription": "Commerce international, assistance aux clients étrangers et règlement de ses propres transactions.",
+    "operations.hongKongLink": "Découvrir les activités à Hong Kong"
+  },
+  "ar": {
+    "operations.title": "عملياتنا الدولية",
+    "operations.qingdao": "تشينغداو، الصين",
+    "operations.china": "العمليات في الصين",
+    "operations.chinaDescription": "توريد المركبات وتنسيق الفحص وتنفيذ التصدير في البر الرئيسي للصين.",
+    "operations.chinaLink": "اكتشف عملياتنا في الصين",
+    "operations.hongKongCity": "هونغ كونغ",
+    "operations.hongKong": "العمليات في هونغ كونغ",
+    "operations.hongKongDescription": "التجارة الدولية ودعم العملاء في الخارج وتسوية معاملاتها الخاصة.",
+    "operations.hongKongLink": "اكتشف عملياتنا في هونغ كونغ"
+  },
+  "ru": {
+    "operations.title": "Наша международная деятельность",
+    "operations.qingdao": "Циндао, Китай",
+    "operations.china": "Деятельность в Китае",
+    "operations.chinaDescription": "Подбор автомобилей, координация осмотров и экспорт из материкового Китая.",
+    "operations.chinaLink": "Подробнее о работе в Китае",
+    "operations.hongKongCity": "САР Гонконг",
+    "operations.hongKong": "Деятельность в Гонконге",
+    "operations.hongKongDescription": "Международная торговля, поддержка зарубежных клиентов и расчёты по собственным сделкам.",
+    "operations.hongKongLink": "Подробнее о работе в Гонконге"
+  },
+  "es": {
+    "operations.title": "Nuestras operaciones internacionales",
+    "operations.qingdao": "Qingdao, China",
+    "operations.china": "Operaciones en China",
+    "operations.chinaDescription": "Búsqueda de vehículos, coordinación de inspecciones y exportación desde China continental.",
+    "operations.chinaLink": "Ver operaciones en China",
+    "operations.hongKongCity": "Hong Kong (RAE)",
+    "operations.hongKong": "Operaciones en Hong Kong",
+    "operations.hongKongDescription": "Comercio internacional, atención a clientes extranjeros y liquidación de sus propias operaciones.",
+    "operations.hongKongLink": "Ver operaciones en Hong Kong"
+  }
 };
 const sourcingHomeCopy = {
   "en": {
